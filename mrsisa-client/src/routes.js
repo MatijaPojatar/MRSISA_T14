@@ -12,6 +12,11 @@ const router = new Router({
       component: () => import("./components/Prijava")
     },
     {
+      path: "/",
+      name: "Registracija",
+      component: () => import("./components/Registracija")
+    },
+    {
       path: "/lekovi",
       name: "Lekovi",
       component: () => import("./components/LekApp")
