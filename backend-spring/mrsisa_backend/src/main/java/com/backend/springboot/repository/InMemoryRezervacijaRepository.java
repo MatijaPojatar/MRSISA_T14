@@ -23,10 +23,12 @@ import com.backend.springboot.domain.VrstaLeka;
 public class InMemoryRezervacijaRepository implements RezervacijaRepository {
 
 	private static AtomicLong counter = new AtomicLong();
-	private static ConcurrentMap<String, RezervacijaLeka> rezervacije = new ConcurrentHashMap<String, RezervacijaLeka>();
+	private final ConcurrentMap<String, RezervacijaLeka> rezervacije = new ConcurrentHashMap<String, RezervacijaLeka>();
 	
-	static {
-	    rezervacije.put("rez1", new RezervacijaLeka("rez1",new Date(0),new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
+	
+	@Override
+	public Collection<RezervacijaLeka> findAll() {
+		rezervacije.put("rez1", new RezervacijaLeka("rez1",new Date(0),new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK),"ap1"));
 	    rezervacije.put("rez2", new RezervacijaLeka("rez2",new Date(0),new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK),"ap1"));
@@ -46,11 +48,6 @@ public class InMemoryRezervacijaRepository implements RezervacijaRepository {
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK),"ap2"));
 	    rezervacije.put("rez10", new RezervacijaLeka("rez10",new Date(0),new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK),"ap2"));
-	  }
-	
-	@Override
-	public Collection<RezervacijaLeka> findAll() {
-			
 		return rezervacije.values();
 	}
 
@@ -78,5 +75,6 @@ public class InMemoryRezervacijaRepository implements RezervacijaRepository {
 		rezervacije.remove(id);
 
 	}
+
 
 }

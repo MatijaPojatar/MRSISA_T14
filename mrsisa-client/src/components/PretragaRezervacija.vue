@@ -45,7 +45,7 @@
 </template>
 
 <script>
-//import RezervacijaService from "../service/RezervacijaService";
+import RezervacijaService from "../services/RezervacijaService";
 export default {
   name: "pretragaRezervacija",
   data() {
@@ -68,7 +68,16 @@ export default {
       rezim: this.rezim,
       oblik: this.oblik,
       vrsta: this.vrsta
-    })  
+    })
+    RezervacijaService.pretrazi(this.INSTRUCTOR,{
+      sifra: this.sifra,
+      naziv: this.naziv,
+      rezim: this.rezim,
+      oblik: this.oblik,
+      vrsta: this.vrsta
+    }).then(() => {
+                    this.$router.push('/rezervacija');
+                });
   }
 }}
 </script>
