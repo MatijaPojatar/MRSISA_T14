@@ -30,6 +30,11 @@ const router = new Router({
       path: "/rezervacija",
       name: "Rezervacije",
       component: () => import("./components/RezApp")
+    },
+    {
+      path: "/apoteka/lekovi",
+      name: "Lekovi u apoteci",
+      component: () => import("./components/ApotekaApp")
     }
   ]
 });

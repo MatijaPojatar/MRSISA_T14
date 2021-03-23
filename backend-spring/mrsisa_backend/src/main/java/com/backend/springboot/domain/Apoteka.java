@@ -1,7 +1,10 @@
 package com.backend.springboot.domain;
 
+import java.util.Collection;
+
 public class Apoteka {
 	private String naziv,sifra,adresa,grad,drzava,opis;
+	private Collection<Lek> lekovi;
 
 	public Apoteka() {
 		super();
@@ -15,6 +18,25 @@ public class Apoteka {
 		this.grad = grad;
 		this.drzava = drzava;
 		this.opis = opis;
+	}
+	
+	public Apoteka(String naziv, String sifra, String adresa, String grad, String drzava, String opis, Collection<Lek> lekovi) {
+		super();
+		this.naziv = naziv;
+		this.sifra = sifra;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.opis = opis;
+		this.lekovi = lekovi;
+	}
+
+	public Collection<Lek> getLekovi() {
+		return lekovi;
+	}
+
+	public void setLekovi(Collection<Lek> lekovi) {
+		this.lekovi = lekovi;
 	}
 
 	public String getNaziv() {

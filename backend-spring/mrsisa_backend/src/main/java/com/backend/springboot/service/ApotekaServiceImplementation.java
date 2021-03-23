@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.Lek;
 import com.backend.springboot.repository.InMemoryApotekaRepository;
 
 /*
@@ -36,6 +37,13 @@ public class ApotekaServiceImplementation implements ApotekaService {
 	@Override
 	public void delete(String sifra) {
 		apotekaRep.delete(sifra);
+	}
+
+	@Override
+	public Collection<Lek> preuzmiLekoveApoteke(String sifra) {
+		Apoteka a = apotekaRep.findOne(sifra);
+		
+		return a.getLekovi();
 	}
 
 }
