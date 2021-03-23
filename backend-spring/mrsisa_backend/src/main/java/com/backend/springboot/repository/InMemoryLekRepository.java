@@ -24,13 +24,13 @@ public class InMemoryLekRepository implements LekRepository {
 	public Collection<Lek> findAll() {
 		
 		Lek lek1=new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
-				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTBIOTIK);
+				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK);
 		
 		Lek lek2=new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
-				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTBIOTIK);
+				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK);
 		
 		Lek lek3=new Lek("3","Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
-				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.KAPSULA, VrstaLeka.ANTBIOTIK);
+				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.KAPSULA, VrstaLeka.ANTIBIOTIK);
 		
 		Lek lek4=new Lek("4","Lek4", "dsadadsa2ewqsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.PRASAK, VrstaLeka.ANTIMIKOTIK);
