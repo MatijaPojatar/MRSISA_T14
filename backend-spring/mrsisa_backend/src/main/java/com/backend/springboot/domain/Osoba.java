@@ -2,15 +2,28 @@ package com.backend.springboot.domain;
 
 import java.util.Date;
 
-public abstract class Osoba {
-	String ime, prezime, mail, username, password, adresa, grad, drzava, brojTelefona;
-	Pol pol;
-	Date datumRodjenja;
-	boolean promenjenaLozinka;
+/*
+ * 
+ * Osoba kasnije moze da se nasledi kao ostali tipovi, ovo je probna verzija
+ */
+
+public class Osoba {
+	private int id;
+	private String ime, prezime, mail, username, password, adresa, grad, drzava, brojTelefona;
+	private Pol pol;
+	private Date datumRodjenja;
+	private boolean promenjenaLozinka;
+	private Uloga uloga;
 	
-	public Osoba(String ime, String prezime, String mail, String username, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka) {
+	public Osoba() {
 		super();
+	}
+
+
+	public Osoba(int id, String ime, String prezime, String mail, String username, String password, String adresa, String grad,
+			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka, Uloga uloga) {
+		super();
+		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.mail = mail;
@@ -23,9 +36,33 @@ public abstract class Osoba {
 		this.pol = pol;
 		this.datumRodjenja = datumRodjenja;
 		this.promenjenaLozinka = promenjenaLozinka;
+		this.uloga = uloga;
 	}
 
 	
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
+	public Uloga getUloga() {
+		return uloga;
+	}
+
+
+
+	public void setUloga(Uloga uloga) {
+		this.uloga = uloga;
+	}
+
+
 
 	public String getIme() {
 		return ime;
