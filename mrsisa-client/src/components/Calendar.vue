@@ -234,8 +234,8 @@
                     events.push({
                         name: "Pregled 1",
                         pacijent: "Pacijent 1",
-                        start: new Date(currentdate.getTime()+900000*4),
-                        end: new Date(currentdate.getTime()+900000*8),
+                        start: new Date(currentdate.getTime()-900000),
+                        end: new Date(currentdate.getTime()+900000*3),
                         timed: true,
                     })
 
@@ -252,6 +252,14 @@
                         pacijent: "Pacijent 3",
                         start: new Date(currentdate.getTime()+900000*20),
                         end: new Date(currentdate.getTime()+900000*24),
+                        timed: true,
+                    })
+
+                    events.push({
+                        name: "Pregled 4",
+                        pacijent: "Pacijent 4",
+                        start: new Date(currentdate.getTime()+900000*95),
+                        end: new Date(currentdate.getTime()+900000*98),
                         timed: true,
                     })
 
@@ -279,10 +287,20 @@
           console.log(this.selectedEvent);
       },
       reportMiss(){
-          console.log(this.selectedEvent);
+          let now = new Date();
+          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+            alert("Wrong time")
+          }else{
+            alert("Right time")
+          }   
       },
       beginPregled(){
-          console.log(this.selectedEvent);
+          let now = new Date();
+          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+            alert("Wrong time")
+          }else{
+            alert("Right time")
+          }
       },
       }
   }
