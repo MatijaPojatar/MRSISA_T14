@@ -45,6 +45,11 @@ const router = new Router({
       path: "/apoteka/lekovi",
       name: "Lekovi u apoteci",
       component: () => import("./components/ApotekaApp")
+    },
+    {
+      path: "/kalendar",
+      name: "RadniKalendar",
+      component: () => import("./components/RadniKalendar")
     }
   ]
 });
