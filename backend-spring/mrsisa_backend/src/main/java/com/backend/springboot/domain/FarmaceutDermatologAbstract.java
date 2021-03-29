@@ -25,11 +25,11 @@ public abstract class FarmaceutDermatologAbstract extends Osoba{
 		super();
 	}
 
-	public FarmaceutDermatologAbstract(int id, String ime, String prezime, String mail, String username,
+	public FarmaceutDermatologAbstract(int id, String ime, String prezime, String mail,
 			String password, String adresa, String grad, String drzava, String brojTelefona, Pol pol,
-			Date datumRodjenja, boolean promenjenaLozinka, Uloga uloga,Date pocetak,Date kraj) {
-		super(id, ime, prezime, mail, username, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja,
-				promenjenaLozinka, uloga);
+			Date datumRodjenja, boolean promenjenaLozinka, Date pocetak,Date kraj) {
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja,
+				promenjenaLozinka);
 		this.krajRadnogVremena=kraj;
 		this.pocetakRadnogVremena=pocetak;
 	}

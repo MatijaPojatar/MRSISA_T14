@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pol;
-import com.backend.springboot.domain.Uloga;
 
 
 @Repository
@@ -18,11 +17,10 @@ public class InMemoryOsobaRepository implements OsobaRepository{
 
 	@Override
 	public Collection<Osoba> findAll() {
-		Osoba o1 = new Osoba(1, "Pera", "Peric", "pera@gmail.com", "pera", "12341234", "Bulevar", "NS", 
-				"Srbija", "063",Pol.MUSKI, new Date(), true, Uloga.ADMIN_STSTEMA);
-		Osoba o2 = new Osoba(2, "Mika", "Mikic", "mika@gmail.com", "mika", "12341234", "Bulevar", "NS",
-				"Srbija", "063" , Pol.MUSKI, new Date(), true,Uloga.PACIJENT);
-		
+		Osoba o1 = new Osoba(1, "Pera", "Peric", "pera@gmail.com", "12341234", "Bulevar", "NS", 
+				"Srbija", "063",Pol.MUSKI, new Date(), true); //admin sistema
+		Osoba o2 = new Osoba(2, "Mika", "Mikic", "mika@gmail.com", "12341234", "Bulevar", "NS",
+				"Srbija", "063" , Pol.MUSKI, new Date(), true); //pacijent
 		
 		osobe.put(o1.getId(), o1);
 		osobe.put(o2.getId(), o2);

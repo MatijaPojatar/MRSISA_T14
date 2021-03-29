@@ -9,25 +9,21 @@ import java.util.Date;
 
 public class Osoba {
 	private int id;
-	private String ime, prezime, mail, username, password, adresa, grad, drzava, brojTelefona;
+	private String ime, prezime, mail, password, adresa, grad, drzava, brojTelefona;
 	private Pol pol;
 	private Date datumRodjenja;
 	private boolean promenjenaLozinka;
-	private Uloga uloga;
 	
 	public Osoba() {
 		super();
 	}
 
-
-	public Osoba(int id, String ime, String prezime, String mail, String username, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka, Uloga uloga) {
-		super();
+	public Osoba(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
+			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka) {
 		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
 		this.mail = mail;
-		this.username = username;
 		this.password = password;
 		this.adresa = adresa;
 		this.grad = grad;
@@ -36,33 +32,15 @@ public class Osoba {
 		this.pol = pol;
 		this.datumRodjenja = datumRodjenja;
 		this.promenjenaLozinka = promenjenaLozinka;
-		this.uloga = uloga;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
 
-
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
-
-
-	public Uloga getUloga() {
-		return uloga;
-	}
-
-
-
-	public void setUloga(Uloga uloga) {
-		this.uloga = uloga;
-	}
-
-
 
 	public String getIme() {
 		return ime;
@@ -86,14 +64,6 @@ public class Osoba {
 
 	public void setMail(String mail) {
 		this.mail = mail;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 	public String getPassword() {
@@ -159,7 +129,4 @@ public class Osoba {
 	public void setPromenjenaLozinka(boolean promenjenaLozinka) {
 		this.promenjenaLozinka = promenjenaLozinka;
 	}
-	
-	
-	
 }
