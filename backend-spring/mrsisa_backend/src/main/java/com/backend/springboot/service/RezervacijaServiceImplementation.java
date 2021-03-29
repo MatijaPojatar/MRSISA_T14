@@ -44,12 +44,13 @@ public class RezervacijaServiceImplementation implements RezervacijaService{
 	}
 
 	@Override
-	public Collection<RezervacijaLeka> findWithParams(String sifraLeka, String naziv, OblikLeka oblik, VrstaLeka vrsta,
+	public Collection<RezervacijaLeka> findWithParams(int sifraLeka, String naziv, OblikLeka oblik, VrstaLeka vrsta,
 			RezimIzdavanja rezim, String sifraApoteke) {
 		ArrayList<RezervacijaLeka> ret=new ArrayList<RezervacijaLeka>(); 
 		Collection<RezervacijaLeka> svi= rezRep.findAll();
 		System.out.println(svi.size());
-		if(sifraLeka.equals("")) {
+		System.out.println(sifraLeka);
+		if(sifraLeka == 0) {
 			for(RezervacijaLeka rl: svi) {
 				if(rl.getApotekaId().equals(sifraApoteke)) {
 					ret.add(rl);
@@ -57,7 +58,7 @@ public class RezervacijaServiceImplementation implements RezervacijaService{
 			}
 		}else {
 			for(RezervacijaLeka rl: svi) {
-				if(rl.getApotekaId().equals(sifraApoteke) && rl.getLek().getSifra().equals(sifraLeka)) {
+				if(rl.getApotekaId().equals(sifraApoteke) && rl.getLek().getSifra()==sifraLeka) {
 					ret.add(rl);
 				}
 			}

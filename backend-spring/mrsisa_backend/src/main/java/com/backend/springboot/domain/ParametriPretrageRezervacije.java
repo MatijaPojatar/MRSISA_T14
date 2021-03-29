@@ -1,7 +1,8 @@
 package com.backend.springboot.domain;
 
 public class ParametriPretrageRezervacije {
-	private String sifra,naziv;
+	private String naziv;
+	private int sifra;
 	private RezimIzdavanja rezim;
 	private OblikLeka oblik;
 	private VrstaLeka vrsta;
@@ -9,7 +10,7 @@ public class ParametriPretrageRezervacije {
 	public ParametriPretrageRezervacije() {
 		super();
 	}
-	public ParametriPretrageRezervacije(String sifra, String naziv, RezimIzdavanja rezim, OblikLeka oblik,
+	public ParametriPretrageRezervacije(int sifra, String naziv, RezimIzdavanja rezim, OblikLeka oblik,
 			VrstaLeka vrsta) {
 		super();
 		this.sifra = sifra;
@@ -18,10 +19,10 @@ public class ParametriPretrageRezervacije {
 		this.oblik = oblik;
 		this.vrsta = vrsta;
 	}
-	public String getSifra() {
+	public int getSifra() {
 		return sifra;
 	}
-	public void setSifra(String sifra) {
+	public void setSifra(int sifra) {
 		this.sifra = sifra;
 	}
 	public String getNaziv() {

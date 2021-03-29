@@ -1,7 +1,8 @@
 package com.backend.springboot.domain;
 
 public class Lek {
-	private String sifra,naziv,sastav,proizvodjac,napomena;
+	private String naziv,sastav,proizvodjac,napomena;
+	private int sifra;
 	private RezimIzdavanja rezimIzdavanja;
 	private OblikLeka oblikLeka;
 	private VrstaLeka vrstaLeka;
@@ -10,7 +11,7 @@ public class Lek {
 		super();
 	}
 
-	public Lek(String sifra, String naziv, String sastav, String proizvodjac, String napomena,
+	public Lek(int sifra, String naziv, String sastav, String proizvodjac, String napomena,
 			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka) {
 		super();
 		this.sifra = sifra;
@@ -23,11 +24,11 @@ public class Lek {
 		this.vrstaLeka = vrstaLeka;
 	}
 
-	public String getSifra() {
+	public int getSifra() {
 		return sifra;
 	}
 
-	public void setSifra(String sifra) {
+	public void setSifra(int sifra) {
 		this.sifra = sifra;
 	}
 

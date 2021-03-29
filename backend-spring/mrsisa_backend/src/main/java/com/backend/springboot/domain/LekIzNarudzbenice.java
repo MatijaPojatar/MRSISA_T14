@@ -1,23 +1,23 @@
 package com.backend.springboot.domain;
 
 public class LekIzNarudzbenice {
-	String idLeka;
+	int idLeka;
 	Double kolicina;
 
 	public LekIzNarudzbenice() {
 	}
 
-	public LekIzNarudzbenice(String idLeka, Double kolicina) {
+	public LekIzNarudzbenice(int idLeka, Double kolicina) {
 		super();
 		this.idLeka = idLeka;
 		this.kolicina = kolicina;
 	}
 
-	public String getIdLeka() {
+	public int getIdLeka() {
 		return idLeka;
 	}
 
-	public void setIdLeka(String idLeka) {
+	public void setIdLeka(int idLeka) {
 		this.idLeka = idLeka;
 	}
 

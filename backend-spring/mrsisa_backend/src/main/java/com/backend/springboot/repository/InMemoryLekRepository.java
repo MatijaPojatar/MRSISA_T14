@@ -18,24 +18,24 @@ import com.backend.springboot.domain.VrstaLeka;
 @Repository
 public class InMemoryLekRepository implements LekRepository {
 	
-	private final ConcurrentMap<String, Lek> lekovi = new ConcurrentHashMap<String, Lek>();
+	private final ConcurrentMap<Integer, Lek> lekovi = new ConcurrentHashMap<Integer, Lek>();
 
 	@Override
 	public Collection<Lek> findAll() {
 		
-		Lek lek1=new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
+		Lek lek1=new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK);
 		
-		Lek lek2=new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
+		Lek lek2=new Lek(2,"Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK);
 		
-		Lek lek3=new Lek("3","Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
+		Lek lek3=new Lek(3,"Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.KAPSULA, VrstaLeka.ANTIBIOTIK);
 		
-		Lek lek4=new Lek("4","Lek4", "dsadadsa2ewqsda", "Proizvodjac1", "napomena",
+		Lek lek4=new Lek(4,"Lek4", "dsadadsa2ewqsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.PRASAK, VrstaLeka.ANTIMIKOTIK);
 		
-		Lek lek5=new Lek("5","Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
+		Lek lek5=new Lek(5,"Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.TABLETA, VrstaLeka.ANTIMIKOTIK);
 		
 		lekovi.put(lek1.getSifra(), lek1);
@@ -54,12 +54,12 @@ public class InMemoryLekRepository implements LekRepository {
 	}
 
 	@Override
-	public Lek findOne(String sifra) {
+	public Lek findOne(int sifra) {
 		return lekovi.get(sifra);
 	}
 
 	@Override
-	public void delete(String sifra) {
+	public void delete(int sifra) {
 		lekovi.remove(sifra);
 		
 	}

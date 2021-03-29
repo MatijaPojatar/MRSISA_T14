@@ -5,11 +5,11 @@ import java.util.Date;
 public class Cena {
 	private Date pocetakVazenja, krajVazenja;
 	private Double cena;
-	private String idLeka;
+	private int idLeka;
 	public Cena() {
 		// TODO Auto-generated constructor stub
 	}
-	public Cena(Date pocetakVazenja, Date krajVazenja, Double cena, String idLeka) {
+	public Cena(Date pocetakVazenja, Date krajVazenja, Double cena, int idLeka) {
 		super();
 		this.pocetakVazenja = pocetakVazenja;
 		this.krajVazenja = krajVazenja;
@@ -34,10 +34,10 @@ public class Cena {
 	public void setCena(Double cena) {
 		this.cena = cena;
 	}
-	public String getIdLeka() {
-		return idLeka;
+	public int getIdLeka() {
+		return this.idLeka;
 	}
-	public void setIdLeka(String idLeka) {
+	public void setIdLeka(int idLeka) {
 		this.idLeka = idLeka;
 	}
 

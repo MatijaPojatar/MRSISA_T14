@@ -16,5 +16,5 @@ public interface RezervacijaService {
 	
 	void delete(String id);
 	
-	Collection<RezervacijaLeka> findWithParams(String sifraLeka,String naziv,OblikLeka oblik,VrstaLeka vrsta,RezimIzdavanja rezim,String sifraApoteke);
+	Collection<RezervacijaLeka> findWithParams(int sifraLeka,String naziv,OblikLeka oblik,VrstaLeka vrsta,RezimIzdavanja rezim,String sifraApoteke);
 }

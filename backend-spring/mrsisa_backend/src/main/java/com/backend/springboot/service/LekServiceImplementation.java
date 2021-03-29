@@ -29,12 +29,12 @@ public class LekServiceImplementation implements LekService {
 	}
 
 	@Override
-	public Lek findOne(String sifra) {
+	public Lek findOne(int sifra) {
 		return lekRep.findOne(sifra);
 	}
 
 	@Override
-	public void delete(String sifra) {
+	public void delete(int sifra) {
 		lekRep.delete(sifra);
 	}
 

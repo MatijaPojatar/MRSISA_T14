@@ -11,7 +11,7 @@ public interface LekRepository {
 	
 	Lek addLek(Lek lek);
 	
-	Lek findOne(String sifra);
+	Lek findOne(int sifra);
 	
-	void delete(String sifra);
+	void delete(int sifra);
 }

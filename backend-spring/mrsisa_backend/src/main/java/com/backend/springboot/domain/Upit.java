@@ -1,33 +1,34 @@
 package com.backend.springboot.domain;
 
 public class Upit {
-	String id, idLeka;
+	int id;
+	int idLeka;
 	Double kolicina;
 
 	public Upit() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Upit(String id, String idLeka, Double kolicina) {
+	public Upit(int id, int idLeka, Double kolicina) {
 		super();
 		this.id = id;
 		this.idLeka = idLeka;
 		this.kolicina = kolicina;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public String getIdLeka() {
+	public int getIdLeka() {
 		return idLeka;
 	}
 
-	public void setIdLeka(String idLeka) {
+	public void setIdLeka(int idLeka) {
 		this.idLeka = idLeka;
 	}
 

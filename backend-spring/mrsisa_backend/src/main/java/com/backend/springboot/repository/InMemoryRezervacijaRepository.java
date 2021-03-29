@@ -28,25 +28,25 @@ public class InMemoryRezervacijaRepository implements RezervacijaRepository {
 	
 	@Override
 	public Collection<RezervacijaLeka> findAll() {
-		rezervacije.put("rez1", new RezervacijaLeka("rez1",new Date(0),new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
+		rezervacije.put("rez1", new RezervacijaLeka("rez1",new Date(0),new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez2", new RezervacijaLeka("rez2",new Date(0),new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
+	    rezervacije.put("rez2", new RezervacijaLeka("rez2",new Date(0),new Lek(2,"Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez3", new RezervacijaLeka("rez3",new Date(0),new Lek("3","Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
+	    rezervacije.put("rez3", new RezervacijaLeka("rez3",new Date(0),new Lek(3,"Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.KAPSULA, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez4", new RezervacijaLeka("rez4",new Date(0),new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
+	    rezervacije.put("rez4", new RezervacijaLeka("rez4",new Date(0),new Lek(2,"Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez5", new RezervacijaLeka("rez5",new Date(0),new Lek("4","Lek4", "dsadadsa2ewqsda", "Proizvodjac1", "napomena",
+	    rezervacije.put("rez5", new RezervacijaLeka("rez5",new Date(0),new Lek(4,"Lek4", "dsadadsa2ewqsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.PRASAK, VrstaLeka.ANTIMIKOTIK),"ap1"));
-	    rezervacije.put("rez6", new RezervacijaLeka("rez6",new Date(0),new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
+	    rezervacije.put("rez6", new RezervacijaLeka("rez6",new Date(0),new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez7", new RezervacijaLeka("rez7",new Date(0),new Lek("5","Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
+	    rezervacije.put("rez7", new RezervacijaLeka("rez7",new Date(0),new Lek(5,"Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.TABLETA, VrstaLeka.ANTIMIKOTIK),"ap1"));
-	    rezervacije.put("rez8", new RezervacijaLeka("rez8",new Date(0),new Lek("3","Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
+	    rezervacije.put("rez8", new RezervacijaLeka("rez8",new Date(0),new Lek(3,"Lek3", "dsadadasdasdsda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.KAPSULA, VrstaLeka.ANTIBIOTIK),"ap1"));
-	    rezervacije.put("rez9", new RezervacijaLeka("rez9",new Date(0),new Lek("1","Lek1", "dsadasda", "Proizvodjac1", "napomena",
+	    rezervacije.put("rez9", new RezervacijaLeka("rez9",new Date(0),new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK),"ap2"));
-	    rezervacije.put("rez10", new RezervacijaLeka("rez10",new Date(0),new Lek("2","Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
+	    rezervacije.put("rez10", new RezervacijaLeka("rez10",new Date(0),new Lek(2,"Lek2", "dsadaD223sddsaa", "Proizvodjac2", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.GEL, VrstaLeka.ANTIBIOTIK),"ap2"));
 		return rezervacije.values();
 	}
