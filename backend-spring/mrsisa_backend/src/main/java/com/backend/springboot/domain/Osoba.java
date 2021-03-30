@@ -35,7 +35,7 @@ public class Osoba {
 	private String adresa;
 	@Column(name = "grad", nullable = false)
 	private String grad;
-	@Column(name = "drazava", nullable = false)
+	@Column(name = "drzava", nullable = false)
 	private String drzava;
 	@Column(name = "brojTelefona", nullable = false)
 	private String brojTelefona;
