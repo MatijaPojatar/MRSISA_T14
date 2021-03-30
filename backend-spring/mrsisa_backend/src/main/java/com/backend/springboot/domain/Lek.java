@@ -35,7 +35,7 @@ public class Lek {
 	private VrstaLeka vrstaLeka;
 	@ManyToMany
 	@JoinTable(name = "apoteke_lekovi", joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
-	private List<Apoteka> snadbeveneApoteke=new ArrayList<Apoteka>();
+	private List<Apoteka> snabdeveneApoteke=new ArrayList<Apoteka>();
 	
 	public Lek() {
 		super();
@@ -62,12 +62,12 @@ public class Lek {
 		this.id = id;
 	}
 
-	public List<Apoteka> getSnadbeveneApoteke() {
-		return snadbeveneApoteke;
+	public List<Apoteka> getSnabdeveneApoteke() {
+		return snabdeveneApoteke;
 	}
 
-	public void setSnadbeveneApoteke(List<Apoteka> snadbeveneApoteke) {
-		this.snadbeveneApoteke = snadbeveneApoteke;
+	public void setSnabdeveneApoteke(List<Apoteka> snadbeveneApoteke) {
+		this.snabdeveneApoteke = snadbeveneApoteke;
 	}
 
 	public String getNaziv() {

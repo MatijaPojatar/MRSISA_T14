@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.springframework.stereotype.Repository;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
@@ -22,6 +23,8 @@ public class InMemoryLekRepository implements LekRepository {
 
 	@Override
 	public Collection<Lek> findAll() {
+		Apoteka ap1=new Apoteka(1,"Apoteka1","ap1","adresa1","grad1","drazava1","opis");
+		Apoteka ap2=new Apoteka(2,"Apoteka2","ap2","adresa2","grad2","drazava2","opis");
 		
 		Lek lek1=new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK);
@@ -37,6 +40,17 @@ public class InMemoryLekRepository implements LekRepository {
 		
 		Lek lek5=new Lek(5,"Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.TABLETA, VrstaLeka.ANTIMIKOTIK);
+		lek1.getSnabdeveneApoteke().add(ap1);
+		lek1.getSnabdeveneApoteke().add(ap2);
+		lek2.getSnabdeveneApoteke().add(ap1);
+		
+		lek3.getSnabdeveneApoteke().add(ap1);
+		lek4.getSnabdeveneApoteke().add(ap1);
+		lek5.getSnabdeveneApoteke().add(ap1);
+		
+		lek3.getSnabdeveneApoteke().add(ap2);
+		lek4.getSnabdeveneApoteke().add(ap2);
+		lek5.getSnabdeveneApoteke().add(ap2);
 		
 		lekovi.put(lek1.getId(), lek1);
 		lekovi.put(lek2.getId(), lek2);

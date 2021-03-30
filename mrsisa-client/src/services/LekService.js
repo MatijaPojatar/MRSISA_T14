@@ -8,6 +8,11 @@ class LekService {
   retrieveAllLekovi() {
     return axios.get(`${INSTRUCTOR_API_URL}`);
   }
+
+  pretrazi(name, json) {
+    return axios.post(`${INSTRUCTOR_API_URL}/rezultat`, json);
+
+}
 }
 
 export default new LekService();

@@ -46,7 +46,7 @@ export default {
 
   methods: {
     refreshLekovi() {
-      ApotekaService.preuzmiLekove(this.INSTRUCTOR, "ap2") //HARDCODED
+      ApotekaService.preuzmiLekove(this.INSTRUCTOR) //HARDCODED
         .then(response => {
           this.lekovi = response.data;
         });

@@ -27,9 +27,14 @@ const router = new Router({
       component: () => import("./components/LekApp")
     },
     {
-      path: "/lekovi/:sifra",
+      path: "/lekovi/lek/:sifra",
       name: "Lek Details",
       component: () => import("./components/LekComponent")
+    },
+    {
+      path: "/lekovi/pretraga",
+      name: "Pretraga Lekova",
+      component: () => import("./components/PretragaLekova")
     },
     {
       path: "/rezervacija/pretraga",
