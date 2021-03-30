@@ -18,7 +18,7 @@ import com.backend.springboot.service.ApotekaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
-@RequestMapping("/apoteka")
+@RequestMapping("/apoteke")
 public class ApotekaController {
 	@Autowired
 	private ApotekaService apotekaService;
