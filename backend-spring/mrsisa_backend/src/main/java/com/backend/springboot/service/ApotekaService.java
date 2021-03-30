@@ -14,5 +14,7 @@ public interface ApotekaService {
 	
 	void delete(String sifra);
 	
-	Collection <Lek> preuzmiLekoveApoteke (String sifra);
+	Collection <Lek> preuzmiLekoveApoteke(String sifra);
+	
+	Collection<Apoteka> pronadjiApoteke(String naziv, String grad);
 }

@@ -1,5 +1,6 @@
 package com.backend.springboot.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +48,36 @@ public class ApotekaServiceImplementation implements ApotekaService {
 		
 	}
 
+	@Override
+	public Collection<Apoteka> pronadjiApoteke(String naziv, String grad) {
+		ArrayList<Apoteka> pronadjene = new ArrayList<Apoteka>();
+		Collection<Apoteka> sve = findAll();
+		
+		if (naziv.equals("") && grad.equals("")) {
+			pronadjene = (ArrayList<Apoteka>) sve;
+		}
+	    else if (naziv.equals("")) {
+			for (Apoteka apoteka : sve) {
+				if (apoteka.getGrad().equals(grad)) {
+					pronadjene.add(apoteka);
+				}
+			}
+		}
+	    else if (grad.equals("")) {
+			for (Apoteka apoteka : sve) {
+				if (apoteka.getNaziv().equals(naziv)) {
+					pronadjene.add(apoteka);
+				}
+			}
+		}
+	    else {
+	    	for (Apoteka apoteka : sve) {
+				if (apoteka.getNaziv().equals(naziv) && apoteka.getGrad().equals(grad)) {
+					pronadjene.add(apoteka);
+				}
+			}
+	    }
+
+		return pronadjene;
+	}
 }
