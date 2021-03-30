@@ -2,23 +2,55 @@ package com.backend.springboot.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 /*
  * 
  * Osoba kasnije moze da se nasledi kao ostali tipovi, ovo je probna verzija
  */
-
+@Entity
+@Table(name="osobe")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Osoba {
-	private int id;
-	private String ime, prezime, mail, password, adresa, grad, drzava, brojTelefona;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(name = "ime", nullable = false)
+	private String ime;
+	@Column(name = "prezime", nullable = false)
+	private String prezime;
+	@Column(name = "mail", nullable = false,unique=true)
+	private String mail; 
+	@Column(name = "password", nullable = false)
+	private String password;
+	@Column(name = "adresa", nullable = false)
+	private String adresa;
+	@Column(name = "grad", nullable = false)
+	private String grad;
+	@Column(name = "drazava", nullable = false)
+	private String drzava;
+	@Column(name = "brojTelefona", nullable = false)
+	private String brojTelefona;
+	@Column(name = "pol", nullable = false)
 	private Pol pol;
+	@Column(name = "datumRodjenja", nullable = false)
 	private Date datumRodjenja;
+	@Column(name = "promenjenaLozinka", nullable = false)
 	private boolean promenjenaLozinka;
 	
 	public Osoba() {
 		super();
 	}
 
-	public Osoba(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
+	public Osoba(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka) {
 		this.id = id;
 		this.ime = ime;
@@ -34,11 +66,11 @@ public class Osoba {
 		this.promenjenaLozinka = promenjenaLozinka;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

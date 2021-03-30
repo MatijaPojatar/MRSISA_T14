@@ -58,7 +58,7 @@ public class RezervacijaServiceImplementation implements RezervacijaService{
 			}
 		}else {
 			for(RezervacijaLeka rl: svi) {
-				if(rl.getApotekaId().equals(sifraApoteke) && rl.getLek().getSifra()==sifraLeka) {
+				if(rl.getApotekaId().equals(sifraApoteke) && rl.getLek().getId()==sifraLeka) {
 					ret.add(rl);
 				}
 			}

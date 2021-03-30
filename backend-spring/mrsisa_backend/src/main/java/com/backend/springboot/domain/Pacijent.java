@@ -1,9 +1,25 @@
 package com.backend.springboot.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="pacijenti")
 public class Pacijent extends Osoba {
-	private int brojPoena, penali;
+	@Column(name = "brojPoena", nullable = false)
+	private int brojPoena;
+	@Column(name = "penali", nullable = false)
+	private int penali;
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Termin> termini=new ArrayList<Termin>();
 	
 	public Pacijent() {
 		super();
@@ -31,4 +47,14 @@ public class Pacijent extends Osoba {
 	public void setPenali(int penali) {
 		this.penali = penali;
 	}
+
+	public List<Termin> getTermini() {
+		return termini;
+	}
+
+	public void setTermini(List<Termin> termini) {
+		this.termini = termini;
+	}
+	
+	
 }

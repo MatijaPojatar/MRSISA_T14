@@ -1,20 +1,50 @@
 package com.backend.springboot.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+
+@Entity
+@Table(name="lekovi")
 public class Lek {
-	private String naziv,sastav,proizvodjac,napomena;
-	private int sifra;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name = "naziv", nullable = false)
+	private String naziv;
+	@Column(name = "sastav", nullable = false)
+	private String sastav;
+	@Column(name = "proizvodjac", nullable = false)
+	private String proizvodjac;
+	@Column(name = "napomena", nullable = false)
+	private String napomena;
+	@Column(name = "rezimIzdavanja", nullable = false)
 	private RezimIzdavanja rezimIzdavanja;
+	@Column(name = "oblikLeka", nullable = false)
 	private OblikLeka oblikLeka;
+	@Column(name = "vrstaLeka", nullable = false)
 	private VrstaLeka vrstaLeka;
+	@ManyToMany
+	@JoinTable(name = "apoteke_lekovi", joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
+	private List<Apoteka> snadbeveneApoteke=new ArrayList<Apoteka>();
 	
 	public Lek() {
 		super();
 	}
 
-	public Lek(int sifra, String naziv, String sastav, String proizvodjac, String napomena,
+	public Lek(Integer id, String naziv, String sastav, String proizvodjac, String napomena,
 			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka) {
 		super();
-		this.sifra = sifra;
+		this.id = id;
 		this.naziv = naziv;
 		this.sastav = sastav;
 		this.proizvodjac = proizvodjac;
@@ -24,12 +54,20 @@ public class Lek {
 		this.vrstaLeka = vrstaLeka;
 	}
 
-	public int getSifra() {
-		return sifra;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setSifra(int sifra) {
-		this.sifra = sifra;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<Apoteka> getSnadbeveneApoteke() {
+		return snadbeveneApoteke;
+	}
+
+	public void setSnadbeveneApoteke(List<Apoteka> snadbeveneApoteke) {
+		this.snadbeveneApoteke = snadbeveneApoteke;
 	}
 
 	public String getNaziv() {

@@ -38,18 +38,18 @@ public class InMemoryLekRepository implements LekRepository {
 		Lek lek5=new Lek(5,"Lek5", "dsadasdFfaDASDda", "Proizvodjac3", "napomena",
 				RezimIzdavanja.BEZ_RECEPTA, OblikLeka.TABLETA, VrstaLeka.ANTIMIKOTIK);
 		
-		lekovi.put(lek1.getSifra(), lek1);
-		lekovi.put(lek2.getSifra(), lek2);
-		lekovi.put(lek3.getSifra(), lek3);
-		lekovi.put(lek4.getSifra(), lek4);
-		lekovi.put(lek5.getSifra(), lek5);
+		lekovi.put(lek1.getId(), lek1);
+		lekovi.put(lek2.getId(), lek2);
+		lekovi.put(lek3.getId(), lek3);
+		lekovi.put(lek4.getId(), lek4);
+		lekovi.put(lek5.getId(), lek5);
 		
 		return lekovi.values();
 	}
 
 	@Override
 	public Lek addLek(Lek lek) {
-		lekovi.put(lek.getSifra(), lek);
+		lekovi.put(lek.getId(), lek);
 		return lek;
 	}
 

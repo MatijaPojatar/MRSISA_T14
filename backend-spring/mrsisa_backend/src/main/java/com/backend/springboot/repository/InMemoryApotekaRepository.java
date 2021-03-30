@@ -24,8 +24,8 @@ public class InMemoryApotekaRepository implements ApotekaRepository {
 
 	@Override
 	public Collection<Apoteka> findAll() {
-		Apoteka ap1=new Apoteka("Apoteka1","ap1","adresa1","grad1","drazava1","opis");
-		Apoteka ap2=new Apoteka("Apoteka2","ap2","adresa2","grad2","drazava2","opis");
+		Apoteka ap1=new Apoteka(1,"Apoteka1","ap1","adresa1","grad1","drazava1","opis");
+		Apoteka ap2=new Apoteka(2,"Apoteka2","ap2","adresa2","grad2","drazava2","opis");
 		
 		Lek lek1=new Lek(1,"Lek1", "dsadasda", "Proizvodjac1", "napomena",
 				RezimIzdavanja.NA_RECEPT, OblikLeka.MAST, VrstaLeka.ANTIBIOTIK);

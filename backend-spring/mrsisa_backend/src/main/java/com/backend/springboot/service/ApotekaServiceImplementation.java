@@ -44,6 +44,7 @@ public class ApotekaServiceImplementation implements ApotekaService {
 		Apoteka a = apotekaRep.findOne(sifra);
 		
 		return a.getLekovi();
+		
 	}
 
 }
