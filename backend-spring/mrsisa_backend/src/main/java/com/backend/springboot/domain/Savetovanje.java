@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ public class Savetovanje extends Termin {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Savetovanje(Date pocetak, Date kraj) {
+	public Savetovanje(LocalDateTime pocetak, LocalDateTime kraj) {
 		super(pocetak, kraj);
 		// TODO Auto-generated constructor stub
 	}

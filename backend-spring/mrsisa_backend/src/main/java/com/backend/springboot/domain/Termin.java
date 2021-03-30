@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,9 +22,9 @@ public abstract class Termin {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "pocetak", nullable = false)
-	private Date pocetak;
+	private LocalDateTime pocetak;
 	@Column(name = "kraj", nullable = false)
-	private Date kraj;
+	private LocalDateTime kraj;
 	@Column(name = "izvestaj", nullable = false)
 	private String izvestaj;
 	@Column(name = "izvrsen", nullable = false)
@@ -42,7 +43,7 @@ public abstract class Termin {
 
 
 
-	public Termin(Date pocetak, Date kraj) {
+	public Termin(LocalDateTime pocetak,LocalDateTime kraj) {
 		super();
 		this.pocetak = pocetak;
 		this.kraj = kraj;
@@ -60,26 +61,25 @@ public abstract class Termin {
 	}
 
 
-
-	public Date getPocetak() {
+	public LocalDateTime getPocetak() {
 		return pocetak;
 	}
 
 
 
-	public void setPocetak(Date pocetak) {
+	public void setPocetak(LocalDateTime pocetak) {
 		this.pocetak = pocetak;
 	}
 
 
 
-	public Date getKraj() {
+	public LocalDateTime getKraj() {
 		return kraj;
 	}
 
 
 
-	public void setKraj(Date kraj) {
+	public void setKraj(LocalDateTime kraj) {
 		this.kraj = kraj;
 	}
 

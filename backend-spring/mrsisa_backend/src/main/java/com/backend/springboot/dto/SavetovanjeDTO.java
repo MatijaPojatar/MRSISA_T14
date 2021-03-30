@@ -1,12 +1,13 @@
 package com.backend.springboot.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.backend.springboot.domain.Savetovanje;
 
 public class SavetovanjeDTO {
 	private String name,izvestaj;
-	private Date start,end;
+	private LocalDateTime start,end;
 	private Integer pacijentId;
 	private boolean izvrsen;
 	
@@ -14,7 +15,7 @@ public class SavetovanjeDTO {
 		super();
 	}
 	
-	public SavetovanjeDTO(String name, String izvestaj, Date start, Date end, Integer pacijentId, boolean izvrsen) {
+	public SavetovanjeDTO(String name, String izvestaj, LocalDateTime start, LocalDateTime end, Integer pacijentId, boolean izvrsen) {
 		super();
 		this.name = name;
 		this.izvestaj = izvestaj;
@@ -49,19 +50,19 @@ public class SavetovanjeDTO {
 		this.izvestaj = izvestaj;
 	}
 
-	public Date getStart() {
+	public LocalDateTime getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
+	public void setStart(LocalDateTime start) {
 		this.start = start;
 	}
 
-	public Date getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 

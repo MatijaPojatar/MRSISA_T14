@@ -1,5 +1,7 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,9 +19,9 @@ import javax.persistence.Table;
 public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	
 	@Column(name = "pocetakRadnogVremena", nullable = false)
-	private Date pocetakRadnogVremena;
+	private LocalTime pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)
-	private Date krajRadnogVremena;
+	private LocalTime krajRadnogVremena;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
 	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -32,8 +34,8 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	
 
 	public Farmaceut(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka
-			,Apoteka apoteka,Date pocetakRadnogVremena,Date krajRadnogVremena) {
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka
+			,Apoteka apoteka,LocalTime pocetakRadnogVremena,LocalTime krajRadnogVremena) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
 		this.pocetakRadnogVremena=pocetakRadnogVremena;
 		this.krajRadnogVremena=krajRadnogVremena;
@@ -66,27 +68,30 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 
 
 
-	public Date getPocetakRadnogVremena() {
+	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;
 	}
 
 
 
-	public void setPocetakRadnogVremena(Date pocetakRadnogVremena) {
+	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 	}
 
 
 
-	public Date getKrajRadnogVremena() {
+	public LocalTime getKrajRadnogVremena() {
 		return krajRadnogVremena;
 	}
 
 
 
-	public void setKrajRadnogVremena(Date krajRadnogVremena) {
+	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
+
+
+
 	
 	
 	

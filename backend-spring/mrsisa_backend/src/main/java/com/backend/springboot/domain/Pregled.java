@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ public class Pregled extends Termin {
 		super();
 	}
 
-	public Pregled(Date pocetak, Date kraj,double cena) {
+	public Pregled(LocalDateTime pocetak, LocalDateTime kraj,double cena) {
 		super(pocetak, kraj);
 		this.cena=cena;
 	}

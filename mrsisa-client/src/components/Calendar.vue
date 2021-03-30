@@ -235,7 +235,21 @@
             nativeEvent.stopPropagation()
         },
         updateRangeDermatologAxios(){
-          axios.get("http://localhost:8080/pregled/all")
+          axios.get("http://localhost:8080/pregled/all").then(response => {
+           const events = []
+          response.data.forEach(element => {
+            events.push({
+              name:element.name,
+              pacijent:element.pacijentId,
+              start: new Date(element.start),
+              end: new Date(element.end),
+              izvrsen: element.izvrsen,
+              izvestaj: element.izvestaj,
+              timed: true,
+            })
+            this.events = events
+          });
+        });
         },
         updateRangeDermatolog () {
                     const events = []
@@ -285,7 +299,21 @@
                     this.events = events
       },
       updateRangeFarmaceutAxios (){
-        axios.get("http://localhost:8080/savetovanje/all")
+        axios.get("http://localhost:8080/savetovanje/all").then(response => {
+           const events = []
+          response.data.forEach(element => {
+            events.push({
+              name:element.name,
+              pacijent:element.pacijentId,
+              start: new Date(element.start),
+              end: new Date(element.end),
+              izvrsen: element.izvrsen,
+              izvestaj: element.izvestaj,
+              timed: true,
+            })
+            this.events = events
+          });
+        });
       },
       updateRangeFarmaceut () {
                     const events = []

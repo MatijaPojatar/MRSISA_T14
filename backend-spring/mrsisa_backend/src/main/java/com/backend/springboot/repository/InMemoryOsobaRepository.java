@@ -1,5 +1,6 @@
 package com.backend.springboot.repository;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,9 +19,9 @@ public class InMemoryOsobaRepository implements OsobaRepository{
 	@Override
 	public Collection<Osoba> findAll() {
 		Osoba o1 = new Osoba(1, "Pera", "Peric", "pera@gmail.com", "12341234", "Bulevar", "NS", 
-				"Srbija", "063",Pol.MUSKI, new Date(), true); //admin sistema
+				"Srbija", "063",Pol.MUSKI, LocalDate.now(), true); //admin sistema
 		Osoba o2 = new Osoba(2, "Mika", "Mikic", "mika@gmail.com", "12341234", "Bulevar", "NS",
-				"Srbija", "063" , Pol.MUSKI, new Date(), true); //pacijent
+				"Srbija", "063" , Pol.MUSKI, LocalDate.now(), true); //pacijent
 		
 		osobe.put(o1.getId(), o1);
 		osobe.put(o2.getId(), o2);

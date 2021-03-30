@@ -1,12 +1,13 @@
 package com.backend.springboot.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.backend.springboot.domain.Pregled;
 
 public class PregledDTO {
 	private String name,izvestaj;
-	private Date start,end;
+	private LocalDateTime start,end;
 	private Integer pacijentId,apotekaId;
 	private boolean izvrsen;
 	private double cena;
@@ -15,7 +16,7 @@ public class PregledDTO {
 		super();
 	}
 
-	public PregledDTO(String name, String izvestaj, Date start, Date end, Integer pacijentId, boolean izvrsen,
+	public PregledDTO(String name, String izvestaj, LocalDateTime start, LocalDateTime end, Integer pacijentId, boolean izvrsen,
 			double cena) {
 		super();
 		this.name = name;
@@ -54,19 +55,19 @@ public class PregledDTO {
 		this.izvestaj = izvestaj;
 	}
 
-	public Date getStart() {
+	public LocalDateTime getStart() {
 		return start;
 	}
 
-	public void setStart(Date start) {
+	public void setStart(LocalDateTime start) {
 		this.start = start;
 	}
 
-	public Date getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 

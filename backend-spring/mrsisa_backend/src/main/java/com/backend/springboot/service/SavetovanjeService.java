@@ -17,5 +17,9 @@ public class SavetovanjeService {
 	public List<Savetovanje> findAllByFarmaceutId(Integer farmaceutId){
 		return savetovanjeRep.findAllByFarmaceutId(farmaceutId);
 	}
+	
+	public Savetovanje save(Savetovanje s) {
+		return savetovanjeRep.save(s);
+	}
 
 }

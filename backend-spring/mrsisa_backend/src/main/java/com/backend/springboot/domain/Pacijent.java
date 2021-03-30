@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,7 @@ public class Pacijent extends Osoba {
 	}
 
 	public Pacijent(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka, int brojPoena, int penali) {
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, int brojPoena, int penali) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
 		this.brojPoena = brojPoena;
 		this.penali = penali;

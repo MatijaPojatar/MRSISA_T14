@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -42,7 +43,7 @@ public class Osoba {
 	@Column(name = "pol", nullable = false)
 	private Pol pol;
 	@Column(name = "datumRodjenja", nullable = false)
-	private Date datumRodjenja;
+	private LocalDate datumRodjenja;
 	@Column(name = "promenjenaLozinka", nullable = false)
 	private boolean promenjenaLozinka;
 	
@@ -51,7 +52,7 @@ public class Osoba {
 	}
 
 	public Osoba(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, Date datumRodjenja, boolean promenjenaLozinka) {
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka) {
 		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
@@ -146,11 +147,11 @@ public class Osoba {
 		this.pol = pol;
 	}
 
-	public Date getDatumRodjenja() {
+	public LocalDate getDatumRodjenja() {
 		return datumRodjenja;
 	}
 
-	public void setDatumRodjenja(Date datumRodjenja) {
+	public void setDatumRodjenja(LocalDate datumRodjenja) {
 		this.datumRodjenja = datumRodjenja;
 	}
 

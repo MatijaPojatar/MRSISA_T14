@@ -1,5 +1,8 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,10 @@ public class PregledController {
 		for (Pregled p : pregledi) {
 			preglediDTO.add(new PregledDTO(p));
 		}
+		
+		preglediDTO.add(new PregledDTO("Pregled 1", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30)), null, false,1000));
+		preglediDTO.add(new PregledDTO("Pregled 2", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 30)), 1, false,1000));
+		preglediDTO.add(new PregledDTO("Pregled 3", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(17, 30)), 2, true,1000));
 
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}

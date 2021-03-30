@@ -9,5 +9,7 @@ import com.backend.springboot.domain.Savetovanje;
 public interface SavetovanjeRepository extends JpaRepository<Savetovanje, Integer> {
 	
 	public List<Savetovanje> findAllByFarmaceutId(Integer farmaceutId);
+	
+	
 
 }
