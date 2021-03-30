@@ -84,7 +84,7 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="farmaceut ? updateRangeFarmaceut(): updateRangeDermatolog()"
+          @change="farmaceut ? updateRangeFarmaceutAxios(): updateRangeDermatologAxios()"
         >
          <!--
           :first-interval= 8 
@@ -110,7 +110,7 @@
             flat
           >
             <v-toolbar
-              :color=" selectedEvent.pacijent ? '#1976D2': 'green'"
+              :color=" selectedEvent.pacijent ? selectedEvent.izvrsen ? 'grey': '#1976D2': 'green'"
               dark
             >
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -156,6 +156,8 @@
 </template>
 
 <script>
+  import axios from "axios";
+
   export default {
       data: ()=>({
             focus: "",
@@ -232,6 +234,9 @@
 
             nativeEvent.stopPropagation()
         },
+        updateRangeDermatologAxios(){
+          axios.get("http://localhost:8080/pregled/all")
+        },
         updateRangeDermatolog () {
                     const events = []
 
@@ -278,6 +283,9 @@
                     })
 
                     this.events = events
+      },
+      updateRangeFarmaceutAxios (){
+        axios.get("http://localhost:8080/savetovanje/all")
       },
       updateRangeFarmaceut () {
                     const events = []
