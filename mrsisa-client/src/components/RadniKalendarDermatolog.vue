@@ -1,5 +1,5 @@
 <template>
-    <Calendar/>
+    <Calendar :farmaceut="false" />
 </template>
 
 <script>
@@ -7,7 +7,7 @@
 import Calendar from "./Calendar";
 
 export default {
-    name: "RadniKalendar",
+    name: "RadniKalendarDermatolog",
     components:{
         Calendar
     }

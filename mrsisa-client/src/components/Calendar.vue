@@ -80,10 +80,11 @@
           color="primary"
           :events="events"
           :type="type"
+          :event-color="getEventColor"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRange"
+          @change="farmaceut ? updateRangeFarmaceut(): updateRangeDermatolog()"
         >
          <!--
           :first-interval= 8 
@@ -109,15 +110,15 @@
             flat
           >
             <v-toolbar
-              color="#1976D2"
+              :color=" selectedEvent.pacijent ? '#1976D2': 'green'"
               dark
             >
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn icon @click="beginPregled">
+              <v-btn icon @click="beginPregled" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen" >
                 <v-icon>mdi-forward</v-icon>
               </v-btn>
-              <v-btn icon @click="reportMiss">
+              <v-btn icon @click="reportMiss" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen">
                 <v-icon>mdi-account-cancel</v-icon>
               </v-btn>
               <v-btn icon @click="cancelPregled">
@@ -127,9 +128,14 @@
             <v-card-text>
               <div >Start: {{selectedEvent.start}}</div>
               <div >End: {{selectedEvent.end}}</div>
-              <div >Pacijent: {{selectedEvent.pacijent}}
+              <div v-if="selectedEvent.pacijent">Pacijent: {{selectedEvent.pacijent}}
                   <v-btn icon @click="viewAccount">
                     <v-icon>mdi-account</v-icon>
+                </v-btn>
+              </div>
+              <div v-if="selectedEvent.izvrsen">Izvestaj: 
+                  <v-btn icon >
+                    <v-icon>mdi-text-box</v-icon>
                 </v-btn>
               </div>
             </v-card-text>
@@ -173,6 +179,9 @@
             dialog: false,
             ready: false,
       }),
+      props: {
+        farmaceut: Boolean,
+      },
       computed: {
         cal () {
             return this.ready ? this.$refs.calendar : null
@@ -195,9 +204,6 @@
         viewDay ({ date }) {
             this.focus = date
             this.type = 'day'
-        },
-        getEventColor (event) {
-            return event.color
         },
         setToday () {
             this.focus = ''
@@ -226,7 +232,7 @@
 
             nativeEvent.stopPropagation()
         },
-        updateRange () {
+        updateRangeDermatolog () {
                     const events = []
 
                     var currentdate = new Date();
@@ -236,6 +242,8 @@
                         pacijent: "Pacijent 1",
                         start: new Date(currentdate.getTime()-900000),
                         end: new Date(currentdate.getTime()+900000*3),
+                        izvrsen: false,
+                        izvestaj: null,
                         timed: true,
                     })
 
@@ -244,6 +252,8 @@
                         pacijent: "Pacijent 2",
                         start: new Date(currentdate.getTime()+900000*10),
                         end: new Date(currentdate.getTime()+900000*16),
+                        izvrsen: false,
+                        izvestaj: null,
                         timed: true,
                     })
 
@@ -252,6 +262,8 @@
                         pacijent: "Pacijent 3",
                         start: new Date(currentdate.getTime()+900000*20),
                         end: new Date(currentdate.getTime()+900000*24),
+                        izvrsen: false,
+                        izvestaj: null,
                         timed: true,
                     })
 
@@ -260,6 +272,55 @@
                         pacijent: "Pacijent 4",
                         start: new Date(currentdate.getTime()+900000*95),
                         end: new Date(currentdate.getTime()+900000*98),
+                        izvrsen: false,
+                        izvestaj: null,
+                        timed: true,
+                    })
+
+                    this.events = events
+      },
+      updateRangeFarmaceut () {
+                    const events = []
+
+                    var currentdate = new Date();
+
+                    events.push({
+                        name: "Savetovanje 1",
+                        pacijent: "Pacijent 1",
+                        start: new Date(currentdate.getTime()-900000),
+                        end: new Date(currentdate.getTime()+900000*3),
+                        izvrsen: true,
+                        izvestaj:"sdaaaaaaadasdas",
+                        timed: true,
+                    })
+
+                    events.push({
+                        name: "Savetovanje 2",
+                        pacijent: "Pacijent 2",
+                        start: new Date(currentdate.getTime()+900000*10),
+                        end: new Date(currentdate.getTime()+900000*16),
+                        izvrsen: false,
+                        izvestaj: null,
+                        timed: true,
+                    })
+
+                    events.push({
+                        name: "Savetovanje 3",
+                        pacijent: "Pacijent 3",
+                        start: new Date(currentdate.getTime()+900000*20),
+                        end: new Date(currentdate.getTime()+900000*24),
+                        izvrsen: false,
+                        izvestaj: null,
+                        timed: true,
+                    })
+
+                    events.push({
+                        name: "Savetovanje 4",
+                        pacijent: null,
+                        start: new Date(currentdate.getTime()+900000*95),
+                        end: new Date(currentdate.getTime()+900000*98),
+                        izvrsen: false,
+                        izvestaj: null,
                         timed: true,
                     })
 
@@ -301,6 +362,17 @@
           }else{
             alert("Right time")
           }
+      },
+      getEventColor (event) {
+        if(event.pacijent){
+          if(event.izvrsen){
+              return 'grey';
+          } else{
+              return '#1976D2';
+          }
+        }else{
+          return 'green';
+        }
       },
       }
   }
