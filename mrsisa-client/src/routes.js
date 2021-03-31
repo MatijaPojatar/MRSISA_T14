@@ -27,6 +27,11 @@ const router = new Router({
       component: () => import("./components/ListApoteke")
     },
     {
+      path: "/lekovi/kreiraj",
+      name: "KreirajLek",
+      component: () => import("./components/KreirajLek")
+    },
+    {
       path: "/lekovi",
       name: "Lekovi",
       component: () => import("./components/LekApp")

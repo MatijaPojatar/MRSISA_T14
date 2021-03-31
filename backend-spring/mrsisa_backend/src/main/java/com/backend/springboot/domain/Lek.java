@@ -33,6 +33,10 @@ public class Lek {
 	private OblikLeka oblikLeka;
 	@Column(name = "vrstaLeka", nullable = false)
 	private VrstaLeka vrstaLeka;
+	@Column(name = "naRecept", nullable = false)
+	private Boolean naRecept;
+	
+	
 	@ManyToMany
 	@JoinTable(name = "apoteke_lekovi", joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private List<Apoteka> snabdeveneApoteke=new ArrayList<Apoteka>();
@@ -42,7 +46,7 @@ public class Lek {
 	}
 
 	public Lek(Integer id, String naziv, String sastav, String proizvodjac, String napomena,
-			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka) {
+			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka, Boolean naRecept) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -52,6 +56,15 @@ public class Lek {
 		this.rezimIzdavanja = rezimIzdavanja;
 		this.oblikLeka = oblikLeka;
 		this.vrstaLeka = vrstaLeka;
+		this.naRecept = naRecept;
+	}
+
+	public Boolean getNaRecept() {
+		return naRecept;
+	}
+
+	public void setNaRecept(Boolean naRecept) {
+		this.naRecept = naRecept;
 	}
 
 	public Integer getId() {
