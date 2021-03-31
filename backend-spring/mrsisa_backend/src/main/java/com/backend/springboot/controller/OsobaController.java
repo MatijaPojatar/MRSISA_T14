@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Osoba;
+import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Pol;
 import com.backend.springboot.service.OsobaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -30,7 +33,7 @@ public class OsobaController {
 		
 		return new ResponseEntity<Collection<Osoba>>(osobe, HttpStatus.OK);
 	}
-	
+
 	@PostMapping()
 	public ResponseEntity<Osoba> dodajOsobu(@RequestBody Osoba osobaInfo){
 		Osoba osoba = osobaService.addOsoba(osobaInfo);

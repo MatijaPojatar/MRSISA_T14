@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Osoba;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.repository.InMemoryOsobaRepository;
+import com.backend.springboot.repository.InMemoryPacijentRepository;
 
 @Service
 public class OsobaServiceImplementation implements OsobaService {

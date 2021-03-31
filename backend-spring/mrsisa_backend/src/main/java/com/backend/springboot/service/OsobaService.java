@@ -3,6 +3,7 @@ package com.backend.springboot.service;
 import java.util.Collection;
 
 import com.backend.springboot.domain.Osoba;
+import com.backend.springboot.domain.Pacijent;
 
 public interface OsobaService {
 

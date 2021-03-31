@@ -38,6 +38,13 @@ public class LekController {
 	 * return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK); }
 	 */
 	
+	@PostMapping()
+	public ResponseEntity<Lek> dodajLek(@RequestBody Lek lekInfo){
+		Lek lek = lekService.addLek(lekInfo);
+		
+		return new ResponseEntity<Lek>(lek, HttpStatus.OK);
+	}
+	
 	@PostMapping("/rezultat")
 	public ResponseEntity<Collection<Lek>> pretrazi(@RequestBody ParametriPretrageLeka params) {
 		
@@ -52,4 +59,7 @@ public class LekController {
 		
 		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
 	}
+	
+	
+	
 }
