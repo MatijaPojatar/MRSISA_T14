@@ -33,8 +33,6 @@ public class Lek {
 	private OblikLeka oblikLeka;
 	@Column(name = "vrstaLeka", nullable = false)
 	private VrstaLeka vrstaLeka;
-	@Column(name = "naRecept", nullable = false)
-	private Boolean naRecept;
 	
 	
 	@ManyToMany
@@ -46,7 +44,7 @@ public class Lek {
 	}
 
 	public Lek(Integer id, String naziv, String sastav, String proizvodjac, String napomena,
-			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka, Boolean naRecept) {
+			RezimIzdavanja rezimIzdavanja, OblikLeka oblikLeka, VrstaLeka vrstaLeka) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
@@ -56,15 +54,6 @@ public class Lek {
 		this.rezimIzdavanja = rezimIzdavanja;
 		this.oblikLeka = oblikLeka;
 		this.vrstaLeka = vrstaLeka;
-		this.naRecept = naRecept;
-	}
-
-	public Boolean getNaRecept() {
-		return naRecept;
-	}
-
-	public void setNaRecept(Boolean naRecept) {
-		this.naRecept = naRecept;
 	}
 
 	public Integer getId() {
