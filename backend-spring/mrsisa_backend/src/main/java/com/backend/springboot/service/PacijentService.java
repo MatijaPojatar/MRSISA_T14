@@ -13,6 +13,6 @@ public class PacijentService {
 	PacijentRepository pacijentRep;
 	
 	public Pacijent registrujPacijenta(Pacijent pacijentInfo) {
-		return pacijentRep.registrujPacijenta(pacijentInfo);
+		return pacijentRep.save(pacijentInfo);
 	}
 }

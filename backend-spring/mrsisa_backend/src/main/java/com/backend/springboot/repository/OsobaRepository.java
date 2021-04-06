@@ -1,18 +1,17 @@
 package com.backend.springboot.repository;
 
-import java.util.Collection;
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.backend.springboot.domain.Osoba;
 
 
-public interface OsobaRepository {
-	Collection<Osoba> findAll();
+public interface OsobaRepository extends JpaRepository<Osoba, Integer> {
+	List<Osoba> findAll();
 	
-	Osoba addOsoba(Osoba osoba);
+	Osoba save(Osoba osoba);
 	
-	Osoba findOne(int id);
+	Osoba findOneById(Integer id);
 	
-	void delete(int id);
-	
-	void promeniLozinku(int id,String novaLozinka);
 }
