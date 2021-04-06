@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -42,6 +43,31 @@ public class Apoteka {
 	private Set<Dermatolog> dermatolozi = new HashSet<Dermatolog>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
+	@OneToOne(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Magacin magacin;
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();
+	
+
+	
+
+	public Apoteka(Integer id, String naziv, String sifra, String adresa, String grad, String drzava, String opis,
+			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
+			Magacin magacin) {
+		super();
+		this.id = id;
+		this.naziv = naziv;
+		this.sifra = sifra;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.opis = opis;
+		this.lekovi = lekovi;
+		this.farmaceuti = farmaceuti;
+		this.dermatolozi = dermatolozi;
+		this.termini = termini;
+		this.magacin = magacin;
+	}
 
 	public Apoteka() {
 		super();
@@ -69,6 +95,25 @@ public class Apoteka {
 		this.opis = opis;
 		this.lekovi = lekovi;
 	}
+	public Apoteka(Integer id, String naziv, String sifra, String adresa, String grad, String drzava, String opis,
+			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
+			Magacin magacin, List<AkcijaPromocija> akcije) {
+		super();
+		this.id = id;
+		this.naziv = naziv;
+		this.sifra = sifra;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.opis = opis;
+		this.lekovi = lekovi;
+		this.farmaceuti = farmaceuti;
+		this.dermatolozi = dermatolozi;
+		this.termini = termini;
+		this.magacin = magacin;
+		this.akcije = akcije;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -157,7 +202,21 @@ public class Apoteka {
 		this.dermatolozi = dermatolozi;
 	}
 	
-	
+	public Magacin getMagacin() {
+		return magacin;
+	}
+
+	public void setMagacin(Magacin magacin) {
+		this.magacin = magacin;
+	}
+
+	public List<AkcijaPromocija> getAkcije() {
+		return akcije;
+	}
+
+	public void setAkcije(List<AkcijaPromocija> akcije) {
+		this.akcije = akcije;
+	}
 	
 	
 }

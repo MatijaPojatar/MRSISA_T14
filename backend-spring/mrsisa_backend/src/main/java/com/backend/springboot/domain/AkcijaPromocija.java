@@ -2,51 +2,36 @@ package com.backend.springboot.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="akcije")
 public class AkcijaPromocija {
-	private String id, opis;
-	private Date pocetak, kraj;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	@Column(name = "opis", nullable = false)
+	private String opis;
+	@Column(name = "pocetakVazenja", nullable = false)
+	private Date pocetakVazenja;
+	@Column(name = "krajVazenja", nullable = true)
+	private Date krajVazenja;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Apoteka apoteka;
 	
 	public AkcijaPromocija() {
 	}
 
-	public AkcijaPromocija(String id, String opis, Date pocetak, Date kraj) {
-		super();
-		this.id = id;
-		this.opis = opis;
-		this.pocetak = pocetak;
-		this.kraj = kraj;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getOpis() {
-		return opis;
-	}
-
-	public void setOpis(String opis) {
-		this.opis = opis;
-	}
-
-	public Date getPocetak() {
-		return pocetak;
-	}
-
-	public void setPocetak(Date pocetak) {
-		this.pocetak = pocetak;
-	}
-
-	public Date getKraj() {
-		return kraj;
-	}
-
-	public void setKraj(Date kraj) {
-		this.kraj = kraj;
-	}
+	
 
 }
