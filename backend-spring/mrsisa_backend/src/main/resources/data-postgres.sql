@@ -23,9 +23,18 @@ insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 14:00','2021-04-06 15:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (1,1);
 
+
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','pera',0,true);
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (3,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 11:00','2021-04-06 12:00',1,2);
 insert into pregledi (id,dermatolog_id,cena) values (2,3,3000);
+
+insert into magacini (id,apoteka_id) values (1,1);
+
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (1, '2021-04-06 14:00', 100, 100, 1, 1, false);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (2, '2021-04-06 14:00', 200, 150, 2, 1, false);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (3, '2021-04-06 14:00', 300, 10, 3, 1, true);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (4, '2021-04-06 14:00', 400, 300, 4, 1, false);
+

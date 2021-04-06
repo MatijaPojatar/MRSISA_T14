@@ -21,9 +21,9 @@ public class AkcijaPromocija {
 	private Integer id;
 	@Column(name = "opis", nullable = false)
 	private String opis;
-	@Column(name = "pocetakVazenja", nullable = false)
+	@Column(name = "pocetak_vazenja", nullable = false)
 	private Date pocetakVazenja;
-	@Column(name = "krajVazenja", nullable = true)
+	@Column(name = "kraj_vazenja", nullable = false)
 	private Date krajVazenja;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

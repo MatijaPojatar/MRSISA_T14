@@ -2,6 +2,7 @@ package com.backend.springboot.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.service.ApotekaService;
+import com.backend.springboot.service.MagacinService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -24,6 +26,8 @@ public class ApotekaController {
 	private ApotekaService apotekaService;
 
 	private ArrayList<Apoteka> pronadjeneApoteke;
+	
+	@Autowired MagacinService magacinService;
 	
 	/*@GetMapping("/lekovi")
 	public ResponseEntity<Collection<Lek>> getLekovi() {
@@ -41,6 +45,19 @@ public class ApotekaController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Apoteka>> getApoteke() {
+		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
+	}
+	
+	@PostMapping("/obrisiLek")
+	public ResponseEntity<String> obrisiLek(Integer idLeka) {
+		magacinService.obrisiLek(idLeka, 1);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PostMapping("/dodajLek")
+	public ResponseEntity<Collection<Apoteka>> dodajLek() {
+		Date pocetakVazenja = new Date(2020, 4, 6);
+		magacinService.dodajLek(pocetakVazenja, 100.0, 200.0, 1, 1);
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
 	}
 }
