@@ -49,6 +49,8 @@ public class Apoteka {
 	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Narudzbenica> narudzbenice = new ArrayList<Narudzbenica>();
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<AdministratorApoteke> administratori = new HashSet<AdministratorApoteke>();
 	
 
 	
