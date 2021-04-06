@@ -24,11 +24,11 @@ import com.backend.springboot.domain.VrstaLeka;
  */
 
 @Repository
-public class InMemoryApotekaRepository implements ApotekaRepository {
+public class InMemoryApotekaRepository{
 	
 	private final ConcurrentMap<String, Apoteka> apoteke = new ConcurrentHashMap<String, Apoteka>();
 
-	@Override
+	
 	public List<Apoteka> findAll() {
 		Apoteka ap1=new Apoteka(1,"Apoteka1","ap1","adresa1","grad1","drazava1","opis");
 		Apoteka ap2=new Apoteka(2,"Apoteka2","ap2","adresa2","grad2","drazava2","opis");
@@ -66,7 +66,7 @@ public class InMemoryApotekaRepository implements ApotekaRepository {
 		return (List<Apoteka>) apoteke.values();
 	}
 
-	@Override
+	
 	public Apoteka addApoteka(Apoteka apoteka) {
 		
 		apoteke.put(apoteka.getSifra(), apoteka);
@@ -74,150 +74,150 @@ public class InMemoryApotekaRepository implements ApotekaRepository {
 		return apoteka;
 	}
 
-	@Override
+	
 	public Apoteka findOne(String sifra) {
 		return apoteke.get(sifra);
 	}
 
-	@Override
+	
 	public void delete(String sifra) {
 		apoteke.remove(sifra);
 		
 	}
 
-	@Override
+	
 	public List<Apoteka> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public List<Apoteka> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void flush() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public <S extends Apoteka> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public void deleteInBatch(Iterable<Apoteka> entities) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void deleteAllInBatch() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public Apoteka getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Page<Apoteka> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public Optional<Apoteka> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public boolean existsById(Integer id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	
 	public long count() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void delete(Apoteka entity) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void deleteAll(Iterable<? extends Apoteka> entities) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void deleteAll() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public <S extends Apoteka> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	
 	public <S extends Apoteka> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;

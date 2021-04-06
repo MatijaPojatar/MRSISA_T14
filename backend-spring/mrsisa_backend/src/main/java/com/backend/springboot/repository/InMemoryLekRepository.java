@@ -23,11 +23,11 @@ import com.backend.springboot.domain.VrstaLeka;
  */
 
 @Repository
-public class InMemoryLekRepository implements LekRepository {
+public class InMemoryLekRepository {
 	
 	private final ConcurrentMap<Integer, Lek> lekovi = new ConcurrentHashMap<Integer, Lek>();
 
-	@Override
+	 
 	public List<Lek> findAll() {
 		Apoteka ap1=new Apoteka(1,"Apoteka1","ap1","adresa1","grad1","drazava1","opis");
 		Apoteka ap2=new Apoteka(2,"Apoteka2","ap2","adresa2","grad2","drazava2","opis");
@@ -67,162 +67,162 @@ public class InMemoryLekRepository implements LekRepository {
 		return (List<Lek>) lekovi.values();
 	}
 
-	@Override
+	 
 	public Lek addLek(Lek lek) {
 		lekovi.put(lek.getId(), lek);
 		return lek;
 	}
 
-	@Override
+	 
 	public Lek findOne(int sifra) {
 		return lekovi.get(sifra);
 	}
 
-	@Override
+	 
 	public void delete(int sifra) {
 		lekovi.remove(sifra);
 		
 	}
 
-	@Override
+	 
 	public List<Lek> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public List<Lek> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public void flush() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public <S extends Lek> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public void deleteInBatch(Iterable<Lek> entities) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public void deleteAllInBatch() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public Lek getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public Page<Lek> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public Optional<Lek> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public boolean existsById(Integer id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	 
 	public long count() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	 
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public void delete(Lek entity) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public void deleteAll(Iterable<? extends Lek> entities) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public void deleteAll() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	 
 	public <S extends Lek> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	 
 	public <S extends Lek> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	 
 	public <S extends Lek> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	 
 	public List<Lek> findAllByLekId(Integer id) {
 		// TODO Auto-generated method stub
 		return null;

@@ -12,11 +12,11 @@ public interface LekRepository extends JpaRepository<Lek, Integer> {
 	
 	List<Lek> findAll();
 	
-	List<Lek> findAllByLekId(Integer id);
+	//List<Lek> findAllByLekId(Integer id);
 	
-	Lek addLek(Lek lek);
+	Lek save(Lek lek);
 	
-	Lek findOne(int sifra);
+	Lek findOneById(Integer id);
 	
-	void delete(int sifra);
+	
 }

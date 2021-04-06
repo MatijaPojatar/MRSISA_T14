@@ -14,9 +14,8 @@ public interface LekService {
 	
 	Lek addLek(Lek lek);
 	
-	Lek findOne(int sifra);
+	Lek findOneById(Integer id);
 	
-	void delete(int sifra);
 	
 	Collection<Lek> findWithParams(int sifraLeka,String naziv,OblikLeka oblik,VrstaLeka vrsta,RezimIzdavanja rezim,int sifraApoteke, String proizvodjac);
 }

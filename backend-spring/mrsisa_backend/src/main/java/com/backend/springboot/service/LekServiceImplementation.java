@@ -14,6 +14,7 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
 import com.backend.springboot.repository.InMemoryLekRepository;
+import com.backend.springboot.repository.LekRepository;
 
 /*
  * Service za rad sa lekovima
@@ -23,7 +24,9 @@ import com.backend.springboot.repository.InMemoryLekRepository;
 public class LekServiceImplementation implements LekService {
 	
 	@Autowired
-	private InMemoryLekRepository lekRep;
+	private LekRepository lekRep;
+	
+	
 
 	@Override
 	public Collection<Lek> findAll() {
@@ -32,18 +35,15 @@ public class LekServiceImplementation implements LekService {
 
 	@Override
 	public Lek addLek(Lek lek) {
-		return lekRep.addLek(lek);
+		return lekRep.save(lek);
 	}
 
 	@Override
-	public Lek findOne(int sifra) {
-		return lekRep.findOne(sifra);
+	public Lek findOneById(Integer sifra) {
+		return lekRep.findOneById(sifra);
 	}
 
-	@Override
-	public void delete(int sifra) {
-		lekRep.delete(sifra);
-	}
+	
 
 	@Override
 	public Collection<Lek> findWithParams(int sifraLeka, String naziv, OblikLeka oblik, VrstaLeka vrsta,

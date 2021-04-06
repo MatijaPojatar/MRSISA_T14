@@ -13,9 +13,8 @@ public interface ApotekaRepository extends JpaRepository<Apoteka, Integer> {
 	List<Apoteka> findAll();
 	
 	
-	Apoteka addApoteka(Apoteka apoteka);
 	
-	Apoteka findOne(String sifra);
+	Apoteka findOneById(Integer id);
 	
-	void delete(String sifra);
+	
 }

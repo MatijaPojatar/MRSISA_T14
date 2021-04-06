@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.InMemoryApotekaRepository;
 
 /*
@@ -18,31 +19,29 @@ import com.backend.springboot.repository.InMemoryApotekaRepository;
 public class ApotekaServiceImplementation implements ApotekaService {
 
 	@Autowired
-	private InMemoryApotekaRepository apotekaRep;
+	private ApotekaRepository apotekaRep;
 	
-	@Override
+	
+	
+	
 	public Collection<Apoteka> findAll() {
 		return apotekaRep.findAll();
 	}
 
-	@Override
-	public Apoteka addApoteka(Apoteka apoteka) {
-		return apotekaRep.addApoteka(apoteka);
+	
+	
+
+	
+	public Apoteka findOne(Integer sifra) {
+		return apotekaRep.findOneById(sifra);
 	}
 
-	@Override
-	public Apoteka findOne(String sifra) {
-		return apotekaRep.findOne(sifra);
-	}
-
-	@Override
-	public void delete(String sifra) {
-		apotekaRep.delete(sifra);
-	}
+	
+	
 
 	@Override
 	public Collection<Lek> preuzmiLekoveApoteke(String sifra) {
-		Apoteka a = apotekaRep.findOne(sifra);
+		Apoteka a = apotekaRep.findOneById(Integer.parseInt(sifra));
 		
 		return a.getLekovi();
 		
