@@ -33,15 +33,13 @@ public class SavetovanjeController {
 	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
 
 		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(1);
+		
+		System.out.println(savetovanja.size());
 
 		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
 		for (Savetovanje s : savetovanja) {
 			savetovanjaDTO.add(new SavetovanjeDTO(s));
 		}
-		
-		savetovanjaDTO.add(new SavetovanjeDTO("Savetovanje 1", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 30)), null, false));
-		savetovanjaDTO.add(new SavetovanjeDTO("Savetovanje 2", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(15, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(16, 30)), 1, false));
-		savetovanjaDTO.add(new SavetovanjeDTO("Savetovanje 3", "", LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 30)), 2, true));
 
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
 	}

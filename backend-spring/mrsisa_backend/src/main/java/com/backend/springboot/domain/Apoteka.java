@@ -25,8 +25,6 @@ public class Apoteka {
 	private Integer id;
 	@Column(name = "naziv", nullable = false)
 	private String naziv;
-	@Column(name = "sifra", nullable = false,unique=true)
-	private String sifra;
 	@Column(name = "adresa", nullable = false)
 	private String adresa;
 	@Column(name = "grad", nullable = false)
@@ -55,13 +53,12 @@ public class Apoteka {
 
 	
 
-	public Apoteka(Integer id, String naziv, String sifra, String adresa, String grad, String drzava, String opis,
+	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
 			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
 			Magacin magacin) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
-		this.sifra = sifra;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.drzava = drzava;
@@ -77,35 +74,32 @@ public class Apoteka {
 		super();
 	}
 
-	public Apoteka(Integer id,String naziv, String sifra, String adresa, String grad, String drzava, String opis) {
+	public Apoteka(Integer id,String naziv, String adresa, String grad, String drzava, String opis) {
 		super();
 		this.id=id;
 		this.naziv = naziv;
-		this.sifra = sifra;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.drzava = drzava;
 		this.opis = opis;
 	}
 	
-	public Apoteka(Integer id,String naziv, String sifra, String adresa, String grad, String drzava, String opis, ArrayList<Lek> lekovi) {
+	public Apoteka(Integer id,String naziv, String adresa, String grad, String drzava, String opis, ArrayList<Lek> lekovi) {
 		super();
 		this.id=id;
 		this.naziv = naziv;
-		this.sifra = sifra;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.drzava = drzava;
 		this.opis = opis;
 		this.lekovi = lekovi;
 	}
-	public Apoteka(Integer id, String naziv, String sifra, String adresa, String grad, String drzava, String opis,
+	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
 			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
 			Magacin magacin, List<AkcijaPromocija> akcije) {
 		super();
 		this.id = id;
 		this.naziv = naziv;
-		this.sifra = sifra;
 		this.adresa = adresa;
 		this.grad = grad;
 		this.drzava = drzava;
@@ -148,14 +142,6 @@ public class Apoteka {
 
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
-	}
-
-	public String getSifra() {
-		return sifra;
-	}
-
-	public void setSifra(String sifra) {
-		this.sifra = sifra;
 	}
 
 	public String getAdresa() {
