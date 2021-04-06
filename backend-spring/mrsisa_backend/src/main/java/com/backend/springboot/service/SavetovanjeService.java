@@ -21,5 +21,9 @@ public class SavetovanjeService {
 	public Savetovanje save(Savetovanje s) {
 		return savetovanjeRep.save(s);
 	}
+	
+	public Savetovanje findOne(Integer id) {
+		return savetovanjeRep.findOneById(id);
+	}
 
 }

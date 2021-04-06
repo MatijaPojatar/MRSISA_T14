@@ -8,7 +8,7 @@ import com.backend.springboot.domain.Savetovanje;
 public class SavetovanjeDTO {
 	private String name,izvestaj;
 	private LocalDateTime start,end;
-	private Integer pacijentId;
+	private Integer pacijentId,id;
 	private boolean izvrsen;
 	
 	public SavetovanjeDTO() {
@@ -32,6 +32,7 @@ public class SavetovanjeDTO {
 		this.end=s.getKraj();
 		this.pacijentId=s.getPacijent().getId();
 		this.izvrsen=s.isIzvrsen();
+		this.id=s.getId();
 	}
 
 	public String getName() {
@@ -81,7 +82,14 @@ public class SavetovanjeDTO {
 	public void setIzvrsen(boolean izvrsen) {
 		this.izvrsen = izvrsen;
 	}
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	
 	
 }

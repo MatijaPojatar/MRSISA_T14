@@ -10,6 +10,10 @@ public interface SavetovanjeRepository extends JpaRepository<Savetovanje, Intege
 	
 	public List<Savetovanje> findAllByFarmaceutId(Integer farmaceutId);
 	
+	public Savetovanje findOneById(Integer id);
+	
+	public Savetovanje save(Savetovanje s);
+	
 	
 
 }

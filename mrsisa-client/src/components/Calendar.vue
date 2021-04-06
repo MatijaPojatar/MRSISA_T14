@@ -245,6 +245,7 @@
               end: new Date(element.end),
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
+              id: element.id,
               timed: true,
             })
             this.events = events
@@ -309,6 +310,7 @@
               end: new Date(element.end),
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
+              id: element.id,
               timed: true,
             })
             this.events = events
@@ -389,6 +391,17 @@
             alert("Wrong time")
           }else{
             alert("Right time")
+            let path="pregled"
+            if(this.farmaceut){
+              path="savetovanje"
+            }
+            axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
+            axios.put(`http://localhost:8080/pacijenti/penal/${this.selectedEvent.pacijent}`);
+            this.selectedEvent={}
+            this.selectedElement=null
+            this.selectedOpen=false
+            location.reload();
+            
           }   
       },
       beginPregled(){
