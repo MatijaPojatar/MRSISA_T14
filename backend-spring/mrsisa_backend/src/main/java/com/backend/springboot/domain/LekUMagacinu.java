@@ -57,6 +57,7 @@ public class LekUMagacinu {
 		this.kolicina = kolicina;
 		this.lek = lek;
 		this.magacin = magacin;
+		this.obrisan = false;
 	}
 
 
@@ -71,6 +72,7 @@ public class LekUMagacinu {
 		this.kolicina = kolicina;
 		this.lek = lek;
 		this.magacin = magacin;
+		this.obrisan = false;
 	}
 
 
@@ -112,5 +114,29 @@ public class LekUMagacinu {
 
 	public void setKolicina(Double kolicina) {
 		this.kolicina = kolicina;
+	}
+
+
+
+	public Magacin getMagacin() {
+		return magacin;
+	}
+
+
+
+	public void setMagacin(Magacin magacin) {
+		this.magacin = magacin;
+	}
+
+
+
+	public boolean isObrisan() {
+		return obrisan;
+	}
+
+
+
+	public void setObrisan(boolean obrisan) {
+		this.obrisan = obrisan;
 	}
 }
