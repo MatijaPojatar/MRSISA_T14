@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class AkcijaPromocija {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "opis", nullable = false)
 	private String opis;
 	@Column(name = "pocetakVazenja", nullable = false)
@@ -30,6 +30,46 @@ public class AkcijaPromocija {
 	private Apoteka apoteka;
 	
 	public AkcijaPromocija() {
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getOpis() {
+		return opis;
+	}
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+	public Date getPocetakVazenja() {
+		return pocetakVazenja;
+	}
+
+	public void setPocetakVazenja(Date pocetakVazenja) {
+		this.pocetakVazenja = pocetakVazenja;
+	}
+
+	public Date getKrajVazenja() {
+		return krajVazenja;
+	}
+
+	public void setKrajVazenja(Date krajVazenja) {
+		this.krajVazenja = krajVazenja;
+	}
+
+	public Apoteka getApoteka() {
+		return apoteka;
+	}
+
+	public void setApoteka(Apoteka apoteka) {
+		this.apoteka = apoteka;
 	}
 
 	

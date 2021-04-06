@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class LekUMagacinu {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	@Column(name = "pocetakVazenja", nullable = false)
 	private Date pocetakVazenja;
 	@Column(name = "krajVazenja", nullable = true)
@@ -36,7 +36,7 @@ public class LekUMagacinu {
 	
 	
 
-	public LekUMagacinu(int id, Date pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
+	public LekUMagacinu(Integer id, Date pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
 		super();
 		this.id = id;
 		this.pocetakVazenja = pocetakVazenja;
@@ -49,7 +49,7 @@ public class LekUMagacinu {
 
 
 
-	public LekUMagacinu(int id, Date pocetakVazenja, Date krajVazenja, Double cena, Double kolicina, Lek lek,
+	public LekUMagacinu(Integer id, Date pocetakVazenja, Date krajVazenja, Double cena, Double kolicina, Lek lek,
 			Magacin magacin) {
 		super();
 		this.id = id;
@@ -81,10 +81,10 @@ public class LekUMagacinu {
 	public void setCena(Double cena) {
 		this.cena = cena;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public Lek getLek() {

@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class Magacin {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	private Apoteka apoteka;
@@ -35,11 +35,11 @@ public class Magacin {
 		// TODO Auto-generated constructor stub
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
