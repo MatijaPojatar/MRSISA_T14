@@ -387,7 +387,7 @@
       },
       reportMiss(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
+          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
             alert("Wrong time")
           }else{
             alert("Right time")
