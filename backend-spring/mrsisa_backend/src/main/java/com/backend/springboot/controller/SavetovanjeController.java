@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.SavetovanjeService;
@@ -51,6 +53,17 @@ public class SavetovanjeController {
 		Savetovanje s=service.findOne(id);
 		s.setIzvrsen(true);
 		s.setIzvestaj("Pacijent se nije pojavio");
+		
+		service.save(s);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PutMapping("/izvestaj/{id}")
+	public ResponseEntity<String> sacuvajIzvestaj(@PathVariable Integer id,@RequestBody IzvestajDTO izvestaj){
+		Savetovanje s=service.findOne(id);
+		s.setIzvrsen(true);
+		s.setIzvestaj(izvestaj.getText());
 		
 		service.save(s);
 		

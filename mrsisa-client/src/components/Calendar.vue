@@ -133,10 +133,29 @@
                     <v-icon>mdi-account</v-icon>
                 </v-btn>
               </div>
-              <div v-if="selectedEvent.izvrsen">Izvestaj: 
-                  <v-btn icon >
-                    <v-icon>mdi-text-box</v-icon>
+              <div v-if="selectedEvent.started">
+                <v-textarea
+                  v-model="selectedEvent.izvestaj"
+                  outlined
+                  name="izvestaj_input"
+                  label="Izvestaj"
+                  placeholder="Uneti izvestaj..."
+                ></v-textarea>
+                <v-btn color='#1976D2' font-color='white' @click="endTermin">
+                    <div style="color:white">Zavrsi termin</div>
                 </v-btn>
+              </div>
+              <div v-if="selectedEvent.izvrsen"> 
+                <v-expansion-panels>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Izvestaj
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    {{selectedEvent.izvestaj}}
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                </v-expansion-panels>
               </div>
             </v-card-text>
             <v-card-actions>
@@ -246,59 +265,13 @@
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
               id: element.id,
+              started: false,
               timed: true,
             })
             this.events = events
           });
         });
         },
-        updateRangeDermatolog () {
-                    const events = []
-
-                    var currentdate = new Date();
-
-                    events.push({
-                        name: "Pregled 1",
-                        pacijent: "Pacijent 1",
-                        start: new Date(currentdate.getTime()-900000),
-                        end: new Date(currentdate.getTime()+900000*3),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Pregled 2",
-                        pacijent: "Pacijent 2",
-                        start: new Date(currentdate.getTime()+900000*10),
-                        end: new Date(currentdate.getTime()+900000*16),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Pregled 3",
-                        pacijent: "Pacijent 3",
-                        start: new Date(currentdate.getTime()+900000*20),
-                        end: new Date(currentdate.getTime()+900000*24),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Pregled 4",
-                        pacijent: "Pacijent 4",
-                        start: new Date(currentdate.getTime()+900000*95),
-                        end: new Date(currentdate.getTime()+900000*98),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    this.events = events
-      },
       updateRangeFarmaceutAxios (){
         axios.get("http://localhost:8080/savetovanje/all").then(response => {
            const events = []
@@ -311,59 +284,14 @@
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
               id: element.id,
+              started: false,
               timed: true,
             })
             this.events = events
           });
         });
       },
-      updateRangeFarmaceut () {
-                    const events = []
-
-                    var currentdate = new Date();
-
-                    events.push({
-                        name: "Savetovanje 1",
-                        pacijent: "Pacijent 1",
-                        start: new Date(currentdate.getTime()-900000),
-                        end: new Date(currentdate.getTime()+900000*3),
-                        izvrsen: true,
-                        izvestaj:"sdaaaaaaadasdas",
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Savetovanje 2",
-                        pacijent: "Pacijent 2",
-                        start: new Date(currentdate.getTime()+900000*10),
-                        end: new Date(currentdate.getTime()+900000*16),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Savetovanje 3",
-                        pacijent: "Pacijent 3",
-                        start: new Date(currentdate.getTime()+900000*20),
-                        end: new Date(currentdate.getTime()+900000*24),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    events.push({
-                        name: "Savetovanje 4",
-                        pacijent: null,
-                        start: new Date(currentdate.getTime()+900000*95),
-                        end: new Date(currentdate.getTime()+900000*98),
-                        izvrsen: false,
-                        izvestaj: null,
-                        timed: true,
-                    })
-
-                    this.events = events
-      },
+      
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
       },
@@ -387,10 +315,9 @@
       },
       reportMiss(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             alert("Wrong time")
           }else{
-            alert("Right time")
             let path="pregled"
             if(this.farmaceut){
               path="savetovanje"
@@ -406,10 +333,10 @@
       },
       beginPregled(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             alert("Wrong time")
           }else{
-            alert("Right time")
+            this.selectedEvent.started=true;
           }
       },
       getEventColor (event) {
@@ -422,6 +349,14 @@
         }else{
           return 'green';
         }
+      },
+      endTermin(){
+        let path="pregled"
+        if(this.farmaceut){
+          path="savetovanje"
+        }
+        axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj});
+        location.reload();
       },
       }
   }
