@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +34,20 @@ public class PacijentController {
 		Pacijent pacijent = pacijentService.registrujPacijenta(pacijentInfo);
 		
 		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+	}
+	
+	@PutMapping("/penal/{id}")
+	public ResponseEntity<String> dodeliPenal(@PathVariable Integer id){
+		
+		Pacijent p=pacijentService.findOne(id);
+		if(p.getPenali()<3) {
+			p.setPenali(p.getPenali()+1);
+			pacijentService.save(p);
+			return new ResponseEntity<String>("Dodeljen penal",HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.OK);
+		
 	}
 	
 }

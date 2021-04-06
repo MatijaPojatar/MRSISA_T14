@@ -15,4 +15,14 @@ public class PacijentService {
 	public Pacijent registrujPacijenta(Pacijent pacijentInfo) {
 		return pacijentRep.save(pacijentInfo);
 	}
+	
+	public Pacijent findOne(Integer id) {
+		return pacijentRep.findOneById(id);
+	}
+	
+	public void save(Pacijent p) {
+		pacijentRep.save(p);
+	}
+	
+	
 }

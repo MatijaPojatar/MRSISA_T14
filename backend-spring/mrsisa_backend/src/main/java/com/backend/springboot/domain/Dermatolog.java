@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,9 +22,9 @@ import javax.persistence.Table;
 public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	
 	@Column(name = "pocetakRadnogVremena", nullable = false)
-	private Date pocetakRadnogVremena;
+	private LocalTime pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)
-	private Date krajRadnogVremena;
+	private LocalTime krajRadnogVremena;
 	@ManyToMany
 	@JoinTable(name = "zaposlenje_dermatolog", joinColumns = @JoinColumn(name = "dermatolog_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private Set<Apoteka> apoteke=new HashSet<Apoteka>();
@@ -35,21 +36,29 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		super();
 	}
 
-	public Date getPocetakRadnogVremena() {
+	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;
 	}
 
-	public void setPocetakRadnogVremena(Date pocetakRadnogVremena) {
+
+
+	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 	}
 
-	public Date getKrajRadnogVremena() {
+
+
+	public LocalTime getKrajRadnogVremena() {
 		return krajRadnogVremena;
 	}
 
-	public void setKrajRadnogVremena(Date krajRadnogVremena) {
+
+
+	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
+
+
 
 	public List<Pregled> getPregledi() {
 		return pregledi;

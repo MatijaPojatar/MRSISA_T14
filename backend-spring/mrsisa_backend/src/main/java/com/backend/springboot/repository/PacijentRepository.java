@@ -9,4 +9,7 @@ import com.backend.springboot.domain.Pacijent;
 public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 	
 	Pacijent save(Pacijent p);
+	
+	Pacijent findOneById(Integer id);
+	
 }
