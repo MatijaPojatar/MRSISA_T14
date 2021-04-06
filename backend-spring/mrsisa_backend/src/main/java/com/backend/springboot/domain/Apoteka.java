@@ -47,6 +47,8 @@ public class Apoteka {
 	private Magacin magacin;
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Narudzbenica> narudzbenice = new ArrayList<Narudzbenica>();
 	
 
 	
@@ -216,6 +218,14 @@ public class Apoteka {
 
 	public void setAkcije(List<AkcijaPromocija> akcije) {
 		this.akcije = akcije;
+	}
+
+	public List<Narudzbenica> getNarudzbenice() {
+		return narudzbenice;
+	}
+
+	public void setNarudzbenice(List<Narudzbenica> narudzbenice) {
+		this.narudzbenice = narudzbenice;
 	}
 	
 	

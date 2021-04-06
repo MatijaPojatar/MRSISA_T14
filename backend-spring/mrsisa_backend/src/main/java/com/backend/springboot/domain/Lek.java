@@ -39,6 +39,8 @@ public class Lek {
 	@JoinTable(name = "apoteke_lekovi", joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private List<Apoteka> snabdeveneApoteke=new ArrayList<Apoteka>();
 	
+	
+	
 	public Lek() {
 		super();
 	}

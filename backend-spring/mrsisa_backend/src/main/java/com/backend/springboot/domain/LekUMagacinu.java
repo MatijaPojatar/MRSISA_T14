@@ -25,9 +25,9 @@ public class LekUMagacinu {
 	private Double cena;
 	@Column(name = "kolicina", nullable = false)
 	private Double kolicina;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Lek lek;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Magacin magacin;
 	
 	public LekUMagacinu() {
