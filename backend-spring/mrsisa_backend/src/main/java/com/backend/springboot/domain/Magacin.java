@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="magacin")
+@Table(name="magacini")
 public class Magacin {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

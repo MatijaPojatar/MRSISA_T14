@@ -22,3 +22,10 @@ insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 14:00','2021-04-06 15:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (1,1);
+
+insert into magacini (id,apoteka_id) values (1,1);
+
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (1, '2021-04-06 14:00', 100, 100, 1, 1, false);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (2, '2021-04-06 14:00', 200, 150, 2, 1, false);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (3, '2021-04-06 14:00', 300, 10, 3, 1, true);
+insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (4, '2021-04-06 14:00', 400, 300, 4, 1, false);

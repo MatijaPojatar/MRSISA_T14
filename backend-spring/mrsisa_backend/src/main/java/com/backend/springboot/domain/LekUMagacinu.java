@@ -11,15 +11,24 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name="lek_magacin")
+
+@SQLDelete(sql
+	    = "UPDATE lek_magacin "
+	    + "SET obrisan = true "
+	    + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 public class LekUMagacinu {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "pocetakVazenja", nullable = false)
+	@Column(name = "pocetak_vazenja", nullable = false)
 	private Date pocetakVazenja;
-	@Column(name = "krajVazenja", nullable = true)
+	@Column(name = "kraj_vazenja", nullable = true)
 	private Date krajVazenja;
 	@Column(name = "cena", nullable = false)
 	private Double cena;
@@ -29,6 +38,9 @@ public class LekUMagacinu {
 	private Lek lek;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Magacin magacin;
+	
+	@Column(name = "obrisan")
+	private boolean obrisan;
 	
 	public LekUMagacinu() {
 		// TODO Auto-generated constructor stub
