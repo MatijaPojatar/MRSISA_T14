@@ -9,4 +9,6 @@ import com.backend.springboot.domain.Farmaceut;
 public interface FarmaceutRepository extends JpaRepository<Farmaceut, Integer> {
 
 	public List<Farmaceut> findAll();
+	
+	public Farmaceut findOneById(Integer id);
 }

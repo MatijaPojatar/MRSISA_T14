@@ -21,5 +21,9 @@ public class FarmaceutService {
 	public Farmaceut save(Farmaceut f) {
 		return farmaceutRep.save(f);
 	}
+	
+	public Farmaceut findOne(Integer id) {
+		return farmaceutRep.findOneById(id);
+	}
 
 }
