@@ -23,7 +23,7 @@ public class DermatologDTO {
 		this.mail=d.getMail();
 		this.password=d.getPassword();
 		this.adresa=d.getAdresa();
-		this.grad=d.getAdresa();
+		this.grad=d.getGrad();
 		this.drzava=d.getDrzava();
 		this.brojTelefona=d.getBrojTelefona();
 		this.pol=d.getPol();

@@ -70,6 +70,16 @@ const router = new Router({
       path: "/farmaceut/kalendar",
       name: "RadniKalendarFarmaceut",
       component: () => import("./components/RadniKalendarFarmaceut")
+    },
+    {
+      path: "/farmaceut",
+      name: "HomepageDF",
+      component: () => import("./components/HomepageDF")
+    },
+    {
+      path: "/dermatolog",
+      name: "HomepageDF",
+      component: () => import("./components/HomepageDF")
     }
   ]
 });

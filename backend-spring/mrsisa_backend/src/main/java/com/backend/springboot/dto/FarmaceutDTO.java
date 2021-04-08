@@ -22,7 +22,7 @@ public class FarmaceutDTO {
 		this.mail=f.getMail();
 		this.password=f.getPassword();
 		this.adresa=f.getAdresa();
-		this.grad=f.getAdresa();
+		this.grad=f.getGrad();
 		this.drzava=f.getDrzava();
 		this.brojTelefona=f.getBrojTelefona();
 		this.pol=f.getPol();

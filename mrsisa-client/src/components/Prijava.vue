@@ -24,6 +24,10 @@
             <v-spacer></v-spacer>
             <v-btn v-on:click="onSubmit" :disabled="!valid" class="red white--text">Prijava</v-btn>
         </v-card-actions>
+        <v-card-actions>
+            <v-btn @click="loginAsFarmaceut" class="grey white--text">Farmaceut</v-btn>
+            <v-btn @click="loginAsDermatolog" class="grey white--text">Dermatolog</v-btn>
+        </v-card-actions>
     </v-card>
 </template>
 
@@ -56,7 +60,15 @@ export default {
                 this.$emit("input", value);
             }
         },
-    }
+    },
+    methods: {
+        loginAsFarmaceut(){
+            this.$router.push('/farmaceut');
+        },
+        loginAsDermatolog(){
+            this.$router.push('/dermatolog');
+        },
+    },
 }
 </script>
 

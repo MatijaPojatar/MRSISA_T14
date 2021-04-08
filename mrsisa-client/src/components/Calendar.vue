@@ -105,7 +105,7 @@
           offset-x
         >
           <v-card
-            color="grey lighten-4"
+            :color="$vuetify.theme.dark ? '#454545':'white'"
             min-width="350px"
             flat
           >
@@ -161,7 +161,7 @@
             <v-card-actions>
               <v-btn
                 text
-                color="secondary"
+                :color="$vuetify.theme.dark ? 'white':'#404040'"
                 @click="selectedOpen = false"
               >
                 Cancel
