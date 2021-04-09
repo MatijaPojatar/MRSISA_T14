@@ -47,4 +47,15 @@ public class DermatologController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@PutMapping("/pass/{id}")
+	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
+		System.out.println(newPass);
+		Dermatolog d=service.findOne(id);
+		d.setPassword(newPass);
+		
+		service.save(d);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
 }

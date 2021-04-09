@@ -62,16 +62,6 @@ const router = new Router({
       component: () => import("./components/ApotekaApp")
     },
     {
-      path: "/dermatolog/kalendar",
-      name: "RadniKalendarDermatolog",
-      component: () => import("./components/RadniKalendarDermatolog")
-    },
-    {
-      path: "/farmaceut/kalendar",
-      name: "RadniKalendarFarmaceut",
-      component: () => import("./components/RadniKalendarFarmaceut")
-    },
-    {
       path: "/farmaceut",
       name: "HomepageDF",
       component: () => import("./components/HomepageDF")

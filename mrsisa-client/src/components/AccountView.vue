@@ -82,6 +82,28 @@
       Resetuj
     </v-btn>
   </v-form>
+  <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Izmene su uspešno sačuvane.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
 </v-card>
 </template>
 
@@ -118,6 +140,7 @@ import axios from "axios";
         'Ž',
       ],
       checkbox: false,
+      dialog: false,
     }),
     props :{
         user: {},
@@ -145,6 +168,7 @@ import axios from "axios";
             }else{
                 axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
             }
+            this.dialog=true;
         }
         
       },
@@ -156,6 +180,10 @@ import axios from "axios";
         this.newInfo.grad=this.user.grad
         this.newInfo.drzava=this.user.drzava
         this.newInfo.pol= this.user.pol==="MUSKI" ? "M" : "Ž"
+      },
+      endDialog(){
+        this.dialog=false;
+        location.reload();
       },
     },
   }

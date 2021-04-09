@@ -171,6 +171,28 @@
         </v-menu>
       </v-sheet>
     </v-col>
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Greška
+        </v-card-title>
+        <v-card-text>Nemoguće je izvršiti ovu akciju van termina.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -315,8 +337,8 @@
       },
       reportMiss(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
-            alert("Wrong time")
+          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+            this.dialog=true
           }else{
             let path="pregled"
             if(this.farmaceut){
@@ -333,8 +355,8 @@
       },
       beginPregled(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
-            alert("Wrong time")
+          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+            this.dialog=true
           }else{
             this.selectedEvent.started=true;
           }
@@ -358,6 +380,9 @@
         axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj});
         location.reload();
       },
+      endDialog(){
+        this.dialog=false;
+      }
       }
   }
 </script>

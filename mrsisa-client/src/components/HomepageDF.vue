@@ -88,6 +88,9 @@
       <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
         <AccountView :user="user" :farmaceut="farmaceut"/>
       </v-container>
+      <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
+        <PasswordSwitch :pass="user.password" :farmaceut="farmaceut" :id="user.id"/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -96,17 +99,20 @@
 
 import Calendar from "./Calendar";
 import AccountView from "./AccountView";
+import PasswordSwitch from "./PasswordSwitch";
 import axios from "axios";
 
 export default {
     name: "HomepageDF",
     components:{
         Calendar,
-        AccountView
+        AccountView,
+        PasswordSwitch
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
+    showPassword: false,
     farmaceut: true,
     user: {},
   }),
@@ -131,16 +137,20 @@ export default {
       calendarView(){
           this.showCalendar=true;
           this.showAccount=false;
+          this.showPassword=false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
+          this.showPassword=false;
       },
       logout(){
         window.location.href="http://localhost:8081/";
       },
       changePassword(){
-
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=true;
       },
   },
 }

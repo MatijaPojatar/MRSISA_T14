@@ -2,6 +2,7 @@ package com.backend.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,6 +43,17 @@ public class FarmaceutController {
 		f.setIme(dto.getIme());
 		f.setPol(dto.getPol());
 		f.setPrezime(dto.getPrezime());
+		
+		service.save(f);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PutMapping("/pass/{id}")
+	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
+		System.out.println(newPass);
+		Farmaceut f=service.findOne(id);
+		f.setPassword(newPass);
 		
 		service.save(f);
 		
