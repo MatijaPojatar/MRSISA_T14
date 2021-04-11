@@ -141,9 +141,17 @@
                   label="Izvestaj"
                   placeholder="Uneti izvestaj..."
                 ></v-textarea>
-                <v-btn color='#1976D2' font-color='white' @click="endTermin">
-                    <div style="color:white">Zavrsi termin</div>
-                </v-btn>
+                <v-row
+                  align="center"
+                  justify="space-around"
+                >
+                  <v-btn color='#1976D2' font-color='white' @click="openLekList">
+                      <div style="color:white">Preporuči lek</div>
+                  </v-btn>
+                  <v-btn color='#1976D2' font-color='white' @click="endTermin">
+                      <div style="color:white">Zavrsi termin</div>
+                  </v-btn>
+                </v-row>
               </div>
               <div v-if="selectedEvent.izvrsen"> 
                 <v-expansion-panels>
@@ -193,13 +201,39 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+    v-model="lekDialog"
+    persistent
+    scrollable
+      max-width="760">
+      <v-card>
+        <v-card-title class="headline">
+          Lekovi
+        </v-card-title>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endListDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
   import axios from "axios";
+  import ListLekoviV2 from "./ListLekoviV2"
 
   export default {
+    components:{
+      ListLekoviV2,
+    },
       data: ()=>({
             focus: "",
             type: "week",
@@ -220,10 +254,12 @@
             selectedOpen: false,
             events: [],
             dialog: false,
+            lekDialog: false,
             ready: false,
       }),
       props: {
         farmaceut: Boolean,
+        user: {},
       },
       computed: {
         cal () {
@@ -276,12 +312,13 @@
             nativeEvent.stopPropagation()
         },
         updateRangeDermatologAxios(){
-          axios.get("http://localhost:8080/pregled/all").then(response => {
+          axios.get(`http://localhost:8080/pregled/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
               name:element.name,
               pacijent:element.pacijentId,
+              apoteka: element.apotekaId,
               start: new Date(element.start),
               end: new Date(element.end),
               izvrsen: element.izvrsen,
@@ -295,12 +332,13 @@
         });
         },
       updateRangeFarmaceutAxios (){
-        axios.get("http://localhost:8080/savetovanje/all").then(response => {
+        axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
               name:element.name,
               pacijent:element.pacijentId,
+              apoteka: element.apotekaId,
               start: new Date(element.start),
               end: new Date(element.end),
               izvrsen: element.izvrsen,
@@ -382,7 +420,13 @@
       },
       endDialog(){
         this.dialog=false;
-      }
+      },
+      openLekList(){
+        this.lekDialog=true;
+      },
+      endListDialog(){
+        this.lekDialog=false;
+      },
       }
   }
 </script>

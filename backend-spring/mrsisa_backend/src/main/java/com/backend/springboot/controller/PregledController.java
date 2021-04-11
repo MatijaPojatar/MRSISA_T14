@@ -66,5 +66,18 @@ public class PregledController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/all/{id}")
+	public ResponseEntity<List<PregledDTO>> getAllForDermatolog(@PathVariable Integer id) {
+
+		List<Pregled> pregledi = service.findAllByDermatologId(id);
+
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled p : pregledi) {
+			preglediDTO.add(new PregledDTO(p));
+		}
+
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
 
 }

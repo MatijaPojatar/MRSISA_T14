@@ -8,6 +8,7 @@ import com.backend.springboot.domain.VrstaLeka;
 
 
 public class LekDTO {
+	private Integer id;
 	private String naziv;
 	private String sastav;
 	private String proizvodjac;
@@ -28,6 +29,7 @@ public class LekDTO {
 		this.rezimIzdavanja=l.getRezimIzdavanja();
 		this.oblikLeka=l.getOblikLeka();
 		this.vrstaLeka=l.getVrstaLeka();
+		this.id=l.getId();
 	}
 
 	public String getNaziv() {
@@ -85,6 +87,16 @@ public class LekDTO {
 	public void setVrstaLeka(VrstaLeka vrstaLeka) {
 		this.vrstaLeka = vrstaLeka;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
 	
 	
 }

@@ -83,7 +83,7 @@
 
     <v-main >
       <v-container fluid fill-height v-if="showCalendar">
-        <Calendar :farmaceut="farmaceut"/>
+        <Calendar :farmaceut="farmaceut" :user="user"/>
       </v-container>
       <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
         <AccountView :user="user" :farmaceut="farmaceut"/>

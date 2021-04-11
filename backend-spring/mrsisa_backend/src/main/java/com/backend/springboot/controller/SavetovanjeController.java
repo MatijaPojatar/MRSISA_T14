@@ -69,4 +69,19 @@ public class SavetovanjeController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/all/{id}")
+	public ResponseEntity<List<SavetovanjeDTO>> getAllForFarmaceut(@PathVariable Integer id) {		
+
+		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(id);
+		
+		System.out.println(savetovanja.size());
+
+		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
+		for (Savetovanje s : savetovanja) {
+			savetovanjaDTO.add(new SavetovanjeDTO(s));
+		}
+
+		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
+	}
 }
