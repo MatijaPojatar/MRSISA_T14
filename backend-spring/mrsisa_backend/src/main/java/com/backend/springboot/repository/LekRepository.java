@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.backend.springboot.domain.Lek;
 
@@ -17,6 +18,8 @@ public interface LekRepository extends JpaRepository<Lek, Integer> {
 	Lek save(Lek lek);
 	
 	Lek findOneById(Integer id);
+	
+	List<Lek> findAllBySnabdeveneApoteke_Id(Integer id);
 	
 	
 }

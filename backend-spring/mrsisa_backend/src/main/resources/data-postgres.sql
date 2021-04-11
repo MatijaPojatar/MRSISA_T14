@@ -4,8 +4,10 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 4','Test 4',1,'Test 4',1,'Test 4',1);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 5','Test 5',1,'Test 5',1,'Test 5',1);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 6','Test 6',1,'Test 6',1,'Test 6',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 7','Test 7',1,'Test 7',1,'Test 7',1);
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
+insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Novi Sad','Apoteka 2','Test apoteka 2');
 
 insert into apoteke_lekovi (lek_id,apoteka_id) values (1,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (2,1);
@@ -13,6 +15,7 @@ insert into apoteke_lekovi (lek_id,apoteka_id) values (3,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (4,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (5,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (6,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (7,2);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 1','0651234567','1990-01-01','Srbija','Novi Sad','Pera','Peric','perap@gmail.com','pera121',0,true);
 insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (1,'16:00','08:00',1);

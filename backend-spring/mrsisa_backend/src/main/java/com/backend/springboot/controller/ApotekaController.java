@@ -27,7 +27,8 @@ public class ApotekaController {
 
 	private ArrayList<Apoteka> pronadjeneApoteke;
 	
-	@Autowired MagacinService magacinService;
+	@Autowired 
+	private MagacinService magacinService;
 	
 	/*@GetMapping("/lekovi")
 	public ResponseEntity<Collection<Lek>> getLekovi() {
