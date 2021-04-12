@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
+import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
+import com.backend.springboot.repository.MagacinRepository;
 
 /*
  * Service za rad sa lekovima
@@ -23,6 +26,10 @@ public class LekService {
 	
 	@Autowired
 	private LekRepository lekRep;
+	@Autowired
+	private ApotekaRepository apotekaRep;
+	@Autowired
+	private MagacinRepository magacinRep;
 	
 	
 
@@ -119,6 +126,7 @@ public class LekService {
 	}
 	
 	public List<Lek> findAllByApoteka(Integer id) {
+		//funkcija vraca i obrisane lekove, za preuzimanje aktuelnih lekova, koristiti funkciju iz magacin servisa
 		return lekRep.findAllBySnabdeveneApoteke_Id(id);
 	}
 

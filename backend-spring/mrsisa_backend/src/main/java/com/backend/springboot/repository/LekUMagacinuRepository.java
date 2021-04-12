@@ -8,4 +8,6 @@ import com.backend.springboot.domain.LekUMagacinu;
 
 public interface LekUMagacinuRepository extends JpaRepository<LekUMagacinu, Integer> {
 	public List<LekUMagacinu> findAllByLekId(Integer lekId);
+	
+	public List<LekUMagacinu> findAllByMagacinId(Integer MagacinId);
 }

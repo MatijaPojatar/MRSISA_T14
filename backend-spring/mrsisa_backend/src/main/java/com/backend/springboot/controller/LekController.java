@@ -17,11 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.domain.ParametriPretrageRezervacije;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.dto.LekDTO;
+import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.LekService;
+import com.backend.springboot.service.MagacinService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -30,6 +34,10 @@ public class LekController {
 
 	@Autowired
 	private LekService lekService;
+	@Autowired 
+	private ApotekaService apotekaService;
+	@Autowired 
+	private MagacinService magacinService;
 	
 	private ArrayList<Lek> pronadjeniLekovi;
 	
@@ -68,14 +76,15 @@ public class LekController {
 	}
 	
 	@GetMapping("/apoteka/{id}")
-	public ResponseEntity<Collection<LekDTO>> findAllByApotekaId(@PathVariable Integer id){
-		List<Lek> rezultatPretrage=lekService.findAllByApoteka(id);
-		ArrayList<LekDTO> dtoList=new ArrayList<LekDTO>();
-		for(Lek l:rezultatPretrage) {
-			dtoList.add(new LekDTO(l));
+	public ResponseEntity<Collection<LekUMagacinuDTO>> findAllByApotekaId(@PathVariable Integer id){
+		Integer magacinId = apotekaService.findOne(id).getMagacin().getId();
+		List<LekUMagacinu> rezultatPretrage=magacinService.preuzmiAktivneLekove(magacinId);
+		ArrayList<LekUMagacinuDTO> dtoList=new ArrayList<LekUMagacinuDTO>();
+		for(LekUMagacinu l:rezultatPretrage) {
+			dtoList.add(new LekUMagacinuDTO(l));
 		}
 		
-		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
+		return new ResponseEntity<Collection<LekUMagacinuDTO>>(dtoList, HttpStatus.OK);
 	}
 	
 	

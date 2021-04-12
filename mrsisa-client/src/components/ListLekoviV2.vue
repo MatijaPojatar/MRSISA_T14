@@ -129,6 +129,8 @@
 
              ObrisiLek(){
                  console.log("brisanje");
+                 axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
+                 location.reload();
              },
 
              IzmeniLek(){
