@@ -50,13 +50,13 @@
           <v-col>
             <v-select
             v-model="vrsta"
-              :items="vrste"
+              :items="this.vrste"
               label="Vrsta leka"
             ></v-select>
 
             <v-select
               v-model="oblik"
-              :items="oblici"
+              :items="this.oblici"
               label="Oblik leka"
             ></v-select>
 
@@ -90,6 +90,8 @@
 </template>
 
 <script>
+import {mapActions, mapState } from "vuex"
+
 export default {
   name: "KreirajLek",
 
@@ -114,7 +116,47 @@ export default {
     rules: {
             required: v => !!v || "Obavezno polje",
         }
-  })
+  }),
+
+  methods: {
+    ...mapState({
+      oblici: state => state.lekovi.oblici,
+      vrste: state => state.lekovi.vrste
+    }),
+
+    ...mapActions({
+      // create : "lekovi/"
+      getObliciAction: "lekovi/getObliciAction",
+      getVrsteAction: "lekovi/getVrsteAction"
+    }),
+
+    onSubmit() {
+      // if(this.$refs.forma.validate()){
+
+      // }
+      alert("Submit");
+      this.cancel();
+    },
+
+    cancel(){
+      this.reset();
+      this.resetValidation();
+    },
+
+    reset(){
+      this.$refs.forma.reset();
+    },
+
+    resetValidation(){
+      this.$refs.forma.resetValidation();
+    }
+  },
+
+  beforeMount() {
+    console.log("BEFORE MOUNT")
+    this.getObliciAction();
+    this.getVrsteAction();
+  }
 }
 </script>
 
