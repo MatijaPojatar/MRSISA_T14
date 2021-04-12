@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +50,7 @@ public class ApotekaController {
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
 	}
 	
-	@PostMapping("/obrisiLek")
+	@DeleteMapping("/obrisiLek")
 	public ResponseEntity<String> obrisiLek(Integer idLeka) {
 		magacinService.obrisiLek(idLeka, 1);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);

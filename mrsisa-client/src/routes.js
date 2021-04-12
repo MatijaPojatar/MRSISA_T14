@@ -70,6 +70,11 @@ const router = new Router({
       path: "/dermatolog",
       name: "HomepageDF",
       component: () => import("./components/HomepageDF")
+    },
+    {
+      path: "/adminApoteke",
+      name: "HomepageAdminApoteke",
+      component: () => import("./components/HomepageAdminApoteke")
     }
   ]
 });

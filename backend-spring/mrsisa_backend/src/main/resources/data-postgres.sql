@@ -23,6 +23,7 @@ insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 2','0651234568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','markom@gmail.com','mare121',0,true);
 insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 
+
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 14:00','2021-04-06 15:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (1,1);
 
@@ -41,3 +42,6 @@ insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id,
 insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (3, '2021-04-06 14:00', 300, 10, 3, 1, true);
 insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values (4, '2021-04-06 14:00', 400, 300, 4, 1, false);
 
+
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 4','0651234555','1987-02-01','Srbija','Novi Sad','Joca','Jokic','joca@gmail.com','joca123',0,true);
+insert into administratori_apoteke (id,apoteka_id) values (4,1);
