@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,9 +28,9 @@ public class LekUMagacinu {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "pocetak_vazenja", nullable = false)
-	private Date pocetakVazenja;
+	private LocalDate pocetakVazenja;
 	@Column(name = "kraj_vazenja", nullable = true)
-	private Date krajVazenja;
+	private LocalDate krajVazenja;
 	@Column(name = "cena", nullable = false)
 	private Double cena;
 	@Column(name = "kolicina", nullable = false)
@@ -48,7 +49,7 @@ public class LekUMagacinu {
 	
 	
 
-	public LekUMagacinu(Integer id, Date pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
+	public LekUMagacinu(Integer id, LocalDate pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
 		super();
 		this.id = id;
 		this.pocetakVazenja = pocetakVazenja;
@@ -62,7 +63,7 @@ public class LekUMagacinu {
 
 
 
-	public LekUMagacinu(Integer id, Date pocetakVazenja, Date krajVazenja, Double cena, Double kolicina, Lek lek,
+	public LekUMagacinu(Integer id, LocalDate pocetakVazenja, LocalDate krajVazenja, Double cena, Double kolicina, Lek lek,
 			Magacin magacin) {
 		super();
 		this.id = id;
@@ -77,16 +78,16 @@ public class LekUMagacinu {
 
 
 
-	public Date getPocetakVazenja() {
+	public LocalDate getPocetakVazenja() {
 		return pocetakVazenja;
 	}
-	public void setPocetakVazenja(Date pocetakVazenja) {
+	public void setPocetakVazenja(LocalDate pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
 	}
-	public Date getKrajVazenja() {
+	public LocalDate getKrajVazenja() {
 		return krajVazenja;
 	}
-	public void setKrajVazenja(Date krajVazenja) {
+	public void setKrajVazenja(LocalDate krajVazenja) {
 		this.krajVazenja = krajVazenja;
 	}
 	public Double getCena() {

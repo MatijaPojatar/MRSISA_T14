@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.backend.springboot.domain.Magacin;
 
 public interface MagacinRepository extends JpaRepository<Magacin, Integer> {
-	public List<Magacin> findOneByApotekaId(Integer apotekaId);
+	public Magacin findOneByApotekaId(Integer apotekaId);
 }

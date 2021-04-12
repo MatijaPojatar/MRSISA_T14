@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -61,7 +62,7 @@ public class ApotekaController {
 	
 	@PostMapping("/dodajLek")
 	public ResponseEntity<Collection<Apoteka>> dodajLek() {
-		Date pocetakVazenja = new Date(2020, 4, 6);
+		LocalDate pocetakVazenja = LocalDate.now();
 		magacinService.dodajLek(pocetakVazenja, 100.0, 200.0, 1, 1);
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
 	}

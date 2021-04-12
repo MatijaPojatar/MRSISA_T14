@@ -1,5 +1,7 @@
 package com.backend.springboot.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MagacinService {
 		return lekUMagacinuRep.save(l);
 	}
 	
-	public LekUMagacinu dodajLek(Date pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
+	public LekUMagacinu dodajLek(LocalDate pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);
 		l.setKolicina(kolicina);
@@ -53,6 +55,41 @@ public class MagacinService {
 	public LekUMagacinu dodajLek(LekUMagacinu l) {
 		
 		return lekUMagacinuRep.save(l);
+	}
+	
+	public LekUMagacinu izmeniLekUMagacinu(Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
+		Magacin m = magacinRep.findOneByApotekaId(apotekaId);
+		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
+		for (LekUMagacinu l : lekovi) {
+			if (l.getId() == lekId) {
+				double staraCena = l.getCena();
+				
+				if (staraCena != cena) {
+					LekUMagacinu novi = new LekUMagacinu();
+					novi.setPocetakVazenja(LocalDate.now());
+					novi.setKolicina(l.getKolicina());
+					novi.setLek(l.getLek());
+					novi.setMagacin(l.getMagacin());
+					novi.setObrisan(false);
+					novi.setCena(cena);
+					
+					
+					l.setObrisan(true);
+					l.setKrajVazenja(LocalDate.now());
+					
+					lekUMagacinuRep.save(l);
+					return lekUMagacinuRep.save(novi);
+					
+				}
+				else {
+					l.setKolicina(kolicina);
+					return lekUMagacinuRep.save(l);
+				}
+		
+			}
+		}
+		return null;
+		
 	}
 	
 	

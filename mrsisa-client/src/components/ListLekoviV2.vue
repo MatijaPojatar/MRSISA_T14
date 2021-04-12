@@ -30,6 +30,14 @@
          <div>
              Vrsta leka: {{lek.vrsta}}
          </div>
+         <v-divider></v-divider>
+         <div>
+             Cena leka: {{lek.cena}}
+         </div>
+         <v-divider></v-divider>
+         <div>
+             Dostupna kolicina: {{lek.kolicina}}
+         </div>
          <br/>
          <div v-if = "adminView">
             <v-btn
@@ -115,6 +123,8 @@
                                 rezim: element.rezimIzdavanja,
                                 oblik: element.oblikLeka,
                                 vrsta: element.vrstaLeka, 
+                                cena: element.cena,
+                                kolicina: element.kolicina
                             })
                             this.lekovi = lekovi
                         })
