@@ -1,10 +1,10 @@
 <template>
   <v-row justify="center" max-width="100">
-    <v-expansion-panels accordion>
+    <v-expansion-panels  accordion>
       <v-expansion-panel
         v-for="lek in lekovi"
         :key="lek.id"
-      >
+      @click = "PanelSelected(lek.id)">
         <v-expansion-panel-header>{{lek.naziv}}</v-expansion-panel-header>
         <v-expansion-panel-content>
          <div>
@@ -30,6 +30,35 @@
          <div>
              Vrsta leka: {{lek.vrsta}}
          </div>
+         <br/>
+         <div v-if = "adminView">
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="pink"
+                @click="ObrisiLek"
+            >
+                <v-icon>
+                    mdi-delete
+                </v-icon>
+            </v-btn>
+
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="cyan"
+                @click="IzmeniLek"
+            >
+                <v-icon>
+                    mdi-pencil
+                </v-icon>
+            </v-btn>
+            
+         </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -42,9 +71,11 @@
     export default{
         data: () => ({
             lekovi: [],
+            selektovan: null,
          }),
         props:{
             apotekaId: Number,
+            adminView: Boolean
         },
         mounted(){
             console.log(this.apotekaId);
@@ -90,6 +121,20 @@
                     });
                 }
              },
+
+             PanelSelected(id){
+                 console.log(id);
+                 this.selektovan = id;
+             },
+
+             ObrisiLek(){
+                 console.log("brisanje");
+             },
+
+             IzmeniLek(){
+                 console.log("izmena");
+             },
+
          }
     }
 

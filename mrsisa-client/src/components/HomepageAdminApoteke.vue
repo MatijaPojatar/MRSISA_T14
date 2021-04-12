@@ -135,7 +135,7 @@ export default {
     console.log(window.location.pathname)
     
     
-    axios.get("http://localhost:8080/adminApoteke/5").then(response => {
+    axios.get("http://localhost:8080/adminApoteke/4").then(response => {
         console.log(response.data)
         this.user=response.data;
     });

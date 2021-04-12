@@ -1,5 +1,5 @@
 <template>
-    <ListLekoviV2 :apotekaId = "apotekaId"/>
+    <ListLekoviV2 :apotekaId = "apotekaId" :adminView = "true"/>
 </template>
 
 <script>

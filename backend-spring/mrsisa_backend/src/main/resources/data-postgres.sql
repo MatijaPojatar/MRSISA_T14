@@ -24,7 +24,7 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 14:00','2021-04-06 15:00',1,2);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-12 16:50','2021-04-12 18:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (1,1);
 
 
