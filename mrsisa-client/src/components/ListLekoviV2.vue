@@ -52,22 +52,43 @@
         },
         methods:{
              loadLekovi(){
-                axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
-                const lekovi = []
-                response.data.forEach(element => {
-                    lekovi.push({
-                        naziv: element.naziv,
-                        id: element.id,
-                        proizvodjac : element.proizvodjac,
-                        sastav: element.sastav,
-                        napomena: element.napomena,
-                        rezim: element.rezimIzdavanja,
-                        oblik: element.oblikLeka,
-                        vrsta: element.vrstaLeka, 
-                    })
-                    this.lekovi = lekovi
-          })
-        });
+                 const lekovi = []
+                if (!this.apotekaId){
+                    axios.get(`http://localhost:8080/lekovi`).then(response => {
+                        
+                        response.data.forEach(element => {
+                            lekovi.push({
+                                naziv: element.naziv,
+                                id: element.id,
+                                proizvodjac : element.proizvodjac,
+                                sastav: element.sastav,
+                                napomena: element.napomena,
+                                rezim: element.rezimIzdavanja,
+                                oblik: element.oblikLeka,
+                                vrsta: element.vrstaLeka, 
+                            })
+                            this.lekovi = lekovi
+                        })
+                    });
+                }
+                else {
+                    axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
+                        
+                        response.data.forEach(element => {
+                            lekovi.push({
+                                naziv: element.naziv,
+                                id: element.id,
+                                proizvodjac : element.proizvodjac,
+                                sastav: element.sastav,
+                                napomena: element.napomena,
+                                rezim: element.rezimIzdavanja,
+                                oblik: element.oblikLeka,
+                                vrsta: element.vrstaLeka, 
+                            })
+                            this.lekovi = lekovi
+                        })
+                    });
+                }
              },
          }
     }

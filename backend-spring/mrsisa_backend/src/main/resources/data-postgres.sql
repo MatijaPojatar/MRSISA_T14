@@ -45,3 +45,5 @@ insert into lek_magacin(id, pocetak_vazenja, cena, kolicina, lek_id, magacin_id,
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 4','0651234555','1987-02-01','Srbija','Novi Sad','Joca','Jokic','joca@gmail.com','joca123',0,true);
 insert into administratori_apoteke (id,apoteka_id) values (4,1);
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 5','0651234555','1987-02-01','Srbija','Novi Sad','Jovana','Jovanovic','jovana@gmail.com','jovana123',1,true);
+insert into administratori_apoteke (id,apoteka_id) values (5, 2);

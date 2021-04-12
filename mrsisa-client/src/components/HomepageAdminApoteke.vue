@@ -57,7 +57,7 @@
                     Promeni šifru
                 </div></v-list-item-title>
           </v-list-item>
-          /*
+          
           <v-list-item link @click="calendarView">
             <v-list-item-icon>
               <v-icon>mdi-calendar</v-icon>
@@ -102,7 +102,7 @@
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
       </v-container>
       <v-container fluid v-if="showLekovi" :style="{width:'70vh'}">
-        <LekoviAdminApoteke :apotekaId="1" :user="user"/>
+        <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
     </v-main>
       </v-app>
@@ -135,7 +135,7 @@ export default {
     console.log(window.location.pathname)
     
     
-    axios.get("http://localhost:8080/adminApoteke/4").then(response => {
+    axios.get("http://localhost:8080/adminApoteke/5").then(response => {
         console.log(response.data)
         this.user=response.data;
     });

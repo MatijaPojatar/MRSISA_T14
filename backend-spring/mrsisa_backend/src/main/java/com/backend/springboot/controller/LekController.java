@@ -58,9 +58,13 @@ public class LekController {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<Lek>> getLekovi() {
-		
-		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
+	public ResponseEntity<Collection<LekDTO>> getLekovi() {
+		List<Lek> rezultatPretrage=(List<Lek>) lekService.findAll();
+		ArrayList<LekDTO> dtoList=new ArrayList<LekDTO>();
+		for(Lek l:rezultatPretrage) {
+			dtoList.add(new LekDTO(l));
+		}
+		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/apoteka/{id}")

@@ -6,7 +6,7 @@ import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.Pol;
 
 public class AdministratorApotekeDTO {
-	private Integer id;
+	private Integer id, apotekaId;
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
@@ -27,6 +27,7 @@ public class AdministratorApotekeDTO {
 		this.brojTelefona=d.getBrojTelefona();
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
+		this.apotekaId = d.getApoteka().getId();
 	}
 
 	public Integer getId() {
@@ -35,6 +36,14 @@ public class AdministratorApotekeDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getApotekaId() {
+		return apotekaId;
+	}
+
+	public void setApotekaId(Integer apotekaId) {
+		this.apotekaId = apotekaId;
 	}
 
 	public String getIme() {
