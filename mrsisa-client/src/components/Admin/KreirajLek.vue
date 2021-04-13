@@ -2,17 +2,10 @@
   <v-card>
     <v-card-title>Unos leka: </v-card-title>
     <v-card-text>
-      <v-form ref= "forma" v-model="valid" lazy-vaidation>
+      <v-form ref= "forma" v-model="valid" lazy-validation>
         <v-row>
 
           <v-col>
-            <v-text-field
-            v-model="sifra"
-            :rules="[rules.required]"
-            label="Sifra"
-            required
-            />
-
             <v-text-field
             v-model="naziv"
             :rules="[rules.required]"
@@ -27,38 +20,70 @@
             required
             />
 
-          <v-radio-group v-model="rezimIzdavanja">
-            <v-radio
-              :label="`Recept`"
-              :value="true"
-            ></v-radio>
-            <v-radio
-              :label="`Bez Recepta`"
-              :value="false"
-            ></v-radio>
-          </v-radio-group>
+          <v-autocomplete
+            v-model="rezimIzdavanja"
+            :items="allRezimiIzdavanja"
+            label="Rezim izdavanja"
+            required>
+          </v-autocomplete>
+          
+          <v-container>
 
-          <v-text-field
-            v-model="zamenski" 
-            :rules="[rules.required]"
-            label="Zamenski lekovi"
-            required
-            />
+            <v-row>
+              <v-list-item>
+                  <v-chip  dark  color="grey">Ime leka</v-chip>
+                  <v-chip class="ml-2" dark  color="grey">Proizvodjac</v-chip>
+                  <v-spacer></v-spacer>
 
+                  <v-chip class="ml-3 mr-3" dark color="grey">Dodaj kao zamenski</v-chip>
+              </v-list-item>
+            </v-row>
+            <v-row>
+              <v-virtual-scroll
+              :items="allLekovi"
+              :item-height="50"
+              height="300"
+              >
+                <template v-slot:default="{ item }">
+                  <v-list-item>
+
+                    <v-list-item-content>
+                      <v-list-item-title class="text-left">{{item.naziv}} - {{item.proizvodjac}}</v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-spacer/>
+
+                    <v-list-item-action>
+
+                      <v-btn red v-on:click="dodajZamenski(item)">
+                        <v-icon>mdi-plus-thick</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+
+                  </v-list-item>
+                </template>
+
+              </v-virtual-scroll>
+
+            </v-row>
+          </v-container>
+          
           </v-col>
 
           <v-col>
-            <v-select
+            <v-autocomplete
             v-model="vrsta"
-              :items="vrste"
+              :items="allVrste"
               label="Vrsta leka"
-            ></v-select>
+              reqired
+            ></v-autocomplete>
 
-            <v-select
+            <v-autocomplete
               v-model="oblik"
-              :items="oblici"
+              :items="allOblici"
               label="Oblik leka"
-            ></v-select>
+              required
+            ></v-autocomplete>
 
             <v-text-field
             v-model="sastav"
@@ -68,14 +93,57 @@
             />
 
             <v-textarea
+            height="70"
             outlined
             v-model="napomena"
             label="Napomena"
           ></v-textarea>
 
+          <v-container>
+            <v-row>
+              <h4>Odabrani zamenski lekovi</h4>
+            </v-row>
+            <v-row>
+              <v-list-item>
+                  <v-chip  dark  color="grey">Ime leka</v-chip>
+                  <v-chip class="ml-2" dark  color="grey">Proizvodjac</v-chip>
+                  <v-spacer></v-spacer>
+
+                  <v-chip class="ml-3 mr-3" dark color="grey">Ukloni</v-chip>
+              </v-list-item>
+            </v-row>
+            <v-row>
+              <v-virtual-scroll
+              :items="zamenskiLekovi"
+              :item-height="50"
+              height="200"
+              >
+                <template v-slot:default="{ item }">
+                  <v-list-item>
+
+                    <v-list-item-content>
+                      <v-list-item-title class="text-left">{{item.naziv}} - {{item.proizvodjac}}</v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-spacer/>
+
+                    <v-list-item-action>
+
+                      <v-btn red v-on:click="ukloniZamenski(item)">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+
+                  </v-list-item>
+                </template>
+
+              </v-virtual-scroll>
+
+            </v-row>
+          </v-container>
+          
+
           </v-col>
-
-
         </v-row>
 
       </v-form>
@@ -104,13 +172,13 @@ export default {
     naziv: "",
     proizvodjac: "",
 
-    rezimIzdavanja: false,
+    rezimIzdavanja: "",
 
     vrsta: "",
     oblik: "",
     sastav: "",
 
-    zamenski: "", //isparsirati u listu
+    zamenskiLekovi: [],
     napomena: "",
 
     valid: true,
@@ -122,20 +190,26 @@ export default {
 
   computed: {
     ...mapGetters({
-      oblici: "lekovi/getOblici",
-      vrste: "lekovi/getVrste"
+      allOblici: "lekovi/getOblici",
+      allVrste: "lekovi/getVrste",
+      allRezimiIzdavanja: "lekovi/getRezimiIzdavanja",
+      allLekovi: "lekovi/getLekovi",
+      currentLek: "lekovi/getCurrentLek"
     }),
   },
 
   methods: {
     ...mapActions({
-      // create : "lekovi/"
       getObliciAction: "lekovi/getObliciAction",
       getVrsteAction: "lekovi/getVrsteAction",
       addLekAction: "lekovi/addLekAction",
+      getRezimiIzdavanjaAction: "lekovi/getRezimiIzdavanjaAction",
+      getLekoviAction: "lekovi/getLekoviAction",
+      removeLekAction: "lekovi/removeLekAction",
+      addZamenskeLekoveAction: "lekovi/addZamenskeLekoveAction"
     }),
 
-    onSubmit() {
+    async onSubmit() {
       if(this.$refs.forma.validate()){
         const lekInfo = {
           naziv : this.naziv,
@@ -144,18 +218,44 @@ export default {
           napomena : this.napomena,
           rezimIzdavanja : this.rezimIzdavanja,
           oblikLeka : this.oblik,
-          vrstaLeka : this.vrsta
-          }
-          try{
-            this.addLekAction(lekInfo);
-          }catch(e){
-            alert("Ime leka nije originalno");
-            return;
-          }
-          alert("Lek uspesno dodat")
+          vrstaLeka : this.vrsta,
+        }
+
+        let zamenskiIds = [];
+        let index;
+        for( index in this.zamenskiLekovi){
+          zamenskiIds.push(this.zamenskiLekovi[index].id);
+        }
+        
+        let kreiraniLek;
+        try{
+          await this.addLekAction(lekInfo);
+          kreiraniLek = this.currentLek;
+          this.addZamenskeLekoveAction({ id: kreiraniLek.id, zamenski: zamenskiIds} );
+       
+        }catch(e){
+          alert("Greska pri kreiranju leka ilidodavanjem zamenskih");
+          this.removeLekAction(kreiraniLek.id);
+          return;
+        }
+
+        alert("Lek uspesno dodat")
       }
       alert("Submit");
       this.cancel();
+    },
+
+    dodajZamenski(lek) {
+      if (this.zamenskiLekovi.includes(lek)){
+        return;
+      }
+
+      this.zamenskiLekovi.push(lek);
+    },
+
+    ukloniZamenski(lek){
+      const index = this.zamenskiLekovi.findIndex((l) => l.id === lek.id);
+      this.zamenskiLekovi.splice(index,1);
     },
 
     cancel(){
@@ -173,9 +273,10 @@ export default {
   },
 
   async beforeMount() {
-    console.log("BEFORE MOUNT")
-    await this.getObliciAction();
-    await this.getVrsteAction();
+    this.getObliciAction();
+    this.getVrsteAction();
+    this.getRezimiIzdavanjaAction();
+    this.getLekoviAction();
   }
 }
 </script>

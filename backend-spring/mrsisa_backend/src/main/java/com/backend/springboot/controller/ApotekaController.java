@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,13 +42,15 @@ public class ApotekaController {
 	}*/
 	
 	@PostMapping()
-	public ResponseEntity<ApotekaDTO> addApoteka(ApotekaDTO dto) throws Exception{
+	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
 		try {
 			System.out.println(dto.getNaziv() + "NAZIV");
 			System.out.println(dto.getAdresa() + "ADRSEA");
             return new ResponseEntity<>(apotekaService.addApoteka(dto), HttpStatus.CREATED);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+        	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 	}
 	

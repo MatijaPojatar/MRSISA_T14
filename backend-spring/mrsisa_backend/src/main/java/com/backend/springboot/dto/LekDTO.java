@@ -22,14 +22,14 @@ public class LekDTO {
 	}
 	
 	public LekDTO(Lek l) {
-		this.naziv=l.getNaziv();
-		this.sastav=l.getSastav();
-		this.proizvodjac=l.getProizvodjac();
-		this.napomena=l.getNapomena();
-		this.rezimIzdavanja=l.getRezimIzdavanja();
-		this.oblikLeka=l.getOblikLeka();
-		this.vrstaLeka=l.getVrstaLeka();
-		this.id=l.getId();
+		this.naziv = l.getNaziv();
+		this.sastav = l.getSastav();
+		this.proizvodjac = l.getProizvodjac();
+		this.napomena = l.getNapomena();
+		this.rezimIzdavanja = l.getRezimIzdavanja();
+		this.oblikLeka = l.getOblikLeka();
+		this.vrstaLeka = l.getVrstaLeka();
+		this.id = l.getId();
 	}
 
 	public String getNaziv() {

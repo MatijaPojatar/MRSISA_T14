@@ -4,21 +4,44 @@ const initStanje = () => {
   return {
     lekovi: [],
     vrste: [],
-    oblici: []
+    oblici: [],
+    rezimiIzdavanja: [],
+    currentLek: null
   }
 }
 
 const state = initStanje();
 
 const getters = {
+  getLekovi: state => state.lekovi,
 	getVrste: state => state.vrste,
-  getOblici: state => state.oblici
+  getOblici: state => state.oblici,
+  getRezimiIzdavanja: state => state.rezimiIzdavanja,
+  getCurrentLek: state => state.currentLek
 }
 
 const actions = {
+  async getLekoviAction({ commit }) {
+    try{
+      const { data : lekovi} = await Vue.axios.get("/lekovi");
+      commit("setLekovi", lekovi);
+    } catch(error){
+      alert("Greska u pribavljanju svih lekova")
+    }
+  },
+
+  async getRezimiIzdavanjaAction({ commit }) {
+    try {
+      const { data : rezimi } = await Vue.axios.get("/lekovi/rezimi");
+      commit("setRezimi", rezimi);
+    } catch (error) {
+      alert("Greska u rezzz izzz")
+    }
+  },
+
+
   async getVrsteAction({ commit }) {
     try{
-      console.log("VRSTE ACTIONS")
       const { data: vrste } = await Vue.axios.get("/lekovi/vrste");
       commit("setVrste", vrste);
     }catch(error){
@@ -28,9 +51,7 @@ const actions = {
 
   async getObliciAction({ commit }) {
     try{
-      console.log("OBLICI ACTIONS")
       const { data : oblici } = await Vue.axios.get("/lekovi/oblici");
-      console.log(oblici, "OBLICI");
       commit("setOblici", oblici);
     }catch(error){
       alert("Greska oblici!");
@@ -41,16 +62,46 @@ const actions = {
     try{
       const { data : lekDTO} = await Vue.axios.post("/lekovi", lekInfo);
       commit("addLek", lekDTO)
+      commit("setCurrentLek", lekDTO)
+      return;
     }catch(error){
       alert("Greska pri dodavanju leka")
+      return;
     }
   },
+
+  async removeLekAction({ commit }, id){
+    try{
+      await Vue.axios.delete("/lekovi/"+ id, id);
+      commit("deleteLek", id);
+    } catch(error){
+      alert("Greska pri brisanju leka")
+      return;
+    }
+  },
+
+  async addZamenskeLekoveAction( {commit}, {id, zamenski}){
+    try{
+      console.log(commit)
+      await Vue.axios.put("/lekovi/zamenski/"+ id, zamenski);
+    }catch(error){
+      alert("Greska pri dodavanju zamenskih lekova")
+      return;
+    }
+  }
 
 }
 
 const mutations = {
+  setRezimi(state, rezimi) {
+    state.rezimiIzdavanja = rezimi;
+  },
+
+  setCurrentLek(state, lek){
+    state.currentLek = lek;
+  },
+
   setVrste(state, vrste) {
-    console.log(vrste, "VRSTE")
     state.vrste = vrste;
   },
 
