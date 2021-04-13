@@ -84,12 +84,13 @@ public class ApotekaService  {
 
 	public ApotekaDTO addApoteka(ApotekaDTO dto) throws Exception {
 		Apoteka check = apotekaRep.findByNazivIgnoringCase(dto.getNaziv());
-		
+		System.out.println(dto.getAdresa() + "ADRSEA U SERVISU");
 		if(check != null) {
 			throw new Exception();
 		}
 		
 		Apoteka apoteka = new Apoteka(dto);
+		System.out.println(apoteka.getAdresa() + "ADRSEA OD KRAJNJE");
 		
 		return new ApotekaDTO(apotekaRep.save(apoteka));
 	}

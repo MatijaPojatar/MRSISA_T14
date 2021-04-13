@@ -138,7 +138,6 @@ export default {
     onSubmit() {
       if(this.$refs.forma.validate()){
         const lekInfo = {
-          id : 55,
           naziv : this.naziv,
           sastav : this.sastav,
           proizvodjac : this.proizvodjac,

@@ -43,6 +43,8 @@ public class ApotekaController {
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(ApotekaDTO dto) throws Exception{
 		try {
+			System.out.println(dto.getNaziv() + "NAZIV");
+			System.out.println(dto.getAdresa() + "ADRSEA");
             return new ResponseEntity<>(apotekaService.addApoteka(dto), HttpStatus.CREATED);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
