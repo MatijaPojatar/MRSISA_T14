@@ -67,7 +67,7 @@ public class MagacinService {
 				if (staraCena != cena) {
 					LekUMagacinu novi = new LekUMagacinu();
 					novi.setPocetakVazenja(LocalDate.now());
-					novi.setKolicina(l.getKolicina());
+					novi.setKolicina(kolicina);
 					novi.setLek(l.getLek());
 					novi.setMagacin(l.getMagacin());
 					novi.setObrisan(false);
@@ -117,7 +117,7 @@ public class MagacinService {
 	public LekUMagacinu preuzmiJedanLekApoteke(Integer lekId, Integer apotekaId) {
 		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
 		for(LekUMagacinu l: lekovi){
-			if (l.getId() == lekId)
+			if (l.getLek().getId() == lekId)
 				return l;
 		}
 		return null;
