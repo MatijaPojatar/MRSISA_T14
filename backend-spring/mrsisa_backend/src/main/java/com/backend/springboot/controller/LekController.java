@@ -42,15 +42,12 @@ public class LekController {
 
 	@Autowired
 	private LekService lekService;
-<<<<<<< HEAD
 	@Autowired 
 	private ApotekaService apotekaService;
 	@Autowired 
 	private MagacinService magacinService;
 	
-=======
 
->>>>>>> admin-features
 	private ArrayList<Lek> pronadjeniLekovi;
 
 	/*
@@ -107,9 +104,6 @@ public class LekController {
 	}
 	
 	
-	
-	
-=======
 	@GetMapping()
 	public ResponseEntity<Collection<LekDTO>> getLekovi() {
 		System.out.println("Usli u get controller");
