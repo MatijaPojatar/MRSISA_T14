@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title class="display-1 red--text">Prijava</v-card-title>
+        <v-card-title>Prijava</v-card-title>
         <v-card-text>
             <v-form ref="forma" v-model="valid" lazy-validation>
                 <v-text-field
@@ -20,13 +20,13 @@
             </v-form>
         </v-card-text>
         <v-card-actions>
-            <v-btn @click="cancel" class="grey white--text">Odustani</v-btn>
+            <v-btn @click="cancel" class>Odustani</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-on:click="onSubmit" :disabled="!valid" class="red white--text">Prijava</v-btn>
+            <v-btn v-on:click="onSubmit" :disabled="!valid" class="blue white--text">Prijava</v-btn>
         </v-card-actions>
         <v-card-actions>
-            <v-btn @click="loginAsFarmaceut" class="grey white--text">Farmaceut</v-btn>
-            <v-btn @click="loginAsDermatolog" class="grey white--text">Dermatolog</v-btn>
+            <v-btn @click="loginAsFarmaceut">Farmaceut</v-btn>
+            <v-btn @click="loginAsDermatolog">Dermatolog</v-btn>
         </v-card-actions>
     </v-card>
 </template>
