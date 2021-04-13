@@ -39,6 +39,14 @@ public class Lek {
 	@JoinTable(name = "apoteke_lekovi", joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
 	private List<Apoteka> snabdeveneApoteke=new ArrayList<Apoteka>();
 	
+	@ManyToMany
+	@JoinTable(name = "zamenski_lekovi", 
+	joinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"),
+	inverseJoinColumns = @JoinColumn(name = "zamenski_id", referencedColumnName = "id"))
+	private List<Lek> zamenskiLekovi = new ArrayList<Lek>();
+	
+	@ManyToMany(mappedBy = "zamenskiLekovi")
+	private List<Lek> zamenskiZaLekove = new ArrayList<Lek>();
 	
 	
 	public Lek() {
@@ -56,6 +64,38 @@ public class Lek {
 		this.rezimIzdavanja = rezimIzdavanja;
 		this.oblikLeka = oblikLeka;
 		this.vrstaLeka = vrstaLeka;
+	}
+
+	public void addZamenskiLek(Lek lek) {
+		this.zamenskiLekovi.add(lek);
+	}
+	
+	public void removeZamenskiLek(Lek lek) {
+		this.zamenskiLekovi.remove(lek);
+	}
+	
+	public void addZamenskiZaLek(Lek lek) {
+		this.zamenskiZaLekove.add(lek);
+	}
+	
+	public void removeZamenskiZaLek(Lek lek) {
+		this.zamenskiZaLekove.remove(lek);
+	}
+	
+	public List<Lek> getZamenskiLekovi() {
+		return zamenskiLekovi;
+	}
+
+	public void setZamenskiLekovi(List<Lek> zamenskiLekovi) {
+		this.zamenskiLekovi = zamenskiLekovi;
+	}
+
+	public List<Lek> getZamenskiZaLekove() {
+		return zamenskiZaLekove;
+	}
+
+	public void setZamenskiZaLekove(List<Lek> zamenskiZaLekove) {
+		this.zamenskiZaLekove = zamenskiZaLekove;
 	}
 
 	public Integer getId() {

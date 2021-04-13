@@ -44,6 +44,10 @@ public class LekService {
 	public Lek findOneById(Integer sifra) {
 		return lekRep.findOneById(sifra);
 	}
+	
+	public void deleteLek(int id) {
+		lekRep.deleteById(id);
+	}
 
 	
 
@@ -128,6 +132,18 @@ public class LekService {
 	public List<Lek> findAllByApoteka(Integer id) {
 		//funkcija vraca i obrisane lekove, za preuzimanje aktuelnih lekova, koristiti funkciju iz magacin servisa
 		return lekRep.findAllBySnabdeveneApoteke_Id(id);
+	}
+
+	public void addZamenskeZaLek(int id, List<Integer> zamenskiIds) {
+		Lek lek = lekRep.findOneById(id);
+		
+		for (Integer i : zamenskiIds) {
+			Lek zamenski = lekRep.findOneById(i);
+			
+			lek.addZamenskiLek(zamenski);
+		}
+		
+		lekRep.save(lek);
 	}
 
 }
