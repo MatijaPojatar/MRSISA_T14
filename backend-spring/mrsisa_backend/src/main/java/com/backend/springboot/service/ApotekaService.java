@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.repository.ApotekaRepository;
 
 /*
@@ -76,4 +77,21 @@ public class ApotekaService  {
 
 		return pronadjene;
 	}
+
+
+
+
+
+	public ApotekaDTO addApoteka(ApotekaDTO dto) throws Exception {
+		Apoteka check = apotekaRep.findByNazivIgnoringCase(dto.getNaziv());
+		
+		if(check != null) {
+			throw new Exception();
+		}
+		
+		Apoteka apoteka = new Apoteka(dto);
+		
+		return new ApotekaDTO(apotekaRep.save(apoteka));
+	}
+		
 }

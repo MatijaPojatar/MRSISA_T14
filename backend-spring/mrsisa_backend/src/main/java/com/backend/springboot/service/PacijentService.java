@@ -13,6 +13,9 @@ public class PacijentService {
 	PacijentRepository pacijentRep;
 	
 	public Pacijent registrujPacijenta(Pacijent pacijentInfo) {
+		//if email postoji, throw
+		
+		
 		return pacijentRep.save(pacijentInfo);
 	}
 	

@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.ApotekaDTO;
+
 @Entity
 @Table(name="apoteke")
 public class Apoteka {
@@ -110,6 +112,26 @@ public class Apoteka {
 		this.termini = termini;
 		this.magacin = magacin;
 		this.akcije = akcije;
+	}
+	
+	
+
+	public Apoteka(ApotekaDTO dto) {
+		super();
+		this.id = dto.getId();
+		this.naziv = dto.getNaziv();
+		this.adresa = dto.getAdresa();
+		this.grad = dto.getGrad();
+		this.drzava = dto.getDrzava();
+		this.opis = dto.getOpis();
+		this.lekovi = dto.getLekovi();
+		this.farmaceuti = dto.getFarmaceuti();
+		this.dermatolozi = dto.getDermatolozi();
+		this.termini = dto.getTermini();
+		this.magacin = dto.getMagacin();
+		this.akcije = dto.getAkcije();
+		this.narudzbenice = dto.getNarudzbenice();
+		this.administratori = dto.getAdministratori();
 	}
 
 	public Integer getId() {

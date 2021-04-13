@@ -14,7 +14,7 @@ import zalbe from './modules/zalbe'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules : {
+  modules: {
     apoteke,
     lekovi,
     korisnici,

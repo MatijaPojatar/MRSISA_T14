@@ -11,12 +11,12 @@ const initStanje = () => {
 const state = initStanje();
 
 const getters = {
-	getVrste: state => () => state.vrste,
-  getOblici: state => () => state.oblici
+	getVrste: state => state.vrste,
+  getOblici: state => state.oblici
 }
 
 const actions = {
-  getVrsteAction() {
+  async getVrsteAction({ commit }) {
     try{
       console.log("VRSTE ACTIONS")
       const { data: vrste } = await Vue.axios.get("/lekovi/vrste");
@@ -26,22 +26,29 @@ const actions = {
     }
   },
 
-  getObliciAction() {
+  async getObliciAction({ commit }) {
     try{
+      console.log("OBLICI ACTIONS")
       const { data : oblici } = await Vue.axios.get("/lekovi/oblici");
+      console.log(oblici, "OBLICI");
       commit("setOblici", oblici);
     }catch(error){
       alert("Greska oblici!");
     }
-  }
-
-},
-
-const mutations = {
-  resetStanje(state) {
-    state = initStanje();
   },
 
+  async addLekAction({ commit }, lekInfo) {
+    try{
+      const { data : lekDTO} = await Vue.axios.post("/lekovi", lekInfo);
+      commit("addLek", lekDTO)
+    }catch(error){
+      alert("Greska pri dodavanju leka")
+    }
+  },
+
+}
+
+const mutations = {
   setVrste(state, vrste) {
     console.log(vrste, "VRSTE")
     state.vrste = vrste;
@@ -69,3 +76,5 @@ const mutations = {
     state.lekovi.splice(index,1);
   }
 }
+
+export default { state, mutations, actions, getters, namespaced: true}

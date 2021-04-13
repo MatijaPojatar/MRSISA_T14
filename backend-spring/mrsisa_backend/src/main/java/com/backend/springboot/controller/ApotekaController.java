@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.MagacinService;
 
@@ -37,6 +39,17 @@ public class ApotekaController {
 		
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
+	
+	@PostMapping()
+	public ResponseEntity<ApotekaDTO> addApoteka(ApotekaDTO dto) throws Exception{
+		try {
+            return new ResponseEntity<>(apotekaService.addApoteka(dto), HttpStatus.CREATED);
+        } catch (EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+	}
+	
+	
 	
 	@PostMapping("/rezultat")
 	public ResponseEntity<Collection<Apoteka>> pretrazi(String naziv, String grad) {

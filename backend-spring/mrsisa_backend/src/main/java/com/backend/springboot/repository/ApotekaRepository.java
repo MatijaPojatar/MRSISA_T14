@@ -16,4 +16,5 @@ public interface ApotekaRepository extends JpaRepository<Apoteka, Integer> {
 	
 	Apoteka findOneById(Integer id);
 	
+	Apoteka findByNazivIgnoringCase(String naziv);
 }

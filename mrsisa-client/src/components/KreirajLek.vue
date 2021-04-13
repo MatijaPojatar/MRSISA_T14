@@ -50,13 +50,13 @@
           <v-col>
             <v-select
             v-model="vrsta"
-              :items="this.vrste"
+              :items="vrste"
               label="Vrsta leka"
             ></v-select>
 
             <v-select
               v-model="oblik"
-              :items="this.oblici"
+              :items="oblici"
               label="Oblik leka"
             ></v-select>
 
@@ -83,14 +83,14 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn>Odustani</v-btn>
-      <v-btn>Kreiraj</v-btn>
+      <v-btn @click="cancel">Odustani</v-btn>
+      <v-btn @click="onSubmit" :disabled="!valid">Kreiraj</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import {mapActions, mapState } from "vuex"
+import {mapActions, mapGetters } from "vuex"
 
 export default {
   name: "KreirajLek",
@@ -113,27 +113,48 @@ export default {
     zamenski: "", //isparsirati u listu
     napomena: "",
 
+    valid: true,
+
     rules: {
             required: v => !!v || "Obavezno polje",
         }
   }),
 
-  methods: {
-    ...mapState({
-      oblici: state => state.lekovi.oblici,
-      vrste: state => state.lekovi.vrste
+  computed: {
+    ...mapGetters({
+      oblici: "lekovi/getOblici",
+      vrste: "lekovi/getVrste"
     }),
+  },
 
+  methods: {
     ...mapActions({
       // create : "lekovi/"
       getObliciAction: "lekovi/getObliciAction",
-      getVrsteAction: "lekovi/getVrsteAction"
+      getVrsteAction: "lekovi/getVrsteAction",
+      addLekAction: "lekovi/addLekAction",
     }),
 
     onSubmit() {
-      // if(this.$refs.forma.validate()){
-
-      // }
+      if(this.$refs.forma.validate()){
+        const lekInfo = {
+          id : 55,
+          naziv : this.naziv,
+          sastav : this.sastav,
+          proizvodjac : this.proizvodjac,
+          napomena : this.napomena,
+          rezimIzdavanja : this.rezimIzdavanja,
+          oblikLeka : this.oblik,
+          vrstaLeka : this.vrsta
+          }
+          try{
+            this.addLekAction(lekInfo);
+          }catch(e){
+            alert("Ime leka nije originalno");
+            return;
+          }
+          alert("Lek uspesno dodat")
+      }
       alert("Submit");
       this.cancel();
     },
@@ -152,10 +173,10 @@ export default {
     }
   },
 
-  beforeMount() {
+  async beforeMount() {
     console.log("BEFORE MOUNT")
-    this.getObliciAction();
-    this.getVrsteAction();
+    await this.getObliciAction();
+    await this.getVrsteAction();
   }
 }
 </script>
