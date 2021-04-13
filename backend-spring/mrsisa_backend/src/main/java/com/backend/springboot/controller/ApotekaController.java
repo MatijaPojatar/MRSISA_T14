@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.MagacinService;
 
@@ -65,5 +67,18 @@ public class ApotekaController {
 		LocalDate pocetakVazenja = LocalDate.now();
 		magacinService.dodajLek(pocetakVazenja, 100.0, 200.0, 1, 1);
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
+	}
+	
+	@PutMapping("/izmeniLek/{apotekaId}")
+	public ResponseEntity<String> izmeniLek(@PathVariable Integer apotekaId, @RequestBody LekUMagacinuDTO lek) {
+		magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PutMapping("/preuzmiLek/{id}")
+	public ResponseEntity<LekUMagacinuDTO> preuzmiLek(@PathVariable Integer id, @RequestBody String apotekaId) {
+		LekUMagacinu lek = magacinService.preuzmiJedanLekApoteke(id, Integer.parseInt(apotekaId));
+		LekUMagacinuDTO lekdto= new LekUMagacinuDTO(lek);
+		return new ResponseEntity<LekUMagacinuDTO>(lekdto,HttpStatus.OK);
 	}
 }

@@ -78,6 +78,9 @@ public class MagacinService {
 					l.setKrajVazenja(LocalDate.now());
 					
 					lekUMagacinuRep.save(l);
+					System.out.println("\n\n\n\n\n");
+					System.out.println(novi.getId());
+					System.out.println("\n\n\n\n\n");
 					return lekUMagacinuRep.save(novi);
 					
 				}
@@ -109,5 +112,14 @@ public class MagacinService {
 	public List<LekUMagacinu> preuzmiAktivneLekove(Integer magacinId) {
 		return lekUMagacinuRep.findAllByMagacinId(magacinId);
 		
+	}
+	
+	public LekUMagacinu preuzmiJedanLekApoteke(Integer lekId, Integer apotekaId) {
+		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
+		for(LekUMagacinu l: lekovi){
+			if (l.getId() == lekId)
+				return l;
+		}
+		return null;
 	}
 }

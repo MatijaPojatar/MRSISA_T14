@@ -70,20 +70,50 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+
+    <v-dialog
+    v-model="lekUpdateDialog"
+    persistent
+    scrollable
+      max-width="760">
+      <v-card>
+        <v-card-title class="headline">
+          Izmeni lek
+        </v-card-title>
+        <UpdateAddLekApotekeForm :apotekaId="this.apotekaId" :lekUMagacinu="this.selektovanLek"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
  import axios from "axios";
+ import UpdateAddLekApotekeForm from "./UpdateAddLekApotekeForm";
 
     export default{
         data: () => ({
             lekovi: [],
+            lekUpdateDialog: false,
+            selektovanLek: {},
             selektovan: null,
          }),
         props:{
             apotekaId: Number,
-            adminView: Boolean
+            adminView: Boolean,
+            
+        },
+        components:{
+            UpdateAddLekApotekeForm,
         },
         mounted(){
             console.log(this.apotekaId);
@@ -133,18 +163,28 @@
              },
 
              PanelSelected(id){
-                 console.log(id);
                  this.selektovan = id;
+                 console.log(this.selektovan);
+                 
              },
 
              ObrisiLek(){
-                 console.log("brisanje");
                  axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
                  location.reload();
              },
 
              IzmeniLek(){
-                 console.log("izmena");
+                 console.log("izmena" + this.selektovan);
+                 axios.put(`http://localhost:8080/apoteke/preuzmiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                     console.log(response.data)
+                    this.selektovanLek=response.data;
+                    console.log(this.selektovanLek);
+                 this.lekUpdateDialog = true;
+                });
+                
+             },
+             endDialog(){
+                this.lekUpdateDialog = false;
              },
 
          }
