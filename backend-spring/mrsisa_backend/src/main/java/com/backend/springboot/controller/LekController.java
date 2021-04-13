@@ -80,17 +80,16 @@ public class LekController {
 //		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
 //	}
 	
-<<<<<<< HEAD
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Collection<LekDTO>> getLekovi() {
-		List<Lek> rezultatPretrage=(List<Lek>) lekService.findAll();
-		ArrayList<LekDTO> dtoList=new ArrayList<LekDTO>();
-		for(Lek l:rezultatPretrage) {
-			dtoList.add(new LekDTO(l));
-		}
-		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
-	}
-	
+//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Collection<LekDTO>> getLekovi() {
+//		List<Lek> rezultatPretrage=(List<Lek>) lekService.findAll();
+//		ArrayList<LekDTO> dtoList=new ArrayList<LekDTO>();
+//		for(Lek l:rezultatPretrage) {
+//			dtoList.add(new LekDTO(l));
+//		}
+//		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
+//	}
+//	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<LekUMagacinuDTO>> findAllByApotekaId(@PathVariable Integer id){
 		Integer magacinId = apotekaService.findOne(id).getMagacin().getId();
@@ -106,14 +105,11 @@ public class LekController {
 	
 	@GetMapping()
 	public ResponseEntity<Collection<LekDTO>> getLekovi() {
-		System.out.println("Usli u get controller");
 		Collection<Lek> allLekovi = lekService.findAll();
-		System.out.println("dobili lekove iz servisa");
 		ArrayList<LekDTO> lekoviDTO = new ArrayList<LekDTO>();
 		
 		for (Lek lek : allLekovi) {
 			lekoviDTO.add(new LekDTO(lek));
-			System.out.println("Evo lek " + lek.getNaziv());
 		}
 		
 		return new ResponseEntity<Collection<LekDTO>>(lekoviDTO, HttpStatus.OK);
@@ -171,16 +167,15 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(test, HttpStatus.OK);
 	}
 
-	@GetMapping("/apoteka/{id}")
-	public ResponseEntity<Collection<LekDTO>> findAllByApotekaId(@PathVariable Integer id) {
-		List<Lek> rezultatPretrage = lekService.findAllByApoteka(id);
-		ArrayList<LekDTO> dtoList = new ArrayList<LekDTO>();
-		for (Lek l : rezultatPretrage) {
-			dtoList.add(new LekDTO(l));
-		}
+//	@GetMapping("/apoteka/{id}")
+//	public ResponseEntity<Collection<LekDTO>> findAllByApotekaId(@PathVariable Integer id) {
+//		List<Lek> rezultatPretrage = lekService.findAllByApoteka(id);
+//		ArrayList<LekDTO> dtoList = new ArrayList<LekDTO>();
+//		for (Lek l : rezultatPretrage) {
+//			dtoList.add(new LekDTO(l));
+//		}
+//
+//		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
+//	}
 
-		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
-	}
-
->>>>>>> admin-features
 }
