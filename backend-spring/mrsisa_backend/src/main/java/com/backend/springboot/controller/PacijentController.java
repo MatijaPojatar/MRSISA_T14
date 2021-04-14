@@ -31,7 +31,7 @@ public class PacijentController {
 	
 	@PostMapping()
 	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody Pacijent pacijentInfo){
-		Pacijent pacijent = pacijentService.registrujPacijenta(pacijentInfo);
+		Pacijent pacijent = pacijentService.save(pacijentInfo);
 		
 		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
 	}

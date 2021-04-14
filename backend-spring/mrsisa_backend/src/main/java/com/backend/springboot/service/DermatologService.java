@@ -26,4 +26,8 @@ public class DermatologService {
 		return dermatologRep.findOneById(id);
 	}
 
+	public Dermatolog registrujDermatologa(Dermatolog dermatolog) {
+		return dermatologRep.save(dermatolog);
+	}
+
 }

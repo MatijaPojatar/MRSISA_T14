@@ -16,50 +16,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
-import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.DobavljacService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
-@RequestMapping("/dermatolog")
-public class DermatologController {
-	
+@RequestMapping("/dobavljaci")
+public class DobavljacController {
+
 	@Autowired
-	private DermatologService service;
+	private DobavljacService dobavljacService;
 	
 	@GetMapping()
-	public ResponseEntity<List<DermatologDTO>> findAll(){
-		List<Dermatolog> dermatolozi = service.findAll();
+	public ResponseEntity<List<DobavljacDTO>> findAll(){
+		List<Dobavljac> dobavljaci = dobavljacService.findAll();
 		
-		List<DermatologDTO> dtos = new ArrayList<>();
-		for(Dermatolog d : dermatolozi) {
-			dtos.add(new DermatologDTO(d));
+		List<DobavljacDTO> dtos = new ArrayList<>();
+		for(Dobavljac d : dobavljaci) {
+			dtos.add(new DobavljacDTO(d));
 		}
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<DermatologDTO> getOne(@PathVariable Integer id){
-		Dermatolog d=service.findOne(id);
-		DermatologDTO dto=new DermatologDTO(d);
+	public ResponseEntity<DobavljacDTO> getOne(@PathVariable Integer id){
+		Dobavljac d = dobavljacService.findOne(id);
+		DobavljacDTO dto = new DobavljacDTO(d);
 		
-		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
+		return new ResponseEntity<DobavljacDTO>(dto,HttpStatus.OK);
 	}
 	
 	@PostMapping()
-	public ResponseEntity<DermatologDTO> registrujDermatologa(@RequestBody DermatologDTO dto){
-		Dermatolog dermatolog = service.registrujDermatologa(new Dermatolog(dto));
+	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dto){
+		Dobavljac dobavljac = dobavljacService.save(new Dobavljac(dto));
 		
-		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.OK);
+		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/save/{id}")
-	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody DermatologDTO dto){
-		Dermatolog d=service.findOne(id);
+	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody DobavljacDTO dto){
+		Dobavljac d = dobavljacService.findOne(id);
 		d.setAdresa(dto.getAdresa());
 		d.setBrojTelefona(dto.getBrojTelefona());
 		d.setDatumRodjenja(dto.getDatumRodjenja());
@@ -68,20 +68,14 @@ public class DermatologController {
 		d.setIme(dto.getIme());
 		d.setPol(dto.getPol());
 		d.setPrezime(dto.getPrezime());
+		d.setNazivPreduzeca(dto.getNazivPreduzeca());
 		
-		service.save(d);
+		dobavljacService.save(d);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	@PutMapping("/pass/{id}")
-	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
-		System.out.println(newPass);
-		Dermatolog d=service.findOne(id);
-		d.setPassword(newPass);
-		
-		service.save(d);
-		
-		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
-	}
+	
+	
+	
 }

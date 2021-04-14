@@ -1,6 +1,7 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
@@ -11,6 +12,7 @@ public class DermatologDTO {
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	
 	public DermatologDTO() {
 		
@@ -28,6 +30,24 @@ public class DermatologDTO {
 		this.brojTelefona=d.getBrojTelefona();
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
+		this.pocetakRadnogVremena = d.getPocetakRadnogVremena();
+		this.krajRadnogVremena = d.getKrajRadnogVremena();
+	}
+
+	public LocalTime getPocetakRadnogVremena() {
+		return pocetakRadnogVremena;
+	}
+
+	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
+		this.pocetakRadnogVremena = pocetakRadnogVremena;
+	}
+
+	public LocalTime getKrajRadnogVremena() {
+		return krajRadnogVremena;
+	}
+
+	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
+		this.krajRadnogVremena = krajRadnogVremena;
 	}
 
 	public Integer getId() {

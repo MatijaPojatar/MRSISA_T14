@@ -27,7 +27,7 @@ public class OsobaController {
 	@Autowired
 	private OsobaService osobaService;
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping()
 	public ResponseEntity<Collection<Osoba>> getOsobe() {
 		Collection<Osoba> osobe = osobaService.findAll();
 		

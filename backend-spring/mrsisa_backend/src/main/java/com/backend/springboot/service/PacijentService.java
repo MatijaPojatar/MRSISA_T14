@@ -12,19 +12,13 @@ public class PacijentService {
 	@Autowired
 	PacijentRepository pacijentRep;
 	
-	public Pacijent registrujPacijenta(Pacijent pacijentInfo) {
-		//if email postoji, throw
-		
-		
-		return pacijentRep.save(pacijentInfo);
-	}
 	
 	public Pacijent findOne(Integer id) {
 		return pacijentRep.findOneById(id);
 	}
 	
-	public void save(Pacijent p) {
-		pacijentRep.save(p);
+	public Pacijent save(Pacijent p) {
+		return pacijentRep.save(p);
 	}
 	
 	

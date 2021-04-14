@@ -1,52 +1,41 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
-import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Pol;
 
-public class FarmaceutDTO {
+public class DobavljacDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, nazivPreduzeca;
 	private Pol pol;
 	private LocalDate datumRodjenja;
-	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	
-	public FarmaceutDTO() {
-		
+	public DobavljacDTO() {
+		super();
 	}
 	
-	public FarmaceutDTO(Farmaceut f) {
-		this.id=f.getId();
-		this.ime=f.getIme();
-		this.prezime=f.getPrezime();
-		this.mail=f.getMail();
-		this.password=f.getPassword();
-		this.adresa=f.getAdresa();
-		this.grad=f.getGrad();
-		this.drzava=f.getDrzava();
-		this.brojTelefona=f.getBrojTelefona();
-		this.pol=f.getPol();
-		this.datumRodjenja=f.getDatumRodjenja();
-		this.pocetakRadnogVremena = f.getPocetakRadnogVremena();
-		this.krajRadnogVremena = f.getKrajRadnogVremena();
+	public DobavljacDTO(Dobavljac d) {
+		this.id=d.getId();
+		this.ime=d.getIme();
+		this.prezime=d.getPrezime();
+		this.mail=d.getMail();
+		this.password=d.getPassword();
+		this.adresa=d.getAdresa();
+		this.grad=d.getGrad();
+		this.drzava=d.getDrzava();
+		this.brojTelefona=d.getBrojTelefona();
+		this.pol=d.getPol();
+		this.datumRodjenja=d.getDatumRodjenja();
+		this.nazivPreduzeca = d.getNazivPreduzeca();
 	}
 
-	public LocalTime getPocetakRadnogVremena() {
-		return pocetakRadnogVremena;
+	public String getNazivPreduzeca() {
+		return nazivPreduzeca;
 	}
 
-	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
-		this.pocetakRadnogVremena = pocetakRadnogVremena;
-	}
-
-	public LocalTime getKrajRadnogVremena() {
-		return krajRadnogVremena;
-	}
-
-	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
-		this.krajRadnogVremena = krajRadnogVremena;
+	public void setNazivPreduzeca(String nazivPreduzeca) {
+		this.nazivPreduzeca = nazivPreduzeca;
 	}
 
 	public Integer getId() {
@@ -136,6 +125,5 @@ public class FarmaceutDTO {
 	public void setDatumRodjenja(LocalDate datumRodjenja) {
 		this.datumRodjenja = datumRodjenja;
 	}
-	
 	
 }

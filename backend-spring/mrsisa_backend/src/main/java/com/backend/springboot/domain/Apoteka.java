@@ -51,8 +51,8 @@ public class Apoteka {
 	private List<Narudzbenica> narudzbenice = new ArrayList<Narudzbenica>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AdministratorApoteke> administratori = new HashSet<AdministratorApoteke>();
-	
-
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ZalbaNaApoteku> zalbe = new ArrayList<ZalbaNaApoteku>();
 	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
@@ -132,6 +132,14 @@ public class Apoteka {
 		this.akcije = dto.getAkcije();
 		this.narudzbenice = dto.getNarudzbenice();
 		this.administratori = dto.getAdministratori();
+	}
+
+	public List<ZalbaNaApoteku> getZalbe() {
+		return zalbe;
+	}
+
+	public void setZalbe(List<ZalbaNaApoteku> zalbe) {
+		this.zalbe = zalbe;
 	}
 
 	public Integer getId() {

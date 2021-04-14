@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.DermatologDTO;
+import com.backend.springboot.dto.DobavljacDTO;
+
 @Entity
 @Table(name="dermatolozi")
 public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
@@ -32,33 +36,49 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	private List<Pregled> pregledi=new ArrayList<Pregled>();
 
 
+	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+		this.pocetakRadnogVremena = pocetakRadnogVremena;
+		this.krajRadnogVremena = krajRadnogVremena;
+	}
+
+
 	public Dermatolog() {
 		super();
+	}
+
+	public Dermatolog(DermatologDTO d) {
+		this.setId(d.getId());
+		this.setIme(d.getIme());
+		this.setPrezime(d.getPrezime());
+		this.setMail(d.getMail());
+		this.setPassword(d.getPassword());
+		this.setAdresa(d.getAdresa());
+		this.setGrad(d.getGrad());
+		this.setDrzava(d.getDrzava());
+		this.setBrojTelefona(d.getBrojTelefona());
+		this.setPol(d.getPol());
+		this.setDatumRodjenja(d.getDatumRodjenja());
+		this.setPocetakRadnogVremena(d.getPocetakRadnogVremena());
+		this.setKrajRadnogVremena(d.getKrajRadnogVremena());
 	}
 
 	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;
 	}
 
-
-
 	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 	}
-
-
 
 	public LocalTime getKrajRadnogVremena() {
 		return krajRadnogVremena;
 	}
 
-
-
 	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
-
-
 
 	public List<Pregled> getPregledi() {
 		return pregledi;

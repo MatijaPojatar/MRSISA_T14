@@ -28,14 +28,12 @@ public class AdministratorApoteke extends Osoba {
 
 	public AdministratorApoteke() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public AdministratorApoteke(Integer id, String ime, String prezime, String mail, String password, String adresa,
 			String grad, String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja,
 			boolean promenjenaLozinka) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
-		// TODO Auto-generated constructor stub
 	}
 	
 	

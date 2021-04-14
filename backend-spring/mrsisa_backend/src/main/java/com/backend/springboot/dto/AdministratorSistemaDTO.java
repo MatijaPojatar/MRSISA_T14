@@ -1,52 +1,30 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
-import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Pol;
 
-public class FarmaceutDTO {
+public class AdministratorSistemaDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, potpis;
 	private Pol pol;
 	private LocalDate datumRodjenja;
-	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	
-	public FarmaceutDTO() {
-		
-	}
-	
-	public FarmaceutDTO(Farmaceut f) {
-		this.id=f.getId();
-		this.ime=f.getIme();
-		this.prezime=f.getPrezime();
-		this.mail=f.getMail();
-		this.password=f.getPassword();
-		this.adresa=f.getAdresa();
-		this.grad=f.getGrad();
-		this.drzava=f.getDrzava();
-		this.brojTelefona=f.getBrojTelefona();
-		this.pol=f.getPol();
-		this.datumRodjenja=f.getDatumRodjenja();
-		this.pocetakRadnogVremena = f.getPocetakRadnogVremena();
-		this.krajRadnogVremena = f.getKrajRadnogVremena();
-	}
-
-	public LocalTime getPocetakRadnogVremena() {
-		return pocetakRadnogVremena;
-	}
-
-	public void setPocetakRadnogVremena(LocalTime pocetakRadnogVremena) {
-		this.pocetakRadnogVremena = pocetakRadnogVremena;
-	}
-
-	public LocalTime getKrajRadnogVremena() {
-		return krajRadnogVremena;
-	}
-
-	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
-		this.krajRadnogVremena = krajRadnogVremena;
+	public AdministratorSistemaDTO(AdministratorSistema a) {
+		super();
+		this.id = a.getId();
+		this.ime = a.getIme();
+		this.prezime = a.getPrezime();
+		this.mail = a.getMail();
+		this.password = a.getPassword();
+		this.adresa = a.getAdresa();
+		this.grad = a.getGrad();
+		this.drzava = a.getDrzava();
+		this.brojTelefona = a.getBrojTelefona();
+		this.pol = a.getPol();
+		this.datumRodjenja = a.getDatumRodjenja();
+		this.potpis = a.getPotpis();
 	}
 
 	public Integer getId() {
@@ -119,6 +97,14 @@ public class FarmaceutDTO {
 
 	public void setBrojTelefona(String brojTelefona) {
 		this.brojTelefona = brojTelefona;
+	}
+
+	public String getPotpis() {
+		return potpis;
+	}
+
+	public void setPotpis(String potpis) {
+		this.potpis = potpis;
 	}
 
 	public Pol getPol() {

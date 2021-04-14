@@ -22,6 +22,9 @@ public class Pacijent extends Osoba {
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
 	
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
+	private List<ZalbaNaApoteku> zalbeNaApoteke = new ArrayList<ZalbaNaApoteku>();
+	
 	public Pacijent() {
 		super();
 	}
@@ -32,7 +35,24 @@ public class Pacijent extends Osoba {
 		this.brojPoena = brojPoena;
 		this.penali = penali;
 	}
+	
 
+	public List<ZalbaNaApoteku> getZalbeNaApoteke() {
+		return zalbeNaApoteke;
+	}
+
+	public void setZalbeNaApoteke(List<ZalbaNaApoteku> zalbeNaApoteke) {
+		this.zalbeNaApoteke = zalbeNaApoteke;
+	}
+
+	public void addZalbaNaApoteku(ZalbaNaApoteku zalba) {
+		this.zalbeNaApoteke.add(zalba);
+	}
+	
+	public void removeZalbaNaApoteku(ZalbaNaApoteku zalba) {
+		this.zalbeNaApoteke.remove(zalba);
+	}
+	
 	public int getBrojPoena() {
 		return brojPoena;
 	}
