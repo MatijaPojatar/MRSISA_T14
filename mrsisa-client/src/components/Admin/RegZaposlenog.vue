@@ -1,9 +1,10 @@
 <template>
   <v-card>
-    <v-card-title class="display-1 red--text">Registracija Dermatologa</v-card-title>
+    <v-card-title class="display-1 red--text">Registracija Zaposlenog</v-card-title>
 
     <v-card-text>
       <v-form ref="forma" v-model="valid" lazy-validation>
+        <v-row>
         <v-col>
           <v-text-field
             v-model="email"
@@ -49,15 +50,11 @@
           :rules="[rules.required, rules.telefon]"
           label="Broj telefona"
           required
-        />
-        </v-col>
-        <v-col>
-          
+          />
           <v-text-field
           v-model="datum"
           :rules="[rules.required, rules.counter]"
           label="Datum rođenja (22/02/1999)"
-          counter
           required
           />
 
@@ -67,7 +64,10 @@
           label="Pol"
           required
           ></v-select>
-            
+
+        </v-col>
+        <v-col>
+           
           <v-text-field
           v-model="adresa"
           :rules="[rules.required]"
@@ -89,19 +89,47 @@
           required
           />
 
-        </v-col>
+          <v-text-field
+          v-model="pocetakRadnogVremena"
+          :rules="[rules.required, rules.counterVreme]"
+          label="Pocetak radnog vremena (08:00)"
+          required
+          />
 
+          <v-text-field
+          v-model="krajRadnogVremena"
+          :rules="[rules.required, rules.counterVreme]"
+          label="Kraj radnog vremena (16:00)"
+          required
+          />
+
+          <v-text-field
+          v-model="apotekeGdeJeZaposlenString"
+          :rules="[rules.required, rules.counterVreme]"
+          label="Id Apoteke/a gde je zaposlen (3,4) DORADITI"
+          />
+
+          <v-text-field
+          class="blue--text"
+          v-model="nazivPreduzeca"
+          label="Naziv preduzeća"
+          />
+
+        </v-col>
+        </v-row>
         </v-form>
     </v-card-text>
     <v-card-actions>
         <v-btn @click="cancel" class="grey white--text">Odustani</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-on:click="onSubmit" :disabled="!valid" class="red white--text">Registracija</v-btn>
+        <v-btn v-on:click="onSubmitDerm" :disabled="!valid" class="red white--text">Registracija Dermatologa</v-btn>
+        <v-btn v-on:click="onSubmitDob" :disabled="!valid" class="blue white--text">Registracija Dobavljaca</v-btn>
     </v-card-actions>
     </v-card>
 </template>
 
 <script>
+//import { mapActions } from 'vuex';
 
 
 export default {
@@ -124,6 +152,12 @@ export default {
     grad: "",
     drzava: "",
 
+    pocetakRadnogVremena: "",
+    krajRadnogVremena: "",
+    nazivPreduzeca: "",
+
+    apotekeGdeJeZaposlenString: "",
+    apotekeGdeJeZaposlen: [],
     valid: true,
     show1: false,
     show2: false,
@@ -132,19 +166,56 @@ export default {
       email: v => /.+@.+\..+/.test(v) || "Email nije validan",
       telefon: v => /^\d+$/.test(v) || "Broj telefona nije validan",
       counter: v => v.length == 10 || 'Datum nije dobar',
+      counterVreme: v => v.length == 5 || "Vreme nije dobro",
     }
   }),
 
-   computed: {
-        show: {
-            get() {
-                return this.value;
-            },
-            set(value){
-                this.$emit("input", value);
-            }
-        },
+  computed: {
+      show: {
+          get() {
+              return this.value;
+          },
+          set(value){
+              this.$emit("input", value);
+          }
+      },
+  },
+
+  methods: {
+
+
+    async onSubmitDerm(){
+      const DermDTO = {
+        ime: this.ime,
+        prezime: this.prezime,
+        mail: this.mail,
+        password: this.password,
+        adresa: this.adresa,
+        grad: this.grad,
+        drzava: this.drzava,
+        brojTelefona: this.brojTelefona,
+        pol: this.pol,
+        datumRodjenja: this.datum,
+        pocetakRadnogVremena: this.pocetakRadnogVremena,
+        krajRadnogVremena: this.krajRadnogVremena
+      }
+      try{
+        console.log(DermDTO);
+      }catch(error){
+        alert("Greska pri registraciji dermatologa")
+      }
+
+    },
+
+    async onSubmitDob(){
+
+    },
+
+    cancel(){
+      this.$refs.forma.reset();
+      this.$refs.forma.resetValidation();
     }
+  }
 
 }
 </script>

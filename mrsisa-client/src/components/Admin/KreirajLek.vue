@@ -235,7 +235,7 @@ export default {
        
         }catch(e){
           alert("Greska pri kreiranju leka ilidodavanjem zamenskih");
-          this.removeLekAction(kreiraniLek.id);
+          this.removeLekAction(kreiraniLek.id);  //istestirati brisanje
           return;
         }
 
