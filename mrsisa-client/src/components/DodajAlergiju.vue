@@ -2,13 +2,20 @@
     <v-card>
         <v-card-title>Dodavanje alergije: </v-card-title>
         <v-card-text>
-            <v-form ref="forma" v-model="valid" lazy-validation>
-                <v-select
-                    v-model="lek"
-                    :rules="[rules.required, rules.email]"
-                    label="Lek"
-                    required
-                />
+            <v-form ref="forma" v-model="valid" lazy-validation v-for="(lek, index) in lekovi" :key="index">
+                <v-row>
+                    <v-col>
+                        <v-select
+                            v-model="lek.naziv"
+                            :items="items"
+                            label="Lek"
+                        />
+                    </v-col>
+                    <v-col>
+                        <v-btn @click="dodaj">+</v-btn>
+                        <v-btn @click="ukloni">-</v-btn>
+                    </v-col>
+                </v-row>
             </v-form>
         </v-card-text>
         <v-card-actions>
@@ -27,12 +34,24 @@ export default {
     },
 
     data: () => ({
-        lek: "",
+        lekovi: [
+        {
+            naziv: ""
+        }],
+        items: ["Aspirin", "Bromazepam", "Ibuprofen", "Kafetin"],
+    }),
 
-        rules: {
-            required: v => !!v || "Obavezno polje",
-        }
-    })
+    methods: {
+        dodaj() {
+            this.lekovi.push({
+                naziv: ""
+            })
+        },
+
+        ukloni(index) {
+            this.lekovi.splice(index, 1);
+        },
+    },
 }
 </script>
 
