@@ -85,5 +85,29 @@ public class FarmaceutController {
 		service.obrisiFarmaceuta(id);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@PutMapping("/dodajFarmaceuta/{id}")
+	public ResponseEntity<String> dodajFarmaceuta(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
+		Farmaceut f=new Farmaceut();
+		f.setAdresa(dto.getAdresa());
+		f.setBrojTelefona(dto.getBrojTelefona());
+		f.setDatumRodjenja(dto.getDatumRodjenja());
+		f.setDrzava(dto.getDrzava());
+		f.setGrad(dto.getGrad());
+		f.setIme(dto.getIme());
+		f.setPol(dto.getPol());
+		f.setPrezime(dto.getPrezime());
+		f.setPocetakRadnogVremena(dto.getPocetakRadnogVremena());
+		f.setKrajRadnogVremena(dto.getKrajRadnogVremena());
+		f.setMail(dto.getMail());
+		f.setPassword(dto.getPassword());
+		f.setApoteka(apotekaService.findOne(id));
+		f.setPromenjenaLozinka(false);
+		f.setObrisan(false);
+		
+		service.save(f);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
 
 }
