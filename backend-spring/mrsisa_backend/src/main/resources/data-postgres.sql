@@ -50,6 +50,16 @@ insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obr
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 200, 150, 4, 2, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 2, false);
 
+insert into cenovnik(pocetak_vazenja, cena, lekUMagacinu_id) values ('2021-04-06 14:00', 100, 1);
+insert into cenovnik( pocetak_vazenja, cena, lekUMagacinu_id ) values ('2021-04-06 14:00', 200, 2 );
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 3 );
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 400, 4);
+insert into cenovnik(pocetak_vazenja, cena, lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 5);
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 400, 6);
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 100, 7);
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 200, 8);
+insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 9);
+
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan) values ('Adresa 4','0651234555','1987-02-01','Srbija','Novi Sad','Joca','Jokic','joca@gmail.com','joca123',0,true, false);
 insert into administratori_apoteke (id,apoteka_id) values (4,1);

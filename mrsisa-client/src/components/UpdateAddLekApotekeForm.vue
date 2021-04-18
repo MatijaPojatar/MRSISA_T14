@@ -5,13 +5,6 @@
     v-model="valid"
     lazy-validation
   >
-    <v-text-field
-      v-model="newInfo.kolicina"
-      :counter="10"
-      :rules="brojRules"
-      label="Količina leka"
-      required
-    ></v-text-field>
 
     <v-text-field
       v-model="newInfo.cena"
@@ -71,7 +64,6 @@ import axios from "axios";
     data: () => ({
       newInfo: {
           cena: "",
-          kolicina: "",
       },
       valid: true,
       
@@ -96,14 +88,12 @@ import axios from "axios";
     },
     mounted(){
         this.newInfo.cena = this.lekUMagacinu.cena;
-        this.newInfo.kolicina = this.lekUMagacinu.kolicina;
     },
 
     methods: {
       validate () {
         if(this.$refs.form.validate()){
            this.lekUMagacinu.cena = this.newInfo.cena;
-           this.lekUMagacinu.kolicina = this.newInfo.kolicina;
             axios.put(`http://localhost:8080/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
             this.dialog=true;
         }
@@ -111,7 +101,6 @@ import axios from "axios";
       },
       reset () {
         this.newInfo.cena=this.lekUMagacinu.cena;
-        this.newInfo.kolicina= this.lekUMagacinu.kolicina;
         
       },
       endDialog(){

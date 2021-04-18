@@ -1,9 +1,11 @@
 package com.backend.springboot.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.StavkaCenovnika;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.MagacinRepository;
+import com.backend.springboot.repository.StavkaCenovnikaRepository;
 
 @Service
 public class MagacinService {
@@ -28,6 +32,8 @@ public class MagacinService {
 	private LekRepository lekRep;
 	@Autowired
 	private ApotekaRepository apotekaRep;
+	@Autowired
+	private StavkaCenovnikaRepository cenovnikRep;
 	
 	public List<Magacin> findAll(){
 		return magacinRep.findAll();
@@ -41,7 +47,7 @@ public class MagacinService {
 		return lekUMagacinuRep.save(l);
 	}
 	
-	public LekUMagacinu dodajLek(LocalDate pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
+	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);
 		l.setKolicina(kolicina);
@@ -49,6 +55,12 @@ public class MagacinService {
 		l.setMagacin(apotekaRep.getOne(apotekaId).getMagacin());
 		l.setObrisan(false);
 		l.setCena(cena);
+		l = lekUMagacinuRep.save(l);
+		StavkaCenovnika s = new StavkaCenovnika();
+		s.setCena(cena);
+		s.setLekUMagacinu(l);
+		s.setPocetakVazenja(pocetakVazenja);
+		
 		return lekUMagacinuRep.save(l);
 	}
 	
@@ -57,31 +69,45 @@ public class MagacinService {
 		return lekUMagacinuRep.save(l);
 	}
 	
+	public StavkaCenovnika preuzmiTrenutnuCenu(Integer lekId) {
+		List<StavkaCenovnika> stavke = cenovnikRep.findAllByLekUMagacinuId(lekId);
+		for (StavkaCenovnika s: stavke) {
+			if (s.getKrajVazenja() == null) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public LekUMagacinu izmeniLekUMagacinu(Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
 		Magacin m = magacinRep.findOneByApotekaId(apotekaId);
 		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
+		LocalDateTime sada = LocalDateTime.now();
 		for (LekUMagacinu l : lekovi) {
 			if (l.getId() == lekId) {
-				double staraCena = l.getCena();
+				double trenutnaCena = l.getCena();
 				
-				if (staraCena != cena) {
-					LekUMagacinu novi = new LekUMagacinu();
-					novi.setPocetakVazenja(LocalDate.now());
-					novi.setKolicina(kolicina);
-					novi.setLek(l.getLek());
-					novi.setMagacin(l.getMagacin());
-					novi.setObrisan(false);
-					novi.setCena(cena);
+				if (trenutnaCena != cena) {
+					StavkaCenovnika staraStavka = this.preuzmiTrenutnuCenu(lekId);
+					
+					StavkaCenovnika novaStavka = new StavkaCenovnika();
+					novaStavka.setCena(cena);
+					novaStavka.setPocetakVazenja(sada);
+					novaStavka.setLekUMagacinu(l);
+					
+					cenovnikRep.save(novaStavka);
+					
+					staraStavka.setKrajVazenja(sada);
+					cenovnikRep.save(staraStavka);
+					
+					l.setPocetakVazenja(sada);
+					l.setKolicina(kolicina);
+					l.setCena(cena);
+					l.getSveCene().add(novaStavka);
 					
 					
-					l.setObrisan(true);
-					l.setKrajVazenja(LocalDate.now());
 					
-					lekUMagacinuRep.save(l);
-					System.out.println("\n\n\n\n\n");
-					System.out.println(novi.getId());
-					System.out.println("\n\n\n\n\n");
-					return lekUMagacinuRep.save(novi);
+					return lekUMagacinuRep.save(l);
 					
 				}
 				else {
@@ -97,12 +123,12 @@ public class MagacinService {
 	
 	
 	
+	
+	
 	public void obrisiLek(Integer lekId, Integer apotekaId) {
-		List<LekUMagacinu> pronadjeni = lekUMagacinuRep.findAllByLekId(lekId);
-		for(LekUMagacinu l: pronadjeni){
-			if (apotekaRep.getOne(apotekaId).getMagacin().getId() == l.getMagacin().getId())
-				lekUMagacinuRep.delete(l);
-		}
+		LekUMagacinu pronadjen = lekUMagacinuRep.getOne(lekId);
+		lekUMagacinuRep.delete(pronadjen);
+		
 	}
 	
 	public void obrisiLek(LekUMagacinu l) {
@@ -117,7 +143,7 @@ public class MagacinService {
 	public LekUMagacinu preuzmiJedanLekApoteke(Integer lekId, Integer apotekaId) {
 		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
 		for(LekUMagacinu l: lekovi){
-			if (l.getLek().getId() == lekId)
+			if (l.getId() == lekId)
 				return l;
 		}
 		return null;

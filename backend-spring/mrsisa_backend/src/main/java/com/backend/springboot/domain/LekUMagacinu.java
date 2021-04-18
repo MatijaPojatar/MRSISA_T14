@@ -1,8 +1,14 @@
 package com.backend.springboot.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
@@ -28,9 +35,9 @@ public class LekUMagacinu {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "pocetak_vazenja", nullable = false)
-	private LocalDate pocetakVazenja;
+	private LocalDateTime pocetakVazenja;
 	@Column(name = "kraj_vazenja", nullable = true)
-	private LocalDate krajVazenja;
+	private LocalDateTime krajVazenja;
 	@Column(name = "cena", nullable = false)
 	private Double cena;
 	@Column(name = "kolicina", nullable = false)
@@ -39,6 +46,9 @@ public class LekUMagacinu {
 	private Lek lek;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Magacin magacin;
+	
+	@OneToMany(mappedBy = "lekUMagacinu", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<StavkaCenovnika> sveCene = new ArrayList<StavkaCenovnika>();
 	
 	@Column(name = "obrisan", nullable = false)
 	private boolean obrisan;
@@ -49,7 +59,7 @@ public class LekUMagacinu {
 	
 	
 
-	public LekUMagacinu(Integer id, LocalDate pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
+	public LekUMagacinu(Integer id, LocalDateTime pocetakVazenja, Double cena, Double kolicina, Lek lek, Magacin magacin) {
 		super();
 		this.id = id;
 		this.pocetakVazenja = pocetakVazenja;
@@ -63,7 +73,7 @@ public class LekUMagacinu {
 
 
 
-	public LekUMagacinu(Integer id, LocalDate pocetakVazenja, LocalDate krajVazenja, Double cena, Double kolicina, Lek lek,
+	public LekUMagacinu(Integer id, LocalDateTime pocetakVazenja, LocalDateTime krajVazenja, Double cena, Double kolicina, Lek lek,
 			Magacin magacin) {
 		super();
 		this.id = id;
@@ -78,16 +88,28 @@ public class LekUMagacinu {
 
 
 
-	public LocalDate getPocetakVazenja() {
+	public List<StavkaCenovnika> getSveCene() {
+		return sveCene;
+	}
+
+
+
+	public void setSveCene(List<StavkaCenovnika> sveCene) {
+		this.sveCene = sveCene;
+	}
+
+
+
+	public LocalDateTime getPocetakVazenja() {
 		return pocetakVazenja;
 	}
-	public void setPocetakVazenja(LocalDate pocetakVazenja) {
-		this.pocetakVazenja = pocetakVazenja;
+	public void setPocetakVazenja(LocalDateTime sada) {
+		this.pocetakVazenja = sada;
 	}
-	public LocalDate getKrajVazenja() {
+	public LocalDateTime getKrajVazenja() {
 		return krajVazenja;
 	}
-	public void setKrajVazenja(LocalDate krajVazenja) {
+	public void setKrajVazenja(LocalDateTime krajVazenja) {
 		this.krajVazenja = krajVazenja;
 	}
 	public Double getCena() {

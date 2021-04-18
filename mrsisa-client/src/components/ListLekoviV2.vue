@@ -154,7 +154,8 @@
                                 oblik: element.oblikLeka,
                                 vrsta: element.vrstaLeka, 
                                 cena: element.cena,
-                                kolicina: element.kolicina
+                                kolicina: element.kolicina,
+                                lekId: element.lekId
                             })
                             this.lekovi = lekovi
                         })

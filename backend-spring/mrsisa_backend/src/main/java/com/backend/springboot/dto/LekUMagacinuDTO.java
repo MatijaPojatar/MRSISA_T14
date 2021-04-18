@@ -7,7 +7,7 @@ import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
 
 public class LekUMagacinuDTO {
-	private Integer id;
+	private Integer id, lekId;
 	private String naziv;
 	private String sastav;
 	private String proizvodjac;
@@ -30,9 +30,18 @@ public class LekUMagacinuDTO {
 		this.rezimIzdavanja=l.getRezimIzdavanja();
 		this.oblikLeka=l.getOblikLeka();
 		this.vrstaLeka=l.getVrstaLeka();
-		this.id=l.getId();
+		this.id=lm.getId();
 		this.cena = lm.getCena();
 		this.kolicina = lm.getKolicina();
+		this.lekId = l.getId();
+	}
+
+	public Integer getLekId() {
+		return lekId;
+	}
+
+	public void setLekId(Integer lekId) {
+		this.lekId = lekId;
 	}
 
 	public Double getCena() {
