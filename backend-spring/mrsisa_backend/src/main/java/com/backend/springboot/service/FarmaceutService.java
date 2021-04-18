@@ -25,5 +25,9 @@ public class FarmaceutService {
 	public Farmaceut findOne(Integer id) {
 		return farmaceutRep.findOneById(id);
 	}
+	
+	public List<Farmaceut> findAllByApotekaId(Integer id){
+		return farmaceutRep.findAllByApotekaId(id);
+	}
 
 }

@@ -20,7 +20,7 @@ insert into apoteke_lekovi (lek_id,apoteka_id) values (3,2);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (4,2);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 1','0651234567','1990-01-01','Srbija','Novi Sad','Pera','Peric','perap@gmail.com','pera121',0,true);
-insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (1,'16:00','08:00',1);
+insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id, obrisan) values (1,'16:00','08:00',1, false);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 2','0651234568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','markom@gmail.com','mare121',0,true);
 insert into pacijenti (id,broj_poena,penali) values (2,0,0);
@@ -55,3 +55,8 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into administratori_apoteke (id,apoteka_id) values (4,1);
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 5','0651234555','1987-02-01','Srbija','Novi Sad','Jovana','Jovanovic','jovana@gmail.com','jovana123',1,true);
 insert into administratori_apoteke (id,apoteka_id) values (5, 2);
+
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka) values ('Adresa 2','0651234567','1993-01-01','Srbija','Novi Sad','Maja','Majic','maja93@gmail.com','maja123',1,true);
+insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id, obrisan) values (6,'16:00','08:00',1, false);
+
+

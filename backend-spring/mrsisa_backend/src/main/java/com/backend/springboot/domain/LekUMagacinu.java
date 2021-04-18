@@ -40,7 +40,7 @@ public class LekUMagacinu {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Magacin magacin;
 	
-	@Column(name = "obrisan")
+	@Column(name = "obrisan", nullable = false)
 	private boolean obrisan;
 	
 	public LekUMagacinu() {

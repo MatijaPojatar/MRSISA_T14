@@ -75,6 +75,15 @@
                     Lekovi
                 </div></v-list-item-title>
           </v-list-item>
+
+          <v-list-item link @click="farmaceutiView">
+            <v-list-item-icon>
+              <v-icon>mdi-beaker-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Farmaceuti
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -104,6 +113,9 @@
       <v-container fluid v-if="showLekovi" :style="{width:'70vh'}">
         <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
+      <v-container fluid v-if="showFarmaceuti" :style="{width:'70vh'}">
+        <FarmaceutiAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -114,6 +126,7 @@ import Calendar from "./Calendar";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import LekoviAdminApoteke from "./LekoviAdminApoteke";
+import FarmaceutiAdminApoteke from "./FarmaceutiAdminApoteke";
 import axios from "axios";
 
 export default {
@@ -122,13 +135,15 @@ export default {
         Calendar,
         AccountView,
         PasswordSwitch,
-        LekoviAdminApoteke
+        LekoviAdminApoteke,
+        FarmaceutiAdminApoteke
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
     showPassword: false,
     showLekovi: false,
+    showFarmaceuti: false,
     user: {},
   }),
   mounted(){
@@ -147,12 +162,14 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = false;
+          this.showFarmaceuti = false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
           this.showPassword=false;
           this.showLekovi = false;
+          this.showFarmaceuti = false;
       },
       logout(){
         window.location.href="http://localhost:8081/";
@@ -162,12 +179,21 @@ export default {
           this.showAccount=false;
           this.showPassword=true;
           this.showLekovi = false;
+          this.showFarmaceuti = false;
       },
       lekoviView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = true;
+          this.showFarmaceuti = false;
+      },
+      farmaceutiView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showLekovi = false;
+          this.showFarmaceuti = true;
       },
   },
 }

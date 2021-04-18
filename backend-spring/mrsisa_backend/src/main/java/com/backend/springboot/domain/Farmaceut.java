@@ -14,8 +14,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name="farmaceuti")
+@SQLDelete(sql
+	    = "UPDATE farmaceuti "
+	    + "SET obrisan = true "
+	    + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	
 	@Column(name = "pocetakRadnogVremena", nullable = false)
@@ -26,6 +34,8 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	private Apoteka apoteka;
 	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Savetovanje> savetovanja=new ArrayList<Savetovanje>();
+	@Column(name = "obrisan", nullable = false)
+	private boolean obrisan;
 
 	public Farmaceut() {
 		super();
@@ -52,6 +62,18 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 
 	public void setSavetovanja(List<Savetovanje> savetovanja) {
 		this.savetovanja = savetovanja;
+	}
+
+
+
+	public boolean isObrisan() {
+		return obrisan;
+	}
+
+
+
+	public void setObrisan(boolean obrisan) {
+		this.obrisan = obrisan;
 	}
 
 

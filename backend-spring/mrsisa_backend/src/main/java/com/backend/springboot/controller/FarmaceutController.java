@@ -1,5 +1,9 @@
 package com.backend.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.dto.FarmaceutDTO;
+import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.FarmaceutService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -23,6 +30,8 @@ public class FarmaceutController {
 	
 	@Autowired
 	private FarmaceutService service;
+	@Autowired
+	private ApotekaService apotekaService;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<FarmaceutDTO> getOne(@PathVariable Integer id){
@@ -58,6 +67,17 @@ public class FarmaceutController {
 		service.save(f);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@GetMapping("/apoteka/{id}")
+	public ResponseEntity<Collection<FarmaceutDTO>> findAllByApotekaId(@PathVariable Integer id){
+		ArrayList<Farmaceut>rezultatPretrage = (ArrayList<Farmaceut>) service.findAllByApotekaId(id);
+		ArrayList<FarmaceutDTO> dtoList=new ArrayList<FarmaceutDTO>();
+		for(Farmaceut l:rezultatPretrage) {
+			dtoList.add(new FarmaceutDTO(l));
+		}
+		
+		return new ResponseEntity<Collection<FarmaceutDTO>>(dtoList, HttpStatus.OK);
 	}
 
 }
