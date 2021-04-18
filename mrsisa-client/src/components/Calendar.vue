@@ -236,7 +236,7 @@
     },
       data: ()=>({
             focus: "",
-            type: "week",
+            type: "day",
             typeToLabel: {
                 month: "Month",
                 week: "Week",
@@ -385,10 +385,7 @@
             }
             axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
             axios.put(`http://localhost:8080/pacijenti/penal/${this.selectedEvent.pacijent}`);
-            this.selectedEvent={}
-            this.selectedElement=null
-            this.selectedOpen=false
-            location.reload();
+            Object.assign(this.$data, this.$options.data.apply(this))
             
           }   
       },
@@ -425,7 +422,7 @@
           })
         });
         axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
-        location.reload();
+        Object.assign(this.$data, this.$options.data.apply(this))
       },
       endDialog(){
         this.dialog=false;
