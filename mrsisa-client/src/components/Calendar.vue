@@ -210,7 +210,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka"/>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -256,6 +256,7 @@
             dialog: false,
             lekDialog: false,
             ready: false,
+            preporuceniLekovi: [],
       }),
       props: {
         farmaceut: Boolean,
@@ -375,7 +376,7 @@
       },
       reportMiss(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             this.dialog=true
           }else{
             let path="pregled"
@@ -393,7 +394,8 @@
       },
       beginPregled(){
           let now = new Date();
-          if(now.getTime()<this.selectedEvent.start.getTime() || now.getTime()>this.selectedEvent.end.getTime()){
+          this.preporuceniLekovi=[]
+          if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             this.dialog=true
           }else{
             this.selectedEvent.started=true;
@@ -415,7 +417,14 @@
         if(this.farmaceut){
           path="savetovanje"
         }
-        axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj});
+        let returnLekovi=[]
+        this.preporuceniLekovi.forEach(element => {
+          returnLekovi.push({
+            terapija:element.terapija,
+            lekId: element.lek.id
+          })
+        });
+        axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
         location.reload();
       },
       endDialog(){

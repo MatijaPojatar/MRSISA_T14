@@ -18,10 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
+import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.service.LekService;
+import com.backend.springboot.service.LekUIzvestajuService;
 import com.backend.springboot.service.PregledService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -31,6 +36,10 @@ public class PregledController {
 	
 	@Autowired
 	private PregledService service;
+	@Autowired
+	private LekUIzvestajuService izvestajService;
+	@Autowired
+	private LekService lekService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAll() {
@@ -61,6 +70,12 @@ public class PregledController {
 		Pregled p=service.findOne(id);
 		p.setIzvrsen(true);
 		p.setIzvestaj(izvestaj.getText());
+		for(LekUIzvestajuDTO lekDto: izvestaj.getLekovi()) {
+			Lek l=lekService.findOneById(lekDto.getLekId());
+			LekUIzvestaju lekIz=new LekUIzvestaju( l, lekDto.getTerapija(),p);
+			izvestajService.addLek(lekIz);
+			p.getLekovi().add(lekIz);
+		}
 		
 		service.save(p);
 		

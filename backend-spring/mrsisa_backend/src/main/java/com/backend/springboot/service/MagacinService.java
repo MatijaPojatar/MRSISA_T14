@@ -1,17 +1,12 @@
 package com.backend.springboot.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.backend.springboot.domain.Apoteka;
-import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.StavkaCenovnika;
@@ -45,6 +40,18 @@ public class MagacinService {
 	
 	public LekUMagacinu save(LekUMagacinu l) {
 		return lekUMagacinuRep.save(l);
+	}
+	
+	public Magacin findOneByApotekaId(Integer apotekaId) {
+		return magacinRep.findOneByApotekaId(apotekaId);
+	}
+	
+	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
+		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
+		if(lum==null) {
+			return false;
+		}
+		return true;
 	}
 	
 	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {

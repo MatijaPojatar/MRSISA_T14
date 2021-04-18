@@ -17,10 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
+import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
+import com.backend.springboot.repository.LekUIzvestajuRepository;
 import com.backend.springboot.service.FarmaceutService;
+import com.backend.springboot.service.LekService;
+import com.backend.springboot.service.LekUIzvestajuService;
 import com.backend.springboot.service.SavetovanjeService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -32,6 +38,10 @@ public class SavetovanjeController {
 	private SavetovanjeService service;
 	@Autowired
 	private FarmaceutService farmService;
+	@Autowired
+	private LekService lekService;
+	@Autowired
+	private LekUIzvestajuService izvestajService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
@@ -64,6 +74,13 @@ public class SavetovanjeController {
 		Savetovanje s=service.findOne(id);
 		s.setIzvrsen(true);
 		s.setIzvestaj(izvestaj.getText());
+		for(LekUIzvestajuDTO lekDto: izvestaj.getLekovi()) {
+			Lek l=lekService.findOneById(lekDto.getLekId());
+			System.out.println("========================"+lekDto.getLekId()+"==============================");
+			LekUIzvestaju lekIz=new LekUIzvestaju( l, lekDto.getTerapija(),s);
+			izvestajService.addLek(lekIz);
+			s.getLekovi().add(lekIz);
+		}
 		
 		service.save(s);
 		

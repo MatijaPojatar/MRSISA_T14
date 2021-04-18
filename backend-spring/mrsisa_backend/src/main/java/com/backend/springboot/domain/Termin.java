@@ -1,8 +1,11 @@
 package com.backend.springboot.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +37,8 @@ public abstract class Termin {
 	private Pacijent pacijent;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
+	@OneToMany(mappedBy = "termin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<LekUIzvestaju> lekovi=new ArrayList<LekUIzvestaju>();
 	
 	
 	
@@ -129,6 +135,18 @@ public abstract class Termin {
 
 	public void setIzvrsen(boolean izvrsen) {
 		this.izvrsen = izvrsen;
+	}
+
+
+
+	public List<LekUIzvestaju> getLekovi() {
+		return lekovi;
+	}
+
+
+
+	public void setLekovi(List<LekUIzvestaju> lekovi) {
+		this.lekovi = lekovi;
 	}
 	
 	

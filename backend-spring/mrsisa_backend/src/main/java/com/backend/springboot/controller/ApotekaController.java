@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -98,5 +100,14 @@ public class ApotekaController {
 		LekUMagacinu lek = magacinService.preuzmiJedanLekApoteke(id, Integer.parseInt(apotekaId));
 		LekUMagacinuDTO lekdto= new LekUMagacinuDTO(lek);
 		return new ResponseEntity<LekUMagacinuDTO>(lekdto,HttpStatus.OK);
+	}
+	
+	@GetMapping("/stanje/{lekId}")
+	public ResponseEntity<Boolean> proveriStanje(@PathVariable Integer lekId,@RequestParam Integer apotekaId,@RequestParam Double kolicina){
+		System.out.println("========================="+lekId+" "+apotekaId+" "+kolicina+"==============================");
+		Magacin m=magacinService.findOneByApotekaId(apotekaId);
+		boolean check=magacinService.proveriStanje(m.getId(), lekId, kolicina);
+		
+		return new ResponseEntity<Boolean>(check,HttpStatus.OK);
 	}
 }
