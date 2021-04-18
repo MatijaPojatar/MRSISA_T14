@@ -32,10 +32,9 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	private LocalTime krajRadnogVremena;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
-	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Savetovanje> savetovanja=new ArrayList<Savetovanje>();
-	@Column(name = "obrisan", nullable = false)
-	private boolean obrisan;
+	
 
 	public Farmaceut() {
 		super();
@@ -66,15 +65,7 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 
 
 
-	public boolean isObrisan() {
-		return obrisan;
-	}
 
-
-
-	public void setObrisan(boolean obrisan) {
-		this.obrisan = obrisan;
-	}
 
 
 

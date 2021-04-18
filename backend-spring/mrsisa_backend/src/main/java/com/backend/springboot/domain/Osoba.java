@@ -12,6 +12,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 /*
  * 
  * Osoba kasnije moze da se nasledi kao ostali tipovi, ovo je probna verzija
@@ -19,6 +22,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name="osobe")
 @Inheritance(strategy=InheritanceType.JOINED)
+@SQLDelete(sql
+	    = "UPDATE osobe "
+	    + "SET obrisan = true "
+	    + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 public class Osoba {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -47,6 +55,9 @@ public class Osoba {
 	@Column(name = "promenjenaLozinka", nullable = false)
 	private boolean promenjenaLozinka;
 	
+	@Column(name = "obrisan", nullable = false)
+	private boolean obrisan;
+	
 	public Osoba() {
 		super();
 	}
@@ -73,6 +84,14 @@ public class Osoba {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public boolean isObrisan() {
+		return obrisan;
+	}
+
+	public void setObrisan(boolean obrisan) {
+		this.obrisan = obrisan;
 	}
 
 	public String getIme() {

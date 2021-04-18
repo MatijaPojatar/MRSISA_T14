@@ -79,5 +79,11 @@ public class FarmaceutController {
 		
 		return new ResponseEntity<Collection<FarmaceutDTO>>(dtoList, HttpStatus.OK);
 	}
+	
+	@PutMapping("/obrisiFarmaceuta/{id}")
+	public ResponseEntity<String> obrisiFarmaceuta(@PathVariable Integer id) {
+		service.obrisiFarmaceuta(id);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
 
 }

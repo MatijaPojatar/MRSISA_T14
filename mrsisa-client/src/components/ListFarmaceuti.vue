@@ -80,7 +80,7 @@
         <v-card-title class="headline">
           Izmeni lek
         </v-card-title>
-        <UpdateAddLekApotekeForm :apotekaId="this.apotekaId" :lekUMagacinu="this.selektovanFarmaceut"/>
+        <AccountView :user="this.selektovanFarmaceut" :farmaceut="true"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -98,7 +98,7 @@
 
 <script>
  import axios from "axios";
- import UpdateAddLekApotekeForm from "./UpdateAddLekApotekeForm";
+ import  AccountView from "./AccountView";
 
     export default{
         data: () => ({
@@ -113,7 +113,7 @@
             
         },
         components:{
-            UpdateAddLekApotekeForm,
+            AccountView,
         },
         mounted(){
             console.log(this.apotekaId);
@@ -151,17 +151,17 @@
              },
 
              ObrisiFarmaceuta(){
-                 axios.put(`http://localhost:8080/apoteke/obrisiFarmaceuta/${this.selektovan}`)
+                 axios.put(`http://localhost:8080/farmaceut/obrisiFarmaceuta/${this.selektovan}`)
                  location.reload();
              },
 
              IzmeniFarmaceuta(){
                  console.log("izmena" + this.selektovan);
-                 axios.put(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
+                 axios.get(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
                      console.log(response.data)
                     this.selektovanFarmaceut=response.data;
                     console.log(this.selektovanFarmaceut);
-                 this.lekUpdateDialog = true;
+                 this.farmaceutUpdateDialog = true;
                 });
                 
              },
