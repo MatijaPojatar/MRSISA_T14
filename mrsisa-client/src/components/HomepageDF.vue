@@ -69,11 +69,6 @@
 
         <template v-slot:append>
         <div class="pa-2">
-            <v-switch
-            v-model="$vuetify.theme.dark"
-            label="Dark mode"
-            color="black"
-            ></v-switch>
           <v-btn block @click="logout">
             Logout
           </v-btn>
