@@ -201,10 +201,12 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-overlay :value="lekDialog">
     <v-dialog
     v-model="lekDialog"
     persistent
     scrollable
+    retain-focus
       max-width="760">
       <v-card>
         <v-card-title class="headline">
@@ -223,6 +225,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    </v-overlay>
   </v-row>
 </template>
 
@@ -252,6 +255,9 @@
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
+            selectedEventPreDialog: {},
+            selectedElementPreDialog: null,
+            selectedOpenPreDialog: false,
             events: [],
             dialog: false,
             lekDialog: false,
@@ -303,12 +309,14 @@
             }, 10)
             }
 
-            if (this.selectedOpen) {
-            this.selectedOpen = false
-            setTimeout(open, 10)
-            } else {
+            // if (this.selectedOpen) {
+            // this.selectedOpen = false
+            // setTimeout(open, 10)
+            // } 
+            // else {
+            // open()
+            // }
             open()
-            }
 
             nativeEvent.stopPropagation()
         },
@@ -428,10 +436,25 @@
         this.dialog=false;
       },
       openLekList(){
+        this.selectedElementPreDialog=this.selectedElement
+        this.selectedEventPreDialog=this.selectedEvent
+        this.selectedOpenPreDialog=this.selectedOpen
+        this.selectedElement=null
+        this.selectedEvent={}
+        this.selectedOpen=false
         this.lekDialog=true;
       },
       endListDialog(){
         this.lekDialog=false;
+        setTimeout(() => {
+          
+        }, 1000);
+        this.selectedElement=this.selectedElementPreDialog
+        this.selectedEvent=this.selectedEventPreDialog
+        this.selectedOpen=this.selectedOpenPreDialog
+        this.selectedElementPreDialog=null
+        this.selectedEventPreDialog={}
+        this.selectedOpenPreDialog=false
       },
       }
   }
@@ -457,4 +480,5 @@
     margin-left: -6.5px;
   }
 }
+
 </style>
