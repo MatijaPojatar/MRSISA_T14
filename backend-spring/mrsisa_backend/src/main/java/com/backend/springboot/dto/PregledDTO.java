@@ -33,7 +33,11 @@ public class PregledDTO {
 		this.izvestaj=p.getIzvestaj();
 		this.start=p.getPocetak();
 		this.end=p.getKraj();
-		this.pacijentId=p.getPacijent().getId();
+		if(p.getPacijent()==null) {
+			this.pacijentId=null;
+		}else {
+			this.pacijentId=p.getPacijent().getId();
+		}
 		this.izvrsen=p.isIzvrsen();
 		this.cena=p.getCena();
 		this.apotekaId=p.getApoteka().getId();

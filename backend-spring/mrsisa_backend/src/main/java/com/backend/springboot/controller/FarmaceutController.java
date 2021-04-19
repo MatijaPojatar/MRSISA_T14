@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.FarmaceutService;
 
@@ -109,5 +111,16 @@ public class FarmaceutController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@GetMapping("/radnoVreme/{id}")
+	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id){
+		System.out.println("==============================================================");
+		Farmaceut f=service.findOne(id);
+		RadnoVremeDTO rv=new RadnoVremeDTO(f.getPocetakRadnogVremena(),f.getKrajRadnogVremena());
+		
+		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
+		
+	}
+	
 
 }

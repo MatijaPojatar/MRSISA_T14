@@ -30,7 +30,11 @@ public class SavetovanjeDTO {
 		this.izvestaj=s.getIzvestaj();
 		this.start=s.getPocetak();
 		this.end=s.getKraj();
-		this.pacijentId=s.getPacijent().getId();
+		if(s.getPacijent()==null) {
+			this.pacijentId=null;
+		}else {
+			this.pacijentId=s.getPacijent().getId();
+		}
 		this.izvrsen=s.isIzvrsen();
 		this.id=s.getId();
 		this.apotekaId=s.getApoteka().getId();

@@ -1,5 +1,6 @@
 package com.backend.springboot.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,14 @@ public class SavetovanjeService {
 	
 	public Savetovanje findOne(Integer id) {
 		return savetovanjeRep.findOneById(id);
+	}
+	
+	public List<Savetovanje> findAllActive(Integer farmaceutId,Integer apotekaId,LocalDateTime pocetak){
+		return savetovanjeRep.findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(farmaceutId, null, apotekaId, pocetak);
+	}
+	
+	public List<Savetovanje> findAllInRange(LocalDateTime start,LocalDateTime end){
+		return savetovanjeRep.findInRange(start, end);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.backend.springboot.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,14 @@ public class PregledService {
 	
 	public Pregled findOne(Integer id) {
 		return pregledRep.findOneById(id);
+	}
+	
+	public List<Pregled> findAllActive(Integer dermatologId,Integer apotekaId,LocalDateTime pocetak){
+		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
+	}
+	
+	public List<Pregled> findAllInRange(LocalDateTime start,LocalDateTime end){
+		return pregledRep.findInRange(start, end);
 	}
 
 }

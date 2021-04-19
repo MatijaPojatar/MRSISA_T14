@@ -149,7 +149,7 @@
                       <div style="color:white">Preporuči lek</div>
                   </v-btn>
                   <v-btn color='#1976D2' font-color='white' @click="endTermin">
-                      <div style="color:white">Zavrsi termin</div>
+                      <div style="color:white">Završi termin</div>
                   </v-btn>
                 </v-row>
               </div>
@@ -157,7 +157,7 @@
                 <v-expansion-panels>
                 <v-expansion-panel>
                   <v-expansion-panel-header>
-                    Izvestaj
+                    Izveštaj
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     {{selectedEvent.izvestaj}}
@@ -201,7 +201,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-overlay :value="lekDialog">
     <v-dialog
     v-model="lekDialog"
     persistent
@@ -225,17 +224,43 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    </v-overlay>
+    <v-dialog
+    v-model="terminDialog"
+    persistent
+    scrollable
+    retain-focus
+      max-width="960">
+      <v-card>
+        <v-card-title class="headline">
+          Termin je završen
+        </v-card-title>
+        <v-card-text>
+        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endTerminDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
   import axios from "axios";
   import ListLekoviV2 from "./ListLekoviV2"
+  import TerminPicker from "./TerminPicker"
 
   export default {
     components:{
       ListLekoviV2,
+      TerminPicker,
     },
       data: ()=>({
             focus: "",
@@ -261,6 +286,7 @@
             events: [],
             dialog: false,
             lekDialog: false,
+            terminDialog: false,
             ready: false,
             preporuceniLekovi: [],
       }),
@@ -309,14 +335,13 @@
             }, 10)
             }
 
-            // if (this.selectedOpen) {
-            // this.selectedOpen = false
-            // setTimeout(open, 10)
-            // } 
-            // else {
-            // open()
-            // }
+            if (this.selectedOpen) {
+            this.selectedOpen = false
+            setTimeout(open, 10)
+            } 
+            else {
             open()
+            }
 
             nativeEvent.stopPropagation()
         },
@@ -422,6 +447,7 @@
         if(this.farmaceut){
           path="savetovanje"
         }
+        console.log(path);
         let returnLekovi=[]
         this.preporuceniLekovi.forEach(element => {
           returnLekovi.push({
@@ -430,7 +456,8 @@
           })
         });
         axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
-        Object.assign(this.$data, this.$options.data.apply(this))
+        this.terminDialog=true
+        this.selectedOpen=false
       },
       endDialog(){
         this.dialog=false;
@@ -455,6 +482,12 @@
         this.selectedElementPreDialog=null
         this.selectedEventPreDialog={}
         this.selectedOpenPreDialog=false
+      },
+      endTerminDialog(){
+        this.terminDialog=false;
+        this.selectedElement=null
+        this.selectedEvent={}
+        Object.assign(this.$data, this.$options.data.apply(this))
       },
       }
   }

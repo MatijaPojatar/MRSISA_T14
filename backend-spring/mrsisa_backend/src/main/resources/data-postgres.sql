@@ -29,7 +29,6 @@ insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-12 16:50','2021-04-12 18:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (1,1);
 
-
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','pera',0,true, false);
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (3,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
@@ -71,4 +70,10 @@ insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-19 16:50','2021-04-19 18:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (3,6);
+
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-20 12:50','2021-04-20 14:00',1);
+insert into savetovanja (id,farmaceut_id) values (4,1);
+
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-20 11:00','2021-04-20 12:00',1);
+insert into pregledi (id,dermatolog_id,cena) values (5,3,3000);
 
