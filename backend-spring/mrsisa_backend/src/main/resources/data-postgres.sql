@@ -33,7 +33,7 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (3,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-06 11:00','2021-04-06 12:00',1,2);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-23 11:00','2021-04-06 12:00',1,2);
 insert into pregledi (id,dermatolog_id,cena) values (2,3,3000);
 
 insert into magacini (id,apoteka_id) values (1,1);
@@ -74,6 +74,8 @@ insert into savetovanja (id,farmaceut_id) values (3,6);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-20 12:50','2021-04-20 14:00',1);
 insert into savetovanja (id,farmaceut_id) values (4,1);
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-20 11:00','2021-04-20 12:00',1);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-21 18:00','2021-04-20 19:00',1);
 insert into pregledi (id,dermatolog_id,cena) values (5,3,3000);
 
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-21 12:50','2021-04-20 14:00',1);
+insert into savetovanja (id,farmaceut_id) values (6,1);

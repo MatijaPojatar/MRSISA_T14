@@ -84,7 +84,7 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="updateRangePacijentAxios()" 
+          @change="preglediAxios(), savetovanjaAxios()" 
         > <!-- TODO -->
         <template v-slot:day-body="{ date, week }">
             <div
@@ -106,11 +106,11 @@
             flat
           >
             <v-toolbar
-              :color=" selectedEvent.pacijent ? selectedEvent.izvrsen ? 'grey': '#1976D2': 'green'"
+              :color="'#1976D2'"
               dark
             >
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
+              <!--<v-spacer></v-spacer>
               <v-btn icon @click="beginPregled" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen" >
                 <v-icon>mdi-forward</v-icon>
               </v-btn>
@@ -119,7 +119,7 @@
               </v-btn>
               <v-btn icon @click="cancelPregled">
                 <v-icon>mdi-close-circle-outline</v-icon>
-              </v-btn>
+              </v-btn>-->
             </v-toolbar>
             <v-card-text>
               <div >Start: {{selectedEvent.start}}</div>
@@ -341,11 +341,11 @@
 
             nativeEvent.stopPropagation()
         },
-      updateRangePacijentAxios (){
+      preglediAxios (){
         axios.get(`http://localhost:8080/pregled/all/3`).then(response => {
-           const events = []
+           const pregledi = []
           response.data.forEach(element => {
-            events.push({
+            pregledi.push({
               name: element.name,
               pacijent: element.pacijentId,
               apoteka: element.apotekaId,
@@ -357,7 +357,27 @@
               started: false,
               timed: true,
             })
-            this.events = events
+            this.events = pregledi
+          });
+        });
+      },
+      savetovanjaAxios (){
+        axios.get(`http://localhost:8080/savetovanje/all/3`).then(response => {
+           const savetovanja = []
+          response.data.forEach(element => {
+            savetovanja.push({
+              name: element.name,
+              pacijent: element.pacijentId,
+              apoteka: element.apotekaId,
+              start: new Date(element.start),
+              end: new Date(element.end),
+              izvrsen: element.izvrsen,
+              izvestaj: element.izvestaj,
+              id: element.id,
+              started: false,
+              timed: true,
+            })
+            this.events = savetovanja
           });
         });
       },
@@ -406,17 +426,6 @@
           }else{
             this.selectedEvent.started=true;
           }
-      },
-      getEventColor (event) {
-        if(event.pacijent){
-          if(event.izvrsen){
-              return 'grey';
-          } else{
-              return '#1976D2';
-          }
-        }else{
-          return 'green';
-        }
       },
       endTermin(){
         let path="pregled"
