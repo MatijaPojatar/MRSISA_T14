@@ -222,7 +222,7 @@
 </template>
 
 <script>
-
+  import axios from "axios";
 
   export default {
 
@@ -267,8 +267,8 @@
         v => !!v || 'Obavezno polje',
       ],
       items: [
-        'M',
-        'Ž',
+        'MUSKI',
+        'ZENSKI',
       ],
       checkbox: false,
       dialog: false,
@@ -288,7 +288,7 @@
     methods: {
       validate () {
         if(this.$refs.form.validate()){
-            const ZaposleniDTO = {
+            const zaposleniDTO = {
               ime: this.ime,
               prezime: this.prezime,
               mail: this.mail,
@@ -302,10 +302,15 @@
               pocetakRadnogVremena: this.pocetakRadnogVremena,
               krajRadnogVremena: this.krajRadnogVremena
             }
+            if(this.farmaceut){
+                axios.post(`http://localhost:8080/farmaceut/dodajFarmaceuta/${this.apotekaId}`,zaposleniDTO)
+            }else{
+                console.log("dodati za dermatologa")
+            }
             
             this.dialog=true;
 
-            console.log(ZaposleniDTO)
+            console.log(zaposleniDTO)
         }
         
       },
