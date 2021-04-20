@@ -92,7 +92,7 @@
                 <PasswordSwitch :pass="user.password" :pacijent="pacijent" :id="user.id"/>
             </v-container>
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
-                <AddAllergy :pass="user.password" :pacijent="pacijent" :id="user.id"/>
+                <AddAllergy :id="user.id"/>
             </v-container>
         </v-main>
     </v-app>
@@ -100,7 +100,7 @@
 
 <script>
 
-import Calendar from "./Calendar";
+import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy"
