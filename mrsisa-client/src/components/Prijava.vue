@@ -25,6 +25,7 @@
             <v-btn v-on:click="onSubmit" :disabled="!valid" class="blue white--text">Prijava</v-btn>
         </v-card-actions>
         <v-card-actions>
+            <v-btn @click="loginAsPacijent">Pacijent</v-btn>
             <v-btn @click="loginAsFarmaceut">Farmaceut</v-btn>
             <v-btn @click="loginAsDermatolog">Dermatolog</v-btn>
         </v-card-actions>
@@ -62,6 +63,9 @@ export default {
         },
     },
     methods: {
+        loginAsPacijent(){
+            this.$router.push('/pacijent');
+        },
         loginAsFarmaceut(){
             this.$router.push('/farmaceut');
         },

@@ -417,7 +417,7 @@
               path="savetovanje"
             }
             axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
-            axios.put(`http://localhost:8080/pacijenti/penal/${this.selectedEvent.pacijent}`);
+            axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
             Object.assign(this.$data, this.$options.data.apply(this))
             
           }   

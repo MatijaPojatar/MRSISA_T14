@@ -9,12 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="lekovi")
@@ -54,6 +53,8 @@ public class Lek {
 	@OneToMany(mappedBy = "lek")
 	private Set<LekNaStanju> lekoviNaStanju;
 	
+	@ManyToMany(mappedBy = "alergije")
+	private List<Pacijent> alergicniPacijenti = new ArrayList<Pacijent>();
 	
 	public Lek() {
 		super();
@@ -175,6 +176,20 @@ public class Lek {
 	public void setVrstaLeka(VrstaLeka vrstaLeka) {
 		this.vrstaLeka = vrstaLeka;
 	}
-	
-	
+
+	public Set<LekNaStanju> getLekoviNaStanju() {
+		return lekoviNaStanju;
+	}
+
+	public void setLekoviNaStanju(Set<LekNaStanju> lekoviNaStanju) {
+		this.lekoviNaStanju = lekoviNaStanju;
+	}
+
+	public List<Pacijent> getAlergicniPacijenti() {
+		return alergicniPacijenti;
+	}
+
+	public void setAlergicniPacijenti(List<Pacijent> alergicniPacijenti) {
+		this.alergicniPacijenti = alergicniPacijenti;
+	}
 }
