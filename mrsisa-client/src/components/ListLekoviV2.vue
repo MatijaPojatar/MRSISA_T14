@@ -74,7 +74,7 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-divider></v-divider>
-      Preporučeni lekovi:
+      <div v-if = "!adminView">Preporučeni lekovi:</div>
       <v-expansion-panel
         v-for="preporuceniLek in preporuceniLekovi"
         :key="preporuceniLek.lek.lekId"
