@@ -280,6 +280,9 @@
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
+            selectedEventPreDialog: {},
+            selectedElementPreDialog: null,
+            selectedOpenPreDialog: false,
             events: [],
             dialog: false,
             lekDialog: false,
@@ -460,6 +463,11 @@
         this.dialog=false;
       },
       openLekList(){
+        this.selectedElementPreDialog=this.selectedElement
+        this.selectedEventPreDialog=this.selectedEvent
+        this.selectedOpenPreDialog=this.selectedOpen
+        this.selectedElement=null
+        this.selectedEvent={}
         this.selectedOpen=false
         this.lekDialog=true;
       },
@@ -468,7 +476,12 @@
         setTimeout(() => {
           
         }, 1000);
-        this.selectedOpen=true
+        this.selectedElement=this.selectedElementPreDialog
+        this.selectedEvent=this.selectedEventPreDialog
+        this.selectedOpen=this.selectedOpenPreDialog
+        this.selectedElementPreDialog=null
+        this.selectedEventPreDialog={}
+        this.selectedOpenPreDialog=false
       },
       endTerminDialog(){
         this.terminDialog=false;
