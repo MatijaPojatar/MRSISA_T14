@@ -12,4 +12,6 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 	
 	Pacijent findOneById(Integer id);
 	
+	Pacijent findOneByMail(String mail);
+	
 }

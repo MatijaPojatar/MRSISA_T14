@@ -1,19 +1,31 @@
 package com.backend.springboot.domain;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /*
  * 
@@ -27,7 +39,7 @@ import org.hibernate.annotations.Where;
 	    + "SET obrisan = true "
 	    + "WHERE id = ?")
 @Where(clause = "obrisan = false")
-public class Osoba {
+public class Osoba implements UserDetails{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -54,9 +66,22 @@ public class Osoba {
 	private LocalDate datumRodjenja;
 	@Column(name = "promenjenaLozinka", nullable = false)
 	private boolean promenjenaLozinka;
+	@Column(name="enabled")  //todo napraviti non nullable, modifikovati konstruktor i default podatke u bazi
+	private boolean enabled = true;
+	
+	@Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;   //mozda i nepotrebno, ali stavljeno zbog tokena
 	
 	@Column(name = "obrisan", nullable = false)
 	private boolean obrisan;
+	
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "osoba_role",
+			joinColumns = @JoinColumn(name = "osoba_id", referencedColumnName = "id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private List<Role> roles;
+	
 	
 	public Osoba() {
 		super();
@@ -76,6 +101,28 @@ public class Osoba {
 		this.pol = pol;
 		this.datumRodjenja = datumRodjenja;
 		this.promenjenaLozinka = promenjenaLozinka;
+		this.obrisan = false;
+		this.enabled = true;  //todo promeniti kad naucimo mejlove i aktivaciju
+	}
+
+	public Timestamp getLastPasswordResetDate() {
+		return lastPasswordResetDate;
+	}
+
+	public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+		this.lastPasswordResetDate = lastPasswordResetDate;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getId() {
@@ -123,6 +170,8 @@ public class Osoba {
 	}
 
 	public void setPassword(String password) {
+		Timestamp now = new Timestamp(new Date().getTime());
+		this.setLastPasswordResetDate(now);
 		this.password = password;
 	}
 
@@ -180,5 +229,38 @@ public class Osoba {
 
 	public void setPromenjenaLozinka(boolean promenjenaLozinka) {
 		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return mail;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

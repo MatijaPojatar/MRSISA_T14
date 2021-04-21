@@ -10,6 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="administratori_apoteke")
 public class AdministratorApoteke extends Osoba {
+
+	private static final long serialVersionUID = 1L;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
 

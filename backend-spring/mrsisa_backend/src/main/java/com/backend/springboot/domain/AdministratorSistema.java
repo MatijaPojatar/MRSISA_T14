@@ -9,7 +9,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="administratori_sistema")
 public class AdministratorSistema extends Osoba {
-	
+
+	private static final long serialVersionUID = 1L;
 	@Column(name="potpis", nullable = true)
 	private String potpis;
 

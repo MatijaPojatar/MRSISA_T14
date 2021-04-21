@@ -25,6 +25,7 @@ import com.backend.springboot.dto.DobavljacDTO;
 @Table(name="dermatolozi")
 public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	
+	private static final long serialVersionUID = 1L;
 	@Column(name = "pocetakRadnogVremena", nullable = false)
 	private LocalTime pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)

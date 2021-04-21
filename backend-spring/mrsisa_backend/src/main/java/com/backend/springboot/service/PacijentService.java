@@ -20,6 +20,10 @@ public class PacijentService {
 	public Pacijent save(Pacijent p) {
 		return pacijentRep.save(p);
 	}
+
+	public Pacijent findByMail(String mail) {
+		return pacijentRep.findOneByMail(mail);
+	}
 	
 	
 }
