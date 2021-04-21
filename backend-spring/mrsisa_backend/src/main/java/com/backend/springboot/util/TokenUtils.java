@@ -21,7 +21,7 @@ public class TokenUtils {
 	@Value("mrsisa_backend")
 	private String APP_NAME;
 	
-	@Value("ultimate_secret")
+	@Value("somesecret")
 	public String SECRET;
 		
 	//Period vazenja 30 minuta
