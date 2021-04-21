@@ -11,15 +11,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.FarmaceutService;
 
@@ -86,8 +89,9 @@ public class FarmaceutController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	@PutMapping("/dodajFarmaceuta/{id}")
+	@PostMapping("/dodajFarmaceuta/{id}")
 	public ResponseEntity<String> dodajFarmaceuta(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
+		System.out.println("=============================================zczcdzcz=================");
 		Farmaceut f=new Farmaceut();
 		f.setAdresa(dto.getAdresa());
 		f.setBrojTelefona(dto.getBrojTelefona());
@@ -109,5 +113,16 @@ public class FarmaceutController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	@GetMapping("/radnoVreme/{id}")
+	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id){
+		System.out.println("==============================================================");
+		Farmaceut f=service.findOne(id);
+		RadnoVremeDTO rv=new RadnoVremeDTO(f.getPocetakRadnogVremena(),f.getKrajRadnogVremena());
+		
+		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
+		
+	}
+	
 
 }

@@ -22,6 +22,11 @@ const router = new Router({
       component: () => import("./components/Registracija")
     },
     {
+      path: "/pacijent",
+      name: "HomepagePacijent",
+      component: () => import("./components/HomepagePacijent")
+    },
+    {
       path: "/registracija/zaposleni",
       name: "RegistracijaZaposlenog",
       component: () => import("./components/Admin/RegZaposlenog")
@@ -30,11 +35,6 @@ const router = new Router({
       path: "/pacijent/zalba/apoteka",
       name: "Zalba na apoteku",
       component: () => import("./components/Admin/ZalbaNaApoteku")
-    },
-    {
-      path: "/alergija",
-      name: "DodajAlergiju",
-      component: () => import("./components/DodajAlergiju")
     },
     {
       path: "/apoteke",

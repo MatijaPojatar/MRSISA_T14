@@ -2,13 +2,15 @@ package com.backend.springboot.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,21 +20,25 @@ import com.backend.springboot.dto.PacijentDTO;
 @Table(name="pacijenti")
 public class Pacijent extends Osoba {
 	@Column(name = "brojPoena", nullable = false)
-	private int brojPoena;
+	private Integer brojPoena;
 	@Column(name = "penali", nullable = false)
-	private int penali;
+	private Integer penali;
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
 	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaApoteku> zalbeNaApoteke = new ArrayList<ZalbaNaApoteku>();
 	
+	@ManyToMany
+	@JoinTable(name = "pacijent_alergije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
+	private List<Lek> alergije = new ArrayList<Lek>();
+	
 	public Pacijent() {
 		super();
 	}
 
-	public Pacijent(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, int brojPoena, int penali) {
+	public Pacijent(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, Integer brojPoena, Integer penali) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
 		this.brojPoena = brojPoena;
 		this.penali = penali;
@@ -71,19 +77,19 @@ public class Pacijent extends Osoba {
 		this.zalbeNaApoteke.remove(zalba);
 	}
 	
-	public int getBrojPoena() {
+	public Integer getBrojPoena() {
 		return brojPoena;
 	}
 
-	public void setBrojPoena(int brojPoena) {
+	public void setBrojPoena(Integer brojPoena) {
 		this.brojPoena = brojPoena;
 	}
 
-	public int getPenali() {
+	public Integer getPenali() {
 		return penali;
 	}
 
-	public void setPenali(int penali) {
+	public void setPenali(Integer penali) {
 		this.penali = penali;
 	}
 
@@ -94,6 +100,12 @@ public class Pacijent extends Osoba {
 	public void setTermini(List<Termin> termini) {
 		this.termini = termini;
 	}
-	
-	
+
+	public List<Lek> getAlergije() {
+		return alergije;
+	}
+
+	public void setAlergije(List<Lek> alergije) {
+		this.alergije = alergije;
+	}
 }

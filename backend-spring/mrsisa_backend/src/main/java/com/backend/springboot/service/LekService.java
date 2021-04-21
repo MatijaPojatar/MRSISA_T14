@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
-import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
@@ -33,7 +32,7 @@ public class LekService {
 	
 	
 
-	public Collection<Lek> findAll() {
+	public List<Lek> findAll() {
 		return lekRep.findAll();
 	}
 

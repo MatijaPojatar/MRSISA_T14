@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
+import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.service.DermatologService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -85,5 +87,14 @@ public class DermatologController {
 		service.save(d);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@GetMapping("/radnoVreme/{id}")
+	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id){
+		Dermatolog d=service.findOne(id);
+		RadnoVremeDTO rv=new RadnoVremeDTO(d.getPocetakRadnogVremena(),d.getKrajRadnogVremena());
+		
+		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
+		
 	}
 }

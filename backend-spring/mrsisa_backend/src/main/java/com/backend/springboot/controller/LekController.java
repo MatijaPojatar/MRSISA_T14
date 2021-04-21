@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +24,6 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.ParametriPretrageLeka;
-import com.backend.springboot.domain.ParametriPretrageRezervacije;
-import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
 import com.backend.springboot.dto.LekDTO;
@@ -47,9 +44,20 @@ public class LekController {
 	@Autowired 
 	private MagacinService magacinService;
 	
-
 	private ArrayList<Lek> pronadjeniLekovi;
+	
+	@GetMapping(value = "/all")
+	public ResponseEntity<List<LekDTO>> getAll() {
+		List<Lek> lekovi = lekService.findAll();
+		List<LekDTO> dto = new ArrayList<>();
+		
+		for (Lek l : lekovi) {
+			dto.add(new LekDTO(l));
+		}
 
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+	
 	/*
 	 * @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE) public
 	 * ResponseEntity<Collection<Lek>> getLekovi() { Collection<Lek> lekovi =

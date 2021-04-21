@@ -84,12 +84,8 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="farmaceut ? updateRangeFarmaceutAxios(): updateRangeDermatologAxios()"
-        >
-         <!--
-          :first-interval= 8 
-          :interval-count= 12
-          -->
+          @change="preglediAxios(), savetovanjaAxios()" 
+        > <!-- TODO -->
         <template v-slot:day-body="{ date, week }">
             <div
               class="v-current-time"
@@ -110,11 +106,11 @@
             flat
           >
             <v-toolbar
-              :color=" selectedEvent.pacijent ? selectedEvent.izvrsen ? 'grey': '#1976D2': 'green'"
+              :color="'#1976D2'"
               dark
             >
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
+              <!--<v-spacer></v-spacer>
               <v-btn icon @click="beginPregled" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen" >
                 <v-icon>mdi-forward</v-icon>
               </v-btn>
@@ -123,7 +119,7 @@
               </v-btn>
               <v-btn icon @click="cancelPregled">
                 <v-icon>mdi-close-circle-outline</v-icon>
-              </v-btn>
+              </v-btn>-->
             </v-toolbar>
             <v-card-text>
               <div >Start: {{selectedEvent.start}}</div>
@@ -280,6 +276,9 @@
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
+            selectedEventPreDialog: {},
+            selectedElementPreDialog: null,
+            selectedOpenPreDialog: false,
             events: [],
             dialog: false,
             lekDialog: false,
@@ -342,13 +341,13 @@
 
             nativeEvent.stopPropagation()
         },
-        updateRangeDermatologAxios(){
-          axios.get(`http://localhost:8080/pregled/all/${this.user.id}`).then(response => {
-           const events = []
+      preglediAxios (){
+        axios.get(`http://localhost:8080/pregled/all/3`).then(response => {
+           const pregledi = []
           response.data.forEach(element => {
-            events.push({
-              name:element.name,
-              pacijent:element.pacijentId,
+            pregledi.push({
+              name: element.name,
+              pacijent: element.pacijentId,
               apoteka: element.apotekaId,
               start: new Date(element.start),
               end: new Date(element.end),
@@ -358,17 +357,17 @@
               started: false,
               timed: true,
             })
-            this.events = events
+            this.events = pregledi
           });
         });
-        },
-      updateRangeFarmaceutAxios (){
-        axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
-           const events = []
+      },
+      savetovanjaAxios (){
+        axios.get(`http://localhost:8080/savetovanje/all/3`).then(response => {
+           const savetovanja = []
           response.data.forEach(element => {
-            events.push({
-              name:element.name,
-              pacijent:element.pacijentId,
+            savetovanja.push({
+              name: element.name,
+              pacijent: element.pacijentId,
               apoteka: element.apotekaId,
               start: new Date(element.start),
               end: new Date(element.end),
@@ -378,7 +377,7 @@
               started: false,
               timed: true,
             })
-            this.events = events
+            this.events = savetovanja
           });
         });
       },
@@ -428,17 +427,6 @@
             this.selectedEvent.started=true;
           }
       },
-      getEventColor (event) {
-        if(event.pacijent){
-          if(event.izvrsen){
-              return 'grey';
-          } else{
-              return '#1976D2';
-          }
-        }else{
-          return 'green';
-        }
-      },
       endTermin(){
         let path="pregled"
         if(this.farmaceut){
@@ -460,6 +448,11 @@
         this.dialog=false;
       },
       openLekList(){
+        this.selectedElementPreDialog=this.selectedElement
+        this.selectedEventPreDialog=this.selectedEvent
+        this.selectedOpenPreDialog=this.selectedOpen
+        this.selectedElement=null
+        this.selectedEvent={}
         this.selectedOpen=false
         this.lekDialog=true;
       },
@@ -468,8 +461,12 @@
         setTimeout(() => {
           
         }, 1000);
-
-        this.selectedOpen=true
+        this.selectedElement=this.selectedElementPreDialog
+        this.selectedEvent=this.selectedEventPreDialog
+        this.selectedOpen=this.selectedOpenPreDialog
+        this.selectedElementPreDialog=null
+        this.selectedEventPreDialog={}
+        this.selectedOpenPreDialog=false
       },
       endTerminDialog(){
         this.terminDialog=false;

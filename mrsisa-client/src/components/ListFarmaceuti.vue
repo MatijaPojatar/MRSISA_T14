@@ -78,7 +78,7 @@
       max-width="760">
       <v-card>
         <v-card-title class="headline">
-          Izmeni lek
+          Izmeni farmaceuta
         </v-card-title>
         <AccountView :user="this.selektovanFarmaceut" :farmaceut="true"/>
         <v-card-actions>
