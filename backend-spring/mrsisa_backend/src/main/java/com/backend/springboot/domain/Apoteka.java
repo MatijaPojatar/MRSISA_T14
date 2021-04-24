@@ -53,6 +53,8 @@ public class Apoteka {
 	private Set<AdministratorApoteke> administratori = new HashSet<AdministratorApoteke>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ZalbaNaApoteku> zalbe = new ArrayList<ZalbaNaApoteku>();
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
@@ -245,6 +247,24 @@ public class Apoteka {
 	public void setNarudzbenice(List<Narudzbenica> narudzbenice) {
 		this.narudzbenice = narudzbenice;
 	}
+
+	public Set<AdministratorApoteke> getAdministratori() {
+		return administratori;
+	}
+
+	public void setAdministratori(Set<AdministratorApoteke> administratori) {
+		this.administratori = administratori;
+	}
+
+	public List<OdsustvoFarmaceut> getOdsustva() {
+		return odsustva;
+	}
+
+	public void setOdsustva(List<OdsustvoFarmaceut> odsustva) {
+		this.odsustva = odsustva;
+	}
+	
+	
 	
 	
 }

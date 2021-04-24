@@ -26,21 +26,21 @@ public class OdsustvoFarmaceut {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Farmaceut farmaceut;
 	@ManyToOne(fetch = FetchType.EAGER)
-	private AdministratorApoteke admin;
+	private Apoteka apoteka;
 	
 	public OdsustvoFarmaceut() {
 		super();
 	}
 
 	public OdsustvoFarmaceut(Integer id, LocalDateTime pocetak, LocalDateTime kraj, boolean odobren,
-			Farmaceut farmaceut, AdministratorApoteke admin) {
+			Farmaceut farmaceut, Apoteka apoteka) {
 		super();
 		this.id = id;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
 		this.odobren = odobren;
 		this.farmaceut = farmaceut;
-		this.admin = admin;
+		this.apoteka = apoteka;
 	}
 
 	public Integer getId() {
@@ -83,13 +83,15 @@ public class OdsustvoFarmaceut {
 		this.farmaceut = farmaceut;
 	}
 
-	public AdministratorApoteke getAdmin() {
-		return admin;
+	public Apoteka getApoteka() {
+		return apoteka;
 	}
 
-	public void setAdmin(AdministratorApoteke admin) {
-		this.admin = admin;
+	public void setApoteka(Apoteka apoteka) {
+		this.apoteka = apoteka;
 	}
+
+	
 	
 	
 

@@ -6,7 +6,7 @@ import com.backend.springboot.domain.OdsustvoFarmaceut;
 
 public class OdsustvoFarmaceutDTO {
 	
-	private Integer id,farmaceutId,adminId;
+	private Integer id,farmaceutId,apotekaId;
 	private LocalDateTime pocetak,kraj;
 	private boolean odobren;
 	
@@ -20,9 +20,9 @@ public class OdsustvoFarmaceutDTO {
 
 	public OdsustvoFarmaceutDTO(OdsustvoFarmaceut o) {
 		super();
-		this.adminId=o.getId();
+		this.id=o.getId();
 		this.farmaceutId=o.getFarmaceut().getId();
-		this.adminId=o.getAdmin().getId();
+		this.apotekaId=o.getApoteka().getId();
 		this.pocetak=o.getPocetak();
 		this.kraj=o.getKraj();
 		this.odobren=o.isOdobren();
@@ -54,16 +54,15 @@ public class OdsustvoFarmaceutDTO {
 
 
 
-	public Integer getAdminId() {
-		return adminId;
+	public Integer getApotekaId() {
+		return apotekaId;
 	}
 
 
 
-	public void setAdminId(Integer adminId) {
-		this.adminId = adminId;
+	public void setApotekaId(Integer apotekaId) {
+		this.apotekaId = apotekaId;
 	}
-
 
 
 	public LocalDateTime getPocetak() {

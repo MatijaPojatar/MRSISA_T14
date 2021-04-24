@@ -50,6 +50,7 @@ public class OdsustvoController {
 		of.setPocetak(odsustvo.getPocetak());
 		of.setOdobren(odsustvo.isOdobren());
 		of.setFarmaceut(f);
+		of.setApoteka(f.getApoteka());
 		
 		odFarmService.save(of);
 		

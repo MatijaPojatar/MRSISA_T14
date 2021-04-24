@@ -108,7 +108,7 @@ export default {
                     kraj: kraj,
                     farmaceutId: this.doktorId,
                     odobren: true,
-                    adminId: null,
+                    apotekaId: null,
                 }
             }
             await axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
