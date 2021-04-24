@@ -12,12 +12,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
+import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.OdsustvoFarmaceutDTO;
+import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.FarmaceutService;
+import com.backend.springboot.service.OdsustvoDermatologService;
 import com.backend.springboot.service.OdsustvoFarmaceutService;
+import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -31,9 +37,15 @@ public class OdsustvoController {
 	private SavetovanjeService savService;
 	@Autowired
 	private FarmaceutService farmService;
+	@Autowired
+	private OdsustvoDermatologService odDermService;
+	@Autowired
+	private PregledService preService;
+	@Autowired
+	private DermatologService dermService;
 	
 	@PutMapping("/farmaceut/dodaj/{id}")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
+	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
 		List<Savetovanje> checkList=savService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
 		for(Savetovanje s:checkList) {
@@ -53,6 +65,30 @@ public class OdsustvoController {
 		of.setApoteka(f.getApoteka());
 		
 		odFarmService.save(of);
+		
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@PutMapping("/dermatolog/dodaj/{id}")
+	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
+		List<Pregled> checkList=preService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
+		int counter=0;
+		for(Pregled p:checkList) {
+			if(!p.isIzvrsen()) {
+				counter++;
+			}
+		}
+		if(counter>0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		OdsustvoDermatolog od=new OdsustvoDermatolog();
+		Dermatolog d=dermService.findOne(id);
+		od.setKraj(odsustvo.getKraj());
+		od.setPocetak(odsustvo.getPocetak());
+		od.setOdobren(odsustvo.isOdobren());
+		od.setDermatolog(d);
+		
+		odDermService.save(od);
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}

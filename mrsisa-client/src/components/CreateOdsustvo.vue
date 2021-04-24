@@ -110,6 +110,13 @@ export default {
                     odobren: true,
                     apotekaId: null,
                 }
+            }else{
+                odsustvo={
+                    pocetak:pocetak,
+                    kraj: kraj,
+                    dermatologId: this.doktorId,
+                    odobren: true,
+                }
             }
             await axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
                     this.odgovor=response.data;

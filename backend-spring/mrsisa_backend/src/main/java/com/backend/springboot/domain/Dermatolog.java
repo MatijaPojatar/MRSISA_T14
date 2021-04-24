@@ -34,6 +34,8 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	private Set<Apoteka> apoteke=new HashSet<Apoteka>();
 	@OneToMany(mappedBy = "dermatolog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Pregled> pregledi=new ArrayList<Pregled>();
+	@OneToMany(mappedBy = "dermatolog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<OdsustvoDermatolog> odsustva=new ArrayList<OdsustvoDermatolog>();
 
 
 	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
@@ -94,6 +96,16 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 
 	public void setApoteke(Set<Apoteka> apoteke) {
 		this.apoteke = apoteke;
+	}
+
+
+	public List<OdsustvoDermatolog> getOdsustva() {
+		return odsustva;
+	}
+
+
+	public void setOdsustva(List<OdsustvoDermatolog> odsustva) {
+		this.odsustva = odsustva;
 	}
 	
 	
