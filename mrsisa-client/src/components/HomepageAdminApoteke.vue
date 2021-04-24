@@ -84,6 +84,15 @@
                     Farmaceuti
                 </div></v-list-item-title>
           </v-list-item>
+
+          <v-list-item link @click="dermatoloziView">
+            <v-list-item-icon>
+              <v-icon>mdi-stethoscope</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Dermatolozi
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -116,6 +125,9 @@
       <v-container fluid v-if="showFarmaceuti" :style="{width:'70vh'}">
         <FarmaceutiAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
+       <v-container fluid v-if="showDermatolozi" :style="{width:'70vh'}">
+        <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -127,6 +139,7 @@ import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import LekoviAdminApoteke from "./LekoviAdminApoteke";
 import FarmaceutiAdminApoteke from "./FarmaceutiAdminApoteke";
+import DermatoloziAdminApoteke from "./DermatoloziAdminApoteke";
 import axios from "axios";
 
 export default {
@@ -136,7 +149,8 @@ export default {
         AccountView,
         PasswordSwitch,
         LekoviAdminApoteke,
-        FarmaceutiAdminApoteke
+        FarmaceutiAdminApoteke,
+        DermatoloziAdminApoteke
     },
     data: () => ({
     showCalendar: false,
@@ -144,6 +158,7 @@ export default {
     showPassword: false,
     showLekovi: false,
     showFarmaceuti: false,
+    showDermatolozi: false,
     user: {},
   }),
   mounted(){
@@ -163,6 +178,7 @@ export default {
           this.showPassword=false;
           this.showLekovi = false;
           this.showFarmaceuti = false;
+          this.showDermatolozi = false;
       },
       accountView(){
           this.showCalendar=false;
@@ -170,6 +186,7 @@ export default {
           this.showPassword=false;
           this.showLekovi = false;
           this.showFarmaceuti = false;
+          this.showDermatolozi = false;
       },
       logout(){
         window.location.href="http://localhost:8081/";
@@ -180,6 +197,7 @@ export default {
           this.showPassword=true;
           this.showLekovi = false;
           this.showFarmaceuti = false;
+          this.showDermatolozi = false;
       },
       lekoviView(){
           this.showCalendar=false;
@@ -187,6 +205,7 @@ export default {
           this.showPassword=false;
           this.showLekovi = true;
           this.showFarmaceuti = false;
+          this.showDermatolozi = false;
       },
       farmaceutiView(){
           this.showCalendar=false;
@@ -194,6 +213,15 @@ export default {
           this.showPassword=false;
           this.showLekovi = false;
           this.showFarmaceuti = true;
+          this.showDermatolozi = false;
+      },
+      dermatoloziView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showLekovi = false;
+          this.showFarmaceuti = false;
+          this.showDermatolozi = true;
       },
   },
 }
