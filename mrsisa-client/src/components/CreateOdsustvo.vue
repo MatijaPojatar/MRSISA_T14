@@ -58,6 +58,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
     data: () => ({
       dates: [],
@@ -65,6 +67,7 @@ export default {
       dialog: false,
       dialogTitle: "",
       dialogMessage: "",
+      odgovor: true,
     }),
     props: {
         doktorId: Number,
@@ -82,12 +85,44 @@ export default {
       },
     },
     methods:{
-        posaljiZahtev(){
+        async posaljiZahtev(){
             if(this.dates.length!=2){
                 this.dialogTitle="Greška";
                 this.dialogMessage="Niste izabrali dva datuma";
                 this.dialog=true;
             }
+            let pocetak,kraj;
+            if(this.dates[0]<this.dates[1]){
+                pocetak=new Date(this.dates[0])
+                kraj = new Date(this.dates[1])
+            }else{
+                pocetak=new Date(this.dates[1])
+                kraj = new Date(this.dates[0])
+            }
+            let path="dermatolog"
+            let odsustvo={}
+            if(this.farmaceut){
+                path="farmaceut"
+                odsustvo={
+                    pocetak:pocetak,
+                    kraj: kraj,
+                    farmaceutId: this.doktorId,
+                    odobren: true,
+                    adminId: null,
+                }
+            }
+            await axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
+                    this.odgovor=response.data;
+                });
+            
+            if(!this.odgovor){
+                this.dialogTitle="Greška";
+                this.dialogMessage="Postoje termini u unetom periodu.";
+            }else{
+                this.dialogTitle="Uspeh";
+                this.dialogMessage="Zahtev poslat.";
+            }
+            this.dialog=true;
         },
         endDialog(){
             this.dialog=false;

@@ -1,10 +1,14 @@
 package com.backend.springboot.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -12,6 +16,8 @@ import javax.persistence.Table;
 public class AdministratorApoteke extends Osoba {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
+	@OneToMany(mappedBy = "admin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 
 	public Apoteka getApoteka() {
 		return apoteka;
@@ -35,6 +41,16 @@ public class AdministratorApoteke extends Osoba {
 			boolean promenjenaLozinka) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
 	}
+
+	public List<OdsustvoFarmaceut> getOdsustva() {
+		return odsustva;
+	}
+
+	public void setOdsustva(List<OdsustvoFarmaceut> odsustva) {
+		this.odsustva = odsustva;
+	}
+	
+	
 	
 	
 }

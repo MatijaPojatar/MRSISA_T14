@@ -34,6 +34,8 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	private Apoteka apoteka;
 	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Savetovanje> savetovanja=new ArrayList<Savetovanje>();
+	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
 
 	public Farmaceut() {
@@ -102,6 +104,20 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	public void setKrajRadnogVremena(LocalTime krajRadnogVremena) {
 		this.krajRadnogVremena = krajRadnogVremena;
 	}
+
+
+
+	public List<OdsustvoFarmaceut> getOdsustva() {
+		return odsustva;
+	}
+
+
+
+	public void setOdsustva(List<OdsustvoFarmaceut> odsustva) {
+		this.odsustva = odsustva;
+	}
+	
+	
 
 
 
