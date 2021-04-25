@@ -1,0 +1,117 @@
+<template>
+<v-row>
+  <v-data-table
+    :headers="headers"
+    :items="pacijenti"
+    :sort-by="['ime', 'prezime','datum']"
+    :sort-desc="[false, true]"
+    multi-sort
+    class="elevation-1"
+  >
+    <template v-slot:item.actions="{ item }">
+      <v-icon
+        small
+        class="mr-2"
+        @click="showAccount(item)"
+      >
+        mdi-account
+      </v-icon>
+    </template>
+  </v-data-table>
+  <v-dialog
+    v-model="dialog"
+    persistent
+    scrollable
+    retain-focus
+      max-width="960">
+      <v-card>
+        <v-card-title class="headline">
+          Nalog pacijenta
+        </v-card-title>
+        <v-card-text>
+        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+</v-row>
+</template>
+
+<script>
+
+import axios from "axios";
+import AccountView from "./AccountView";
+
+export default {
+    components:{
+        AccountView,
+    },
+    data: () => ({
+        headers: [
+          {
+            text: 'Ime',
+            align: 'start',
+            value: 'ime',
+          },
+          { text: 'Prezime', value: 'prezime' },
+          { text: 'Datum poslednjeg pregleda', value: 'datum' },
+          { text: 'Nalog', value: 'actions', sortable: false },
+        ],
+        pacijenti: [],
+        dialog: false,
+        selectedUser: {},
+    }),
+    props: {
+        doktorId: Number,
+        farmaceut: Boolean,
+    },
+    mounted(){
+        this.loadPacijenti();
+    },
+    methods :{
+        async loadPacijenti(){
+            let path="pregled"
+            if(this.farmaceut){
+                path="savetovanje"
+            }
+            await axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
+            {
+                const pacijenti=[];
+                response.data.forEach(element => {
+                    pacijenti.push({
+                        ime: element.ime,
+                        prezime: element.prezime,
+                        brojTelefona: element.brojTelefona,
+                        adresa: element.adresa,
+                        grad: element.grad,
+                        drzava: element.drzava,
+                        pol: element.pol,
+                        datum: new Date(element.poslednjiPregled[0].toString()+"-"+element.poslednjiPregled[1].toString()+"-"+element.poslednjiPregled[2].toString()+" "+element.poslednjiPregled[3].toString()+":"+element.poslednjiPregled[4].toString()),
+                    }
+                    )
+                    this.pacijenti=pacijenti;
+                });
+            }
+            )
+        },
+        showAccount(user){
+            console.log(user);
+            this.selectedUser=user;
+            this.dialog=true;
+        },
+        endDialog(){
+            this.dialog=false;
+        },
+    },
+}
+
+</script>

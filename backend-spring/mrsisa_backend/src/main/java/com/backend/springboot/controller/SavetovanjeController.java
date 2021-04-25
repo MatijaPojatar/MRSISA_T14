@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
+import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.repository.LekUIzvestajuRepository;
 import com.backend.springboot.service.ApotekaService;
@@ -168,5 +170,39 @@ public class SavetovanjeController {
 		service.save(s);
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/all/pacijenti/{id}")
+	public ResponseEntity<List<PacijentTerminDTO>> getAllPacijentiForFarmaceut(@PathVariable Integer id) {	
+		
+		System.out.println("==================================================");
+
+		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(id);
+		
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		
+		HashMap<Integer, LocalDateTime> termini= new HashMap<Integer, LocalDateTime>();
+
+		for (Savetovanje s : savetovanja) {
+			if(!s.isIzvrsen()) {
+				continue;
+			}
+			if(!pacijenti.contains(s.getPacijent())) {
+				pacijenti.add(s.getPacijent());
+				termini.put(s.getPacijent().getId(), s.getPocetak());
+			}else {
+				if(termini.get(s.getPacijent().getId()).isBefore(s.getPocetak())) {
+					termini.replace(s.getPacijent().getId(), s.getPocetak());
+				}
+			}
+		}
+		
+		List<PacijentTerminDTO> pacijentiDTO=new ArrayList<PacijentTerminDTO>();
+		
+		for(Pacijent p:pacijenti) {
+			pacijentiDTO.add(new PacijentTerminDTO(p, termini.get(p.getId())));
+		}
+
+		return new ResponseEntity<List<PacijentTerminDTO>>(pacijentiDTO, HttpStatus.OK);
 	}
 }

@@ -73,6 +73,14 @@
                     Zahtev za odsutsvo
                 </div></v-list-item-title>
           </v-list-item>
+          <v-list-item link @click="pacijentView">
+            <v-list-item-icon>
+              <v-icon>mdi-account-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Pregledani pacijenti 
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -89,13 +97,16 @@
         <Calendar :farmaceut="farmaceut" :user="user"/>
       </v-container>
       <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
-        <AccountView :user="user" :farmaceut="farmaceut"/>
+        <AccountView :user="user" :farmaceut="farmaceut" :editable="true"/>
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password" :farmaceut="farmaceut" :id="user.id"/>
       </v-container>
       <v-container fluid v-if="showOdsustvo" :style="{width:'70vh'}">
         <CreateOdsustvo :farmaceut="farmaceut" :doktorId="user.id"/>
+      </v-container>
+      <v-container fluid v-if="showPacijenti" :style="{width:'70vh'}">
+        <PacijentList :farmaceut="farmaceut" :doktorId="user.id"/>
       </v-container>
     </v-main>
       </v-app>
@@ -107,6 +118,7 @@ import Calendar from "./Calendar";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import CreateOdsustvo from "./CreateOdsustvo";
+import PacijentList from "./PacijentList"
 import axios from "axios";
 
 export default {
@@ -116,12 +128,14 @@ export default {
         AccountView,
         PasswordSwitch,
         CreateOdsustvo,
+        PacijentList,
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
     showPassword: false,
     showOdsustvo: false,
+    showPacijenti: false,
     farmaceut: true,
     user: {},
   }),
@@ -148,18 +162,21 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showOdsustvo=false;
+          this.showPacijenti=false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
           this.showPassword=false;
           this.showOdsustvo=false;
+          this.showPacijenti=false;
       },
       odsustvoView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showOdsustvo=true;
+          this.showPacijenti=false;
       },
       logout(){
         window.location.href="http://localhost:8081/";
@@ -169,6 +186,14 @@ export default {
           this.showAccount=false;
           this.showPassword=true;
           this.showOdsustvo=false;
+          this.showPacijenti=false;
+      },
+      pacijentView(){
+        this.showCalendar=false;
+        this.showAccount=false;
+        this.showPassword=false;
+        this.showOdsustvo=false;
+        this.showPacijenti=true;
       },
   },
 }

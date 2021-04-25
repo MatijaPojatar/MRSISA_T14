@@ -10,12 +10,14 @@
       :counter="20"
       :rules="nameRules"
       label="Ime"
+      :disabled="!editable"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="newInfo.prezime"
       :counter="20"
+      :disabled="!editable"
       :rules="nameRules"
       label="Prezime"
       required
@@ -24,6 +26,7 @@
     <v-text-field
       v-model="newInfo.brojTelefona"
       :counter="10"
+      :disabled="!editable"
       :rules="brojRules"
       label="Broj Telefona"
       required
@@ -32,6 +35,7 @@
     <v-text-field
       v-model="newInfo.adresa"
       :rules="requiredRules"
+      :disabled="!editable"
       label="Adresa"
       required
     ></v-text-field>
@@ -39,6 +43,7 @@
     <v-text-field
       v-model="newInfo.grad"
       :rules="requiredRules"
+      :disabled="!editable"
       label="Grad"
       required
     ></v-text-field>
@@ -46,12 +51,14 @@
     <v-text-field
       v-model="newInfo.drzava"
       :rules="requiredRules"
+      :disabled="!editable"
       label="Država"
       required
     ></v-text-field>
 
     <v-select
       v-model="newInfo.pol"
+      :disabled="!editable"
       :items="items"
       :rules="[v => !!v || 'Obavezno polje']"
       item-text="Pol"
@@ -61,6 +68,7 @@
 
     <v-checkbox
       v-model="checkbox"
+      v-if="editable"
       :rules="[v => !!v || 'You must agree to continue!']"
       label="Da li ste sigurni?"
       required
@@ -68,6 +76,7 @@
 
     <v-btn
       :disabled="!valid"
+      v-if="editable"
       class="mr-4"
       @click="validate"
     >
@@ -77,6 +86,7 @@
     <v-btn
       color="error"
       class="mr-4"
+      v-if="editable"
       @click="reset"
     >
       Resetuj
@@ -108,7 +118,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import Vue from "vue";
 
   export default {
 
@@ -145,6 +155,7 @@ import axios from "axios";
     props :{
         user: {},
         farmaceut: Boolean,
+        editable: Boolean,
     },
     created(){
         this.reset()
@@ -164,9 +175,9 @@ import axios from "axios";
             this.user.drzava=this.newInfo.drzava
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
             if(this.farmaceut){
-                axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
+                Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
             }else{
-                axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+                 Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
             }
             this.dialog=true;
         }
