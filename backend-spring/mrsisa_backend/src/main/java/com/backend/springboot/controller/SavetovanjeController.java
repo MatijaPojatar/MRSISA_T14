@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
@@ -31,6 +32,7 @@ import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
+import com.backend.springboot.service.OdsustvoFarmaceutService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.SavetovanjeService;
 
@@ -51,6 +53,8 @@ public class SavetovanjeController {
 	private LekUIzvestajuService izvestajService;
 	@Autowired
 	private PacijentService pacijentService;
+	@Autowired
+	private OdsustvoFarmaceutService odsustvoService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
@@ -146,6 +150,12 @@ public class SavetovanjeController {
 		if(checkList.size()!=0) {
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
+		
+		List<OdsustvoFarmaceut> checkOdsustva=odsustvoService.findExistInTime(pocetak, kraj);
+		if(checkOdsustva.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
 		Savetovanje s=new Savetovanje();
 		s.setFarmaceut(farmService.findOne(id));
 		s.setIzvrsen(savetovanje.isIzvrsen());

@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
+import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
+import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.service.DermatologService;
 
@@ -96,5 +98,16 @@ public class DermatologController {
 		
 		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
 		
+	}
+	
+	@GetMapping("/apoteka/{id}")
+	public ResponseEntity<Collection<DermatologDTO>> findAllByApotekaId(@PathVariable Integer id){
+		ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.findAllByApotekaId(id);
+		ArrayList<DermatologDTO> dtoList=new ArrayList<DermatologDTO>();
+		for(Dermatolog l:rezultatPretrage) {
+			dtoList.add(new DermatologDTO(l));
+		}
+		
+		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
 	}
 }

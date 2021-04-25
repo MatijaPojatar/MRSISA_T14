@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
+import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
@@ -32,6 +34,7 @@ import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
+import com.backend.springboot.service.OdsustvoDermatologService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.PregledService;
 
@@ -52,6 +55,8 @@ public class PregledController {
 	private ApotekaService apotekaService;
 	@Autowired
 	private DermatologService derService;
+	@Autowired
+	private OdsustvoDermatologService odsustvoService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAll() {
@@ -141,6 +146,12 @@ public class PregledController {
 		if(checkList.size()!=0) {
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
+		
+		List<OdsustvoDermatolog> checkOdsustva=odsustvoService.findExistInTime(pocetak, kraj);
+		if(checkOdsustva.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
 		Pregled p=new Pregled();
 		p.setDermatolog(derService.findOne(id));
 		p.setIzvrsen(pregled.isIzvrsen());

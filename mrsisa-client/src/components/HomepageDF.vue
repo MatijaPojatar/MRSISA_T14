@@ -65,6 +65,14 @@
                     Kalendar
                 </div></v-list-item-title>
           </v-list-item>
+          <v-list-item link @click="odsustvoView">
+            <v-list-item-icon>
+              <v-icon>mdi-coffee</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Zahtev za odsutsvo
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -86,6 +94,9 @@
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password" :farmaceut="farmaceut" :id="user.id"/>
       </v-container>
+      <v-container fluid v-if="showOdsustvo" :style="{width:'70vh'}">
+        <CreateOdsustvo :farmaceut="farmaceut" :doktorId="user.id"/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -95,6 +106,7 @@
 import Calendar from "./Calendar";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
+import CreateOdsustvo from "./CreateOdsustvo";
 import axios from "axios";
 
 export default {
@@ -102,12 +114,14 @@ export default {
     components:{
         Calendar,
         AccountView,
-        PasswordSwitch
+        PasswordSwitch,
+        CreateOdsustvo,
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
     showPassword: false,
+    showOdsustvo: false,
     farmaceut: true,
     user: {},
   }),
@@ -133,11 +147,19 @@ export default {
           this.showCalendar=true;
           this.showAccount=false;
           this.showPassword=false;
+          this.showOdsustvo=false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
           this.showPassword=false;
+          this.showOdsustvo=false;
+      },
+      odsustvoView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showOdsustvo=true;
       },
       logout(){
         window.location.href="http://localhost:8081/";
@@ -146,6 +168,7 @@ export default {
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=true;
+          this.showOdsustvo=false;
       },
   },
 }
