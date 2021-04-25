@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
     name: "Prijava",
@@ -43,7 +44,7 @@ export default {
 
     data: () => ({
         email: "",
-        password: "",
+        lozinka: "",
         valid: true,
         show: false,
         rules: {
@@ -61,14 +62,38 @@ export default {
                 this.$emit("input", value);
             }
         },
+        ...mapGetters({
+            currentMail: "korisnici/getMail"
+        })
     },
     methods: {
-        loginAsPacijent(){
-            this.$router.push('/pacijent');
+        ...mapActions({
+            logInAction: "korisnici/logInAction"
+        }),
+
+        onSubmit(){
+            alert("Funkcija nije u funkcija");
         },
+
+        async loginAsPacijent(){
+            try{
+                const credentials = {
+                    mail : this.email,
+                    password : this.lozinka
+                }
+                await this.logInAction(credentials);
+                alert("USPEH");
+                //this.$router.push('/pacijent');
+            }catch(error){
+                alert("Greska pri prijavi")
+            }
+            
+        },
+
         loginAsFarmaceut(){
             this.$router.push('/farmaceut');
         },
+
         loginAsDermatolog(){
             this.$router.push('/dermatolog');
         },

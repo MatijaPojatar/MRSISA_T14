@@ -12,6 +12,8 @@ public interface OsobaRepository extends JpaRepository<Osoba, Integer> {
 	
 	Osoba save(Osoba osoba);
 	
+	Osoba findOneByMail(String mail);
+	
 	Osoba findOneById(Integer id);
 	
 }

@@ -16,7 +16,8 @@ Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
 
-Vue.axios.defaults.headers['Authorization'] = localStorage.getItem('token');
+Vue.axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem('token');
+// this.axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
 Vue.axios.defaults.baseURL = 'http://localhost:8080';
 
 new Vue({

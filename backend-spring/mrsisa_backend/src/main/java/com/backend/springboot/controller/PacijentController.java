@@ -37,12 +37,20 @@ public class PacijentController {
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
 	
-	@PostMapping()
-	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody Pacijent pacijentInfo){
-		Pacijent pacijent = pacijentService.save(pacijentInfo);
+	@GetMapping("/mail/{mail}")
+	public ResponseEntity<PacijentDTO> getOne(@PathVariable String mail){
+		Pacijent p = pacijentService.findByMail(mail);
+		PacijentDTO dto = new PacijentDTO(p);
 		
-		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
+	
+//	@PostMapping()
+//	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody Pacijent pacijentInfo){
+//		Pacijent pacijent = pacijentService.save(pacijentInfo);
+//		
+//		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
+//	}
 	
 	@PutMapping("/penal/{id}")
 	public ResponseEntity<String> dodeliPenal(@PathVariable Integer id){

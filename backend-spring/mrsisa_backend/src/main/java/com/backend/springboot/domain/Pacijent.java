@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.PacijentDTO;
+
 @Entity
 @Table(name="pacijenti")
 public class Pacijent extends Osoba {
@@ -42,6 +44,22 @@ public class Pacijent extends Osoba {
 		this.penali = penali;
 	}
 	
+
+	public Pacijent(PacijentDTO p) {
+		this.setId(p.getId());
+		this.setIme(p.getIme());
+		this.setPrezime(p.getPrezime());
+		this.setMail(p.getMail());
+		this.setPassword(p.getPassword());
+		this.setAdresa(p.getAdresa());
+		this.setGrad(p.getGrad());
+		this.setDrzava(p.getDrzava());
+		this.setBrojTelefona(p.getBrojTelefona());
+		this.setPol(p.getPol());
+		this.setDatumRodjenja(p.getDatumRodjenja());
+		this.setBrojPoena(p.getBrojPoena());
+		this.setPenali(p.getPenali());
+	}
 
 	public List<ZalbaNaApoteku> getZalbeNaApoteke() {
 		return zalbeNaApoteke;

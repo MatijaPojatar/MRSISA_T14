@@ -3,6 +3,9 @@ package com.backend.springboot.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Osoba;
@@ -10,7 +13,7 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.repository.OsobaRepository;
 
 @Service
-public class OsobaService {
+public class OsobaService implements UserDetailsService{
 
 	@Autowired
 	private OsobaRepository osobaRep;
@@ -39,6 +42,17 @@ public class OsobaService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		Osoba osoba = osobaRep.findOneByMail(username);
+		if(osoba == null) {
+			throw new UsernameNotFoundException(String.format("Niko nije pronadjen sa email adresom '%s' .", username));
+		}else {
+			return osoba;
+		}
 	}
 
 }
