@@ -152,7 +152,7 @@
              },
 
              ObrisiDermatologa(){
-                 axios.put(`http://localhost:8080/farmaceut/obrisiFarmaceuta/${this.selektovan}`)
+                 axios.put(`http://localhost:8080/dermatolog/obrisiDermatologa/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
                  location.reload();
              },
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
@@ -107,5 +108,21 @@ public class DermatologController {
 		}
 		
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@PutMapping("/obrisiDermatologa/{id}")
+	public ResponseEntity<String> obrisiDermatologa(@PathVariable Integer id, @RequestBody String apotekaId) {
+		service.obrisiDermatologaIzApoteke(id, Integer.parseInt(apotekaId));
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PostMapping("/dodajDermatologa/{id}")
+	public ResponseEntity<String> dodajDermatologa(@PathVariable Integer id,@RequestBody DermatologDTO dto){
+		System.out.println("=============================================zczcdzcz=================");
+		
+		
+		//service.save(f);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 }

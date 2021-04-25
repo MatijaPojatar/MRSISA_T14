@@ -18,11 +18,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
 
 @Entity
 @Table(name="dermatolozi")
+@SQLDelete(sql
+	    = "UPDATE dermatolozi "
+	    + "SET obrisan = true "
+	    + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	
 	@Column(name = "pocetakRadnogVremena", nullable = false)

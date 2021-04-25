@@ -1,5 +1,6 @@
 package com.backend.springboot.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,13 +10,21 @@ import org.springframework.stereotype.Service;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.DermatologRepository;
+import com.backend.springboot.repository.PregledRepository;
 
 @Service
 public class DermatologService {
 	
 	@Autowired
 	private DermatologRepository dermatologRep;
+	@Autowired
+	private PregledRepository pregledRep;
+	@Autowired
+	private ApotekaRepository apotekaRep;
 	
 	public List<Dermatolog> findAll(){
 		return dermatologRep.findAll();
@@ -45,6 +54,27 @@ public class DermatologService {
 			
 		}
 		return pronadjeni;
+	}
+	
+	public void obrisiDermatologaIzApoteke (Integer id, Integer apotekaId) {
+		Dermatolog d = dermatologRep.findOneById(id);
+		Apoteka a = apotekaRep.findOneById(apotekaId);
+		LocalDateTime sada = LocalDateTime.now();
+		boolean dozvoljenoBrisanje = true;
+		List<Pregled> pregledi = pregledRep.findAllByDermatologId(id);
+		
+		for (Pregled p: pregledi) {
+			if (p.getPocetak().isAfter(sada)) {
+				dozvoljenoBrisanje = false;
+				break;
+			}
+		}
+		
+		if (dozvoljenoBrisanje) {
+			d.getApoteke().remove(a);
+			dermatologRep.save(d);
+		}
+		
 	}
 
 }
