@@ -249,6 +249,31 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+    v-model="pacijentDialog"
+    persistent
+    scrollable
+    retain-focus
+      max-width="960">
+      <v-card>
+        <v-card-title class="headline">
+          Nalog pacijenta
+        </v-card-title>
+        <v-card-text>
+        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPacijentDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -256,11 +281,13 @@
   import axios from "axios";
   import ListLekoviV2 from "./ListLekoviV2"
   import TerminPicker from "./TerminPicker"
+  import AccountView from "./AccountView";
 
   export default {
     components:{
       ListLekoviV2,
       TerminPicker,
+      AccountView,
     },
       data: ()=>({
             focus: "",
@@ -280,10 +307,12 @@
             selectedEvent: {},
             selectedElement: null,
             selectedOpen: false,
+            selectedPacijent: {},
             events: [],
             dialog: false,
             lekDialog: false,
             terminDialog: false,
+            pacijentDialog: false,
             ready: false,
             preporuceniLekovi: [],
       }),
@@ -398,8 +427,12 @@
       updateTime () {
         setInterval(() => this.cal.updateTimes(), 60 * 1000)
       },
-      viewAccount(){
-          console.log(this.selectedEvent);
+      async viewAccount(){
+          await axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
+            this.selectedPacijent=response.data
+          })
+          this.pacijentDialog= true
+          this.selectedOpen=false
       },
       cancelPregled(){
           console.log(this.selectedEvent);
@@ -458,6 +491,10 @@
       },
       endDialog(){
         this.dialog=false;
+      },
+      endPacijentDialog(){
+        this.pacijentDialog= false
+        this.selectedOpen=true
       },
       openLekList(){
         this.selectedOpen=false
