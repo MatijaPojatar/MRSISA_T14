@@ -66,6 +66,82 @@
       required
     ></v-select>
 
+    <v-row v-if = "adminView">
+    <v-col
+      cols="11"
+      sm="5"
+    >
+      <v-menu
+        ref="menu1"
+        :disabled="!editable"
+        v-model="menu1"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="newInfo.pocetakRadnogVremena"
+        transition="scale-transition"
+        offset-y
+        max-width="290px"
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="newInfo.pocetakRadnogVremena"
+            label="Početak radnog vremena"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-if="menu1"
+          v-model="newInfo.pocetakRadnogVremena"
+          format="24hr"
+          full-width
+          @click:minute="$refs.menu1.save(newInfo.pocetakRadnogVremena)"
+        ></v-time-picker>
+      </v-menu>
+    </v-col>
+
+    <v-spacer></v-spacer>
+
+    <v-col
+      cols="11"
+      sm="5"
+    >
+      <v-menu
+        ref="menu2"
+        :disabled="!editable"
+        v-model="menu2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        :return-value.sync="newInfo.krajRadnogVremena"
+        transition="scale-transition"
+        offset-y
+        max-width="290px"
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="newInfo.krajRadnogVremena"
+            label="Kraj radnog vremena"
+            prepend-icon="mdi-clock-time-four-outline"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-time-picker
+          v-if="menu2"
+          v-model="newInfo.krajRadnogVremena"
+          format="24hr"
+          full-width
+          @click:minute="$refs.menu2.save(newInfo.krajRadnogVremena)"
+        ></v-time-picker>
+      </v-menu>
+    </v-col>
+    </v-row>
+
     <v-checkbox
       v-model="checkbox"
       v-if="editable"
@@ -123,6 +199,9 @@ import Vue from "vue";
   export default {
 
     data: () => ({
+      menu1: false,
+      menu2: false,
+      menu3: false,
       newInfo: {
           ime: "",
           prezime: "",
@@ -131,6 +210,8 @@ import Vue from "vue";
           grad: "",
           drzava: "",
           pol: "",
+          pocetakRadnogVremena: null,
+          krajRadnogVremena: null,
       },
       valid: true,
       nameRules: [
@@ -156,12 +237,41 @@ import Vue from "vue";
         user: {},
         farmaceut: Boolean,
         editable: Boolean,
+        adminView: Boolean,
     },
     created(){
         this.reset()
     },
     mounted(){
         console.log(this.user)
+        if (this.newInfo.pocetakRadnogVremena[0].toString().length == 1){
+            this.newInfo.pocetakRadnogVremena[0] = "0" + this.newInfo.pocetakRadnogVremena[0].toString();
+        }
+        else{
+            this.newInfo.pocetakRadnogVremena[0] = this.newInfo.pocetakRadnogVremena[0].toString();
+        }
+        if (this.newInfo.pocetakRadnogVremena[1].toString().length == 1){
+            this.newInfo.pocetakRadnogVremena[1] = "0" + this.newInfo.pocetakRadnogVremena[1].toString();
+        }
+        else{
+            this.newInfo.pocetakRadnogVremena[1] = this.newInfo.pocetakRadnogVremena[1].toString();
+        }
+        this.newInfo.pocetakRadnogVremena = this.newInfo.pocetakRadnogVremena[0] + ":"+this.newInfo.pocetakRadnogVremena[1]
+
+
+        if (this.newInfo.krajRadnogVremena[0].toString().length == 1){
+            this.newInfo.krajRadnogVremena[0] = "0" + this.newInfo.krajRadnogVremena[0].toString();
+        }
+        else{
+            this.newInfo.krajRadnogVremena[0] = this.newInfo.krajRadnogVremena[0].toString();
+        }
+        if (this.newInfo.krajRadnogVremena[1].toString().length == 1){
+            this.newInfo.krajRadnogVremena[1] = "0" + this.newInfo.krajRadnogVremena[1].toString();
+        }
+        else{
+            this.newInfo.krajRadnogVremena[1] = this.newInfo.krajRadnogVremena[1].toString();
+        }
+        this.newInfo.krajRadnogVremena = this.newInfo.krajRadnogVremena[0] + ":"+this.newInfo.krajRadnogVremena[1]
     },
 
     methods: {
@@ -174,6 +284,8 @@ import Vue from "vue";
             this.user.grad=this.newInfo.grad
             this.user.drzava=this.newInfo.drzava
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
+            this.user.pocetakRadnogVremena=this.newInfo.pocetakRadnogVremena
+            this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
             if(this.farmaceut){
                 Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
             }else{
@@ -191,6 +303,8 @@ import Vue from "vue";
         this.newInfo.grad=this.user.grad
         this.newInfo.drzava=this.user.drzava
         this.newInfo.pol= this.user.pol==="MUSKI" ? "M" : "Ž"
+        this.newInfo.pocetakRadnogVremena=this.user.pocetakRadnogVremena
+        this.newInfo.krajRadnogVremena=this.user.krajRadnogVremena
       },
       endDialog(){
         this.dialog=false;

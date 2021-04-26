@@ -24,11 +24,7 @@
          </div>
          <v-divider></v-divider>
          <div>
-             brojTelefona: {{dermatolog.brojTelefona}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Datum rođenja: {{dermatolog.datumRodjenja}}
+             Broj telefona: {{dermatolog.brojTelefona}}
          </div>
          <v-divider></v-divider>
          <div>
@@ -80,7 +76,7 @@
         <v-card-title class="headline">
           Izmeni dermatologa
         </v-card-title>
-        <AccountView :user="this.selektovanDermatolog" :farmaceut="false"/>
+        <AccountView :user="this.selektovanDermatolog" :farmaceut="false" :editable="true" :adminView="true"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -137,8 +133,8 @@
                                 brojTelefona: element.brojTelefona, 
                                 pol: element.pol,
                                 datumRodjenja: element.datumRodjenja,
-                                pocetakRadnogVremena: element.pocetakRadnogVremena,
-                                krajRadnogVremena: element.krajRadnogVremena
+                                pocetakRadnogVremena: element.pocetakRadnogVremenaStr,
+                                krajRadnogVremena: element.krajRadnogVremenaStr
                             })
                             this.dermatolozi = dermatolozi
                         })
@@ -158,7 +154,7 @@
 
              IzmeniDermatologa(){
                  console.log("izmena" + this.selektovan);
-                 axios.get(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
+                 axios.get(`http://localhost:8080/dermatolog/${this.selektovan}`).then(response => {
                      console.log(response.data)
                     this.selektovanDermatolog=response.data;
                     console.log(this.selektovanDermatolog);

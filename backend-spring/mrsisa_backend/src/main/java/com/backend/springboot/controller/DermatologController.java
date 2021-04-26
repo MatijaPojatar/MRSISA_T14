@@ -75,6 +75,8 @@ public class DermatologController {
 		d.setIme(dto.getIme());
 		d.setPol(dto.getPol());
 		d.setPrezime(dto.getPrezime());
+		d.setPocetakRadnogVremena(dto.getPocetakRadnogVremena());
+		d.setKrajRadnogVremena(dto.getKrajRadnogVremena());
 		
 		service.save(d);
 		

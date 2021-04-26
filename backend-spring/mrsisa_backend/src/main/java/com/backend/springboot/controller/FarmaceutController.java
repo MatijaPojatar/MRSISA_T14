@@ -56,6 +56,8 @@ public class FarmaceutController {
 		f.setIme(dto.getIme());
 		f.setPol(dto.getPol());
 		f.setPrezime(dto.getPrezime());
+		f.setPocetakRadnogVremena(dto.getPocetakRadnogVremena());
+		f.setKrajRadnogVremena(dto.getKrajRadnogVremena());
 		
 		service.save(f);
 		
