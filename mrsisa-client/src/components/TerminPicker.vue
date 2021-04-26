@@ -224,8 +224,8 @@ export default{
               name:element.name,
               pacijent:element.pacijentId,
               apoteka: element.apotekaId,
-              start: new Date(element.start),
-              end: new Date(element.end),
+              start: new Date(element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString()),
+              end: new Date(element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString()),
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
               id: element.id,
@@ -249,10 +249,11 @@ export default{
                 path="farmaceut"
             }
             axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`).then(response => {
-            this.pocetakRadnogVremena=response.data.pocetak
-            this.krajRadnogVremena=response.data.kraj
-            this.end=response.data.kraj
-            this.start=response.data.pocetak
+            console.log(response.data);
+            this.pocetakRadnogVremena=response.data.pocetak[0].toString()+":"+response.data.pocetak[1].toString()
+            this.krajRadnogVremena=response.data.kraj[0].toString()+":"+response.data.kraj[1].toString()
+            this.end=response.data.kraj[0].toString()+":"+response.data.kraj[1].toString()
+            this.start=response.data.pocetak[0].toString()+":"+response.data.pocetak[1].toString()
         });
         },
         async kreirajTermin(){
