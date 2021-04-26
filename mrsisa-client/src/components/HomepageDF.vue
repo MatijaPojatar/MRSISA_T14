@@ -100,7 +100,7 @@
         <AccountView :user="user" :farmaceut="farmaceut" :editable="true"/>
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
-        <PasswordSwitch :pass="user.password" :farmaceut="farmaceut" :id="user.id"/>
+        <PasswordSwitch @password-changed="closeAll" :pass="user.password" :farmaceut="farmaceut" :id="user.id"/>
       </v-container>
       <v-container fluid v-if="showOdsustvo" :style="{width:'70vh'}">
         <CreateOdsustvo :farmaceut="farmaceut" :doktorId="user.id"/>
@@ -194,6 +194,13 @@ export default {
         this.showPassword=false;
         this.showOdsustvo=false;
         this.showPacijenti=true;
+      },
+      closeAll(){
+        this.showCalendar=false;
+        this.showAccount=false;
+        this.showPassword=false;
+        this.showOdsustvo=false;
+        this.showPacijenti=false;
       },
   },
 }

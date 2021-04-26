@@ -6,7 +6,8 @@
     lazy-validation
   >
     <v-text-field
-      :rules="oldPassRules"
+      v-model="oldPass"
+      :rules="requiredRules"
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
       :type="show1 ? 'text' : 'password'"
       label="Uneti staru šifru"
@@ -55,9 +56,9 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Obaveštenje
+          {{dialogTitle}}
         </v-card-title>
-        <v-card-text>Vaša šifra je uspešno promenjena.</v-card-text>
+        <v-card-text>{{dialogMessage}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -80,8 +81,9 @@
 
     data: () => ({
       newPass: "",
+      oldPass: "",
       valid: true,
-      oldPassRules: [],
+      oldPassValid: false,
       repeatPassRules: [],
       requiredRules: [
         v => !!v || 'Obavezno polje',
@@ -91,6 +93,8 @@
       show2: false,
       show3: false,
       dialog: false,
+      dialogTitle:"",
+      dialogMessage:"",
     }),
     props :{
         pass: String,
@@ -98,23 +102,31 @@
         farmaceut: Boolean,
     },
     created(){
-        this.oldPassRules= [
-        v => !!v || 'Obavezno polje',
-        v => (v===this.pass) || 'Šifra nije ispravna',]
         this.repeatPassRules= [
         v => !!v || 'Obavezno polje',
         v => (v ===this.newPass ) || 'Šifre se ne poklapaju',]
+        
     },
     mounted(){
     },
 
     methods: {
-      validate () {
+      async validate () {
+        let path="dermatolog"
+        if(this.farmaceut){
+          path="farmaceut"
+        }
         if(this.$refs.form.validate()){
-            if(this.farmaceut){
-                 axios.put(`http://localhost:8080/farmaceut/pass/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
+            await axios.get(`http://localhost:8080/${path}/pass/check/${this.id}`,{params:{pass:this.oldPass}}).then(response=>{
+              this.oldPassValid=response.data
+            })
+            if(this.oldPassValid){
+              axios.put(`http://localhost:8080/${path}/pass/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
+              this.dialogTitle="Obaveštenje"
+              this.dialogMessage="Vaša šifra je uspešno promenjena."
             }else{
-                 axios.put(`http://localhost:8080/dermatolog/pass/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
+              this.dialogTitle="Greška"
+              this.dialogMessage="Uneta šifra nije ispravna."
             }
             this.dialog=true;
         }
@@ -123,7 +135,9 @@
 
       endDialog(){
         this.dialog=false;
-        location.reload();
+        if(this.oldPassValid){
+          this.$emit('password-changed')
+        }
       },
     },
   }

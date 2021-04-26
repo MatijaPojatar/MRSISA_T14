@@ -8,7 +8,7 @@ import com.backend.springboot.domain.Pol;
 
 public class FarmaceutDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
@@ -22,7 +22,6 @@ public class FarmaceutDTO {
 		this.ime=f.getIme();
 		this.prezime=f.getPrezime();
 		this.mail=f.getMail();
-		this.password=f.getPassword();
 		this.adresa=f.getAdresa();
 		this.grad=f.getGrad();
 		this.drzava=f.getDrzava();
@@ -81,13 +80,6 @@ public class FarmaceutDTO {
 		this.mail = mail;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getAdresa() {
 		return adresa;

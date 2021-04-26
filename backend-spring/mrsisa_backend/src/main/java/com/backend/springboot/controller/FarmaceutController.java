@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
@@ -61,6 +62,16 @@ public class FarmaceutController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@GetMapping("/pass/check/{id}")
+	public ResponseEntity<Boolean> checkPass(@PathVariable Integer id,@RequestParam String pass){
+		Farmaceut f=service.findOne(id);
+		if(f.getPassword().equals(pass)) {
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+	}
+	
 	@PutMapping("/pass/{id}")
 	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
 		System.out.println(newPass);
@@ -104,7 +115,6 @@ public class FarmaceutController {
 		f.setPocetakRadnogVremena(dto.getPocetakRadnogVremena());
 		f.setKrajRadnogVremena(dto.getKrajRadnogVremena());
 		f.setMail(dto.getMail());
-		f.setPassword(dto.getPassword());
 		f.setApoteka(apotekaService.findOne(id));
 		f.setPromenjenaLozinka(false);
 		f.setObrisan(false);

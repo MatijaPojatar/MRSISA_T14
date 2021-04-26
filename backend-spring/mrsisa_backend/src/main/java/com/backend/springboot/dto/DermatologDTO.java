@@ -9,7 +9,7 @@ import com.backend.springboot.domain.Pol;
 
 public class DermatologDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
@@ -23,7 +23,6 @@ public class DermatologDTO {
 		this.ime=d.getIme();
 		this.prezime=d.getPrezime();
 		this.mail=d.getMail();
-		this.password=d.getPassword();
 		this.adresa=d.getAdresa();
 		this.grad=d.getGrad();
 		this.drzava=d.getDrzava();
@@ -80,14 +79,6 @@ public class DermatologDTO {
 
 	public void setMail(String mail) {
 		this.mail = mail;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getAdresa() {

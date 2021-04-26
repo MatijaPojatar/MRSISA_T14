@@ -81,6 +81,16 @@ public class DermatologController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@GetMapping("/pass/check/{id}")
+	public ResponseEntity<Boolean> checkPass(@PathVariable Integer id,@RequestParam String pass){
+		Dermatolog d=service.findOne(id);
+		if(d.getPassword().equals(pass)) {
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+	}
+	
 	@PutMapping("/pass/{id}")
 	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
 		System.out.println(newPass);
