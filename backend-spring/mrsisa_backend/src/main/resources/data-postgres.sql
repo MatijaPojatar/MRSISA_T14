@@ -77,7 +77,7 @@ insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 6','0651234955','1987-04-01','Srbija','Novi Sad','Nikola','Nikola','admin@example.com','$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',0,true, false, true);
 insert into administratori_apoteke (id,apoteka_id) values (7,1);
 
-insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 7','0651564568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','user@example.com','$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',0,true, false, true);
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 7','0651564568','1994-02-11','Srbija','Novi Sad','Imenko','Prezimic','user@example.com','$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',0,true, false, true);
 insert into pacijenti (id,broj_poena,penali) values (8,0,0);
 
 INSERT INTO role (name) VALUES ('ROLE_PACIJENT');
@@ -98,3 +98,6 @@ insert into pregledi (id,dermatolog_id,cena) values (5,3,3000);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-21 12:50','2021-04-21 14:00',1);
 insert into savetovanja (id,farmaceut_id) values (6,1);
+
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-21 14:15','2021-04-21 15:00',1,8);
+insert into savetovanja (id,farmaceut_id) values (7,1);

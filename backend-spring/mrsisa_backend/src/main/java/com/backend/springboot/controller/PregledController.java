@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
+import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -164,6 +166,40 @@ public class PregledController {
 		service.save(p);
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/all/pacijenti/{id}")
+	public ResponseEntity<List<PacijentTerminDTO>> getAllPacijentiForDermatolog(@PathVariable Integer id) {	
+		
+		System.out.println("==================================================");
+
+		List<Pregled> pregledi = service.findAllByDermatologId(id);
+		
+		List<Pacijent> pacijenti = new ArrayList<Pacijent>();
+		
+		HashMap<Integer, LocalDateTime> termini= new HashMap<Integer, LocalDateTime>();
+
+		for (Pregled p :pregledi) {
+			if(!p.isIzvrsen()) {
+				continue;
+			}
+			if(!pacijenti.contains(p.getPacijent())) {
+				pacijenti.add(p.getPacijent());
+				termini.put(p.getPacijent().getId(), p.getPocetak());
+			}else {
+				if(termini.get(p.getPacijent().getId()).isBefore(p.getPocetak())) {
+					termini.replace(p.getPacijent().getId(), p.getPocetak());
+				}
+			}
+		}
+		
+		List<PacijentTerminDTO> pacijentiDTO=new ArrayList<PacijentTerminDTO>();
+		
+		for(Pacijent p:pacijenti) {
+			pacijentiDTO.add(new PacijentTerminDTO(p, termini.get(p.getId())));
+		}
+
+		return new ResponseEntity<List<PacijentTerminDTO>>(pacijentiDTO, HttpStatus.OK);
 	}
 
 }
