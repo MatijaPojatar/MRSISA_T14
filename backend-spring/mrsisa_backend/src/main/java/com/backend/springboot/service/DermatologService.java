@@ -1,6 +1,7 @@
 package com.backend.springboot.service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +75,31 @@ public class DermatologService {
 			d.getApoteke().remove(a);
 			dermatologRep.save(d);
 		}
+		
+	}
+	
+	public void dodajDermatologaUApoteku (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
+		Dermatolog d = dermatologRep.findOneById(id);
+		d.setPocetakRadnogVremena(pocetak);
+		d.setKrajRadnogVremena(kraj);
+		Apoteka a = apotekaRep.findOneById(apotekaId);
+		
+		d.getApoteke().add(a);
+		dermatologRep.save(d);
+		
+	}
+	
+	public List<Dermatolog> preuzmiDermatologeVanApoteke (Integer apotekaId) {
+		ArrayList<Dermatolog> svi = (ArrayList<Dermatolog>) dermatologRep.findAll();
+		ArrayList<Dermatolog> zaposleni = (ArrayList<Dermatolog>) findAllByApotekaId(apotekaId);
+		ArrayList<Dermatolog> rezultat = new ArrayList<Dermatolog>();
+		
+		for(Dermatolog d:svi) {
+			if (!zaposleni.contains(d)) {
+				rezultat.add(d);
+			}
+		}
+		return rezultat;
 		
 	}
 
