@@ -102,7 +102,7 @@
             label="Dark mode"
             color="black"
             ></v-switch>
-          <v-btn block @click="logout">
+          <v-btn block @click="onLogout">
             Logout
           </v-btn>
         </div>
@@ -141,6 +141,7 @@ import LekoviAdminApoteke from "./LekoviAdminApoteke";
 import FarmaceutiAdminApoteke from "./FarmaceutiAdminApoteke";
 import DermatoloziAdminApoteke from "./DermatoloziAdminApoteke";
 import axios from "axios";
+import {mapActions} from 'vuex';
 
 export default {
     name: "HomepageAdminApoteke",
@@ -172,6 +173,10 @@ export default {
     
   },
   methods:{
+      ...mapActions({
+        logout: "korisnici/logoutAction",
+        resetStore: "resetStore"
+      }),
       calendarView(){
           this.showCalendar=true;
           this.showAccount=false;
@@ -188,9 +193,13 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
       },
-      logout(){
-        window.location.href="http://localhost:8081/";
+
+      onLogout(){
+        this.logout();
+        this.$router.push('/');
+        this.resetStore();
       },
+
       changePassword(){
           this.showCalendar=false;
           this.showAccount=false;

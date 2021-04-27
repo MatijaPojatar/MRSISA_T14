@@ -75,7 +75,7 @@
             </v-list>
             <template v-slot:append>
                 <div class="pa-2">
-                    <v-btn block @click="logout">
+                    <v-btn block @click="onLogout">
                         Logout
                     </v-btn>
                 </div>
@@ -105,6 +105,7 @@ import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy"
 import axios from "axios";
+import {mapActions} from 'vuex';
 
 export default {
     name: "HomepageDF",
@@ -129,6 +130,11 @@ export default {
     });
   },
   methods:{
+      ...mapActions({
+        logout: "korisnici/logoutAction",
+        resetStore: "resetStore"
+        }),
+
       calendarView(){
           this.showCalendar=true;
           this.showAccount=false;
@@ -153,9 +159,11 @@ export default {
           this.showPassword=false;
           this.showAllergy=true;
       },
-      logout(){
-        window.location.href="http://localhost:8081/";
-      },
+      onLogout(){
+        this.logout();
+        this.$router.push('/');
+        this.resetStore();
+    }
   },
 }
 

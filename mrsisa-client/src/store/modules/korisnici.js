@@ -37,6 +37,15 @@ const actions = {
     }
   },
 
+  async logoutAction({commit}){
+    commit("SET_KORISNIK", null);
+    commit("SET_MAIL", "");
+    commit("SET_ROLE", "");
+    commit("SET_ROLE_NUM", -1);
+    localStorage.removeItem("token");
+    Vue.axios.defaults.headers['Authorization'] = '';
+  },
+
   updateState({ commit }, token){
     console.log("USLI OVDE")
     var jwt_data = jwt_decode(token);
@@ -62,7 +71,7 @@ const actions = {
 const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
-    state= initStanje();
+    state = initStanje();
   },
 
   SET_ROLE(state, role){ 
@@ -71,9 +80,7 @@ const mutations = {
 
   SET_KORISNIK(state, korisnik){
     state.korisnik = korisnik;
-    alert("Gle korisnika")
     console.log(state.korisnik)
-    console.log(state.korisnik.pol)
   },
   
   SET_MAIL(state, mail){

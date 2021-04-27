@@ -85,7 +85,7 @@
 
         <template v-slot:append>
         <div class="pa-2">
-          <v-btn block @click="logout">
+          <v-btn block @click="onLogout">
             Logout
           </v-btn>
         </div>
@@ -120,6 +120,7 @@ import PasswordSwitch from "./PasswordSwitch";
 import CreateOdsustvo from "./CreateOdsustvo";
 import PacijentList from "./PacijentList"
 import axios from "axios";
+import {mapActions} from 'vuex';
 
 export default {
     name: "HomepageDF",
@@ -157,6 +158,11 @@ export default {
     }
   },
   methods:{
+      ...mapActions({
+        logout: "korisnici/logoutAction",
+        resetStore: "resetStore"
+      }),
+
       calendarView(){
           this.showCalendar=true;
           this.showAccount=false;
@@ -178,9 +184,16 @@ export default {
           this.showOdsustvo=true;
           this.showPacijenti=false;
       },
-      logout(){
-        window.location.href="http://localhost:8081/";
+
+      onLogout(){
+        this.logout();
+        this.$router.push('/');
+        this.resetStore();
       },
+
+      // logout(){
+      //   window.location.href="http://localhost:8081/";
+      // },
       changePassword(){
           this.showCalendar=false;
           this.showAccount=false;

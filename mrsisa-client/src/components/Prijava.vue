@@ -24,12 +24,6 @@
             <v-spacer></v-spacer>
             <v-btn v-on:click="onSubmit" :disabled="!valid" class="blue white--text">Prijava</v-btn>
         </v-card-actions>
-        <v-card-actions>
-            <v-btn @click="loginAsPacijent">Pacijent</v-btn>
-            <v-btn @click="loginAsFarmaceut">Farmaceut</v-btn>
-            <v-btn @click="loginAsDermatolog">Dermatolog</v-btn>
-            <v-btn @click="loginAsAdminApoteke">Admin Apoteke</v-btn>
-        </v-card-actions>
     </v-card>
 </template>
 
@@ -47,6 +41,7 @@ export default {
         email: "",
         lozinka: "",
         valid: true,
+        show: false,
         rules: {
             required: v => !!v || "Obavezno polje",
             email: v => /.+@.+\..+/.test(v) || "Email nije validan"
@@ -54,14 +49,6 @@ export default {
     }),
     
     computed: {
-        show: {
-            get() {
-                return this.value;
-            },
-            set(value){
-                this.$emit("input", value);
-            }
-        },
         ...mapGetters({
             currentMail: "korisnici/getMail",
             currentRole: "korisnici/getRole"
@@ -104,30 +91,6 @@ export default {
                 alert("Greska pri prijavi")
             }
 
-        },
-
-        async loginAsPacijent(){
-            try{
-                const credentials = {
-                    mail : this.email,
-                    password : this.lozinka
-                }
-                await this.logInAction(credentials);
-                alert("USPEH");
-                this.$router.push('/pacijent');
-            }catch(error){
-                alert("Greska pri prijavi")
-            }
-            
-        },
-        loginAsFarmaceut(){
-            this.$router.push('/farmaceut');
-        },
-        loginAsDermatolog(){
-            this.$router.push('/dermatolog');
-        },
-        loginAsAdminApoteke(){
-            this.$router.push('/adminApoteke');
         },
 
         cancel() {

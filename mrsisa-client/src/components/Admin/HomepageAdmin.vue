@@ -102,7 +102,7 @@
             label="Dark mode"
             color="black"
             ></v-switch>
-          <v-btn block @click="logout">
+          <v-btn block @click="onLogout">
             Logout
           </v-btn>
         </div>
@@ -147,7 +147,7 @@ import RegApoteka from "./RegApoteka";
 import RegZaposlenog from "./RegZaposlenog";
 import ZalbeOdgovor from "./ZalbeOdgovor";
 
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: "HomepageAdminApoteke",
@@ -178,7 +178,10 @@ export default {
     }),
   },
   methods:{
-
+    ...mapActions({
+      logout: "korisnici/logoutAction",
+      resetStore: "resetStore"
+    }),
 
     accountView(){
       this.showAccount=true;
@@ -235,11 +238,11 @@ export default {
       this.showZalbeOdgovor = true;
     },
 
-    logout(){
-      //popraviti
-      window.location.href="http://localhost:8081/";
-    },
-
+    onLogout(){
+      this.logout();
+      this.$router.push('/');
+      this.resetStore();
+    }
 
   },
 }
