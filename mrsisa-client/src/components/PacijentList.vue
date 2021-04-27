@@ -3,7 +3,7 @@
   <v-data-table
     :headers="headers"
     :items="pacijenti"
-    :sort-by="['ime', 'prezime','datum']"
+    :sort-by="'ime'"
     :sort-desc="[false, true]"
     multi-sort
     class="elevation-1"
@@ -29,7 +29,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false"/>
+        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false" :adminView="false"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -105,7 +105,9 @@ export default {
         },
         showAccount(user){
             console.log(user);
-            this.selectedUser=user;
+            //let index=this.pacijenti.indexOf(user)
+            this.selectedUser=Object.assign({}, user);
+            console.log(this.selectedUser);
             this.dialog=true;
         },
         endDialog(){

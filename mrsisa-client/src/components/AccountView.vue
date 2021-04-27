@@ -243,6 +243,7 @@ import Vue from "vue";
         this.reset()
     },
     mounted(){
+      if(this.adminView){
         console.log(this.user)
         if (this.newInfo.pocetakRadnogVremena[0].toString().length == 1){
             this.newInfo.pocetakRadnogVremena[0] = "0" + this.newInfo.pocetakRadnogVremena[0].toString();
@@ -272,6 +273,7 @@ import Vue from "vue";
             this.newInfo.krajRadnogVremena[1] = this.newInfo.krajRadnogVremena[1].toString();
         }
         this.newInfo.krajRadnogVremena = this.newInfo.krajRadnogVremena[0] + ":"+this.newInfo.krajRadnogVremena[1]
+      }
     },
 
     methods: {
@@ -308,7 +310,7 @@ import Vue from "vue";
       },
       endDialog(){
         this.dialog=false;
-        location.reload();
+        //location.reload();
       },
     },
   }

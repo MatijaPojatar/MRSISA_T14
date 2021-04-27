@@ -67,14 +67,6 @@
       required
     ></v-text-field>
 
-    <v-text-field
-      v-model="password"
-      :counter="40"
-      :rules="passwordRules"
-      label="Password"
-      required
-    ></v-text-field>
-
 
     <v-menu
     ref="menu3"
@@ -191,7 +183,7 @@
       class="mr-4"
       @click="validate"
     >
-      Sačuvaj izmene
+      Sačuvaj
     </v-btn>
 
     
@@ -253,11 +245,7 @@
         v => !!v || 'Obavezno polje',
         v => (v && v.length <= 40) || 'Dužina maksimalno 40 karaktera',
       ],
-      passwordRules: [
-        v => !!v || 'Obavezno polje',
-        v => (v && v.length <= 40) || 'Dužina maksimalno 40 karaktera',
-        v => (v && v.length >= 8) || 'Dužina minimalno 8 karaktera',
-      ],
+      
       brojRules: [
         v => !!v || 'Obavezno polje',
         v => (v && v.length == 10 ) || 'Dužina mora biti 10 karaktera',
@@ -292,7 +280,6 @@
               ime: this.ime,
               prezime: this.prezime,
               mail: this.mail,
-              password: this.password,
               adresa: this.adresa,
               grad: this.grad,
               drzava: this.drzava,
