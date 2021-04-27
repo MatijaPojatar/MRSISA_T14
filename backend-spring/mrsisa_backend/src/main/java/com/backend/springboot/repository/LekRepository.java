@@ -22,4 +22,5 @@ public interface LekRepository extends JpaRepository<Lek, Integer> {
 	List<Lek> findAllBySnabdeveneApoteke_Id(Integer id);
 	
 	
+	
 }

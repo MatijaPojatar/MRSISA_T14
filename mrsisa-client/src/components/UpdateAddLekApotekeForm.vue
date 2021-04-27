@@ -14,8 +14,15 @@
       required
     ></v-text-field>
 
+    <v-btn v-if = "this.addMode"
+      :disabled="!valid"
+      class="mr-4"
+      @click="validate"
+    >
+      Sačuvaj
+    </v-btn>
     
-    <v-btn
+    <v-btn v-if = "!this.addMode"
       :disabled="!valid"
       class="mr-4"
       @click="validate"
@@ -23,7 +30,7 @@
       Sačuvaj izmene
     </v-btn>
 
-    <v-btn
+    <v-btn v-if = "!this.addMode"
       color="error"
       class="mr-4"
       @click="reset"
@@ -47,6 +54,29 @@
             color="green darken-1"
             text
             @click="endDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
+
+  <v-dialog
+      v-model="dialogAdd"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Lek uspešno dodat.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialogAdd"
           >
             Ok
           </v-btn>
@@ -77,34 +107,50 @@ import axios from "axios";
       ],
       
       dialog: false,
+      dialogAdd: false,
     }),
     props :{
         lekUMagacinu: {},
         apotekaId: Number,
+        lekToAddId:Number,
         addMode: Boolean,
     },
     created(){
         this.reset()
     },
     mounted(){
+      if(!this.addMode)
         this.newInfo.cena = this.lekUMagacinu.cena;
     },
 
     methods: {
       validate () {
         if(this.$refs.form.validate()){
-           this.lekUMagacinu.cena = this.newInfo.cena;
+          if (!this.addMode){
+              this.lekUMagacinu.cena = this.newInfo.cena;
             axios.put(`http://localhost:8080/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
             this.dialog=true;
+          }else{
+            axios.put(`http://localhost:8080/apoteke/dodajLek/${this.lekToAddId}/${this.apotekaId}`,this.newInfo.cena, {headers: {"Content-Type": "text/plain"}});
+            this.dialogAdd = true;
+          }
+           
         }
         
       },
       reset () {
-        this.newInfo.cena=this.lekUMagacinu.cena;
+        if (!this.addMode){
+            this.newInfo.cena=this.lekUMagacinu.cena;
+        }
+        
         
       },
       endDialog(){
         this.dialog=false;
+        location.reload();
+      },
+      endDialogAdd(){
+        this.dialogAdd=false;
         location.reload();
       },
     },

@@ -65,6 +65,18 @@ public class LekController {
 	 * 
 	 * return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK); }
 	 */
+	
+	@GetMapping(value = "/vanApoteke/{apotekaId}")
+	public ResponseEntity<List<LekDTO>> preuzmiLekoveVanApoteke(@PathVariable Integer apotekaId) {
+		List<Lek> lekovi = lekService.preuzmiLekoveVanApoteke(apotekaId);
+		List<LekDTO> dto = new ArrayList<>();
+		
+		for (Lek l : lekovi) {
+			dto.add(new LekDTO(l));
+		}
+
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
 
 	@PostMapping()
 	public ResponseEntity<LekDTO> dodajLek(@RequestBody Lek lekInfo) {

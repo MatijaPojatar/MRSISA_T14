@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
+import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.MagacinRepository;
 
 /*
@@ -29,6 +31,8 @@ public class LekService {
 	private ApotekaRepository apotekaRep;
 	@Autowired
 	private MagacinRepository magacinRep;
+	@Autowired
+	private LekUMagacinuRepository lekUMagacinuRep;
 	
 	
 
@@ -143,6 +147,17 @@ public class LekService {
 		}
 		
 		lekRep.save(lek);
+	}
+	
+	public List<Lek> preuzmiLekoveVanApoteke(Integer apotekaId){
+		ArrayList<Lek> lekovi = (ArrayList<Lek>) lekRep.findAll();
+		ArrayList<LekUMagacinu> lekoviApoteke = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(magacinRep.findOneByApotekaId(apotekaId).getId());
+		
+		boolean dodavanje = true;
+		for (LekUMagacinu l: lekoviApoteke) {
+			lekovi.remove(l.getLek());
+		}
+		return lekovi;
 	}
 
 }

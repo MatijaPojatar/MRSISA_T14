@@ -82,11 +82,11 @@ public class ApotekaController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	@PostMapping("/dodajLek")
-	public ResponseEntity<Collection<Apoteka>> dodajLek() {
+	@PutMapping("/dodajLek/{id}/{apotekaId}")
+	public ResponseEntity<String> dodajLek(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody String cena ) {
 		LocalDateTime pocetakVazenja = LocalDateTime.now();
-		magacinService.dodajLek(pocetakVazenja, 100.0, 200.0, 1, 1);
-		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
+		magacinService.dodajLek(pocetakVazenja, Double.parseDouble(cena), id, apotekaId);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@PutMapping("/izmeniLek/{apotekaId}")
