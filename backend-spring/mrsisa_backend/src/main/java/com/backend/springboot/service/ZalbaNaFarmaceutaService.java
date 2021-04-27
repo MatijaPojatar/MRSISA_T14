@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.ZalbaNaApoteku;
+import com.backend.springboot.domain.ZalbaNaDermatologa;
 import com.backend.springboot.domain.ZalbaNaFarmaceuta;
 import com.backend.springboot.repository.ZalbaNaFarmaceutaRepository;
 
@@ -17,6 +18,7 @@ public class ZalbaNaFarmaceutaService {
 	
 	public void odgovoriNaZalbu(ZalbaNaFarmaceuta zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
+		zalba.setObradjena(true);
 		zalbeRep.save(zalba);
 		return;
 	}
@@ -31,5 +33,10 @@ public class ZalbaNaFarmaceutaService {
 	
 	public List<ZalbaNaFarmaceuta> findAll(){
 		return zalbeRep.findAll();
+	}
+	
+	
+	public List<ZalbaNaFarmaceuta> findAllNeobradjene(){
+		return zalbeRep.findByObradjenaFalse();
 	}
 }

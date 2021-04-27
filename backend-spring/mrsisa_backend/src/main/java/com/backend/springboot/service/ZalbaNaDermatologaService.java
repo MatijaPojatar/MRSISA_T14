@@ -17,6 +17,7 @@ public class ZalbaNaDermatologaService {
 	
 	public void odgovoriNaZalbu(ZalbaNaDermatologa zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
+		zalba.setObradjena(true);
 		zalbeRep.save(zalba);
 		return;
 	}
@@ -31,5 +32,9 @@ public class ZalbaNaDermatologaService {
 	
 	public List<ZalbaNaDermatologa> findAll(){
 		return zalbeRep.findAll();
+	}
+	
+	public List<ZalbaNaDermatologa> findAllNeobradjene(){
+		return zalbeRep.findByObradjenaFalse();
 	}
 }

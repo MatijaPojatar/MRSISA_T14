@@ -17,6 +17,7 @@ public class ZalbaNaApotekuService {
 	
 	public void odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
+		zalba.setObradjena(true);
 		zalbeRep.save(zalba);
 		return;
 	}
@@ -31,6 +32,9 @@ public class ZalbaNaApotekuService {
 	
 	public List<ZalbaNaApoteku> findAll(){
 		return zalbeRep.findAll();
+	}
+	public List<ZalbaNaApoteku> findAllNeobradjene(){
+		return zalbeRep.findByObradjenaFalse();
 	}
 	
 }

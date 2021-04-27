@@ -5,7 +5,10 @@ const initStanje = () => {
     zalbeNaApoteke: [],
     moguciFarmaceuti: [],
     moguciDermatolozi: [],
-    moguceApoteke: []
+    moguceApoteke: [],
+    neobradjeneApoteka: [],
+    neobradjeneFarmaceut: [],
+    neobradjeneDermatolog: []
   }
 }
 
@@ -15,7 +18,8 @@ const getters = {
   getZalbeNaApoteke: state => state.zalbeNaApoteke,
   getMoguciFarmaceuti: state => state.moguciFarmaceuti,
   getMoguciDermatolozi: state => state.moguciDermatolozi,
-  getMoguceApoteke: state => state.moguceApoteke
+  getMoguceApoteke: state => state.moguceApoteke,
+  getNeobradjeneApoteka: state => state.neobradjeneApoteka,
 }
 
 const actions = {
@@ -96,13 +100,41 @@ const actions = {
     console.log(response);
 
     commit("setMoguceFarmaceute", response.data);
+  },
+
+  async getNeobradjeneApotekaAction({commit}){
+    const response = await Vue.axios.get("/apoteka/neobradjene");
+
+    console.log("NEOBRADJENE APOTEKA")
+    console.log(response)
+    commit("setNeobradjeneApoteka", response.data)
+  },
+
+  async sendOdgovorApotekaAction({commit}, odg){
+    const response = await Vue.axios.put("/apoteka/{id}", odg);
+
+    console.log("ODGOVOR")
+    console.log(response);
+    console.log(commit);
   }
+
 }
 
 const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state = initStanje();
+  },
+  setNeobradjeneApoteka(state, zalbe){
+    state.neobradjeneApoteka = zalbe;
+  },
+
+  setNeobradjeneFarmaceut(state,zalbe ){
+    state.neobradjeneFarmaceut = zalbe;
+  },
+
+  setNeobradjeneDermatolog(state, zalbe){
+    state.neobradjeneDermatolog = zalbe;
   },
 
   setMoguceApoteke(state, apoteke){

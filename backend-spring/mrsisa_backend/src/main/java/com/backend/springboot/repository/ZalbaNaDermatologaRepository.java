@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
 
 public interface ZalbaNaDermatologaRepository extends JpaRepository<ZalbaNaDermatologa, Integer>{
@@ -11,5 +12,5 @@ public interface ZalbaNaDermatologaRepository extends JpaRepository<ZalbaNaDerma
 	List<ZalbaNaDermatologa> findAll();
 	
 	ZalbaNaDermatologa findOneById(Integer id);
-	
+	List<ZalbaNaDermatologa> findByObradjenaFalse();
 }
