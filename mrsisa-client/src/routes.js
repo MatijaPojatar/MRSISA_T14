@@ -95,6 +95,11 @@ const router = new Router({
       path: "/adminApoteke",
       name: "HomepageAdminApoteke",
       component: () => import("./components/HomepageAdminApoteke")
+    },
+    {
+      path: "/admin",
+      name: "HomepageAdmin",
+      component: () => import("./components/Admin/HomepageAdmin")
     }
   ]
 });

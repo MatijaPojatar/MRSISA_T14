@@ -4,20 +4,19 @@ import jwt_decode from "jwt-decode"
 const initStanje = () => {
   return {
     role: "", //todo dodati role u token
+    roleNum: -1,
     mail: "",
-
-    loginState : {
-      mail : "",
-      password : ""
-    }
-
+    korisnik: null,
   }
 }
 
 const state = initStanje();
 
 const getters = {
-  getMail: state => state.mail
+  getMail: state => state.mail,
+  getRole: state => state.role,
+  getRoleNum: state => state.roleNum,
+  getKorisnik: state => state.korisnik
 }
 
 const actions = {
@@ -31,25 +30,23 @@ const actions = {
       localStorage.setItem("token", accessToken);
 
       dispatch('updateAxiosAuth');
-      dispatch('attempt', accessToken);
+      dispatch('updateState', accessToken);
     }catch(error){
       alert("Greska log in- u");
     }
   },
 
-  async attempt({ commit }, token){
+  async updateState({ commit }, token){
     console.log("USLI VAMO")
     var jwt_data = jwt_decode(token);
-    console.log("SAd jwt data: ");
+    console.log(jwt_data)
+    console.log(jwt_data.ime)
+    
+    commit("SET_MAIL", jwt_data.sub);
+    commit("SET_KORISNIK", jwt_data);
+    commit("SET_ROLE", jwt_data.roles[0].name);
+    commit("SET_ROLE_NUM", jwt_data.roles[0].id);
 
-    commit("SET_MAIL", jwt_data.sub); //mozda jwt_data.mail
-
-    try {
-      const response = await Vue.axios.get("/pacijent/mail/"+jwt_data.sub)
-      alert("Korisnik ulogovan:"+ response.data.ime);
-    }catch(error){
-      alert("Greska pri dobavljanju podataka korisnika")
-    }
   },
 
   updateAxiosAuth() {
@@ -62,11 +59,20 @@ const actions = {
 }
 
 const mutations = {
-  // SET_ROLE(state, role){  //VELIKI TODO, napraviti da token salje role isto!
+  SET_ROLE(state, role){ 
+    state.role = role;
+  },
 
-  // }
+  SET_KORISNIK(state, korisnik){
+    state.korisnik = korisnik;
+  },
+  
   SET_MAIL(state, mail){
     state.mail = mail;
+  },
+
+  SET_ROLE_NUM(state, roleNum){
+    state.roleNum = roleNum;
   }
 }
 

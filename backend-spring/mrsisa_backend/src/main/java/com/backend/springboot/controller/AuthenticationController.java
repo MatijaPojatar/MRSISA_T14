@@ -49,7 +49,7 @@ public class AuthenticationController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		Osoba osoba = (Osoba)authentication.getPrincipal();
-		String jwt = tokenUtils.generateToken(osoba.getMail()); //todo
+		String jwt = tokenUtils.generateToken(osoba); //todo
 		int expiresIn = tokenUtils.getExpiredIn();
 		
 		return ResponseEntity.ok(new OsobaTokenState(jwt, expiresIn));

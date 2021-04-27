@@ -35,10 +35,24 @@ public class TokenUtils {
 	
 	private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
 	
-	public String generateToken(String mail) { 
+	public String generateToken(Osoba osoba) { 
 		return Jwts.builder()
 				.setIssuer(APP_NAME)
-				.setSubject(mail)
+				.setSubject(osoba.getMail())
+				
+				.claim("id", osoba.getId())
+				.claim("ime", osoba.getIme())
+				.claim("prezime", osoba.getPrezime())
+				.claim("mail", osoba.getMail())
+				.claim("adresa", osoba.getAdresa())
+				.claim("grad", osoba.getGrad())
+				.claim("drzava", osoba.getDrzava())
+				.claim("brojTelefona", osoba.getBrojTelefona())
+				.claim("pol", osoba.getPol())
+				.claim("datumRodjenja", osoba.getDatumRodjenja())
+				.claim("promenjenaLozinka", osoba.isPromenjenaLozinka())
+				.claim("roles", osoba.getRoles())
+				
 				.setAudience(AUDIENCE_WEB)
 				.setIssuedAt(new Date())
 				.setExpiration(generateExpirationDate())

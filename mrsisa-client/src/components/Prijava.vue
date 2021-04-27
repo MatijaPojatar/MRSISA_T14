@@ -63,7 +63,8 @@ export default {
             }
         },
         ...mapGetters({
-            currentMail: "korisnici/getMail"
+            getMail: "korisnici/getMail",
+            getRole: "korisnici/getRole"
         })
     },
     methods: {
@@ -71,8 +72,36 @@ export default {
             logInAction: "korisnici/logInAction"
         }),
 
-        onSubmit(){
-            alert("Funkcija nije u funkcija");
+        async onSubmit(){
+            try{
+                const credentials = {
+                    mail : this.email,
+                    password : this.lozinka
+                }
+                await this.logInAction(credentials);
+
+                switch(this.getRole()){
+                    case "ROLE_PACIJENT":
+                        this.$router.push('/pacijent')
+                        break;
+                    case "ROLE_DERMATOLOG":
+                        this.$router.push('/dermatolog');
+                        break;
+                    case "ROLE_FARMACEUT":
+                        this.$router.push('/farmaceut');
+                        break;
+                    case "ROLE_ADMIN":
+                        this.$router.push("/admin")
+                        break;
+                    case "ROLE_ADMIN_APOTEKE":
+                        this.$router.push('/adminApoteke');
+                        break;
+                }
+
+            }catch(error){
+                alert("Greska pri prijavi")
+            }
+
         },
 
         async loginAsPacijent(){
@@ -83,19 +112,20 @@ export default {
                 }
                 await this.logInAction(credentials);
                 alert("USPEH");
-                //this.$router.push('/pacijent');
+                this.$router.push('/pacijent');
             }catch(error){
                 alert("Greska pri prijavi")
             }
             
         },
-
         loginAsFarmaceut(){
             this.$router.push('/farmaceut');
         },
-
         loginAsDermatolog(){
             this.$router.push('/dermatolog');
+        },
+        loginAsAdminApoteke(){
+            this.$router.push('/adminApoteke');
         },
     },
 }
