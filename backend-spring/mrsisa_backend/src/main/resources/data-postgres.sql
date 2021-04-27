@@ -1,9 +1,9 @@
 
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',3,'Hemofarm',1,'kukuruzni skrob, talk, natrijum-laurilsulfat', 1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',1,'UPSA SAS',0,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',0);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',2,'Galenika',1,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',4,'Krauterhof',0,'divlji kesten, vinova loza, kamilica, alkohol',0);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',3,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',2,'Hemofarm',0,'kukuruzni skrob, talk, natrijum-laurilsulfat', 0);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',0,'UPSA SAS',1,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',1,'Galenika',0,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',0);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',3,'Krauterhof',1,'divlji kesten, vinova loza, kamilica, alkohol',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',2,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
 
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
