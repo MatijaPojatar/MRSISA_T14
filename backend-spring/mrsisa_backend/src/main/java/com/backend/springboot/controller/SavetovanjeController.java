@@ -1,10 +1,7 @@
 package com.backend.springboot.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,8 +26,8 @@ import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
-import com.backend.springboot.repository.LekUIzvestajuRepository;
 import com.backend.springboot.service.ApotekaService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
@@ -57,7 +54,9 @@ public class SavetovanjeController {
 	private PacijentService pacijentService;
 	@Autowired
 	private OdsustvoFarmaceutService odsustvoService;
-	
+	@Autowired
+	private EmailService emailService;
+		
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
 
@@ -168,6 +167,12 @@ public class SavetovanjeController {
 		s.setPocetak(pocetak);
 		
 		service.save(s);
+		
+		try {
+			emailService.novoSavetovanje(s);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}

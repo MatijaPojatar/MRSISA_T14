@@ -60,8 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			
 			.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
 			
-			.authorizeRequests().antMatchers("/auth/**").permitAll()   //ovde svi mogu da pristupe, todo dodati search lekova apoteka
-								.antMatchers("/h2-console/**").permitAll()
+			.authorizeRequests().antMatchers("/auth/").permitAll()   //ovde svi mogu da pristupe, todo dodati search lekova apoteka
+            .antMatchers("/h2-console/").permitAll()
+            .antMatchers("/**").permitAll()
 			
 			.anyRequest().authenticated().and()
 			 
