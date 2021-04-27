@@ -52,22 +52,21 @@ public class MagacinService {
 			return false;
 		}
 		return true;
-	}
+	};
 	
-	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
+	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena,  Integer lekId, Integer apotekaId) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);
-		l.setKolicina(kolicina);
+		l.setKolicina(0.0);
 		l.setLek(lekRep.findOneById(lekId));
 		l.setMagacin(apotekaRep.getOne(apotekaId).getMagacin());
 		l.setObrisan(false);
 		l.setCena(cena);
-		l = lekUMagacinuRep.save(l);
 		StavkaCenovnika s = new StavkaCenovnika();
 		s.setCena(cena);
 		s.setLekUMagacinu(l);
 		s.setPocetakVazenja(pocetakVazenja);
-		
+		l.getSveCene().add(s);
 		return lekUMagacinuRep.save(l);
 	}
 	

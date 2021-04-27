@@ -99,5 +99,9 @@ insert into pregledi (id,dermatolog_id,cena) values (5,3,3000);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-21 12:50','2021-04-21 14:00',1);
 insert into savetovanja (id,farmaceut_id) values (6,1);
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-21 14:15','2021-04-21 15:00',1,8);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-27 00:15','2021-04-27 1:00',1,8);
 insert into savetovanja (id,farmaceut_id) values (7,1);
+
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','luka',0,true, false, true);
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (9,'16:00','08:00');
+insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (9,2);

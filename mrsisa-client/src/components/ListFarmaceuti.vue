@@ -24,13 +24,10 @@
          </div>
          <v-divider></v-divider>
          <div>
-             brojTelefona: {{farmaceut.brojTelefona}}
+             Broj telefona: {{farmaceut.brojTelefona}}
          </div>
          <v-divider></v-divider>
-         <div>
-             Datum rođenja: {{farmaceut.datumRodjenja}}
-         </div>
-         <v-divider></v-divider>
+         
          <div>
              Početak radnog vremena: {{farmaceut.pocetakRadnogVremena}}
          </div>
@@ -80,7 +77,7 @@
         <v-card-title class="headline">
           Izmeni farmaceuta
         </v-card-title>
-        <AccountView :user="this.selektovanFarmaceut" :farmaceut="true"/>
+        <AccountView :user="this.selektovanFarmaceut" :farmaceut="true" :editable="true" :adminView="true"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -135,9 +132,8 @@
                                 drzava: element.drzava,
                                 brojTelefona: element.brojTelefona, 
                                 pol: element.pol,
-                                datumRodjenja: element.datumRodjenja,
-                                pocetakRadnogVremena: element.pocetakRadnogVremena,
-                                krajRadnogVremena: element.krajRadnogVremena
+                                pocetakRadnogVremena: element.pocetakRadnogVremenaStr,
+                                krajRadnogVremena: element.krajRadnogVremenaStr
                             })
                             this.farmaceuti = farmaceuti
                         })
