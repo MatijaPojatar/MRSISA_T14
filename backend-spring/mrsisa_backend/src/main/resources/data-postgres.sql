@@ -1,8 +1,18 @@
+<<<<<<< HEAD
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',3,'Hemofarm',1,'kukuruzni skrob, talk, natrijum-laurilsulfat', 1);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',1,'UPSA SAS',2,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',2);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',2,'Galenika',1,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',1);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',4,'Krauterhof',2,'divlji kesten, vinova loza, kamilica, alkohol',2);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',3,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
+=======
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 1','Test 1',1,'Test 1',1,'Test 1',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 2','Test 2',2,'Test 2',1,'Test 2',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 3','Test 3',2,'Test 3',1,'Test 3',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 4','Test 4',3,'Test 4',1,'Test 4',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 5','Test 5',3,'Test 5',1,'Test 5',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 6','Test 6',1,'Test 6',1,'Test 6',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 7','Test 7',1,'Test 7',1,'Test 7',1);
+>>>>>>> be9df64ac4a8522337e8b0bc0deb957268b47322
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Novi Sad','Apoteka 2','Test apoteka 2');

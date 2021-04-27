@@ -45,6 +45,12 @@ public class LekController {
 	private MagacinService magacinService;
 	
 	private ArrayList<Lek> pronadjeniLekovi;
+
+	
+	private ArrayList<LekUMagacinu> pronadjeniLekoviApoteka;
+	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviApotekaDTO;
+	private boolean pretragaLekovaApoteka = false;
+	
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<LekDTO>> getAll() {
@@ -112,6 +118,11 @@ public class LekController {
 //	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<LekUMagacinuDTO>> findAllByApotekaId(@PathVariable Integer id){
+		if (pretragaLekovaApoteka) {
+			pretragaLekovaApoteka = false;
+			return new ResponseEntity<Collection<LekUMagacinuDTO>>(pronadjeniLekoviApotekaDTO, HttpStatus.OK);
+			
+		}
 		Integer magacinId = apotekaService.findOne(id).getMagacin().getId();
 		List<LekUMagacinu> rezultatPretrage=magacinService.preuzmiAktivneLekove(magacinId);
 		ArrayList<LekUMagacinuDTO> dtoList=new ArrayList<LekUMagacinuDTO>();
@@ -121,6 +132,31 @@ public class LekController {
 		
 		return new ResponseEntity<Collection<LekUMagacinuDTO>>(dtoList, HttpStatus.OK);
 	}
+	
+	@PostMapping("/pretragaLekova/{apotekaId}")
+	public ResponseEntity<Boolean> pretrazi(@PathVariable Integer apotekaId, @RequestBody ParametriPretrageLeka params) {
+		
+		pronadjeniLekoviApotekaDTO = new ArrayList<LekUMagacinuDTO>();
+		pronadjeniLekoviApoteka = (ArrayList<LekUMagacinu>) magacinService.pretraziLekoveMagacina(params.getSifra(), params.getNaziv(),
+				params.getOblik(), params.getVrsta(), params.getRezim(), apotekaId, params.getProizvodjac());
+		if (pronadjeniLekoviApoteka.size() != 0) {
+			pretragaLekovaApoteka = true;
+			for (LekUMagacinu l : pronadjeniLekoviApoteka) {
+				pronadjeniLekoviApotekaDTO.add(new LekUMagacinuDTO(l));
+			}
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		else {
+			Integer magacinId = apotekaService.findOne(apotekaId).getMagacin().getId();
+			List<LekUMagacinu> rezultatPretrage=magacinService.preuzmiAktivneLekove(magacinId);
+			for(LekUMagacinu l:rezultatPretrage) {
+				pronadjeniLekoviApotekaDTO.add(new LekUMagacinuDTO(l));
+			}
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
+	}
+	
 	
 	
 	@GetMapping()
