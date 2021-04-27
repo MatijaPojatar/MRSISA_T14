@@ -9,13 +9,11 @@
         v-for="(lek, index) in lekovi"
         :key="index"
       >
-        <v-checkbox v-model="lek1" label="Test 1 - Test 1 - Test 1" />
-        <v-checkbox v-model="lek2" label="Test 2 - Test 2 - Test 2" />
-        <v-checkbox v-model="lek3" label="Test 3 - Test 3 - Test 3" />
-        <v-checkbox v-model="lek4" label="Test 4 - Test 4 - Test 4" />
-        <v-checkbox v-model="lek5" label="Test 5 - Test 5 - Test 5" />
-        <v-checkbox v-model="lek6" label="Test 6 - Test 6 - Test 6" />
-        <v-checkbox v-model="lek7" label="Test 7 - Test 7 - Test 7" />
+        <v-checkbox v-model="lek1" label="Bromazepam - Hemofarm" />
+        <v-checkbox v-model="lek2" label="Fervex - UPSA SAS" />
+        <v-checkbox v-model="lek3" label="Bactrim - Galenika" />
+        <v-checkbox v-model="lek4" label="Konjska mast - Krauterhof" />
+        <v-checkbox v-model="lek5" label="Caffetin - Alkaloid" />
       </v-form>
     </v-card-text>
     <v-card-actions>
@@ -39,11 +37,9 @@ export default {
     lekovi: [],
     lek1: false,
     lek2: false,
-    lek3: false,
+    lek3: true,
     lek4: false,
-    lek5: true,
-    lek6: false,
-    lek7: false,
+    lek5: false
   }),
 
   mounted() {
@@ -62,11 +58,9 @@ export default {
       reset(){
         this.lek1=false
         this.lek2=false
-        this.lek3=false
+        this.lek3=true
         this.lek4=false
-        this.lek5=true
-        this.lek6=false
-        this.lek7=false
+        this.lek5=false
       },
     },
 };

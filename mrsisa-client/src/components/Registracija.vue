@@ -112,15 +112,7 @@ export default {
 
   methods: {
       cancel() {
-      this.email = "";
-      this.lozinka = "";
-      this.potvrdaLozinke = "";
-      this.ime = "";
-      this.prezime = "";
-      this.adresa = "";
-      this.grad = "";
-      this.drzava = "";
-      this.telefon = "";
+        this.$router.push("/");
     },
   },
 };

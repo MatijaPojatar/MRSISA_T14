@@ -83,7 +83,7 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into administratori_apoteke (id,apoteka_id) values (7,1);
 insert into osoba_role (osoba_id, role_id) values (7, 2); -- admin-u apoteke dodeljujemo rolu admin apoteke
 
-insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 7','0651564568','1994-02-11','Srbija','Novi Sad','Imenko','Prezimic','sovara.sovic@gmail.com','$2a$10$YIjbriG.mdkw6P6.tdr4LuwZdTp5RBZAjSo/0mpML8gevssilbjz6',0,true, false, true); -- sifra je 123
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 7','0651564568','1994-02-11','Srbija','Novi Sad','Imenko','Prezimic','imenkoprezimic94@gmail.com','$2a$10$YIjbriG.mdkw6P6.tdr4LuwZdTp5RBZAjSo/0mpML8gevssilbjz6',0,true, false, true); -- sifra je 123
 insert into pacijenti (id,broj_poena,penali) values (8,0,0);--ima role
 insert into osoba_role (osoba_id, role_id) values (8, 1); -- user-u dodeljujemo rolu pacijent
 
