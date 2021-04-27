@@ -310,7 +310,7 @@ import Vue from "vue";
       },
       endDialog(){
         this.dialog=false;
-        location.reload();
+        //location.reload();
       },
     },
   }
