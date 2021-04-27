@@ -1,15 +1,12 @@
 package com.backend.springboot.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,17 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.OdsustvoDermatolog;
-import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
-import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
 import com.backend.springboot.service.OdsustvoDermatologService;
@@ -59,6 +54,8 @@ public class PregledController {
 	private DermatologService derService;
 	@Autowired
 	private OdsustvoDermatologService odsustvoService;
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAll() {
@@ -164,6 +161,12 @@ public class PregledController {
 		p.setPocetak(pocetak);
 		
 		service.save(p);
+		
+		try {
+			emailService.noviPregled(p);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
