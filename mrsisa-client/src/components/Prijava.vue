@@ -46,7 +46,6 @@ export default {
         email: "",
         lozinka: "",
         valid: true,
-        show: false,
         rules: {
             required: v => !!v || "Obavezno polje",
             email: v => /.+@.+\..+/.test(v) || "Email nije validan"
@@ -63,8 +62,8 @@ export default {
             }
         },
         ...mapGetters({
-            getMail: "korisnici/getMail",
-            getRole: "korisnici/getRole"
+            currentMail: "korisnici/getMail",
+            currentRole: "korisnici/getRole"
         })
     },
     methods: {
@@ -80,9 +79,11 @@ export default {
                 }
                 await this.logInAction(credentials);
 
-                switch(this.getRole()){
+                let role = this.currentRole;
+                console.log(role)
+                switch(role){
                     case "ROLE_PACIJENT":
-                        this.$router.push('/pacijent')
+                        this.$router.push('/pacijent');
                         break;
                     case "ROLE_DERMATOLOG":
                         this.$router.push('/dermatolog');
@@ -127,6 +128,11 @@ export default {
         loginAsAdminApoteke(){
             this.$router.push('/adminApoteke');
         },
+
+        cancel() {
+            this.email = "";
+            this.lozinka = "";
+        }
     },
 }
 </script>

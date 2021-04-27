@@ -2,7 +2,7 @@ import Vue from "vue";
 
 const initStanje = () => {
   return {
-    zalbeNaApoteke: []
+    zalbeNaApoteke: [],
   }
 }
 
@@ -34,6 +34,11 @@ const actions = {
 }
 
 const mutations = {
+  // eslint-disable-next-line no-unused-vars
+  resetState(state){
+    state = initStanje();
+  },
+
   setZalbeNaApoteke(state, zalbe){
     state.zalbeNaApoteke = zalbe;
   },

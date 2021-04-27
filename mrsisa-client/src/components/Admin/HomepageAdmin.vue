@@ -111,9 +111,7 @@
 
     <v-main >
      <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
-        <!-- <AccountView :user="getKorisnik()" /> -->
-        <h2>Hello</h2>
-        <h2>{{getKorisnik().ime}}</h2>
+        <AccountView :user="user" />
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
@@ -142,7 +140,7 @@
 
 <script>
 
-// import AccountView from "../AccountView";
+import AccountView from "../AccountView";
 import PasswordSwitch from "../PasswordSwitch";
 import KreirajLek from "./KreirajLek";
 import RegApoteka from "./RegApoteka";
@@ -154,7 +152,7 @@ import {mapGetters} from 'vuex'
 export default {
     name: "HomepageAdminApoteke",
     components:{
-      // AccountView,
+      AccountView,
       PasswordSwitch,
       KreirajLek,
       RegApoteka,
@@ -168,18 +166,19 @@ export default {
     showRegApoteku: false,
     showRegZaposlenog: false,
     showZalbeOdgovor: false,
-
-    user: {},
   }),
   mounted(){
     console.log(window.location.pathname) //?
  
     
   },
-  methods:{
+  computed: {
     ...mapGetters({
-            getKorisnik: "korisnici/getKorisnik",
-        }),
+      user: "korisnici/getKorisnik",
+    }),
+  },
+  methods:{
+
 
     accountView(){
       this.showAccount=true;

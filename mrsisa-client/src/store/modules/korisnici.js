@@ -31,13 +31,14 @@ const actions = {
 
       dispatch('updateAxiosAuth');
       dispatch('updateState', accessToken);
+      console.log("Sacekali update")
     }catch(error){
       alert("Greska log in- u");
     }
   },
 
-  async updateState({ commit }, token){
-    console.log("USLI VAMO")
+  updateState({ commit }, token){
+    console.log("USLI OVDE")
     var jwt_data = jwt_decode(token);
     console.log(jwt_data)
     console.log(jwt_data.ime)
@@ -59,12 +60,20 @@ const actions = {
 }
 
 const mutations = {
+  // eslint-disable-next-line no-unused-vars
+  resetState(state){
+    state= initStanje();
+  },
+
   SET_ROLE(state, role){ 
     state.role = role;
   },
 
   SET_KORISNIK(state, korisnik){
     state.korisnik = korisnik;
+    alert("Gle korisnika")
+    console.log(state.korisnik)
+    console.log(state.korisnik.pol)
   },
   
   SET_MAIL(state, mail){

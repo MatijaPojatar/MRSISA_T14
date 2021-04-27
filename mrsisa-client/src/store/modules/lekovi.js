@@ -21,6 +21,7 @@ const getters = {
 }
 
 const actions = {
+
   async getLekoviAction({ commit }) {
     try{
       const { data : lekovi} = await Vue.axios.get("/lekovi");
@@ -93,6 +94,12 @@ const actions = {
 }
 
 const mutations = {
+  
+  // eslint-disable-next-line no-unused-vars
+  resetState(state){
+    state= initStanje();
+  },
+
   setRezimi(state, rezimi) {
     state.rezimiIzdavanja = rezimi;
   },

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersist from 'vuex-persist'
 
 import apoteke from './modules/apoteke'
 import korisnici from './modules/korisnici'
@@ -13,15 +14,30 @@ import zalbe from './modules/zalbe'
 
 Vue.use(Vuex)
 
+const vuexPersist = new VuexPersist({
+  key: 'my-app',
+  storage: window.localStorage,
+})
+
+const modules ={
+  apoteke,
+  lekovi,
+  korisnici,
+  narudzbenice,
+  ocene,
+  ponude,
+  zalbe
+}
+
 export default new Vuex.Store({
-  modules: {
-    apoteke,
-    lekovi,
-    korisnici,
-    narudzbenice,
-    ocene,
-    ponude,
-    zalbe
+  plugins: [vuexPersist.plugin],
+  modules,
+  actions: {
+    resetStore({commit}) {
+      for (let module in modules){
+        commit(`${module}/resetState`)
+      }
+    }
   }
 
 })

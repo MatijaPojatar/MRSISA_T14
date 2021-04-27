@@ -12,6 +12,7 @@ const getters = {
 }
 
 const actions = {
+
   async getApotekeAction({commit}) {
     try{
       const {data : apoteke} = await Vue.axios.get("/apoteke");
@@ -33,6 +34,11 @@ const actions = {
 }
 
 const mutations = {
+  // eslint-disable-next-line no-unused-vars
+  resetState(state){
+    state= initStanje();
+  },
+
   setApoteke(state, apoteke){
     state.apoteke = apoteke;
   },
