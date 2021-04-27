@@ -1,18 +1,10 @@
-<<<<<<< HEAD
+
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',3,'Hemofarm',1,'kukuruzni skrob, talk, natrijum-laurilsulfat', 1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',1,'UPSA SAS',2,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',2);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',1,'UPSA SAS',0,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',0);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',2,'Galenika',1,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',4,'Krauterhof',2,'divlji kesten, vinova loza, kamilica, alkohol',2);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',4,'Krauterhof',0,'divlji kesten, vinova loza, kamilica, alkohol',0);
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',3,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
-=======
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 1','Test 1',1,'Test 1',1,'Test 1',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 2','Test 2',2,'Test 2',1,'Test 2',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 3','Test 3',2,'Test 3',1,'Test 3',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 4','Test 4',3,'Test 4',1,'Test 4',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 5','Test 5',3,'Test 5',1,'Test 5',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 6','Test 6',1,'Test 6',1,'Test 6',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 7','Test 7',1,'Test 7',1,'Test 7',1);
->>>>>>> be9df64ac4a8522337e8b0bc0deb957268b47322
+
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Novi Sad','Apoteka 2','Test apoteka 2');
@@ -116,6 +108,6 @@ insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) value
 insert into savetovanja (id,farmaceut_id) values (7,1);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','$2a$10$UnO./eDTpKBzdcDio.khoO5/Egozb0LUrLR.ANtjFJQN7pVcEdGEy',0,true, false, true); --sifra je luka
-insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (9,'16:00','08:00');
-insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (9,2);
-insert into osoba_role (osoba_id, role_id) values (9, 4);
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (10,'16:00','08:00');
+insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
+insert into osoba_role (osoba_id, role_id) values (10, 4);
