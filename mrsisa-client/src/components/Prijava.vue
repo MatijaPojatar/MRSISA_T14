@@ -3,7 +3,7 @@
     min-width="33%"
     outlined
     app>
-    <v-card-title>Prijava</v-card-title>
+    <v-card-title class="justify-center">Prijava</v-card-title>
     <v-card-text>
       <v-form ref="forma" v-model="valid" lazy-validation>
         <v-text-field
