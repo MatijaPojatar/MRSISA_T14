@@ -291,7 +291,7 @@
     },
       data: ()=>({
             focus: "",
-            type: "day",
+            type: "month",
             typeToLabel: {
                 month: "Month",
                 week: "Week",
@@ -329,6 +329,7 @@
         },
         },
       mounted(){
+          console.log(this.user);
           this.$refs.calendar.checkChange()
           this.ready = true
           this.scrollToTime()
@@ -371,8 +372,8 @@
 
             nativeEvent.stopPropagation()
         },
-        updateRangeDermatologAxios(){
-          axios.get(`http://localhost:8080/pregled/all/${this.user.id}`).then(response => {
+        async updateRangeDermatologAxios(){
+          await axios.get(`http://localhost:8080/pregled/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
@@ -391,8 +392,8 @@
           });
         });
         },
-      updateRangeFarmaceutAxios (){
-        axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
+      async updateRangeFarmaceutAxios (){
+        await axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
@@ -437,7 +438,7 @@
       cancelPregled(){
           console.log(this.selectedEvent);
       },
-      reportMiss(){
+      async reportMiss(){
           let now = new Date();
           if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             this.dialog=true
@@ -446,9 +447,11 @@
             if(this.farmaceut){
               path="savetovanje"
             }
-            axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
-            axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
-            Object.assign(this.$data, this.$options.data.apply(this))
+            await axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
+            await axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
+            //Object.assign(this.$data, this.$options.data.apply(this))
+            this.selectedOpen=false
+            this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
             
           }   
       },
@@ -472,7 +475,7 @@
           return 'green';
         }
       },
-      endTermin(){
+      async endTermin(){
         let path="pregled"
         if(this.farmaceut){
           path="savetovanje"
@@ -485,7 +488,7 @@
             lekId: element.lek.id
           })
         });
-        axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        await axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
         this.terminDialog=true
         this.selectedOpen=false
       },
@@ -512,7 +515,8 @@
         this.terminDialog=false;
         this.selectedElement=null
         this.selectedEvent={}
-        Object.assign(this.$data, this.$options.data.apply(this))
+        //Object.assign(this.$data, this.$options.data.apply(this))
+        this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
       },
       }
   }

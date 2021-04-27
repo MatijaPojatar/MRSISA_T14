@@ -119,8 +119,7 @@ import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import CreateOdsustvo from "./CreateOdsustvo";
 import PacijentList from "./PacijentList"
-import axios from "axios";
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: "HomepageDF",
@@ -138,23 +137,16 @@ export default {
     showOdsustvo: false,
     showPacijenti: false,
     farmaceut: true,
-    user: {},
   }),
+  computed: {
+    ...mapGetters({
+      user: "korisnici/getKorisnik",
+    }),
+  },
   mounted(){
     console.log(window.location.pathname)
     if(window.location.pathname.includes("dermatolog")){
         this.farmaceut=false;
-    }
-    if(this.farmaceut){
-      axios.get("http://localhost:8080/farmaceut/1").then(response => {
-          console.log(response.data)
-          this.user=response.data;
-        });
-    }else{
-      axios.get("http://localhost:8080/dermatolog/3").then(response => {
-          console.log(response.data)
-          this.user=response.data;
-      });
     }
   },
   methods:{
