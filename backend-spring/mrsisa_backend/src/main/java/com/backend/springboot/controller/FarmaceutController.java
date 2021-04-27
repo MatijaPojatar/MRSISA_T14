@@ -120,6 +120,7 @@ public class FarmaceutController {
 		f.setApoteka(apotekaService.findOne(id));
 		f.setPromenjenaLozinka(false);
 		f.setObrisan(false);
+		f.setPassword("defaultPassword");
 		
 		service.save(f);
 		
