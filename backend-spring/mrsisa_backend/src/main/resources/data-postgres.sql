@@ -1,10 +1,8 @@
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 1','Test 1',1,'Test 1',1,'Test 1',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 2','Test 2',1,'Test 2',1,'Test 2',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 3','Test 3',1,'Test 3',1,'Test 3',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 4','Test 4',1,'Test 4',1,'Test 4',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 5','Test 5',1,'Test 5',1,'Test 5',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 6','Test 6',1,'Test 6',1,'Test 6',1);
-insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Test 7','Test 7',1,'Test 7',1,'Test 7',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',3,'Hemofarm',1,'kukuruzni skrob, talk, natrijum-laurilsulfat', 1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',1,'UPSA SAS',2,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',2);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',2,'Galenika',1,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',4,'Krauterhof',2,'divlji kesten, vinova loza, kamilica, alkohol',2);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',3,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Novi Sad','Apoteka 2','Test apoteka 2');
@@ -15,8 +13,6 @@ insert into apoteke_lekovi (lek_id,apoteka_id) values (2,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (3,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (4,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (5,1);
-insert into apoteke_lekovi (lek_id,apoteka_id) values (6,1);
-insert into apoteke_lekovi (lek_id,apoteka_id) values (7,2);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (3,2);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (4,2);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (4,3);
@@ -58,8 +54,6 @@ insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obr
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 4, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 5, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 6, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 100, 100, 7, 2, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 200, 150, 4, 2, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 2, false);
 
@@ -70,8 +64,6 @@ insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04
 insert into cenovnik(pocetak_vazenja, cena, lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 5);
 insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 400, 6);
 insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 100, 7);
-insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 200, 8);
-insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 9);
 
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 4','0651234555','1987-02-01','Srbija','Novi Sad','Joca','Jokic','joca@gmail.com','$2a$10$CfQ3WAfVoba7Do9ZwQpaF.sg73W2jfUWVWnaEzpsWFfduUWPe0tWa',0,true, false, true); -- sifra je joca123
