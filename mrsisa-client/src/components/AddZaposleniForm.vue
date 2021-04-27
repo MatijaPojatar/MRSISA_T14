@@ -191,7 +191,7 @@
       class="mr-4"
       @click="validate"
     >
-      Sačuvaj izmene
+      Sačuvaj
     </v-btn>
 
     

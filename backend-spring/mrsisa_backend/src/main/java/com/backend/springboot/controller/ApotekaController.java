@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,10 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.ApotekaDTO;
+import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.MagacinService;
 
@@ -41,6 +45,9 @@ public class ApotekaController {
 	
 	@Autowired 
 	private MagacinService magacinService;
+	
+	private ArrayList<LekUMagacinu> pronadjeniLekovi;
+	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviDTO;
 	
 	/*@GetMapping("/lekovi")
 	public ResponseEntity<Collection<Lek>> getLekovi() {
