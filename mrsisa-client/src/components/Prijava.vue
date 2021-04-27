@@ -79,7 +79,7 @@ export default {
                     case "ROLE_FARMACEUT":
                         this.$router.push('/farmaceut');
                         break;
-                    case "ROLE_ADMIN":
+                    case "ROLE_ADMIN_SISTEMA":
                         this.$router.push("/admin")
                         break;
                     case "ROLE_ADMIN_APOTEKE":

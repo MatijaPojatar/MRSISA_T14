@@ -23,7 +23,7 @@ insert into apoteke_lekovi (lek_id,apoteka_id) values (4,3);
 
 insert into role (name) values ('ROLE_PACIJENT');
 insert into role (name) values ('ROLE_ADMIN_APOTEKE');
-insert into role (name) values ('ROLE_ADMIN');
+insert into role (name) values ('ROLE_ADMIN_SISTEMA');
 insert into role (name) values ('ROLE_DERMATOLOG');
 insert into role (name) values ('ROLE_FARMACEUT');
 insert into role (name) values ('ROLE_DOBAVLJAC');
@@ -93,6 +93,10 @@ insert into osoba_role (osoba_id, role_id) values (7, 2); -- admin-u apoteke dod
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 7','0651564568','1994-02-11','Srbija','Novi Sad','Imenko','Prezimic','sovara.sovic@gmail.com','$2a$10$YIjbriG.mdkw6P6.tdr4LuwZdTp5RBZAjSo/0mpML8gevssilbjz6',0,true, false, true); -- sifra je 123
 insert into pacijenti (id,broj_poena,penali) values (8,0,0);--ima role
 insert into osoba_role (osoba_id, role_id) values (8, 1); -- user-u dodeljujemo rolu pacijent
+
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa admina', '060000000', '1995-02-05', 'Srbija', 'Novi Sad', 'Sreten', 'Sreckovic', 'sreten@gmail.com', '$2a$10$s1GDRA8butHfGLEqYSJxHefKDzFw2pEESzGZRU7fm2R5L3kC6zSYu',0,true,false,true); --sifra je 123
+insert into administratori_sistema (id, potpis) values (9, 'PotpisanAdminn');
+insert into osoba_role (osoba_id, role_id) values (9, 3); --ima ulogu admin sistema
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-19 16:50','2021-04-19 18:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (3,6);
