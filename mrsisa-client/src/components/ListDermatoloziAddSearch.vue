@@ -27,56 +27,36 @@
              Broj telefona: {{dermatolog.brojTelefona}}
          </div>
          <v-divider></v-divider>
-         <div>
-             Početak radnog vremena: {{dermatolog.pocetakRadnogVremena}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Kraj radnog vremena: {{dermatolog.krajRadnogVremena}}
-         </div>
          <br/>
          <div>
-            <v-btn
-                class="mx-2"
-                fab
-                dark
-                small
-                color="pink"
-                @click="ObrisiDermatologa"
-            >
-                <v-icon>
-                    mdi-delete
-                </v-icon>
-            </v-btn>
-
-            <v-btn
-                class="mx-2"
-                fab
-                dark
-                small
-                color="cyan"
-                @click="IzmeniDermatologa"
-            >
-                <v-icon>
-                    mdi-pencil
-                </v-icon>
-            </v-btn>
-            
-         </div>
+         <v-btn
+        class="mx-2"
+        fab
+        dark
+        small
+        color="light-green"
+        @click="DodajDermatologa"
+        >
+        <v-icon>
+            mdi-plus
+        </v-icon>
+        </v-btn>
+        </div>
+         
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
 
     <v-dialog
-    v-model="dermatologUpdateDialog"
+    v-model="dermatologAddRadnoVremeDialog"
     persistent
     scrollable
       max-width="760">
       <v-card>
         <v-card-title class="headline">
-          Izmeni dermatologa
+          Radno vreme
         </v-card-title>
-        <AccountView :user="this.selektovanDermatolog" :farmaceut="false" :editable="true" :adminView="true"/>
+        <AddRadnoVremeForm :userId="this.selektovan" :apotekaId="this.apotekaId"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -94,23 +74,22 @@
 
 <script>
  import axios from "axios";
- import  AccountView from "./AccountView";
+ import  AddRadnoVremeForm from "./AddRadnoVremeForm";
 
     export default{
-        name: "ListDermatolozi",
+        name: "ListDermatoloziAddSearch",
         data: () => ({
             dermatolozi: [],
-            dermatologUpdateDialog: false,
+            dermatologAddRadnoVremeDialog: false,
             selektovanDermatolog: {},
             selektovan: null,
          }),
         props:{
             apotekaId: Number,
-            adminView: Boolean,
             
         },
         components:{
-            AccountView,
+            AddRadnoVremeForm,
         },
         mounted(){
             console.log(this.apotekaId);
@@ -119,7 +98,7 @@
         methods:{
              loadDermatolozi(){
                 const dermatolozi = []
-                axios.get(`http://localhost:8080/dermatolog/apoteka/${this.apotekaId}`).then(response => {
+                axios.get(`http://localhost:8080/dermatolog/vanApoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             dermatolozi.push({
@@ -133,8 +112,6 @@
                                 brojTelefona: element.brojTelefona, 
                                 pol: element.pol,
                                 datumRodjenja: element.datumRodjenja,
-                                pocetakRadnogVremena: element.pocetakRadnogVremenaStr,
-                                krajRadnogVremena: element.krajRadnogVremenaStr
                             })
                             this.dermatolozi = dermatolozi
                         })
@@ -146,24 +123,13 @@
                  console.log(this.selektovan);
                  
              },
-
-             ObrisiDermatologa(){
-                 axios.put(`http://localhost:8080/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
-                 location.reload();
+             DodajDermatologa(){
+                this.dermatologAddRadnoVremeDialog = true;
              },
 
-             IzmeniDermatologa(){
-                 console.log("izmena" + this.selektovan);
-                 axios.get(`http://localhost:8080/dermatolog/${this.selektovan}`).then(response => {
-                     console.log(response.data)
-                    this.selektovanDermatolog=response.data;
-                    console.log(this.selektovanDermatolog);
-                 this.dermatologUpdateDialog = true;
-                });
-                
-             },
+            
              endDialog(){
-                this.dermatologUpdateDialog = false;
+                this.dermatologAddRadnoVremeDialog = false;
              },
 
          }

@@ -2,6 +2,7 @@ package com.backend.springboot.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
@@ -9,7 +10,7 @@ import com.backend.springboot.domain.Pol;
 
 public class DermatologDTO {
 	private Integer id;
-	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona, pocetakRadnogVremenaStr, krajRadnogVremenaStr;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
@@ -31,6 +32,10 @@ public class DermatologDTO {
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.pocetakRadnogVremena = d.getPocetakRadnogVremena();
 		this.krajRadnogVremena = d.getKrajRadnogVremena();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
+		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
 	}
 
 	public LocalTime getPocetakRadnogVremena() {
@@ -127,6 +132,22 @@ public class DermatologDTO {
 
 	public void setDatumRodjenja(LocalDate datumRodjenja) {
 		this.datumRodjenja = datumRodjenja;
+	}
+
+	public String getPocetakRadnogVremenaStr() {
+		return pocetakRadnogVremenaStr;
+	}
+
+	public void setPocetakRadnogVremenaStr(String pocetakRadnogVremenaStr) {
+		this.pocetakRadnogVremenaStr = pocetakRadnogVremenaStr;
+	}
+
+	public String getKrajRadnogVremenaStr() {
+		return krajRadnogVremenaStr;
+	}
+
+	public void setKrajRadnogVremenaStr(String krajRadnogVremenaStr) {
+		this.krajRadnogVremenaStr = krajRadnogVremenaStr;
 	}
 	
 	

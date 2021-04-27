@@ -28,6 +28,7 @@
             <v-btn @click="loginAsPacijent">Pacijent</v-btn>
             <v-btn @click="loginAsFarmaceut">Farmaceut</v-btn>
             <v-btn @click="loginAsDermatolog">Dermatolog</v-btn>
+            <v-btn @click="loginAsAdminApoteke">Admin Apoteke</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -96,6 +97,10 @@ export default {
 
         loginAsDermatolog(){
             this.$router.push('/dermatolog');
+        },
+
+        loginAsAdminApoteke(){
+            this.$router.push('/adminApoteke');
         },
     },
 }

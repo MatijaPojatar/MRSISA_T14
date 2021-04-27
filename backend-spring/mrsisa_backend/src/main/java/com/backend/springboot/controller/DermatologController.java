@@ -75,6 +75,8 @@ public class DermatologController {
 		d.setIme(dto.getIme());
 		d.setPol(dto.getPol());
 		d.setPrezime(dto.getPrezime());
+		d.setPocetakRadnogVremena(dto.getPocetakRadnogVremena());
+		d.setKrajRadnogVremena(dto.getKrajRadnogVremena());
 		
 		service.save(d);
 		
@@ -122,18 +124,26 @@ public class DermatologController {
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
 	}
 	
-	@PutMapping("/obrisiDermatologa/{id}")
-	public ResponseEntity<String> obrisiDermatologa(@PathVariable Integer id, @RequestBody String apotekaId) {
+	@GetMapping("/vanApoteka/{id}")
+	public ResponseEntity<Collection<DermatologDTO>> findAllNotInApoteka(@PathVariable Integer id){
+		ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.preuzmiDermatologeVanApoteke(id);
+		ArrayList<DermatologDTO> dtoList=new ArrayList<DermatologDTO>();
+		for(Dermatolog l:rezultatPretrage) {
+			dtoList.add(new DermatologDTO(l));
+		}
+		
+		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@PutMapping("/obrisiDermatologaApoteka/{id}")
+	public ResponseEntity<String> obrisiDermatologaApoteka(@PathVariable Integer id, @RequestBody String apotekaId) {
 		service.obrisiDermatologaIzApoteke(id, Integer.parseInt(apotekaId));
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	@PostMapping("/dodajDermatologa/{id}")
-	public ResponseEntity<String> dodajDermatologa(@PathVariable Integer id,@RequestBody DermatologDTO dto){
-		System.out.println("=============================================zczcdzcz=================");
-		
-		
-		//service.save(f);
+	@PutMapping("/dodajDermatologaApoteka/{id}/{apotekaId}")
+	public ResponseEntity<String> dodajDermatologaApoteka(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody RadnoVremeDTO radnoVreme ){
+		service.dodajDermatologaUApoteku(id, apotekaId, radnoVreme.getPocetak(), radnoVreme.getKraj());
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}

@@ -27,7 +27,7 @@
         <v-card-title class="headline">
           Novi dermatolog
         </v-card-title>
-        <AddZaposleniForm :apotekaId="this.apotekaId" :farmaceut="false"/>
+        <ListDermatoloziAddSearch :apotekaId="this.apotekaId"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -46,13 +46,13 @@
 
 <script>
 import ListDermatolozi from "./ListDermatolozi";
-import AddZaposleniForm from "./AddZaposleniForm"
+import ListDermatoloziAddSearch from "./ListDermatoloziAddSearch"
 
 export default{
     name: "DermatoloziAdminApoteke",
     components: {
         ListDermatolozi,
-        AddZaposleniForm
+        ListDermatoloziAddSearch
     },
     data: () => ({
         dermatologAddDialog: false,
