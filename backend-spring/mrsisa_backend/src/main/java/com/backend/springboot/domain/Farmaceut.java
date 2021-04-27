@@ -37,6 +37,8 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
+	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ZalbaNaFarmaceuta> zalbe = new ArrayList<ZalbaNaFarmaceuta>();
 
 	public Farmaceut() {
 		super();
@@ -55,6 +57,18 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 
 	
 	
+	public List<ZalbaNaFarmaceuta> getZalbe() {
+		return zalbe;
+	}
+
+
+
+	public void setZalbe(List<ZalbaNaFarmaceuta> zalbe) {
+		this.zalbe = zalbe;
+	}
+
+
+
 	public List<Savetovanje> getSavetovanja() {
 		return savetovanja;
 	}

@@ -12,7 +12,14 @@ import com.backend.springboot.repository.ZalbaNaApotekuRepository;
 public class ZalbaNaApotekuService {
 	
 	@Autowired
-	ZalbaNaApotekuRepository zalbeRep;
+	private ZalbaNaApotekuRepository zalbeRep;
+	
+	
+	public void odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor) {
+		zalba.setOdgovor(odgovor);
+		zalbeRep.save(zalba);
+		return;
+	}
 	
 	public ZalbaNaApoteku dodajZalbu(ZalbaNaApoteku zalba) {
 		return zalbeRep.save(zalba);

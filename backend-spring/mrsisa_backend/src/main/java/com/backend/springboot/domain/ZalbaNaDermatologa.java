@@ -9,12 +9,13 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.backend.springboot.dto.ZalbaNaApotekuDTO;
+import com.backend.springboot.dto.ZalbaNaDermatologaDTO;
 
 @Entity
-@Table(name = "zalba_apoteka")
-public class ZalbaNaApoteku {
-
+@Table(name = "zalba_dermatolog")
+public class ZalbaNaDermatologa {
+	
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -32,27 +33,30 @@ public class ZalbaNaApoteku {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Pacijent pacijent;
 	
-	//apoteka
+	
+	//dermatolog
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Apoteka apoteka;
+	private Dermatolog dermatolog;
 
+	
 
-	public ZalbaNaApoteku() {
+	public ZalbaNaDermatologa() {
 		super();
 	}
 
 
-	public ZalbaNaApoteku(Integer id, String tekst, Boolean obradjena, Pacijent pacijent, Apoteka apoteka, String odgovor) {
+	public ZalbaNaDermatologa(Integer id, String tekst, String odgovor, Boolean obradjena, Pacijent pacijent,
+			Dermatolog dermatolog) {
 		super();
 		this.id = id;
 		this.tekst = tekst;
+		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.pacijent = pacijent;
-		this.apoteka = apoteka;
-		this.odgovor = odgovor;
+		this.dermatolog = dermatolog;
 	}
 
-	public ZalbaNaApoteku(ZalbaNaApotekuDTO dto) {
+	public ZalbaNaDermatologa(ZalbaNaDermatologaDTO dto) {
 		super();
 		this.id = dto.getId();
 		this.tekst = dto.getTekst();
@@ -60,6 +64,26 @@ public class ZalbaNaApoteku {
 		this.odgovor = dto.getOdgovor();
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
+	public String getTekst() {
+		return tekst;
+	}
+
+
+	public void setTekst(String tekst) {
+		this.tekst = tekst;
+	}
+
+
 	public String getOdgovor() {
 		return odgovor;
 	}
@@ -74,40 +98,29 @@ public class ZalbaNaApoteku {
 		return obradjena;
 	}
 
+
 	public void setObradjena(Boolean obradjena) {
 		this.obradjena = obradjena;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTekst() {
-		return tekst;
-	}
-
-	public void setTekst(String tekst) {
-		this.tekst = tekst;
-	}
 
 	public Pacijent getPacijent() {
 		return pacijent;
 	}
 
+
 	public void setPacijent(Pacijent pacijent) {
 		this.pacijent = pacijent;
 	}
 
-	public Apoteka getApoteka() {
-		return apoteka;
+
+	public Dermatolog getDermatolog() {
+		return dermatolog;
 	}
 
-	public void setApoteka(Apoteka apoteka) {
-		this.apoteka = apoteka;
+
+	public void setDermatolog(Dermatolog dermatolog) {
+		this.dermatolog = dermatolog;
 	}
 	
 	

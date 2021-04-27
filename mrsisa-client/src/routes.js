@@ -32,11 +32,6 @@ const router = new Router({
       component: () => import("./components/Admin/RegZaposlenog")
     },
     {
-      path: "/pacijent/zalba/apoteka",
-      name: "Zalba na apoteku",
-      component: () => import("./components/Admin/ZalbaNaApoteku")
-    },
-    {
       path: "/apoteke",
       name: "ListApoteke",
       component: () => import("./components/ListApoteke")

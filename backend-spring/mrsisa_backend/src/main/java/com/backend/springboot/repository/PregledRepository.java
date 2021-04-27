@@ -18,6 +18,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	
 	public Pregled save(Pregled p);
 	
+	public List<Pregled> findAllByPacijentId(Integer id);
+	
 	public List<Pregled> findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer dermatologId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
 	@Query("select p from Pregled p where (p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end)")

@@ -6,16 +6,17 @@ import java.util.Date;
 import com.backend.springboot.domain.Savetovanje;
 
 public class SavetovanjeDTO {
-	private String name,izvestaj;
-	private LocalDateTime start,end;
-	private Integer pacijentId,id,apotekaId;
+	private String name, izvestaj;
+	private LocalDateTime start, end;
+	private Integer pacijentId, id, apotekaId, farmaceutId;
 	private boolean izvrsen;
-	
+
 	public SavetovanjeDTO() {
 		super();
 	}
-	
-	public SavetovanjeDTO(String name, String izvestaj, LocalDateTime start, LocalDateTime end, Integer pacijentId, boolean izvrsen) {
+
+	public SavetovanjeDTO(String name, String izvestaj, LocalDateTime start, LocalDateTime end, Integer pacijentId,
+			boolean izvrsen, Integer apotekaId, Integer farmaceutId) {
 		super();
 		this.name = name;
 		this.izvestaj = izvestaj;
@@ -23,21 +24,32 @@ public class SavetovanjeDTO {
 		this.end = end;
 		this.pacijentId = pacijentId;
 		this.izvrsen = izvrsen;
+		this.apotekaId = apotekaId;
+		this.farmaceutId = farmaceutId;
 	}
-	
+
 	public SavetovanjeDTO(Savetovanje s) {
-		this.name="Savetovanje "+s.getId();
-		this.izvestaj=s.getIzvestaj();
-		this.start=s.getPocetak();
-		this.end=s.getKraj();
-		if(s.getPacijent()==null) {
-			this.pacijentId=null;
-		}else {
-			this.pacijentId=s.getPacijent().getId();
+		this.name = "Savetovanje " + s.getId();
+		this.izvestaj = s.getIzvestaj();
+		this.start = s.getPocetak();
+		this.end = s.getKraj();
+		if (s.getPacijent() == null) {
+			this.pacijentId = null;
+		} else {
+			this.pacijentId = s.getPacijent().getId();
 		}
-		this.izvrsen=s.isIzvrsen();
-		this.id=s.getId();
-		this.apotekaId=s.getApoteka().getId();
+		this.izvrsen = s.isIzvrsen();
+		this.id = s.getId();
+		this.apotekaId = s.getApoteka().getId();
+		this.farmaceutId = s.getFarmaceut().getId();
+	}
+
+	public Integer getFarmaceutId() {
+		return farmaceutId;
+	}
+
+	public void setFarmaceutId(Integer farmaceutId) {
+		this.farmaceutId = farmaceutId;
 	}
 
 	public String getName() {
@@ -103,8 +115,5 @@ public class SavetovanjeDTO {
 	public void setApotekaId(Integer apotekaId) {
 		this.apotekaId = apotekaId;
 	}
-	
-	
-	
-	
+
 }

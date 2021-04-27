@@ -46,6 +46,8 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	@OneToMany(mappedBy = "dermatolog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<OdsustvoDermatolog> odsustva=new ArrayList<OdsustvoDermatolog>();
 
+	@OneToMany(mappedBy = "dermatolog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ZalbaNaDermatologa> zalbe = new ArrayList<ZalbaNaDermatologa>();
 
 	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
@@ -73,6 +75,16 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		this.setPocetakRadnogVremena(d.getPocetakRadnogVremena());
 		this.setKrajRadnogVremena(d.getKrajRadnogVremena());
 	}
+
+	public List<ZalbaNaDermatologa> getZalbe() {
+		return zalbe;
+	}
+
+
+	public void setZalbe(List<ZalbaNaDermatologa> zalbe) {
+		this.zalbe = zalbe;
+	}
+
 
 	public LocalTime getPocetakRadnogVremena() {
 		return pocetakRadnogVremena;

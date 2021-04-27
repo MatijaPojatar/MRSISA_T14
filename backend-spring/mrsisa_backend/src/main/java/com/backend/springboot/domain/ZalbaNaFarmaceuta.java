@@ -9,12 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.backend.springboot.dto.ZalbaNaApotekuDTO;
+import com.backend.springboot.dto.ZalbaNaFarmaceutaDTO;
 
 @Entity
-@Table(name = "zalba_apoteka")
-public class ZalbaNaApoteku {
-
+@Table(name = "zalba_farmaceut")
+public class ZalbaNaFarmaceuta {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -34,25 +33,24 @@ public class ZalbaNaApoteku {
 	
 	//apoteka
 	@ManyToOne(fetch = FetchType.LAZY)
-	private Apoteka apoteka;
+	private Farmaceut farmaceut;
 
-
-	public ZalbaNaApoteku() {
+	public ZalbaNaFarmaceuta() {
 		super();
 	}
 
-
-	public ZalbaNaApoteku(Integer id, String tekst, Boolean obradjena, Pacijent pacijent, Apoteka apoteka, String odgovor) {
+	public ZalbaNaFarmaceuta(Integer id, String tekst, String odgovor, Boolean obradjena, Pacijent pacijent,
+			Farmaceut farmaceut) {
 		super();
 		this.id = id;
 		this.tekst = tekst;
+		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.pacijent = pacijent;
-		this.apoteka = apoteka;
-		this.odgovor = odgovor;
+		this.farmaceut = farmaceut;
 	}
 
-	public ZalbaNaApoteku(ZalbaNaApotekuDTO dto) {
+	public ZalbaNaFarmaceuta(ZalbaNaFarmaceutaDTO dto) {
 		super();
 		this.id = dto.getId();
 		this.tekst = dto.getTekst();
@@ -60,24 +58,6 @@ public class ZalbaNaApoteku {
 		this.odgovor = dto.getOdgovor();
 	}
 	
-	public String getOdgovor() {
-		return odgovor;
-	}
-
-
-	public void setOdgovor(String odgovor) {
-		this.odgovor = odgovor;
-	}
-
-
-	public Boolean getObradjena() {
-		return obradjena;
-	}
-
-	public void setObradjena(Boolean obradjena) {
-		this.obradjena = obradjena;
-	}
-
 	public Integer getId() {
 		return id;
 	}
@@ -94,6 +74,22 @@ public class ZalbaNaApoteku {
 		this.tekst = tekst;
 	}
 
+	public String getOdgovor() {
+		return odgovor;
+	}
+
+	public void setOdgovor(String odgovor) {
+		this.odgovor = odgovor;
+	}
+
+	public Boolean getObradjena() {
+		return obradjena;
+	}
+
+	public void setObradjena(Boolean obradjena) {
+		this.obradjena = obradjena;
+	}
+
 	public Pacijent getPacijent() {
 		return pacijent;
 	}
@@ -102,14 +98,13 @@ public class ZalbaNaApoteku {
 		this.pacijent = pacijent;
 	}
 
-	public Apoteka getApoteka() {
-		return apoteka;
+	public Farmaceut getFarmaceut() {
+		return farmaceut;
 	}
 
-	public void setApoteka(Apoteka apoteka) {
-		this.apoteka = apoteka;
+	public void setFarmaceut(Farmaceut farmaceut) {
+		this.farmaceut = farmaceut;
 	}
-	
 	
 	
 }

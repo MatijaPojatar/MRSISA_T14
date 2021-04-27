@@ -1,86 +1,74 @@
 package com.backend.springboot.dto;
 
-import com.backend.springboot.domain.Apoteka;
-import com.backend.springboot.domain.Pacijent;
-import com.backend.springboot.domain.ZalbaNaApoteku;
+import com.backend.springboot.domain.ZalbaNaFarmaceuta;
 
-public class ZalbaNaApotekuDTO {
-	private Integer id, pacijentId, apotekaId;
+public class ZalbaNaFarmaceutaDTO {
+	private Integer id, pacijentId, farmaceutId;
 	private String tekst, odgovor;
 	private Boolean obradjena;
 	
-	
-	public ZalbaNaApotekuDTO() {
+	public ZalbaNaFarmaceutaDTO() {
 		super();
 	}
 
-	public ZalbaNaApotekuDTO(Integer id, Integer pacijentId, Integer apotekaId, String tekst, String odgovor,
+
+	public ZalbaNaFarmaceutaDTO(Integer id, Integer pacijentId, Integer farmaceutId, String tekst, String odgovor,
 			Boolean obradjena) {
 		super();
 		this.id = id;
 		this.pacijentId = pacijentId;
-		this.apotekaId = apotekaId;
+		this.farmaceutId = farmaceutId;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 	}
-
-	public ZalbaNaApotekuDTO(ZalbaNaApoteku z) {
+	
+	
+	public ZalbaNaFarmaceutaDTO(ZalbaNaFarmaceuta z) {
 		super();
 		this.id = z.getId();
 		this.tekst = z.getTekst();
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
-		this.apotekaId = z.getApoteka().getId();
+		this.farmaceutId = z.getFarmaceut().getId();
 		this.odgovor = z.getOdgovor();
 	}
-
-	public String getOdgovor() {
-		return odgovor;
-	}
-
-	public void setOdgovor(String odgovor) {
-		this.odgovor = odgovor;
-	}
-
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public Integer getPacijentId() {
 		return pacijentId;
 	}
-
 	public void setPacijentId(Integer pacijentId) {
 		this.pacijentId = pacijentId;
 	}
-
-	public Integer getApotekaId() {
-		return apotekaId;
+	public Integer getFarmaceutId() {
+		return farmaceutId;
 	}
-
-	public void setApotekaId(Integer apotekaId) {
-		this.apotekaId = apotekaId;
+	public void setFarmaceutId(Integer farmaceutId) {
+		this.farmaceutId = farmaceutId;
 	}
-
 	public String getTekst() {
 		return tekst;
 	}
-
 	public void setTekst(String tekst) {
 		this.tekst = tekst;
 	}
-
+	public String getOdgovor() {
+		return odgovor;
+	}
+	public void setOdgovor(String odgovor) {
+		this.odgovor = odgovor;
+	}
 	public Boolean getObradjena() {
 		return obradjena;
 	}
-
 	public void setObradjena(Boolean obradjena) {
 		this.obradjena = obradjena;
 	}
+	
 	
 }

@@ -1,13 +1,28 @@
 <template>
   <v-card>
     <v-card-text>
-      <h2>Biraj apoteku (id): DORADITI</h2>
-      <v-text-field
-      v-model="apotekaId"
-      label="ID Apoteke"
-      type="number"
-      required
-      />
+      <h2>Biraj apoteku</h2> 
+
+       <v-autocomplete
+        v-model="izabranaApotekaId"
+        :items="moguceApoteke"
+        label="Apoteka"
+        item-text="naziv"
+        item-value="id"
+        required>
+
+        
+          <template slot="selection" slot-scope="data">
+            <!-- HTML that describe how select should render selected items -->
+            {{ data.item.naziv }} 
+          </template>
+
+          <template slot="item" slot-scope="data">
+            <!-- HTML that describe how select should render items when the select is open -->
+            {{ data.item.naziv }}
+          </template>
+
+      </v-autocomplete>
 
       <v-textarea
       height="400"
@@ -35,21 +50,27 @@ export default {
   //fetch ko je ulogovan kao pacijent da pise zalbu
 
   data: () => ({
-    apotekaId: 0,
+    izabranaApotekaId: 0,
     tekst: "",
-    pacijentId: 1,
   }),
 
   computed: {
     ...mapGetters({
       allZalbeNaApoteke: "zalbe/getZalbeNaApoteke",
+      korisnik : "korisnici/getKorisnik",
+      moguceApoteke : "zalbe/getMoguceApoteke"
     })
+  },
+
+  async beforeMount(){
+    await this.getMoguceApotekeAction(this.korisnik.id);
   },
 
   methods: {
     ...mapActions({
       getZalbeNaApotekeAction: "zalbe/getZalbeNaApotekeAction",
-      addZalbaNaApotekuAction: "zalbe/addZalbaNaApotekuAction"
+      addZalbaNaApotekuAction: "zalbe/addZalbaNaApotekuAction",
+      getMoguceApotekeAction: "zalbe/getMoguceApotekeAction"
     }),
 
     async onSubmit() {
@@ -57,8 +78,8 @@ export default {
         const zalbaDTO = {
           tekst : this.tekst,
           obradjena: false,
-          pacijentId: this.pacijentId,
-          apotekaId: this.apotekaId
+          pacijentId: this.korisnik.id,
+          apotekaId: this.izabranaApotekaId
         }
 
         await this.addZalbaNaApotekuAction(zalbaDTO);
@@ -69,7 +90,7 @@ export default {
     },
 
     async cancel(){
-      this.apotekaId = "";
+      this.izabranaApotekaId = "";
       this.tekst =  "";
     }
   }

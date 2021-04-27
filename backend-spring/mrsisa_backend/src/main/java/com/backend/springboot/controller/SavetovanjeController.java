@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
+import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -71,6 +76,32 @@ public class SavetovanjeController {
 
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping("/apotekePacijenta/{id}")
+	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
+		
+		Set<Apoteka> apoteke = service.poseceneApoteke(id);
+		
+		List<MinimalApotekaDTO> minimalne = new ArrayList<MinimalApotekaDTO>();
+		for(Apoteka a : apoteke) {
+			minimalne.add(new MinimalApotekaDTO(a));
+		}
+		
+		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
+	}
+	
+	@GetMapping("/farmaceutiPacijenta/{id}")
+	public ResponseEntity<List<FarmaceutDTO>> poseceniFarmaceuti(@PathVariable Integer id){
+		Set<Farmaceut> farmaceuti = service.poseceniFarmaceuti(id);
+		List<FarmaceutDTO> dtos = new ArrayList<FarmaceutDTO>();
+		
+		for (Farmaceut f : farmaceuti) {
+			dtos.add(new FarmaceutDTO(f));
+		}
+		
+		return new ResponseEntity<List<FarmaceutDTO>>(dtos, HttpStatus.OK);
+	}
+	
 	
 	@PutMapping("/penal/{id}")
 	public ResponseEntity<String> pacijentNijeDosao(@PathVariable Integer id){

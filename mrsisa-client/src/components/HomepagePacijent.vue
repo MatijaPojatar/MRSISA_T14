@@ -72,7 +72,42 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+
+
+                <v-list-item link @click="zalbaApotekaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-a-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zalba na apoteku
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+
+                <v-list-item link @click="zalbaDermatologView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-d-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zalba na Dermatologa
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+
+                <v-list-item link @click="zalbaFarmaceutView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-f-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zalba na Farmaceuta
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
             </v-list>
+
             <template v-slot:append>
                 <div class="pa-2">
                     <v-btn block @click="onLogout">
@@ -94,6 +129,15 @@
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
                 <AddAllergy :id="user.id"/>
             </v-container>
+             <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
+                <ZalbaNaApoteku />
+            </v-container>
+             <v-container fluid v-if="showZalbaFarmaceut" :style="{width:'70vh'}">
+                <ZalbaNaFarmaceuta />
+            </v-container>
+             <v-container fluid v-if="showZalbaDermatolog" :style="{width:'70vh'}">
+                <ZalbaNaDermatologa :id="user.id"/>
+            </v-container>
         </v-main>
     </v-app>
 </template>
@@ -103,7 +147,10 @@
 import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
-import AddAllergy from "./AddAllergy"
+import AddAllergy from "./AddAllergy";
+import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
+import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
+import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -113,13 +160,19 @@ export default {
         Calendar,
         AccountView,
         PasswordSwitch,
-        AddAllergy
+        AddAllergy,
+        ZalbaNaApoteku,
+        ZalbaNaDermatologa,
+        ZalbaNaFarmaceuta
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
     showPassword: false,
     showAllergy: false,
+    showZalbaApoteka : false,
+    showZalbaFarmaceut : false,
+    showZalbaDermatolog : false,
     user: {},
   }),
   mounted(){
@@ -140,25 +193,69 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
       },
       changePassword(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=true;
           this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
       },
       allergyView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=true;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
       },
+
+      zalbaApotekaView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showZalbaApoteka = true;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+      },
+
+      zalbaDermatologView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = true;
+      },
+
+      zalbaFarmaceutView() {
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = true;
+          this.showZalbaDermatolog = false;
+      },
+
+
       onLogout(){
         this.logout();
         this.$router.push('/');

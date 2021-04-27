@@ -1,86 +1,75 @@
 package com.backend.springboot.dto;
 
-import com.backend.springboot.domain.Apoteka;
-import com.backend.springboot.domain.Pacijent;
-import com.backend.springboot.domain.ZalbaNaApoteku;
+import com.backend.springboot.domain.ZalbaNaDermatologa;
 
-public class ZalbaNaApotekuDTO {
-	private Integer id, pacijentId, apotekaId;
+public class ZalbaNaDermatologaDTO {
+	private Integer id, pacijentId, dermatologId;
 	private String tekst, odgovor;
 	private Boolean obradjena;
-	
-	
-	public ZalbaNaApotekuDTO() {
+
+
+	public ZalbaNaDermatologaDTO() {
 		super();
 	}
 
-	public ZalbaNaApotekuDTO(Integer id, Integer pacijentId, Integer apotekaId, String tekst, String odgovor,
+	public ZalbaNaDermatologaDTO(Integer id, Integer pacijentId, Integer dermatologId, String tekst, String odgovor,
 			Boolean obradjena) {
 		super();
 		this.id = id;
 		this.pacijentId = pacijentId;
-		this.apotekaId = apotekaId;
+		this.dermatologId = dermatologId;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 	}
-
-	public ZalbaNaApotekuDTO(ZalbaNaApoteku z) {
+	
+	public ZalbaNaDermatologaDTO(ZalbaNaDermatologa z) {
 		super();
 		this.id = z.getId();
 		this.tekst = z.getTekst();
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
-		this.apotekaId = z.getApoteka().getId();
+		this.dermatologId = z.getDermatolog().getId();
 		this.odgovor = z.getOdgovor();
 	}
-
-	public String getOdgovor() {
-		return odgovor;
-	}
-
-	public void setOdgovor(String odgovor) {
-		this.odgovor = odgovor;
-	}
-
+	
+	
 	public Integer getId() {
 		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 	public Integer getPacijentId() {
 		return pacijentId;
 	}
-
 	public void setPacijentId(Integer pacijentId) {
 		this.pacijentId = pacijentId;
 	}
-
-	public Integer getApotekaId() {
-		return apotekaId;
+	public Integer getDermatologId() {
+		return dermatologId;
 	}
-
-	public void setApotekaId(Integer apotekaId) {
-		this.apotekaId = apotekaId;
+	public void setDermatologId(Integer dermatologId) {
+		this.dermatologId = dermatologId;
 	}
-
 	public String getTekst() {
 		return tekst;
 	}
-
 	public void setTekst(String tekst) {
 		this.tekst = tekst;
 	}
-
+	public String getOdgovor() {
+		return odgovor;
+	}
+	public void setOdgovor(String odgovor) {
+		this.odgovor = odgovor;
+	}
 	public Boolean getObradjena() {
 		return obradjena;
 	}
-
 	public void setObradjena(Boolean obradjena) {
 		this.obradjena = obradjena;
 	}
+	
 	
 }

@@ -8,7 +8,7 @@ import com.backend.springboot.domain.Pregled;
 public class PregledDTO {
 	private String name,izvestaj;
 	private LocalDateTime start,end;
-	private Integer pacijentId,apotekaId,id;
+	private Integer pacijentId,apotekaId,id, dermatologId;
 	private boolean izvrsen;
 	private double cena;
 	
@@ -17,7 +17,7 @@ public class PregledDTO {
 	}
 
 	public PregledDTO(String name, String izvestaj, LocalDateTime start, LocalDateTime end, Integer pacijentId, boolean izvrsen,
-			double cena) {
+			double cena, Integer dermatologId ) {
 		super();
 		this.name = name;
 		this.izvestaj = izvestaj;
@@ -26,6 +26,7 @@ public class PregledDTO {
 		this.pacijentId = pacijentId;
 		this.izvrsen = izvrsen;
 		this.cena = cena;
+		this.dermatologId = dermatologId;
 	}
 	
 	public PregledDTO(Pregled p) {
@@ -42,6 +43,15 @@ public class PregledDTO {
 		this.cena=p.getCena();
 		this.apotekaId=p.getApoteka().getId();
 		this.id=p.getId();
+		this.dermatologId = p.getDermatolog().getId();
+	}
+
+	public Integer getDermatologId() {
+		return dermatologId;
+	}
+
+	public void setDermatologId(Integer dermatologId) {
+		this.dermatologId = dermatologId;
 	}
 
 	public String getName() {

@@ -3,7 +3,9 @@ package com.backend.springboot.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +19,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.dto.DermatologDTO;
+import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
+import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -69,6 +77,34 @@ public class PregledController {
 
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping("/apotekePacijenta/{id}")
+	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
+		
+		Set<Apoteka> apoteke = service.poseceneApoteke(id);
+		
+		List<MinimalApotekaDTO> minimalne = new ArrayList<MinimalApotekaDTO>();
+		for(Apoteka a : apoteke) {
+			minimalne.add(new MinimalApotekaDTO(a));
+		}
+		
+		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatoloziPacijenta/{id}")
+	public ResponseEntity<List<DermatologDTO>> poseceniDermatolozi(@PathVariable Integer id){
+		
+		Set<Dermatolog> dermatolozi = service.poseceniDermatolozi(id);
+		
+		List<DermatologDTO> dtos = new ArrayList<DermatologDTO>();
+		
+		for (Dermatolog f : dermatolozi) {
+			dtos.add(new DermatologDTO(f));
+		}
+		
+		return new ResponseEntity<List<DermatologDTO>>(dtos, HttpStatus.OK);
+	}
+	
 	
 	@PutMapping("/penal/{id}")
 	public ResponseEntity<String> pacijentNijeDosao(@PathVariable Integer id){

@@ -29,6 +29,13 @@ public class Pacijent extends Osoba {
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaApoteku> zalbeNaApoteke = new ArrayList<ZalbaNaApoteku>();
 	
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
+	private List<ZalbaNaDermatologa> zalbeNaDermatologe = new ArrayList<ZalbaNaDermatologa>();
+	
+	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
+	private List<ZalbaNaFarmaceuta> zalbeNaFarmaceute = new ArrayList<ZalbaNaFarmaceuta>();
+	
+	
 	@ManyToMany
 	@JoinTable(name = "pacijent_alergije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private List<Lek> alergije = new ArrayList<Lek>();
