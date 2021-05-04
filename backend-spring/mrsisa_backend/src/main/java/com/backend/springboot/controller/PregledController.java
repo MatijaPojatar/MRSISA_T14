@@ -240,5 +240,16 @@ public class PregledController {
 
 		return new ResponseEntity<List<PacijentTerminDTO>>(pacijentiDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping("/preporuceni_lekovi/{id}")
+	public ResponseEntity<List<LekUIzvestajuDTO>> getPreporuceni(@PathVariable Integer id){
+		List<LekUIzvestaju> lekovi=izvestajService.findAllByTerminId(id);
+		ArrayList<LekUIzvestajuDTO> dtos=new ArrayList<LekUIzvestajuDTO>();
+		for(LekUIzvestaju lek:lekovi) {
+			dtos.add(new LekUIzvestajuDTO(lek));
+		}
+		
+		return new ResponseEntity<List<LekUIzvestajuDTO>>(dtos,HttpStatus.OK);
+	}
 
 }

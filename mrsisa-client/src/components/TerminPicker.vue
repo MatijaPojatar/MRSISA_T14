@@ -31,6 +31,32 @@
                 class="mb-12"
                 >
                 Izveštaj: {{izvestaj}}
+                <v-divider/>
+                <template>
+                    <v-simple-table dense>
+                    <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Naziv
+                              </th>
+                              <th class="text-left">
+                                Terapija
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                           <tr
+                            v-for="item in lekovi"
+                            :key="item.id"
+                           >
+                            <td>{{ item.naziv }}</td>
+                            <td>{{ item.terapija }}</td>
+                        </tr>
+                        </tbody>
+                    </template>
+                    </v-simple-table>
+                </template>
                 </v-card>
             </v-stepper-content>
 
@@ -202,6 +228,7 @@ export default{
         pacijentId: Number,
         apotekaId: Number,
         farmaceut: Boolean,
+        lekovi: Array,
     },
     mounted(){
         this.loadTermini();

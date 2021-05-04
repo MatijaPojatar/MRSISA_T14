@@ -283,6 +283,7 @@
                         }else{
                            this.preporuceniLekovi.push({
                             lek: this.selektovanLek,
+                            naziv : this.selektovanLek.naziv,
                             terapija: this.terapija
                         }) 
                         }

@@ -10,14 +10,14 @@
       :counter="20"
       :rules="nameRules"
       label="Ime"
-      :disabled="!editable"
+      :readonly="!editable"
       required
     ></v-text-field>
 
     <v-text-field
       v-model="newInfo.prezime"
       :counter="20"
-      :disabled="!editable"
+      :readonly="!editable"
       :rules="nameRules"
       label="Prezime"
       required
@@ -26,7 +26,7 @@
     <v-text-field
       v-model="newInfo.brojTelefona"
       :counter="10"
-      :disabled="!editable"
+      :readonly="!editable"
       :rules="brojRules"
       label="Broj Telefona"
       required
@@ -35,7 +35,7 @@
     <v-text-field
       v-model="newInfo.adresa"
       :rules="requiredRules"
-      :disabled="!editable"
+      :readonly="!editable"
       label="Adresa"
       required
     ></v-text-field>
@@ -43,7 +43,7 @@
     <v-text-field
       v-model="newInfo.grad"
       :rules="requiredRules"
-      :disabled="!editable"
+      :readonly="!editable"
       label="Grad"
       required
     ></v-text-field>
@@ -51,14 +51,14 @@
     <v-text-field
       v-model="newInfo.drzava"
       :rules="requiredRules"
-      :disabled="!editable"
+      :readonly="!editable"
       label="Država"
       required
     ></v-text-field>
 
     <v-select
       v-model="newInfo.pol"
-      :disabled="!editable"
+      :readonly="!editable"
       :items="items"
       :rules="[v => !!v || 'Obavezno polje']"
       item-text="Pol"
@@ -73,7 +73,7 @@
     >
       <v-menu
         ref="menu1"
-        :disabled="!editable"
+        :readonly="!editable"
         v-model="menu1"
         :close-on-content-click="false"
         :nudge-right="40"

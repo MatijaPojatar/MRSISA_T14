@@ -163,6 +163,38 @@
                     {{selectedEvent.izvestaj}}
                   </v-expansion-panel-content>
                 </v-expansion-panel>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Preporučeni lekovi
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <template>
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Naziv
+                              </th>
+                              <th class="text-left">
+                                Terapija
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="item in selectedPreporuceni"
+                              :key="item.id"
+                            >
+                              <td>{{ item.naziv }}</td>
+                              <td>{{ item.terapija }}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </template>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
                 </v-expansion-panels>
               </div>
             </v-card-text>
@@ -235,7 +267,7 @@
           Termin je završen
         </v-card-title>
         <v-card-text>
-        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id" :key="componentKey"/>
+        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id" :lekovi="preporuceniLekovi" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -305,6 +337,7 @@
             color: "#1976D2",
             currentlyEditing: null,
             selectedEvent: {},
+            selectedPreporuceni: [],
             selectedElement: null,
             selectedOpen: false,
             selectedPacijent: {},
@@ -356,8 +389,26 @@
         },
         showEvent ({ nativeEvent, event }) {
             const open = () => {
+              this.selectedPreporuceni=[]
             this.selectedEvent = event
             this.selectedElement = nativeEvent.target
+            if( this.selectedEvent.izvrsen){
+              let path="pregled"
+              if(this.farmaceut){
+                path="savetovanje"
+              }
+              axios.get(`http://localhost:8080/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
+                const lekovi=[];
+                response.data.forEach(element => {
+                  lekovi.push({
+                    terapija: element.terapija,
+                    naziv: element.nazivLeka,
+                    id: element.id,
+                  })
+                  this.selectedPreporuceni=lekovi;
+                });
+              })
+            }
             setTimeout(() => {
                 this.selectedOpen = true
             }, 10)

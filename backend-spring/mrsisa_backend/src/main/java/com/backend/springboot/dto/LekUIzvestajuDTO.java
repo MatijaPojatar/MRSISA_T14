@@ -5,7 +5,7 @@ import com.backend.springboot.domain.LekUIzvestaju;
 
 public class LekUIzvestajuDTO {
 	private Integer id, lekId;
-	private String terapija;
+	private String terapija,nazivLeka;
 	
 	public LekUIzvestajuDTO() {
 	}
@@ -15,6 +15,7 @@ public class LekUIzvestajuDTO {
 		this.id=lek.getId();
 		this.lekId=l.getId();
 		this.terapija=lek.getTerapija();
+		this.nazivLeka=lek.getLek().getNaziv();
 	}
 
 	public Integer getId() {
@@ -41,6 +42,16 @@ public class LekUIzvestajuDTO {
 	public void setTerapija(String terapija) {
 		this.terapija = terapija;
 	}
+
+	public String getNazivLeka() {
+		return nazivLeka;
+	}
+
+	public void setNazivLeka(String nazivLeka) {
+		this.nazivLeka = nazivLeka;
+	}
+	
+	
 	
 	
 	
