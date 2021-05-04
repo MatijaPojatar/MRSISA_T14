@@ -211,7 +211,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi"/>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -235,7 +235,7 @@
           Termin je završen
         </v-card-title>
         <v-card-text>
-        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id"/>
+        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -260,7 +260,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false"/>
+        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -315,6 +315,7 @@
             pacijentDialog: false,
             ready: false,
             preporuceniLekovi: [],
+            componentKey:0,
       }),
       props: {
         farmaceut: Boolean,
@@ -432,6 +433,7 @@
           await axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
             this.selectedPacijent=response.data
           })
+          this.componentKey+=1;
           this.pacijentDialog= true
           this.selectedOpen=false
       },
@@ -489,6 +491,7 @@
           })
         });
         await axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        this.componentKey+=1;
         this.terminDialog=true
         this.selectedOpen=false
       },
@@ -500,6 +503,7 @@
         this.selectedOpen=true
       },
       openLekList(){
+        this.componentKey+=1;
         this.selectedOpen=false
         this.lekDialog=true;
       },

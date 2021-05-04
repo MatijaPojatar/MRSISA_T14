@@ -1,5 +1,8 @@
 package com.backend.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +67,17 @@ public class PacijentController {
 		
 		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.OK);
 		
+	}
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<PacijentDTO>> getAll(){
+		List<Pacijent> pacijenti=pacijentService.findAll();
+		ArrayList<PacijentDTO> dtos=new ArrayList<PacijentDTO>();
+		for(Pacijent p:pacijenti) {
+			dtos.add(new PacijentDTO(p));
+		}
+		
+		return new ResponseEntity<List<PacijentDTO>>(dtos,HttpStatus.OK);
 	}
 	
 }

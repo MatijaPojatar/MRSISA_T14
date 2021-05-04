@@ -1,5 +1,7 @@
 package com.backend.springboot.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,10 @@ public class PacijentService {
 
 	public Pacijent findByMail(String mail) {
 		return pacijentRep.findOneByMail(mail);
+	}
+	
+	public List<Pacijent> findAll(){
+		return pacijentRep.findAll();
 	}
 	
 	

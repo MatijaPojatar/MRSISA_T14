@@ -46,6 +46,7 @@
                         <v-radio
                             label="Izbor već postojećih termina"
                             value="i-1"
+                            v-if="!farmaceut"
                         ></v-radio>
                         <v-radio
                             label="Kreiraj novi termin"

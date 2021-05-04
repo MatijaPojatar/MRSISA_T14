@@ -243,6 +243,7 @@ import Vue from "vue";
         this.reset()
     },
     mounted(){
+      this.reset()
       if(this.adminView){
         console.log(this.user)
         if (this.newInfo.pocetakRadnogVremena[0].toString().length == 1){
@@ -298,6 +299,7 @@ import Vue from "vue";
         
       },
       reset () {
+        console.log(this.user);
         this.newInfo.ime=this.user.ime
         this.newInfo.prezime=this.user.prezime
         this.newInfo.brojTelefona=this.user.brojTelefona
@@ -312,6 +314,9 @@ import Vue from "vue";
         this.dialog=false;
         //location.reload();
       },
+      destroy(){
+         this.$destroy();
+      }
     },
   }
 </script>
