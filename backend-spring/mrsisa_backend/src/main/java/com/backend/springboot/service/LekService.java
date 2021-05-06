@@ -159,5 +159,9 @@ public class LekService {
 		}
 		return lekovi;
 	}
+	
+	public List<Lek> findZamenski(Integer id){
+		return lekRep.findZamenski(id);
+	}
 
 }

@@ -51,8 +51,8 @@ insert into magacini (id,apoteka_id) values (1,1);
 insert into magacini (id,apoteka_id) values (2,2);
 
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 100, 100, 1, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 200, 150, 2, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 1, false);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 200, 0, 2, 1, false);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 0, 3, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 4, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 5, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 200, 150, 4, 2, false);
@@ -127,3 +127,4 @@ insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
 insert into osoba_role (osoba_id, role_id) values (10, 4);
 
 insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);
+insert into zamenski_lekovi (lek_id,zamenski_id) values (2,1);

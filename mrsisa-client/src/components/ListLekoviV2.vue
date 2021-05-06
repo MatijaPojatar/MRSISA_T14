@@ -150,9 +150,59 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+            color="blue"
+            text
+            v-if="!stanje"
+            @click="zamenskiDobavi"
+          >
+            Zamenski lek
+          </v-btn>
+          <v-btn
             color="green darken-1"
             text
             @click="endDialogObavestenje"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog
+      v-model="zamenskiDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Zamenski lek
+        </v-card-title>
+        <v-card-text>
+        <div v-if="zamenskiPostoji">
+            <div>Naziv leka: {{zamenski.naziv}}</div>
+            <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation
+            >
+                <v-text-field
+                    v-model="terapija"
+                    :counter="10"
+                    :rules="terapijaRules"
+                    label="Trajanje terapije( format: dani x brojPuta)"
+                    required
+                ></v-text-field>
+            </v-form>
+        </div>
+        <div v-if="!zamenskiPostoji">
+            Ne postoje zamenski lekovi u apoteci.
+        </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endZamenskiDialog"
           >
             Ok
           </v-btn>
@@ -178,6 +228,10 @@
             dialogMessage: "",
             dialogTitle: "",
             terapija: "",
+            zamenskiPostoji: false,
+            zamenski: {},
+            zamenskiDialog: false,
+            stanje: false,
             terapijaRules: [
                 v => !!v || 'Obavezno polje',
                 v => (v && v.length <= 10 ) || 'Dužina maksimalno 10 karaktera',
@@ -229,7 +283,6 @@
                 }
                 else {
                     await axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
-                        console.log(response.data);
                         response.data.forEach(element => {
                             lekovi.push({
                                 naziv: element.naziv,
@@ -254,7 +307,6 @@
              async loadAlergije(){
                  await axios.get(`http://localhost:8080/pacijent/alergije/${this.pacijentId}`).then(response=>{
                      const alergije=[]
-                     console.log(response.data);
                      response.data.forEach(element => {
                          alergije.push({
                              id: element.id,
@@ -265,13 +317,10 @@
              },
 
              renderAlergije(){
-                 console.log(this.alergije.length);
-                 console.log(this.lekovi.length);
                  this.alergije.forEach(element => {
                      let id=element.id
                      this.lekovi.forEach(lek => {
                          if(lek.lekId===id){
-                             console.log("LOL");
                              lek.alergija+=1;
                          }
                      });
@@ -349,6 +398,43 @@
              removePreporuceni(id){
                 const index=this.preporuceniLekovi.findIndex((l)=>l.lek.id==id)
                  this.preporuceniLekovi.splice(index,1)
+             },
+             async zamenskiDobavi(){
+                 await axios.get(`http://localhost:8080/lekovi/zamenski/${this.selektovan}/${this.apotekaId}`).then(response=>{
+                     this.obavestenjeDialog=false;
+                     this.zamenski=response.data
+                     if(this.zamenski.id===-1){
+                         this.zamenskiPostoji=false
+                     }else{
+                         this.zamenskiPostoji=true
+                         const index=this.lekovi.findIndex((l)=>l.lekId==this.zamenski.id)
+                         console.log(index);
+                         this.selektovanLek=this.lekovi[index]
+                     }
+                 })
+                 this.zamenskiDialog=true;
+             },
+
+             endZamenskiDialog(){
+                 if(this.zamenskiPostoji){
+                    if(this.$refs.form.validate()){
+                        this.zamenskiDialog=false;
+                        const index=this.preporuceniLekovi.findIndex((l)=>l.lek.id==this.selektovanLek.id)
+                        if(index !=-1){
+                            this.preporuceniLekovi[index]={lek: this.selektovanLek,
+                            terapija: this.terapija}
+                        }else{
+                           this.preporuceniLekovi.push({
+                            lek: this.selektovanLek,
+                            naziv : this.selektovanLek.naziv,
+                            terapija: this.terapija
+                        }) 
+                        }
+                        this.terapija=""
+                    }
+                 }else{
+                    this.zamenskiDialog=false;
+                 }
              }
 
          }

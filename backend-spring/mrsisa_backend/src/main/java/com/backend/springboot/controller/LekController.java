@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
@@ -233,5 +234,20 @@ public class LekController {
 //
 //		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
 //	}
+	
+	@GetMapping("/zamenski/{id}/{apoteka_id}")
+	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId){
+		List<Lek> zamenski=lekService.findZamenski(id);
+		Magacin m=magacinService.findOneByApotekaId(apotekaId);
+		LekDTO dto=new LekDTO();
+		dto.setId(-1);
+		for(Lek l:zamenski) {
+			if(magacinService.proveriStanje(m.getId(), l.getId(), (double) 1)) {
+				dto=new LekDTO(l);
+				break;
+			}
+		}
+		return new ResponseEntity<LekDTO>(dto,HttpStatus.OK);
+	}
 
 }
