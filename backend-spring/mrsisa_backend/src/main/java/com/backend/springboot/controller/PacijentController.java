@@ -85,7 +85,6 @@ public class PacijentController {
 	@GetMapping("/alergije/{id}")
 	public ResponseEntity<List<LekDTO>> getAlergije(@PathVariable Integer id){
 		List<Lek> lekovi=pacijentService.findAllAlergijeById(id);
-		System.out.println("==================================================="+lekovi.size());
 		ArrayList<LekDTO> dtos=new ArrayList<LekDTO>();
 		
 		for(Lek l:lekovi) {

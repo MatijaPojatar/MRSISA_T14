@@ -32,6 +32,7 @@ import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.MagacinService;
+import com.backend.springboot.service.PacijentService;
 
 @CrossOrigin(origins = { "http://localhost:8081" })
 @RestController
@@ -44,6 +45,8 @@ public class LekController {
 	private ApotekaService apotekaService;
 	@Autowired 
 	private MagacinService magacinService;
+	@Autowired
+	private PacijentService pacijentService;
 	
 	private ArrayList<Lek> pronadjeniLekovi;
 
@@ -235,14 +238,15 @@ public class LekController {
 //		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
 //	}
 	
-	@GetMapping("/zamenski/{id}/{apoteka_id}")
-	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId){
+	@GetMapping("/zamenski/{id}/{apoteka_id}/{pacijent_id}")
+	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId,@PathVariable("pacijent_id") Integer pacijentId){
 		List<Lek> zamenski=lekService.findZamenski(id);
 		Magacin m=magacinService.findOneByApotekaId(apotekaId);
+		List<Lek> alergije=pacijentService.findAllAlergijeById(pacijentId);
 		LekDTO dto=new LekDTO();
 		dto.setId(-1);
 		for(Lek l:zamenski) {
-			if(magacinService.proveriStanje(m.getId(), l.getId(), (double) 1)) {
+			if(magacinService.proveriStanje(m.getId(), l.getId(), (double) 1) && !alergije.contains(l)) {
 				dto=new LekDTO(l);
 				break;
 			}

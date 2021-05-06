@@ -400,7 +400,7 @@
                  this.preporuceniLekovi.splice(index,1)
              },
              async zamenskiDobavi(){
-                 await axios.get(`http://localhost:8080/lekovi/zamenski/${this.selektovan}/${this.apotekaId}`).then(response=>{
+                 await axios.get(`http://localhost:8080/lekovi/zamenski/${this.selektovan}/${this.apotekaId}/${this.pacijentId}`).then(response=>{
                      this.obavestenjeDialog=false;
                      this.zamenski=response.data
                      if(this.zamenski.id===-1){

@@ -128,3 +128,4 @@ insert into osoba_role (osoba_id, role_id) values (10, 4);
 
 insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,1);
+insert into zamenski_lekovi (lek_id,zamenski_id) values (2,4);
