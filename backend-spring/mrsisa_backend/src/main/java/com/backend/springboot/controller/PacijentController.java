@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.PacijentDTO;
 import com.backend.springboot.service.PacijentService;
 
@@ -78,6 +80,19 @@ public class PacijentController {
 		}
 		
 		return new ResponseEntity<List<PacijentDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@GetMapping("/alergije/{id}")
+	public ResponseEntity<List<LekDTO>> getAlergije(@PathVariable Integer id){
+		List<Lek> lekovi=pacijentService.findAllAlergijeById(id);
+		System.out.println("==================================================="+lekovi.size());
+		ArrayList<LekDTO> dtos=new ArrayList<LekDTO>();
+		
+		for(Lek l:lekovi) {
+			dtos.add(new LekDTO(l));
+		}
+		
+		return new ResponseEntity<List<LekDTO>>(dtos,HttpStatus.OK);
 	}
 	
 }

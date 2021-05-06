@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.repository.PacijentRepository;
 
@@ -29,6 +30,10 @@ public class PacijentService {
 	
 	public List<Pacijent> findAll(){
 		return pacijentRep.findAll();
+	}
+	
+	public List<Lek> findAllAlergijeById(Integer id){
+		return pacijentRep.findAllAlergijeById(id);
 	}
 	
 	

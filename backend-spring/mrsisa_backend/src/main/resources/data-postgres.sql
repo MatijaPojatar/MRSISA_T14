@@ -125,3 +125,5 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (10,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
 insert into osoba_role (osoba_id, role_id) values (10, 4);
+
+insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);

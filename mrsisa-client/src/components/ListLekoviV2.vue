@@ -5,10 +5,17 @@
         v-for="lek in lekovi"
         :key="lek.id"
       @click = "PanelSelected(lek.id)">
-        <v-expansion-panel-header>{{lek.naziv}}
-            <v-btn icon x-small v-if = "!adminView" @click="addLek(lek)">
-                <v-icon>mdi-plus</v-icon>
-            </v-btn>
+        <v-expansion-panel-header><v-row><div>{{lek.naziv}}</div>
+           <v-badge 
+            color="error"
+            icon="mdi-alert-circle"
+            :value="lek.alergija"
+            >  
+                <v-btn icon x-small v-if = "!adminView" @click="addLek(lek)" depressed class="w-25">
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+            </v-badge>
+        </v-row>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
          <div>
@@ -121,9 +128,10 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Obaveštenje
+          {{dialogTitle}}
         </v-card-title>
-        <v-card-text><div v-if="stanje">Leka ima na stanju.
+        <v-card-text><div>{{dialogMessage}}</div>
+        <div v-if="stanje">
             <v-form
                 ref="form"
                 v-model="valid"
@@ -138,7 +146,7 @@
                 ></v-text-field>
             </v-form>
         </div>
-        <div v-if="!stanje">Leka nema na stanju</div></v-card-text>
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -161,12 +169,14 @@
     export default{
         data: () => ({
             lekovi: [],
+            alergije: [],
             lekUpdateDialog: false,
             selektovanLek: {},
             selektovan: null,
             obavestenjeDialog: false,
-            stanje: false,
             valid: true,
+            dialogMessage: "",
+            dialogTitle: "",
             terapija: "",
             terapijaRules: [
                 v => !!v || 'Obavezno polje',
@@ -176,6 +186,7 @@
          }),
         props:{
             apotekaId: Number,
+            pacijentId: Number,
             adminView: Boolean,
             preporuceniLekovi: {
                 type: Array,
@@ -188,15 +199,18 @@
         components:{
             UpdateAddLekApotekeForm,
         },
-        mounted(){
-            console.log(this.apotekaId);
-            this.loadLekovi();
+        async mounted(){
+            await this.loadLekovi();
+            if(this.pacijentId){
+                await this.loadAlergije();
+                this.renderAlergije();
+            }
         },
         methods:{
-             loadLekovi(){
+             async loadLekovi(){
                  const lekovi = []
                 if (!this.apotekaId){
-                    axios.get(`http://localhost:8080/lekovi`).then(response => {
+                    await axios.get(`http://localhost:8080/lekovi`).then(response => {
                         
                         response.data.forEach(element => {
                             lekovi.push({
@@ -214,8 +228,8 @@
                     });
                 }
                 else {
-                    axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
-                        
+                    await axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
+                        console.log(response.data);
                         response.data.forEach(element => {
                             lekovi.push({
                                 naziv: element.naziv,
@@ -228,12 +242,40 @@
                                 vrsta: element.vrstaLeka, 
                                 cena: element.cena,
                                 kolicina: element.kolicina,
-                                lekId: element.lekId
+                                lekId: element.lekId,
+                                alergija: 0,
                             })
                             this.lekovi = lekovi
                         })
                     });
                 }
+             },
+
+             async loadAlergije(){
+                 await axios.get(`http://localhost:8080/pacijent/alergije/${this.pacijentId}`).then(response=>{
+                     const alergije=[]
+                     console.log(response.data);
+                     response.data.forEach(element => {
+                         alergije.push({
+                             id: element.id,
+                         })
+                         this.alergije=alergije
+                     });
+                 })
+             },
+
+             renderAlergije(){
+                 console.log(this.alergije.length);
+                 console.log(this.lekovi.length);
+                 this.alergije.forEach(element => {
+                     let id=element.id
+                     this.lekovi.forEach(lek => {
+                         if(lek.lekId===id){
+                             console.log("LOL");
+                             lek.alergija+=1;
+                         }
+                     });
+                 });
              },
 
              PanelSelected(id){
@@ -242,15 +284,26 @@
                  
              },
 
-             addLek(lek){
-                 console.log(lek);
-                 axios.get(`http://localhost:8080/apoteke/stanje/${lek.id}`,{params:{apotekaId:this.apotekaId,kolicina:1}}).then(response=>{
-                     this.selektovan=lek.id
-                     this.selektovanLek=lek
-                     console.log(response.data)
-                     this.stanje=response.data
-                     this.obavestenjeDialog=true
-                 })
+             async addLek(lek){
+                 if(lek.alergija!=0){
+                     this.dialogTitle="Greška"
+                     this.dialogMessage="Pacijent je alergičan na izabrani lek."
+                     this.stanje=false
+                 }else{
+                    await axios.get(`http://localhost:8080/apoteke/stanje/${lek.id}`,{params:{apotekaId:this.apotekaId,kolicina:1}}).then(response=>{
+                        this.dialogTitle="Obaveštenje"
+                        this.selektovan=lek.id
+                        this.selektovanLek=lek
+                        this.stanje=response.data
+                        if(response.data){
+                            this.dialogMessage="Leka ima na stanju.."
+                        }else{
+                            this.dialogMessage="Leka nema na stanju.."
+                        }
+                    }) 
+                 }
+                 this.obavestenjeDialog=true
+
              },
 
              ObrisiLek(){

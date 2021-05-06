@@ -243,7 +243,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey"/>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey" :pacijentId="selectedEvent.pacijent"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
