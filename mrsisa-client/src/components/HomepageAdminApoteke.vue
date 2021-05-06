@@ -119,7 +119,7 @@
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
       </v-container>
-      <v-container fluid v-if="showLekovi" :style="{width:'70vh'}">
+      <v-container fluid v-if="showLekovi" :style="{width:'180vh'}" >
         <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showFarmaceuti" :style="{width:'70vh'}">
