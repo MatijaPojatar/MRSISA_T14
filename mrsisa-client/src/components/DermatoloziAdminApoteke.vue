@@ -16,7 +16,7 @@
     </div>
     <br/>
     <br/>
-    <ListDermatolozi :apotekaId = "apotekaId" :adminView = "true"/>
+    <TableDermatolozi :apotekaId = "apotekaId" :adminView = "true"/>
 
     <v-dialog
     v-model="dermatologAddDialog"
@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import ListDermatolozi from "./ListDermatolozi";
+import TableDermatolozi from "./TableDermatolozi";
 import ListDermatoloziAddSearch from "./ListDermatoloziAddSearch"
 
 export default{
     name: "DermatoloziAdminApoteke",
     components: {
-        ListDermatolozi,
+        TableDermatolozi,
         ListDermatoloziAddSearch
     },
     data: () => ({

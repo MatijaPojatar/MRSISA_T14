@@ -73,7 +73,6 @@
     >
       <v-menu
         ref="menu1"
-        :readonly="!editable"
         v-model="menu1"
         :close-on-content-click="false"
         :nudge-right="40"
@@ -111,7 +110,6 @@
     >
       <v-menu
         ref="menu2"
-        :disabled="!editable"
         v-model="menu2"
         :close-on-content-click="false"
         :nudge-right="40"
@@ -144,7 +142,7 @@
 
     <v-checkbox
       v-model="checkbox"
-      v-if="editable"
+      v-if="editable || adminView"
       :rules="[v => !!v || 'You must agree to continue!']"
       label="Da li ste sigurni?"
       required
@@ -152,7 +150,7 @@
 
     <v-btn
       :disabled="!valid"
-      v-if="editable"
+      v-if="editable || adminView"
       class="mr-4"
       @click="validate"
     >
@@ -162,7 +160,7 @@
     <v-btn
       color="error"
       class="mr-4"
-      v-if="editable"
+      v-if="editable || adminView"
       @click="reset"
     >
       Resetuj
@@ -236,6 +234,7 @@ import Vue from "vue";
     props :{
         user: {},
         farmaceut: Boolean,
+        adminApoteke: Boolean,
         editable: Boolean,
         adminView: Boolean,
     },
@@ -287,12 +286,17 @@ import Vue from "vue";
             this.user.grad=this.newInfo.grad
             this.user.drzava=this.newInfo.drzava
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
-            this.user.pocetakRadnogVremena=this.newInfo.pocetakRadnogVremena
-            this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
-            if(this.farmaceut){
-                Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
+            if(this.adminApoteke){
+                Vue.axios.put(`http://localhost:8080/adminApoteke/save/${this.user.id}`,this.user)
             }else{
-                 Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+              this.user.pocetakRadnogVremena=this.newInfo.pocetakRadnogVremena
+              this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
+
+              if(this.farmaceut){
+                  Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
+              }else{
+                  Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+              }
             }
             this.dialog=true;
         }

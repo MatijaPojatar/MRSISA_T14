@@ -106,10 +106,6 @@
         },
         async mounted(){
             await this.loadLekovi();
-            if(this.pacijentId){
-                await this.loadAlergije();
-                this.renderAlergije();
-            }
         },
         methods:{
              async loadLekovi(){
