@@ -10,8 +10,8 @@
       <v-list >
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-img src="https://randomuser.me/api/portraits/men/85.jpg" v-if="user.pol==='MUSKI'"></v-img>
-              <v-img src="https://randomuser.me/api/portraits/women/85.jpg" v-if="user.pol==='ZENSKI'"></v-img>
+              <v-img :src="baseUrl + 'men/' + user.id + '.jpg'" v-if="user.pol==='MUSKI'"></v-img>
+              <v-img :src="baseUrl + 'women/' + user.id + '.jpg'" v-if="user.pol==='ZENSKI'"></v-img>
             </v-list-item-avatar>
           </v-list-item>
 
@@ -151,6 +151,7 @@ export default {
     showPacijenti: false,
     showAllPacijenti: false,
     farmaceut: true,
+    baseUrl: "https://randomuser.me/api/portraits/",
   }),
   computed: {
     ...mapGetters({
