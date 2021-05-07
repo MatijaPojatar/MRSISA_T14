@@ -19,7 +19,7 @@ public class OdsustvoDermatologService {
 		rep.save(od);
 	}
 	
-	public List<OdsustvoDermatolog> findExistInTime(LocalDateTime start,LocalDateTime end){
-		return rep.findExistInTime(start, end);
+	public List<OdsustvoDermatolog> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
+		return rep.findExistInTime(id,start, end);
 	}
 }

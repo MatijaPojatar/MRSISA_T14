@@ -75,7 +75,7 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into administratori_apoteke (id,apoteka_id) values (5, 2);
 insert into osoba_role (osoba_id, role_id) values (5, 2); --role admin apoteke
 
-insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234567','1993-01-01','Srbija','Novi Sad','Maja','Majic','maja93@gmail.com','$2a$10$rTH2hJib.dPUAvqQmKzqqelhh5wsGZOSE0JvXKkf/H8TZuKjZCEB.',1,true, false, true); -- sifra je maja123
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234567','1993-01-01','Srbija','Novi Sad','Maja','Majic','maja93@gmail.com','$2a$10$kzqghgO/vbMZuMNfDy6M9uBXqr3RsWRXtlR.DTkH7LPmM.BE.GeXO',1,true, false, true); -- sifra je maja123
 insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (6,'16:00','08:00',1);
 insert into osoba_role (osoba_id, role_id) values (6, 5); --role farmaceut
 

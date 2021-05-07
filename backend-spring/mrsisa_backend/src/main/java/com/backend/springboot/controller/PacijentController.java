@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +14,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.PacijentDTO;
+import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.service.PacijentService;
+import com.backend.springboot.service.PregledService;
+import com.backend.springboot.service.SavetovanjeService;
 
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -29,6 +36,12 @@ public class PacijentController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private SavetovanjeService savetovanjeService;
+	
+	@Autowired
+	private PregledService pregledService;
 	
 //	int id, String ime, String prezime, String mail, String password, String adresa, String grad,
 //	String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, int brojPoena, int penali
@@ -92,6 +105,24 @@ public class PacijentController {
 		}
 		
 		return new ResponseEntity<List<LekDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@PostMapping("/proveri_termin/{id}")
+	public ResponseEntity<Boolean> proveriTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
+		LocalDateTime pocetak=pregled.getStart().plusHours(2);
+		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		
+		List<Pregled> checkListP=pregledService.findAllInRangeForPacijent(id,pocetak,kraj);
+		if(checkListP.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
+		List<Savetovanje> checkListS=savetovanjeService.findAllInRangeForPacijent(id,pocetak,kraj);
+		if(checkListS.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
 }

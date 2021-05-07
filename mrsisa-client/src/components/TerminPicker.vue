@@ -276,7 +276,7 @@ export default{
             if(this.farmaceut){
                 path="farmaceut"
             }
-            axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`).then(response => {
+            axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
             console.log(response.data);
             this.pocetakRadnogVremena=response.data.pocetak[0].toString()+":"+response.data.pocetak[1].toString()
             this.krajRadnogVremena=response.data.kraj[0].toString()+":"+response.data.kraj[1].toString()
@@ -304,12 +304,20 @@ export default{
                     apotekaId: this.apotekaId,
                     izvrsen: false,
                 }
-                await axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
-                    this.check=response.data;
+                await axios.post(`http://localhost:8080/pacijent/proveri_termin/${this.pacijentId}`,newTermin).then(response=>{
+                    this.check=response.data
                 });
                 if(this.check){
-                    this.$emit('termin-end')
-                }else{
+                    await axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
+                        this.check=response.data;
+                    });
+                    if(this.check){
+                        this.$emit('termin-end')
+                    }else{
+                        this.dialogAdd=true;
+                    }
+                }
+                else{
                     this.dialogAdd=true;
                 }
             }

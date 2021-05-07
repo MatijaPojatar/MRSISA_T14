@@ -35,8 +35,12 @@ public class SavetovanjeService {
 		return savetovanjeRep.findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(farmaceutId, null, apotekaId, pocetak);
 	}
 	
-	public List<Savetovanje> findAllInRange(LocalDateTime start,LocalDateTime end){
-		return savetovanjeRep.findInRange(start, end);
+	public List<Savetovanje> findAllInRangeForFarmaceut(Integer id,LocalDateTime start,LocalDateTime end){
+		return savetovanjeRep.findInRangeForFarmaceut(id,start, end);
+	}
+	
+	public List<Savetovanje> findAllInRangeForPacijent(Integer id,LocalDateTime start,LocalDateTime end){
+		return savetovanjeRep.findInRangeForPacijent(id,start, end);
 	}
 
 //	public Set<Integer> poseceneApoteke(Integer pacijentId) {

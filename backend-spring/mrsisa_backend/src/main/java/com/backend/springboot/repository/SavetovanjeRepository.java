@@ -22,8 +22,11 @@ public interface SavetovanjeRepository extends JpaRepository<Savetovanje, Intege
 	
 	public List<Savetovanje> findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer farmaceutId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
-	@Query("select s from Savetovanje s where (s.pocetak >= :start and s.pocetak<= :end) or (s.kraj>= :start and s.kraj<=:end)")
-	public List<Savetovanje> findInRange(@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	@Query("select s from Savetovanje s where s.farmaceut.id = :id and ((s.pocetak >= :start and s.pocetak<= :end) or (s.kraj>= :start and s.kraj<=:end))")
+	public List<Savetovanje> findInRangeForFarmaceut(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	
+	@Query("select s from Savetovanje s where s.pacijent.id = :id and ((s.pocetak >= :start and s.pocetak<= :end) or (s.kraj>= :start and s.kraj<=:end))")
+	public List<Savetovanje> findInRangeForPacijent(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	
 	
 

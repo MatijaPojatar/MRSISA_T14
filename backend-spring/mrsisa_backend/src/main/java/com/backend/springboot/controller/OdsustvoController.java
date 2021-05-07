@@ -46,7 +46,7 @@ public class OdsustvoController {
 	
 	@PutMapping("/farmaceut/dodaj/{id}")
 	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Savetovanje> checkList=savService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
+		List<Savetovanje> checkList=savService.findAllInRangeForFarmaceut(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
 		for(Savetovanje s:checkList) {
 			if(!s.isIzvrsen()) {
@@ -71,7 +71,7 @@ public class OdsustvoController {
 	
 	@PutMapping("/dermatolog/dodaj/{id}")
 	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Pregled> checkList=preService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
+		List<Pregled> checkList=preService.findAllInRangeForDermatolog(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
 		for(Pregled p:checkList) {
 			if(!p.isIzvrsen()) {

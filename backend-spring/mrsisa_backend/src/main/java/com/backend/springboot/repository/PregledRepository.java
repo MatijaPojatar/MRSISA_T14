@@ -22,8 +22,11 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	
 	public List<Pregled> findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer dermatologId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
-	@Query("select p from Pregled p where (p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end)")
-	public List<Pregled> findInRange(@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	@Query("select p from Pregled p where p.dermatolog.id = :id and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
+	public List<Pregled> findInRangeForDermatolog(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	
+	@Query("select p from Pregled p where p.pacijent.id = :id and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
+	public List<Pregled> findInRangeForPacijent(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	
 
 }
