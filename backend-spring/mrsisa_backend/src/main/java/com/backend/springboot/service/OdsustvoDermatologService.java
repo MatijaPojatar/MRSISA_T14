@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.repository.OdsustvoDermatologRepository;
 
 @Service
@@ -21,5 +22,9 @@ public class OdsustvoDermatologService {
 	
 	public List<OdsustvoDermatolog> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
 		return rep.findExistInTime(id,start, end);
+	}
+	
+	public List<OdsustvoDermatolog> findAllByDermatologId(Integer dermatologId){
+		return rep.findAllByDermatologId(dermatologId);
 	}
 }

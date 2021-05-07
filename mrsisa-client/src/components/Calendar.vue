@@ -443,6 +443,17 @@
             this.events = events
           });
         });
+        await axios.get(`http://localhost:8080/odsustvo/dermatolog/all/${this.user.id}`).then(response=>{
+          response.data.forEach(element => {
+            this.events.push({
+              name: "Odsustvo",
+              start: new Date(element.pocetak[0].toString()+"-"+element.pocetak[1].toString()+"-"+element.pocetak[2].toString()+" "+element.pocetak[3].toString()+":"+element.pocetak[4].toString()),
+              end: new Date(element.kraj[0].toString()+"-"+element.kraj[1].toString()+"-"+element.kraj[2].toString()+" "+element.kraj[3].toString()+":"+element.kraj[4].toString()),
+              id: element.id,
+              timed: false,
+            })
+          });
+        })
         },
       async updateRangeFarmaceutAxios (){
         await axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
@@ -463,6 +474,17 @@
             this.events = events
           });
         });
+        await axios.get(`http://localhost:8080/odsustvo/farmaceut/all/${this.user.id}`).then(response=>{
+          response.data.forEach(element => {
+            this.events.push({
+              name: "Odsustvo",
+              start: new Date(element.pocetak[0].toString()+"-"+element.pocetak[1].toString()+"-"+element.pocetak[2].toString()+" "+element.pocetak[3].toString()+":"+element.pocetak[4].toString()),
+              end: new Date(element.kraj[0].toString()+"-"+element.kraj[1].toString()+"-"+element.kraj[2].toString()+" "+element.kraj[3].toString()+":"+element.kraj[4].toString()),
+              id: element.id,
+              timed: false,
+            })
+          });
+        })
       },
       
       rnd (a, b) {
@@ -518,6 +540,9 @@
           }
       },
       getEventColor (event) {
+        if(!event.timed){
+          return '#027e00';
+        }
         if(event.pacijent){
           if(event.izvrsen){
               return 'grey';

@@ -14,5 +14,8 @@ public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarma
 	
 	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true and ((o.pocetak <= :start and o.kraj >= :end) or (o.pocetak >= :start and o.pocetak <= :end and o.kraj >= :end) or (o.kraj >= :start and o.kraj <= :end and o.pocetak <= :start))")
 	public List<OdsustvoFarmaceut> findExistInTime(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	
+	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true")
+	List<OdsustvoFarmaceut> findAllByFarmaceutId(@Param("id")Integer farmaceutId);
 
 }
