@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.domain.ParametriPretrageLeka;
+import com.backend.springboot.domain.ParametriPretrageOsoba;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.RadnoVremeDTO;
@@ -36,6 +38,11 @@ public class FarmaceutController {
 	private FarmaceutService service;
 	@Autowired
 	private ApotekaService apotekaService;
+
+	
+	private boolean pretragaFarmaceutaApoteke = false;
+	private ArrayList<Farmaceut> pronadjeniFarmaceuti;
+	private ArrayList<FarmaceutDTO> pronadjeniFarmaceutiDTO;
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<FarmaceutDTO> getOne(@PathVariable Integer id){
@@ -85,8 +92,14 @@ public class FarmaceutController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<FarmaceutDTO>> findAllByApotekaId(@PathVariable Integer id){
+		if (pretragaFarmaceutaApoteke) {
+			pretragaFarmaceutaApoteke = false;
+			return new ResponseEntity<Collection<FarmaceutDTO>>(pronadjeniFarmaceutiDTO, HttpStatus.OK);
+			
+		}
 		ArrayList<Farmaceut>rezultatPretrage = (ArrayList<Farmaceut>) service.findAllByApotekaId(id);
 		ArrayList<FarmaceutDTO> dtoList=new ArrayList<FarmaceutDTO>();
 		for(Farmaceut l:rezultatPretrage) {
@@ -94,6 +107,30 @@ public class FarmaceutController {
 		}
 		
 		return new ResponseEntity<Collection<FarmaceutDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@PostMapping("/pretragaFarmaceuta/{apotekaId}")
+	public ResponseEntity<Boolean> pretrazi(@PathVariable Integer apotekaId, @RequestBody ParametriPretrageOsoba params) {
+		
+		pronadjeniFarmaceutiDTO = new ArrayList<FarmaceutDTO>();
+		pronadjeniFarmaceuti = (ArrayList<Farmaceut>)service.pretraziFarmaceuteApoteke(params.getIme(), params.getPrezime(), params.getGrad(), params.getDrzava(), params.getPol(), apotekaId);
+		if (pronadjeniFarmaceuti.size() != 0) {
+			pretragaFarmaceutaApoteke = true;
+			for (Farmaceut f : pronadjeniFarmaceuti) {
+				pronadjeniFarmaceutiDTO.add(new FarmaceutDTO(f));
+			}
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		else {
+			
+			ArrayList<Farmaceut>rezultatPretrage = (ArrayList<Farmaceut>) service.findAllByApotekaId(apotekaId);
+			ArrayList<FarmaceutDTO> dtoList=new ArrayList<FarmaceutDTO>();
+			for(Farmaceut l:rezultatPretrage) {
+				pronadjeniFarmaceutiDTO.add(new FarmaceutDTO(l));
+			}
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
 	}
 	
 	@PutMapping("/obrisiFarmaceuta/{id}")

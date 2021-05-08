@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.ParametriPretrageOsoba;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
 import com.backend.springboot.dto.FarmaceutDTO;
@@ -35,6 +36,11 @@ public class DermatologController {
 	
 	@Autowired
 	private DermatologService service;
+	
+
+	private boolean pretragaDermatologaApoteke = false;
+	private ArrayList<Dermatolog> pronadjeniDermatolozi;
+	private ArrayList<DermatologDTO> pronadjeniDermatoloziDTO;
 	
 	@GetMapping()
 	public ResponseEntity<List<DermatologDTO>> findAll(){
@@ -115,6 +121,11 @@ public class DermatologController {
 	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<DermatologDTO>> findAllByApotekaId(@PathVariable Integer id){
+		if (pretragaDermatologaApoteke) {
+			pretragaDermatologaApoteke = false;
+			return new ResponseEntity<Collection<DermatologDTO>>(pronadjeniDermatoloziDTO, HttpStatus.OK);
+			
+		}
 		ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.findAllByApotekaId(id);
 		ArrayList<DermatologDTO> dtoList=new ArrayList<DermatologDTO>();
 		for(Dermatolog l:rezultatPretrage) {
@@ -122,6 +133,30 @@ public class DermatologController {
 		}
 		
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
+	}
+	
+	@PostMapping("/pretragaDermatologa/{apotekaId}")
+	public ResponseEntity<Boolean> pretrazi(@PathVariable Integer apotekaId, @RequestBody ParametriPretrageOsoba params) {
+		
+		pronadjeniDermatoloziDTO = new ArrayList<DermatologDTO>();
+		pronadjeniDermatolozi = (ArrayList<Dermatolog>)service.pretraziDermatologeApoteke(params.getIme(), params.getPrezime(), params.getGrad(), params.getDrzava(), params.getPol(), apotekaId);
+		if (pronadjeniDermatolozi.size() != 0) {
+			pretragaDermatologaApoteke = true;
+			for (Dermatolog f : pronadjeniDermatolozi) {
+				pronadjeniDermatoloziDTO.add(new DermatologDTO(f));
+			}
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		}
+		else {
+			
+			ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.findAllByApotekaId(apotekaId);
+			ArrayList<DermatologDTO> dtoList=new ArrayList<DermatologDTO>();
+			for(Dermatolog l:rezultatPretrage) {
+				pronadjeniDermatoloziDTO.add(new DermatologDTO(l));
+			}
+			return new ResponseEntity<>(false, HttpStatus.OK);
+		}
+		
 	}
 	
 	@GetMapping("/vanApoteka/{id}")
