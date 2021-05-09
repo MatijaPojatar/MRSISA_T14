@@ -48,6 +48,9 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 
 	@OneToMany(mappedBy = "dermatolog", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ZalbaNaDermatologa> zalbe = new ArrayList<ZalbaNaDermatologa>();
+	
+	@OneToMany(mappedBy = "dermatolog")
+	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
 
 	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
@@ -126,6 +129,23 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 
 	public void setOdsustva(List<OdsustvoDermatolog> odsustva) {
 		this.odsustva = odsustva;
+	}
+
+	public List<DermatologApoteka> getZaposlenja() {
+		return zaposlenja;
+	}
+
+
+	public void setZaposlenja(List<DermatologApoteka> zaposlenja) {
+		this.zaposlenja = zaposlenja;
+	}
+	
+	public Set<Apoteka> getApotekeV2() {
+		Set<Apoteka> apoteke=new HashSet<Apoteka>();
+		for(DermatologApoteka da:this.zaposlenja) {
+			apoteke.add(da.getApoteka());
+		}
+		return apoteke;
 	}
 	
 	
