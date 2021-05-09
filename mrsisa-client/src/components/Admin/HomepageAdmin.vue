@@ -87,7 +87,7 @@
 
           <v-list-item link @click="odgovoriNaZalbe">
             <v-list-item-icon>
-              <v-icon>mdi-note-alert</v-icon>
+              <v-icon>mdi-alert-circle-check</v-icon>
             </v-list-item-icon>
             <v-list-item-title><div class="wh">
                     Odgovori na zalbe

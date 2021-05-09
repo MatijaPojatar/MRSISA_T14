@@ -1,77 +1,89 @@
 <template>
-  <div>
-    <v-card>
-      <v-data-table
-      :items="zalbe"
-      :headers="headers"
+  <v-row>
+    <v-expansion-panels>
+      <v-expansion-panel
+        v-for="zalba in zalbe"
+        :key="zalba.id"
+        @click="selekcija(zalba.id)"
       >
-        <template v-slot:item.actions="{ item }">
-          <v-btn small @click="openZalbaDialog(item)">Otvori</v-btn>
-        </template>
-      </v-data-table>
-    </v-card>
 
-    <v-dialog v-model="zalbaDialog">
-      <v-card>
-        <v-card-title>Zalba na apoteku</v-card-title>
+        <v-expansion-panel-header>
+          Žalba na apoteku: {{zalba.apotekaNaziv}}
+        </v-expansion-panel-header>
 
-        <v-card-text>
-          <v-textarea v-model="activeZalba.tekst" readonly></v-textarea>
-          <v-textarea v-model="activeZalba.odgovor"></v-textarea>
-        </v-card-text>
 
-        <v-card-actions>
-          <v-btn color="error" @click="closeZalbaDialog">Zatvori</v-btn>
-          <v-btn color="success" @click="sendOdgovor">Posalji</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+        <v-expansion-panel-content>
+          <div>
+            Naziv apoteke: {{zalba.apotekaNaziv}}
+          </div>
+          <v-divider/>
+          <div>
+            Autor žalbe: {{zalba.pacijentIP}}
+          </div>
+          <v-divider/>
+
+          <div>
+            Tekst: {{zalba.tekst}}
+          </div>
+          <v-divider/>
+
+          <v-textarea
+          outlined
+          v-model="odgovor">
+          </v-textarea>
+
+          <br/>
+            <v-btn
+            dark
+            color="green"
+            @click="odgovoriNaZalbu"
+            >
+              Odgovori
+            </v-btn>
+
+        </v-expansion-panel-content>
+
+
+      </v-expansion-panel>
+    </v-expansion-panels>
+
+  </v-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+
 
 export default {
   data: () => ({
-    headers: [
-      { text: 'Apoteka', value: 'naziv' }
-    ],
+    zalbe: [
+      {apotekaNaziv: "Apotekk", pacijentIP: "PAC PAC", id: 1, tekst: "BLABLA"},
 
-    zalbaDialog: false,
-    activeZalba: null
+    ],
+    selektovanaZalba: {},
+    selektovanaZalbaID: -1,
+    odgovor: "",
   }),
 
-  async beforeMount() {
-    await this.getZalbeAction();
+  mounted() {
+    this.loadZalbeNaApoteke();
   },
 
   methods: {
-    ...mapActions({
-      getZalbeAction: "zalbe/getNeobradjeneApotekaAction",
-      sendOdgovorAction: "zalbe/sendOdgovorApotekaAction"
-    }),
+    loadZalbeNaApoteke(){
 
-    openZalbaDialog(item) {
-      this.activeZalba = item;
-      this.zalbaDialog = true;
     },
 
-    closeZalbaDialog() {
-      this.zalbaDialog = false;
+    selekcija(id){
+      this.selektovanaZalbaID = id;
+      alert("SELEKTOVAN"+id);
     },
 
-    async sendOdgovor() {
-      await this.sendOdgovorAction(this.activeZalba.odgovor);
-      alert("Uspesno ste odgovorili na zalbu");
-    }
-  },
+    odgovoriNaZalbu(){
+      alert("ODGOVARAM");
+    },
 
-  computed: {
-    ...mapGetters({
-      zalbe: "zalbe/getNeobradjeneApoteka"
-    })
   }
+
 }
 </script>
 
