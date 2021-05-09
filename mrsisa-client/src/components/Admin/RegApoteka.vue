@@ -88,9 +88,9 @@ export default {
           alert("Ime apoteke nije originalno")
           return;
         }
-        alert("Uspehh")
+        alert("Uspeh!")
       }
-      alert("Submit")
+     
       this.cancel();
     },
 

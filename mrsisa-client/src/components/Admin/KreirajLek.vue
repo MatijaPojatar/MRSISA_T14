@@ -241,7 +241,6 @@ export default {
 
         alert("Lek uspesno dodat")
       }
-      alert("Submit");
       this.cancel();
     },
 

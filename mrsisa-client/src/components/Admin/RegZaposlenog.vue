@@ -105,8 +105,8 @@
 
           <v-text-field
           v-model="apotekeGdeJeZaposlenString"
-          :rules="[rules.required, rules.counterVreme]"
-          label="Id Apoteke/a gde je zaposlen (3,4) DORADITI"
+          :rules="[rules.required]"
+          label="Id Apoteke gde je zaposlen"
           />
 
           <v-text-field
@@ -122,8 +122,8 @@
     <v-card-actions>
         <v-btn @click="cancel" class="grey white--text">Odustani</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-on:click="onSubmitDerm" :disabled="!valid" class="red white--text">Registracija Dermatologa</v-btn>
-        <v-btn v-on:click="onSubmitDob" :disabled="!valid" class="blue white--text">Registracija Dobavljaca</v-btn>
+        <v-btn v-on:click="onSubmitDerm" :disabled="!valid" class="red white--text"> Dermatolog</v-btn>
+        <v-btn v-on:click="onSubmitDob" :disabled="!valid" class="blue white--text"> Dobavljac</v-btn>
     </v-card-actions>
     </v-card>
 </template>
@@ -200,6 +200,8 @@ export default {
         krajRadnogVremena: this.krajRadnogVremena
       }
       try{
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
         console.log(DermDTO);
       }catch(error){
         alert("Greska pri registraciji dermatologa")
@@ -208,7 +210,12 @@ export default {
     },
 
     async onSubmitDob(){
-
+      try{
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
+      }catch(error){
+        alert("Greska pri registraciji Dobavljaca")
+      }
     },
 
     cancel(){
