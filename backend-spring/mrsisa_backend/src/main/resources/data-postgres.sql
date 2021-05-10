@@ -42,8 +42,8 @@ insert into savetovanja (id,farmaceut_id) values (1,1);
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','$2a$10$KHKLhLY7PbDM6KM/mIZC7OBwgXBtTw7l.sB2o.SJW3H.6j8Gb8qJO',0,true, false, true); --sifra je pera
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (3,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
-insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena) values (3,1,'08:00','12:00');
-insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena) values (3,2,'12:00','16:00');
+insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,1,'08:00','12:00', false);
+insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,2,'12:00','16:00', false);
 insert into osoba_role (osoba_id, role_id) values (3, 4); --role dermatolog
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-27 12:00','2021-04-27 13:00',1,2);
@@ -126,6 +126,7 @@ insert into pregledi (id,dermatolog_id,cena) values (12,3,3000);
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','$2a$10$UnO./eDTpKBzdcDio.khoO5/Egozb0LUrLR.ANtjFJQN7pVcEdGEy',0,true, false, true); --sifra je luka
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (10,'16:00','08:00');
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
+insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (10,2,'08:00','12:00', false);
 insert into osoba_role (osoba_id, role_id) values (10, 4);
 
 insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);

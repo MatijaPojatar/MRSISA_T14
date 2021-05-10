@@ -104,7 +104,7 @@
         <v-card-title class="headline">
           Obaveštenje
         </v-card-title>
-        <v-card-text>Uspešno dodavanje.</v-card-text>
+        <v-card-text>Dermatlog je zauzet u odabranom radnom vremenu.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -156,8 +156,16 @@
                 pocetak : this.pocetakRadnogVremena,
                 kraj : this.krajRadnogVremena
             }
-            axios.put(`http://localhost:8080/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme)
-            this.dialog=true;
+            axios.put(`http://localhost:8080/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme).then(response=>{
+                   
+                     const uspesno = response.data
+                     if (uspesno){
+                       location.reload()
+                     }else{
+                       this.dialog=true
+                     }
+                    
+                 })
 
         }
         

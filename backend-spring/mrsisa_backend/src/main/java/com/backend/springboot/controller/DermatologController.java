@@ -62,6 +62,14 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
 	}
 	
+	@PostMapping("/dermatologApoteke/{id}")
+	public ResponseEntity<DermatologDTO> getOneDermatologApoteke(@PathVariable Integer id, @RequestBody String apotekaId){
+		Dermatolog d=service.findOne(id);
+		DermatologDTO dto=new DermatologDTO(d, Integer.parseInt(apotekaId));
+		
+		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
+	}
+	
 	@PostMapping()
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<DermatologDTO> registrujDermatologa(@RequestBody DermatologDTO dto){
@@ -87,6 +95,13 @@ public class DermatologController {
 		service.save(d);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PutMapping("/updateRadnoVreme/{apotekaId}")
+	public ResponseEntity<Boolean> updateOne(@PathVariable Integer apotekaId,@RequestBody DermatologDTO dto){
+		boolean uspeh = service.promeniRadnoVreme(dto.getId(), apotekaId, dto.getPocetakRadnogVremena(), dto.getKrajRadnogVremena());
+		
+		return new ResponseEntity<Boolean>(uspeh,HttpStatus.OK);
 	}
 	
 	@GetMapping("/pass/check/{id}")
@@ -129,7 +144,7 @@ public class DermatologController {
 		ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.findAllByApotekaId(id);
 		ArrayList<DermatologDTO> dtoList=new ArrayList<DermatologDTO>();
 		for(Dermatolog l:rezultatPretrage) {
-			dtoList.add(new DermatologDTO(l));
+			dtoList.add(new DermatologDTO(l, id));
 		}
 		
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
@@ -177,9 +192,9 @@ public class DermatologController {
 	}
 	
 	@PutMapping("/dodajDermatologaApoteka/{id}/{apotekaId}")
-	public ResponseEntity<String> dodajDermatologaApoteka(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody RadnoVremeDTO radnoVreme ){
-		service.dodajDermatologaUApoteku(id, apotekaId, radnoVreme.getPocetak(), radnoVreme.getKraj());
+	public ResponseEntity<Boolean> dodajDermatologaApoteka(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody RadnoVremeDTO radnoVreme ){
+		boolean uspeh = service.dodajDermatologaUApoteku(id, apotekaId, radnoVreme.getPocetak(), radnoVreme.getKraj());
 		
-		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+		return new ResponseEntity<Boolean>(uspeh,HttpStatus.OK);
 	}
 }

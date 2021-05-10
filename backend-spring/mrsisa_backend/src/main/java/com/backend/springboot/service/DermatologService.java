@@ -4,17 +4,20 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Pol;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.repository.ApotekaRepository;
+import com.backend.springboot.repository.DermatologApotekaRepository;
 import com.backend.springboot.repository.DermatologRepository;
 import com.backend.springboot.repository.PregledRepository;
 
@@ -27,6 +30,8 @@ public class DermatologService {
 	private PregledRepository pregledRep;
 	@Autowired
 	private ApotekaRepository apotekaRep;
+	@Autowired
+	private DermatologApotekaRepository zaposlenjeRep;
 	
 	public List<Dermatolog> findAll(){
 		return dermatologRep.findAll();
@@ -48,7 +53,7 @@ public class DermatologService {
 		ArrayList<Dermatolog> svi = (ArrayList<Dermatolog>) dermatologRep.findAll();
 		ArrayList<Dermatolog> pronadjeni = new ArrayList<Dermatolog>();
 		for (Dermatolog d: svi) {
-			for (Apoteka a: d.getApoteke()) {
+			for (Apoteka a: d.getApotekeV2()) {
 				if (a.getId() == id) {
 					pronadjeni.add(d);
 				}
@@ -68,26 +73,95 @@ public class DermatologService {
 		for (Pregled p: pregledi) {
 			if (p.getPocetak().isAfter(sada)) {
 				dozvoljenoBrisanje = false;
+				System.out.println("\n\n\n\n\n heheheh \n\n\n\n");
 				break;
 			}
 		}
 		
 		if (dozvoljenoBrisanje) {
+			List<DermatologApoteka> zaposlenja = d.getZaposlenja();
+			Set<Dermatolog> dermatolozi =a.getDermatoloziV2();
+			DermatologApoteka pronadjen = new DermatologApoteka();
+			for (DermatologApoteka z: zaposlenja) {
+				if (z.getApoteka().getId() == apotekaId) {
+					pronadjen = z;
+					break;
+					
+				}
+			}
+
+			zaposlenja.remove(pronadjen);
+			pronadjen.setObrisan(true);
+			zaposlenjeRep.save(pronadjen);
+			a.getDermatoloziV2().remove(d);
+			
 			d.getApoteke().remove(a);
 			dermatologRep.save(d);
+			apotekaRep.save(a);
+			
+			
 		}
 		
 	}
 	
-	public void dodajDermatologaUApoteku (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
+	public boolean promeniRadnoVreme (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
 		Dermatolog d = dermatologRep.findOneById(id);
-		d.setPocetakRadnogVremena(pocetak);
-		d.setKrajRadnogVremena(kraj);
 		Apoteka a = apotekaRep.findOneById(apotekaId);
+		boolean dozvoljenoDodavanje = true;
+		for (DermatologApoteka z : d.getZaposlenja()) {
+			if (z.getApoteka().getId() != apotekaId && preklapaSe(z.getPocetakRadnogVremena(), z.getKrajRadnogVremena(), pocetak, kraj)) {
+				dozvoljenoDodavanje = false;
+			}
+		}
 		
-		d.getApoteke().add(a);
-		dermatologRep.save(d);
+		if (dozvoljenoDodavanje) {
+			DermatologApoteka pronadjen = new DermatologApoteka();
+			for (DermatologApoteka z : d.getZaposlenja()) {
+				if (z.getApoteka().getId() == apotekaId) {
+					pronadjen = z;
+					break;
+				}
+			}
+			pronadjen.setObrisan(true);
+			d.getZaposlenja().remove(pronadjen);
+			zaposlenjeRep.save(pronadjen);
+			DermatologApoteka zap = new DermatologApoteka();
+			zap.setDermatolog(d);
+			zap.setApoteka(a);
+			zap.setPocetakRadnogVremena(pocetak);
+			zap.setKrajRadnogVremena(kraj);
+			d.getZaposlenja().add(zap);
+			zaposlenjeRep.save(zap);
+			dermatologRep.save(d);
+			return true;
+		}
 		
+		return false;
+	}
+	
+	public boolean dodajDermatologaUApoteku (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
+		Dermatolog d = dermatologRep.findOneById(id);
+		Apoteka a = apotekaRep.findOneById(apotekaId);
+		boolean dozvoljenoDodavanje = true;
+		for (DermatologApoteka z : d.getZaposlenja()) {
+			if (preklapaSe(z.getPocetakRadnogVremena(), z.getKrajRadnogVremena(), pocetak, kraj)) {
+				dozvoljenoDodavanje = false;
+			}
+		}
+		if (dozvoljenoDodavanje) {
+			DermatologApoteka zap = new DermatologApoteka();
+			zap.setDermatolog(d);
+			zap.setApoteka(a);
+			zap.setPocetakRadnogVremena(pocetak);
+			zap.setKrajRadnogVremena(kraj);
+			d.getZaposlenja().add(zap);
+			d.getApoteke().add(a);
+			zaposlenjeRep.save(zap);
+			dermatologRep.save(d);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public List<Dermatolog> preuzmiDermatologeVanApoteke (Integer apotekaId) {
@@ -160,6 +234,10 @@ public class DermatologService {
 		}
 		return ret;
 		
+	}
+	
+	public static boolean preklapaSe(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
+	    return start1.isBefore(end2) && start2.isBefore(end1);
 	}
 
 }

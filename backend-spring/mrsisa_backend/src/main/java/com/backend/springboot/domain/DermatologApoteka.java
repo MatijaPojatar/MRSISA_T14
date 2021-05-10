@@ -13,8 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @Entity
 @Table(name="zaposlenja")
+@SQLDelete(sql
+	    = "UPDATE zaposlenja "
+	    + "SET obrisan = true "
+	    + "WHERE id = ?")
+@Where(clause = "obrisan = false")
 public class DermatologApoteka {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -33,6 +41,28 @@ public class DermatologApoteka {
 	@Column(name = "krajRadnogVremena", nullable = false)
 	private LocalTime krajRadnogVremena;
 	
+	@Column(name = "obrisan", nullable = false)
+	private boolean obrisan;
+	
+	public DermatologApoteka() {
+		super();
+	}
+	public DermatologApoteka(Integer id, Dermatolog dermatolog, Apoteka apoteka, LocalTime pocetakRadnogVremena,
+			LocalTime krajRadnogVremena, boolean obrisan) {
+		super();
+		this.id = id;
+		this.dermatolog = dermatolog;
+		this.apoteka = apoteka;
+		this.pocetakRadnogVremena = pocetakRadnogVremena;
+		this.krajRadnogVremena = krajRadnogVremena;
+		this.obrisan = obrisan;
+	}
+	public boolean isObrisan() {
+		return obrisan;
+	}
+	public void setObrisan(boolean obrisan) {
+		this.obrisan = obrisan;
+	}
 	public Integer getId() {
 		return id;
 	}

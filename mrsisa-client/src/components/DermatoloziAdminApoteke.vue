@@ -115,7 +115,7 @@
         <v-card-title class="headline">
           Obaveštenje
         </v-card-title>
-        <v-card-text>Nije pronađen farmaceut sa zadatim parametrima.</v-card-text>
+        <v-card-text>Nije pronađen dermatolog sa zadatim parametrima.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn

@@ -49,7 +49,7 @@
         <v-card-title class="headline">
           Izmeni dermatologa
         </v-card-title>
-        <AccountView :user="this.selektovanDermatolog" :farmaceut="false" :editable="false" :adminView="true"/>
+        <AccountView :user="this.selektovanDermatolog" :farmaceut="false" :editable="false" :adminView="true" :apotekaId="this.apotekaId"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -136,13 +136,13 @@
                  this.selektovanDermatolog=Object.assign({}, user);
                  this.selektovan = this.selektovanDermatolog.id;
                  axios.put(`http://localhost:8080/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
-                 location.reload();
+                 location.reload()
              },
 
              IzmeniDermatologa(user){
                  this.selektovanDermatolog=Object.assign({}, user);
                  this.selektovan = this.selektovanDermatolog.id;
-                 axios.get(`http://localhost:8080/dermatolog/${this.selektovan}`).then(response => {
+                 axios.post(`http://localhost:8080/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
                      console.log(response.data)
                     this.selektovanDermatolog=response.data;
                     console.log(this.selektovanDermatolog);

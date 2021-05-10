@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Pol;
 
@@ -32,6 +33,30 @@ public class DermatologDTO {
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.pocetakRadnogVremena = d.getPocetakRadnogVremena();
 		this.krajRadnogVremena = d.getKrajRadnogVremena();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
+		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
+	}
+	
+	public DermatologDTO(Dermatolog d, Integer apotekaId) {
+		this.id=d.getId();
+		this.ime=d.getIme();
+		this.prezime=d.getPrezime();
+		this.mail=d.getMail();
+		this.adresa=d.getAdresa();
+		this.grad=d.getGrad();
+		this.drzava=d.getDrzava();
+		this.brojTelefona=d.getBrojTelefona();
+		this.pol=d.getPol();
+		this.datumRodjenja=d.getDatumRodjenja();
+		for (DermatologApoteka z : d.getZaposlenja()) {
+			if (z.getApoteka().getId() == apotekaId) {
+				this.pocetakRadnogVremena = z.getPocetakRadnogVremena();
+				this.krajRadnogVremena = z.getKrajRadnogVremena();
+			}
+		}
+		
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);

@@ -188,6 +188,29 @@
         </v-card-actions>
       </v-card>
   </v-dialog>
+
+  <v-dialog
+      v-model="dialogRadnoVreme"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Dermatolog je zauzet u odabranom radnom vremenu.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialogRadnoVreme"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
 </v-card>
 </template>
 
@@ -230,6 +253,7 @@ import Vue from "vue";
       ],
       checkbox: false,
       dialog: false,
+      dialogRadnoVreme: false,
     }),
     props :{
         user: {},
@@ -237,6 +261,7 @@ import Vue from "vue";
         adminApoteke: Boolean,
         editable: Boolean,
         adminView: Boolean,
+        apotekaId: Number,
     },
     created(){
         this.reset()
@@ -288,17 +313,35 @@ import Vue from "vue";
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
             if(this.adminApoteke){
                 Vue.axios.put(`http://localhost:8080/adminApoteke/save/${this.user.id}`,this.user)
+                this.dialog=true;
             }else{
               this.user.pocetakRadnogVremena=this.newInfo.pocetakRadnogVremena
               this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
 
               if(this.farmaceut){
                   Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
+                  this.dialog=true;
               }else{
-                  Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+                  if (this.adminView){
+                      Vue.axios.put(`http://localhost:8080/dermatolog/updateRadnoVreme/${this.apotekaId}`,this.user).then(response=>{
+                   
+                            const uspesno = response.data
+                            if (!uspesno){
+                              this.dialogRadnoVreme=true
+                            }else{
+                              this.dialog = true
+                            }
+                    
+                      })
+                  }
+                  else{
+                      Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+                      this.dialog=true;
+                  }
+                  
               }
             }
-            this.dialog=true;
+            
         }
         
       },
@@ -316,6 +359,10 @@ import Vue from "vue";
       },
       endDialog(){
         this.dialog=false;
+        //location.reload();
+      },
+      endDialogRadnoVreme(){
+        this.dialogRadnoVreme=false;
         //location.reload();
       },
       destroy(){
