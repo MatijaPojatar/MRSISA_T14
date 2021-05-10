@@ -31,6 +31,32 @@
                 class="mb-12"
                 >
                 Izveštaj: {{izvestaj}}
+                <v-divider/>
+                <template>
+                    <v-simple-table dense>
+                    <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Naziv
+                              </th>
+                              <th class="text-left">
+                                Terapija
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                           <tr
+                            v-for="item in lekovi"
+                            :key="item.id"
+                           >
+                            <td>{{ item.naziv }}</td>
+                            <td>{{ item.terapija }}</td>
+                        </tr>
+                        </tbody>
+                    </template>
+                    </v-simple-table>
+                </template>
                 </v-card>
             </v-stepper-content>
 
@@ -46,6 +72,7 @@
                         <v-radio
                             label="Izbor već postojećih termina"
                             value="i-1"
+                            v-if="!farmaceut"
                         ></v-radio>
                         <v-radio
                             label="Kreiraj novi termin"
@@ -201,6 +228,7 @@ export default{
         pacijentId: Number,
         apotekaId: Number,
         farmaceut: Boolean,
+        lekovi: Array,
     },
     mounted(){
         this.loadTermini();
@@ -248,7 +276,7 @@ export default{
             if(this.farmaceut){
                 path="farmaceut"
             }
-            axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`).then(response => {
+            axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
             console.log(response.data);
             this.pocetakRadnogVremena=response.data.pocetak[0].toString()+":"+response.data.pocetak[1].toString()
             this.krajRadnogVremena=response.data.kraj[0].toString()+":"+response.data.kraj[1].toString()
@@ -276,12 +304,20 @@ export default{
                     apotekaId: this.apotekaId,
                     izvrsen: false,
                 }
-                await axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
-                    this.check=response.data;
+                await axios.post(`http://localhost:8080/pacijent/proveri_termin/${this.pacijentId}`,newTermin).then(response=>{
+                    this.check=response.data
                 });
                 if(this.check){
-                    this.$emit('termin-end')
-                }else{
+                    await axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
+                        this.check=response.data;
+                    });
+                    if(this.check){
+                        this.$emit('termin-end')
+                    }else{
+                        this.dialogAdd=true;
+                    }
+                }
+                else{
                     this.dialogAdd=true;
                 }
             }

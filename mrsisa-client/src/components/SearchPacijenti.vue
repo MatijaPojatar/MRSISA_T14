@@ -1,23 +1,33 @@
 <template>
 <v-row>
-  <v-data-table
-    :headers="headers"
-    :items="pacijenti"
-    :sort-by="'ime'"
-    :sort-desc="[false, true]"
-    multi-sort
-    class="elevation-1"
-  >
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="showAccount(item)"
-      >
-        mdi-account
-      </v-icon>
-    </template>
-  </v-data-table>
+  <v-card>
+    <v-card-title>
+      Pacijenti
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="pacijenti"
+      :search="search"
+    >
+        <template v-slot:item.actions="{ item }">
+            <v-icon
+                small
+                class="mr-2"
+                @click="showAccount(item)"
+            >
+                mdi-account
+            </v-icon>
+        </template>
+    </v-data-table>
+  </v-card>
   <v-dialog
     v-model="dialog"
     persistent
@@ -29,7 +39,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false" :adminView="false" :key="componentKey"/>
+        <AccountView :user="selectedUser" :farmaceut="false" :editable="false" :adminView="false" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -51,40 +61,33 @@
 import axios from "axios";
 import AccountView from "./AccountView";
 
-export default {
-    components:{
+  export default {
+      components:{
         AccountView,
-    },
-    data: () => ({
+        },
+      data: () => ({
         headers: [
           {
             text: 'Ime',
             align: 'start',
+            sortable: false,
             value: 'ime',
           },
           { text: 'Prezime', value: 'prezime' },
-          { text: 'Datum poslednjeg pregleda', value: 'datum' },
           { text: 'Nalog', value: 'actions', sortable: false },
         ],
         pacijenti: [],
         dialog: false,
         selectedUser: {},
-        componentKey:0,
+        search:'',
+        componentKey: 0,
     }),
-    props: {
-        doktorId: Number,
-        farmaceut: Boolean,
-    },
     mounted(){
         this.loadPacijenti();
     },
     methods :{
         async loadPacijenti(){
-            let path="pregled"
-            if(this.farmaceut){
-                path="savetovanje"
-            }
-            await axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
+            await axios.get(`http://localhost:8080/pacijent/all`).then(response =>
             {
                 const pacijenti=[];
                 response.data.forEach(element => {
@@ -96,7 +99,6 @@ export default {
                         grad: element.grad,
                         drzava: element.drzava,
                         pol: element.pol,
-                        datum: new Date(element.poslednjiPregled[0].toString()+"-"+element.poslednjiPregled[1].toString()+"-"+element.poslednjiPregled[2].toString()+" "+element.poslednjiPregled[3].toString()+":"+element.poslednjiPregled[4].toString()),
                     }
                     )
                     this.pacijenti=pacijenti;
@@ -105,17 +107,22 @@ export default {
             )
         },
         showAccount(user){
-            console.log(user);
             //let index=this.pacijenti.indexOf(user)
-            this.selectedUser=Object.assign({}, user);
-            console.log(this.selectedUser);
-            this.componentKey+=1;
+            this.selectedUser=Object.assign({}, this.selectedUser,{
+                ime:user.ime,
+                prezime:user.prezime,
+                brojTelefona: user.brojTelefona,
+                adresa: user.adresa,
+                grad: user.grad,
+                drzava: user.drzava,
+                pol: user.pol,
+                });
+            this.componentKey += 1;
             this.dialog=true;
         },
         endDialog(){
             this.dialog=false;
         },
     },
-}
-
+  }
 </script>

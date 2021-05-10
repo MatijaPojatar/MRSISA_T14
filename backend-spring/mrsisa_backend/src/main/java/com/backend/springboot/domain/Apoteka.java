@@ -56,6 +56,9 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
+	@OneToMany(mappedBy = "apoteka")
+	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
+	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
 			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
@@ -262,6 +265,22 @@ public class Apoteka {
 
 	public void setOdsustva(List<OdsustvoFarmaceut> odsustva) {
 		this.odsustva = odsustva;
+	}
+
+	public List<DermatologApoteka> getZaposlenja() {
+		return zaposlenja;
+	}
+
+	public void setZaposlenja(List<DermatologApoteka> zaposlenja) {
+		this.zaposlenja = zaposlenja;
+	}
+	
+	public Set<Dermatolog> getDermatoloziV2() {
+		Set<Dermatolog> dermatolozi=new HashSet<Dermatolog>();
+		for(DermatologApoteka da:this.zaposlenja) {
+			dermatolozi.add(da.getDermatolog());
+		}
+		return dermatolozi;
 	}
 	
 	

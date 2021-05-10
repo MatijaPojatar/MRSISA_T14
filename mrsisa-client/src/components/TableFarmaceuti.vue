@@ -1,49 +1,22 @@
 <template>
-  <v-row justify="center" max-width="100">
-    <v-expansion-panels  accordion>
-      <v-expansion-panel
-        v-for="farmaceut in farmaceuti"
-        :key="farmaceut.id"
-      @click = "PanelSelected(farmaceut.id)">
-        <v-expansion-panel-header>{{farmaceut.ime}} {{farmaceut.prezime}}</v-expansion-panel-header>
-        <v-expansion-panel-content>
-         <div>
-             Mail: {{farmaceut.mail}}
-         </div>  
-         <v-divider></v-divider> 
-         <div>
-             Adresa: {{farmaceut.adresa}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Grad: {{farmaceut.grad}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Država: {{farmaceut.drzava}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Broj telefona: {{farmaceut.brojTelefona}}
-         </div>
-         <v-divider></v-divider>
-         
-         <div>
-             Početak radnog vremena: {{farmaceut.pocetakRadnogVremena}}
-         </div>
-         <v-divider></v-divider>
-         <div>
-             Kraj radnog vremena: {{farmaceut.krajRadnogVremena}}
-         </div>
-         <br/>
-         <div>
-            <v-btn
+  <v-row justify="center">
+     <v-data-table
+    :headers="headers"
+    :items="farmaceuti"
+    :sort-by="'ime'"
+    :sort-desc="[false, true]"
+    multi-sort
+    class="elevation-1"
+  >
+    <template v-slot:item.actions="{ item }">
+        <div>
+      <v-btn
                 class="mx-2"
                 fab
                 dark
                 small
                 color="pink"
-                @click="ObrisiFarmaceuta"
+                @click="ObrisiFarmaceuta(item)"
             >
                 <v-icon>
                     mdi-delete
@@ -56,17 +29,15 @@
                 dark
                 small
                 color="cyan"
-                @click="IzmeniFarmaceuta"
+                @click="IzmeniFarmaceuta(item)"
             >
                 <v-icon>
                     mdi-pencil
                 </v-icon>
             </v-btn>
-            
-         </div>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+            </div>
+    </template>
+  </v-data-table>
 
     <v-dialog
     v-model="farmaceutUpdateDialog"
@@ -98,7 +69,25 @@
  import  AccountView from "./AccountView";
 
     export default{
+      name: "TableFarmaceuti",
         data: () => ({
+            headers: [
+          {
+            text: 'Ime',
+            align: 'start',
+            value: 'ime',
+          },
+          { text: 'Prezime', value: 'prezime' },
+          { text: 'Mail', value: 'mail' },
+          { text: 'Broj telefona', value: 'brojTelefona'},
+          { text: 'Adresa', value: 'adresa'},
+          { text: 'Grad', value: 'grad' },
+          { text: 'Država', value: 'drzava' },
+          { text: 'Pol', value: 'pol'},
+          { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
+          { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
+          { text: 'Upravljaj', value: 'actions', sortable: false },
+        ],
             farmaceuti: [],
             farmaceutUpdateDialog: false,
             selektovanFarmaceut: {},
@@ -140,19 +129,17 @@
                     });
              },
 
-             PanelSelected(id){
-                 this.selektovan = id;
-                 console.log(this.selektovan);
-                 
-             },
-
-             ObrisiFarmaceuta(){
+             ObrisiFarmaceuta(user){
+                 this.selektovanFarmaceut=Object.assign({}, user);
+                 this.selektovan = this.selektovanFarmaceut.id;
                  axios.put(`http://localhost:8080/farmaceut/obrisiFarmaceuta/${this.selektovan}`)
                  location.reload();
              },
 
-             IzmeniFarmaceuta(){
+             IzmeniFarmaceuta(user){
                  console.log("izmena" + this.selektovan);
+                 this.selektovanFarmaceut=Object.assign({}, user);
+                 this.selektovan = this.selektovanFarmaceut.id;
                  axios.get(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
                      console.log(response.data)
                     this.selektovanFarmaceut=response.data;

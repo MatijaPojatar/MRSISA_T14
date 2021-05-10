@@ -163,6 +163,38 @@
                     {{selectedEvent.izvestaj}}
                   </v-expansion-panel-content>
                 </v-expansion-panel>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Preporučeni lekovi
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <template>
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Naziv
+                              </th>
+                              <th class="text-left">
+                                Terapija
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="item in selectedPreporuceni"
+                              :key="item.id"
+                            >
+                              <td>{{ item.naziv }}</td>
+                              <td>{{ item.terapija }}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </template>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
                 </v-expansion-panels>
               </div>
             </v-card-text>
@@ -211,7 +243,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi"/>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey" :pacijentId="selectedEvent.pacijent"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -235,7 +267,7 @@
           Termin je završen
         </v-card-title>
         <v-card-text>
-        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id"/>
+        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id" :lekovi="preporuceniLekovi" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -260,7 +292,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false"/>
+        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -305,6 +337,7 @@
             color: "#1976D2",
             currentlyEditing: null,
             selectedEvent: {},
+            selectedPreporuceni: [],
             selectedElement: null,
             selectedOpen: false,
             selectedPacijent: {},
@@ -315,6 +348,7 @@
             pacijentDialog: false,
             ready: false,
             preporuceniLekovi: [],
+            componentKey:0,
       }),
       props: {
         farmaceut: Boolean,
@@ -355,8 +389,26 @@
         },
         showEvent ({ nativeEvent, event }) {
             const open = () => {
+              this.selectedPreporuceni=[]
             this.selectedEvent = event
             this.selectedElement = nativeEvent.target
+            if( this.selectedEvent.izvrsen){
+              let path="pregled"
+              if(this.farmaceut){
+                path="savetovanje"
+              }
+              axios.get(`http://localhost:8080/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
+                const lekovi=[];
+                response.data.forEach(element => {
+                  lekovi.push({
+                    terapija: element.terapija,
+                    naziv: element.nazivLeka,
+                    id: element.id,
+                  })
+                  this.selectedPreporuceni=lekovi;
+                });
+              })
+            }
             setTimeout(() => {
                 this.selectedOpen = true
             }, 10)
@@ -391,6 +443,17 @@
             this.events = events
           });
         });
+        await axios.get(`http://localhost:8080/odsustvo/dermatolog/all/${this.user.id}`).then(response=>{
+          response.data.forEach(element => {
+            this.events.push({
+              name: "Odsustvo",
+              start: new Date(element.pocetak[0].toString()+"-"+element.pocetak[1].toString()+"-"+element.pocetak[2].toString()+" "+element.pocetak[3].toString()+":"+element.pocetak[4].toString()),
+              end: new Date(element.kraj[0].toString()+"-"+element.kraj[1].toString()+"-"+element.kraj[2].toString()+" "+element.kraj[3].toString()+":"+element.kraj[4].toString()),
+              id: element.id,
+              timed: false,
+            })
+          });
+        })
         },
       async updateRangeFarmaceutAxios (){
         await axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
@@ -411,6 +474,17 @@
             this.events = events
           });
         });
+        await axios.get(`http://localhost:8080/odsustvo/farmaceut/all/${this.user.id}`).then(response=>{
+          response.data.forEach(element => {
+            this.events.push({
+              name: "Odsustvo",
+              start: new Date(element.pocetak[0].toString()+"-"+element.pocetak[1].toString()+"-"+element.pocetak[2].toString()+" "+element.pocetak[3].toString()+":"+element.pocetak[4].toString()),
+              end: new Date(element.kraj[0].toString()+"-"+element.kraj[1].toString()+"-"+element.kraj[2].toString()+" "+element.kraj[3].toString()+":"+element.kraj[4].toString()),
+              id: element.id,
+              timed: false,
+            })
+          });
+        })
       },
       
       rnd (a, b) {
@@ -432,6 +506,7 @@
           await axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
             this.selectedPacijent=response.data
           })
+          this.componentKey+=1;
           this.pacijentDialog= true
           this.selectedOpen=false
       },
@@ -465,6 +540,9 @@
           }
       },
       getEventColor (event) {
+        if(!event.timed){
+          return '#027e00';
+        }
         if(event.pacijent){
           if(event.izvrsen){
               return 'grey';
@@ -489,6 +567,7 @@
           })
         });
         await axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        this.componentKey+=1;
         this.terminDialog=true
         this.selectedOpen=false
       },
@@ -500,6 +579,7 @@
         this.selectedOpen=true
       },
       openLekList(){
+        this.componentKey+=1;
         this.selectedOpen=false
         this.lekDialog=true;
       },

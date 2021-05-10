@@ -1,7 +1,7 @@
 
 
 <template>
-    <div>
+    <div justify="center">
     <div>
     <v-btn
         class="mx-2"
@@ -36,6 +36,7 @@
     
     <v-form 
     ref="form"
+    justify="center"
   >
     <v-text-field
       v-model="pretragaParams.sifra"
@@ -90,7 +91,7 @@
   <br/>
   <br/>
 
-    <ListLekoviV2 :apotekaId = "apotekaId" :adminView = "true"/>
+    <TableLekovi :apotekaId = "apotekaId" :adminView = "true"/>
 
     <v-dialog
     v-model="lekAddDialog"
@@ -142,14 +143,14 @@
 </template>
 
 <script>
-import ListLekoviV2 from "./ListLekoviV2";
+import TableLekovi from "./TableLekovi";
 import ListLekoviToAdd from "./ListLekoviToAdd";
 import Vue from "vue";
 
 export default{
     name: "LekoviAdminApoteke",
     components: {
-        ListLekoviV2,
+        TableLekovi,
         ListLekoviToAdd
     },
     data: () => ({
@@ -220,7 +221,7 @@ export default{
                     
                  })
           
-        }
+        },
         
     },
 }

@@ -1,5 +1,7 @@
 package com.backend.springboot.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ public class LekUIzvestajuService {
 	
 	public void addLek(LekUIzvestaju lek) {
 		rep.save(lek);
+	}
+	
+	public List<LekUIzvestaju> findAllByTerminId(Integer id){
+		return rep.findAllByTerminId(id);
 	}
 
 }

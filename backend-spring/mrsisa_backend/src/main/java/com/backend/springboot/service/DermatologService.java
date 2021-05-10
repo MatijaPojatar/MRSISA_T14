@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.Pol;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.repository.ApotekaRepository;
@@ -100,6 +101,64 @@ public class DermatologService {
 			}
 		}
 		return rezultat;
+		
+	}
+	
+	public List<Dermatolog> pretraziDermatologeApoteke(String ime, String prezime, String grad, String drzava, Pol pol, Integer apotekaId){
+		ArrayList<Dermatolog> ret = (ArrayList<Dermatolog>) findAllByApotekaId(apotekaId);
+		ArrayList<Dermatolog> toRemove=new ArrayList<Dermatolog>(); 
+		
+		if(!ime.equals("")) {
+			for(Dermatolog f:ret) {
+				if(!f.getIme().contains(ime)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!prezime.equals("")) {
+			for(Dermatolog f:ret) {
+				if(!f.getPrezime().contains(prezime)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!grad.equals("")) {
+			for(Dermatolog f:ret) {
+				if(!f.getGrad().contains(grad)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!drzava.equals("")) {
+			for(Dermatolog f:ret) {
+				if(!f.getDrzava().contains(drzava)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!(pol==null)) {
+			for(Dermatolog f:ret) {
+				if(!f.getPol().equals(pol)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		
+		
+		for(Dermatolog rl:toRemove) {
+			ret.remove(rl);
+		}
+		return ret;
 		
 	}
 

@@ -178,12 +178,12 @@ public class SavetovanjeController {
 		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
 		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
 		
-		List<Savetovanje> checkList=service.findAllInRange(pocetak,kraj);
+		List<Savetovanje> checkList=service.findAllInRangeForFarmaceut(id,pocetak,kraj);
 		if(checkList.size()!=0) {
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
 		
-		List<OdsustvoFarmaceut> checkOdsustva=odsustvoService.findExistInTime(pocetak, kraj);
+		List<OdsustvoFarmaceut> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
 		if(checkOdsustva.size()!=0) {
 			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 		}
@@ -240,5 +240,16 @@ public class SavetovanjeController {
 		}
 
 		return new ResponseEntity<List<PacijentTerminDTO>>(pacijentiDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping("/preporuceni_lekovi/{id}")
+	public ResponseEntity<List<LekUIzvestajuDTO>> getPreporuceni(@PathVariable Integer id){
+		List<LekUIzvestaju> lekovi=izvestajService.findAllByTerminId(id);
+		ArrayList<LekUIzvestajuDTO> dtos=new ArrayList<LekUIzvestajuDTO>();
+		for(LekUIzvestaju lek:lekovi) {
+			dtos.add(new LekUIzvestajuDTO(lek));
+		}
+		
+		return new ResponseEntity<List<LekUIzvestajuDTO>>(dtos,HttpStatus.OK);
 	}
 }

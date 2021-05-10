@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.domain.Pol;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.repository.FarmaceutRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
 
@@ -53,6 +56,64 @@ public class FarmaceutService {
 			f.setObrisan(true);
 			farmaceutRep.save(f);
 		}
+		
+	}
+	
+	public List<Farmaceut> pretraziFarmaceuteApoteke(String ime, String prezime, String grad, String drzava, Pol pol, Integer apotekaId){
+		ArrayList<Farmaceut> ret = (ArrayList<Farmaceut>) findAllByApotekaId(apotekaId);
+		ArrayList<Farmaceut> toRemove=new ArrayList<Farmaceut>(); 
+		
+		if(!ime.equals("")) {
+			for(Farmaceut f:ret) {
+				if(!f.getIme().contains(ime)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!prezime.equals("")) {
+			for(Farmaceut f:ret) {
+				if(!f.getPrezime().contains(prezime)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!grad.equals("")) {
+			for(Farmaceut f:ret) {
+				if(!f.getGrad().contains(grad)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!drzava.equals("")) {
+			for(Farmaceut f:ret) {
+				if(!f.getDrzava().contains(drzava)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		if(!(pol==null)) {
+			for(Farmaceut f:ret) {
+				if(!f.getPol().equals(pol)) {
+					if(!toRemove.contains(f)) {
+						toRemove.add(f);
+					}
+				}
+			}
+		}
+		
+		
+		for(Farmaceut rl:toRemove) {
+			ret.remove(rl);
+		}
+		return ret;
 		
 	}
 

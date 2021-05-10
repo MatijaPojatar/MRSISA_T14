@@ -19,8 +19,12 @@ public class OdsustvoFarmaceutService {
 		rep.save(od);
 	}
 	
-	public List<OdsustvoFarmaceut> findExistInTime(LocalDateTime start,LocalDateTime end){
-		return rep.findExistInTime(start, end);
+	public List<OdsustvoFarmaceut> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
+		return rep.findExistInTime(id,start, end);
+	}
+	
+	public List<OdsustvoFarmaceut> findAllByFarmaceutId(Integer farmaceutId){
+		return rep.findAllByFarmaceutId(farmaceutId);
 	}
 
 }

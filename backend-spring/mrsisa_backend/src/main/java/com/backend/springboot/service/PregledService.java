@@ -86,8 +86,12 @@ public class PregledService {
 		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
 	}
 	
-	public List<Pregled> findAllInRange(LocalDateTime start,LocalDateTime end){
-		return pregledRep.findInRange(start, end);
+	public List<Pregled> findAllInRangeForDermatolog(Integer id,LocalDateTime start,LocalDateTime end){
+		return pregledRep.findInRangeForDermatolog(id,start, end);
+	}
+	
+	public List<Pregled> findAllInRangeForPacijent(Integer id,LocalDateTime start,LocalDateTime end){
+		return pregledRep.findInRangeForPacijent(id,start, end);
 	}
 
 }

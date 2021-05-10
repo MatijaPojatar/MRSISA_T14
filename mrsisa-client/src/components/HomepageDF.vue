@@ -10,8 +10,8 @@
       <v-list >
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-img src="https://randomuser.me/api/portraits/men/85.jpg" v-if="user.pol==='MUSKI'"></v-img>
-              <v-img src="https://randomuser.me/api/portraits/women/85.jpg" v-if="user.pol==='ZENSKI'"></v-img>
+              <v-img :src="baseUrl + 'men/' + user.id + '.jpg'" v-if="user.pol==='MUSKI'"></v-img>
+              <v-img :src="baseUrl + 'women/' + user.id + '.jpg'" v-if="user.pol==='ZENSKI'"></v-img>
             </v-list-item-avatar>
           </v-list-item>
 
@@ -73,6 +73,14 @@
                     Zahtev za odsutsvo
                 </div></v-list-item-title>
           </v-list-item>
+          <v-list-item link @click="allPacijentView">
+            <v-list-item-icon>
+              <v-icon>mdi-account-group</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Svi pacijenti
+                </div></v-list-item-title>
+          </v-list-item>
           <v-list-item link @click="pacijentView">
             <v-list-item-icon>
               <v-icon>mdi-account-multiple</v-icon>
@@ -108,6 +116,9 @@
       <v-container fluid v-if="showPacijenti" :style="{width:'70vh'}">
         <PacijentList :farmaceut="farmaceut" :doktorId="user.id"/>
       </v-container>
+      <v-container fluid v-if="showAllPacijenti" :style="{width:'70vh'}">
+        <SearchPacijenti/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -119,6 +130,7 @@ import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import CreateOdsustvo from "./CreateOdsustvo";
 import PacijentList from "./PacijentList"
+import SearchPacijenti from "./SearchPacijenti"
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
@@ -129,6 +141,7 @@ export default {
         PasswordSwitch,
         CreateOdsustvo,
         PacijentList,
+        SearchPacijenti,
     },
     data: () => ({
     showCalendar: false,
@@ -136,7 +149,9 @@ export default {
     showPassword: false,
     showOdsustvo: false,
     showPacijenti: false,
+    showAllPacijenti: false,
     farmaceut: true,
+    baseUrl: "https://randomuser.me/api/portraits/",
   }),
   computed: {
     ...mapGetters({
@@ -154,27 +169,25 @@ export default {
         logout: "korisnici/logoutAction",
         resetStore: "resetStore"
       }),
-
+      closeAll(){
+        this.showCalendar=false;
+        this.showAccount=false;
+        this.showPassword=false;
+        this.showOdsustvo=false;
+        this.showPacijenti=false;
+        this.showAllPacijenti= false;
+      },
       calendarView(){
+          this.closeAll();
           this.showCalendar=true;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showOdsustvo=false;
-          this.showPacijenti=false;
       },
       accountView(){
-          this.showCalendar=false;
+          this.closeAll();
           this.showAccount=true;
-          this.showPassword=false;
-          this.showOdsustvo=false;
-          this.showPacijenti=false;
       },
       odsustvoView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
+          this.closeAll();
           this.showOdsustvo=true;
-          this.showPacijenti=false;
       },
 
       onLogout(){
@@ -187,25 +200,16 @@ export default {
       //   window.location.href="http://localhost:8081/";
       // },
       changePassword(){
-          this.showCalendar=false;
-          this.showAccount=false;
+          this.closeAll();
           this.showPassword=true;
-          this.showOdsustvo=false;
-          this.showPacijenti=false;
       },
       pacijentView(){
-        this.showCalendar=false;
-        this.showAccount=false;
-        this.showPassword=false;
-        this.showOdsustvo=false;
+        this.closeAll();
         this.showPacijenti=true;
       },
-      closeAll(){
-        this.showCalendar=false;
-        this.showAccount=false;
-        this.showPassword=false;
-        this.showOdsustvo=false;
-        this.showPacijenti=false;
+      allPacijentView(){
+        this.closeAll();
+        this.showAllPacijenti= true;
       },
   },
 }

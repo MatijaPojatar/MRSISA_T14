@@ -114,18 +114,18 @@
         <Calendar  :user="user"/>
       </v-container>
      <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
-        <AccountView :user="user" />
+        <AccountView :user="user" :editable = "true" :adminApoteke="true"/>
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
       </v-container>
-      <v-container fluid v-if="showLekovi" :style="{width:'70vh'}">
+      <v-container fluid v-if="showLekovi" :style="{width:'180vh'}" >
         <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
-      <v-container fluid v-if="showFarmaceuti" :style="{width:'70vh'}">
+      <v-container fluid v-if="showFarmaceuti" :style="{width:'180vh'}">
         <FarmaceutiAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
-       <v-container fluid v-if="showDermatolozi" :style="{width:'70vh'}">
+       <v-container fluid v-if="showDermatolozi" :style="{width:'180vh'}">
         <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
     </v-main>

@@ -1,11 +1,13 @@
 package com.backend.springboot.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.OdsustvoDermatologDTO;
 import com.backend.springboot.dto.OdsustvoFarmaceutDTO;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.FarmaceutService;
@@ -46,7 +49,7 @@ public class OdsustvoController {
 	
 	@PutMapping("/farmaceut/dodaj/{id}")
 	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Savetovanje> checkList=savService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
+		List<Savetovanje> checkList=savService.findAllInRangeForFarmaceut(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
 		for(Savetovanje s:checkList) {
 			if(!s.isIzvrsen()) {
@@ -71,7 +74,7 @@ public class OdsustvoController {
 	
 	@PutMapping("/dermatolog/dodaj/{id}")
 	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Pregled> checkList=preService.findAllInRange(odsustvo.getPocetak(),odsustvo.getKraj());
+		List<Pregled> checkList=preService.findAllInRangeForDermatolog(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
 		for(Pregled p:checkList) {
 			if(!p.isIzvrsen()) {
@@ -91,6 +94,28 @@ public class OdsustvoController {
 		odDermService.save(od);
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@GetMapping("/farmaceut/all/{id}")
+	public ResponseEntity<List<OdsustvoFarmaceutDTO>> getAllForFarmaceut(@PathVariable Integer id){
+		List<OdsustvoFarmaceut> odsustva=odFarmService.findAllByFarmaceutId(id);
+		ArrayList<OdsustvoFarmaceutDTO> dtos=new ArrayList<OdsustvoFarmaceutDTO>();
+		for(OdsustvoFarmaceut o:odsustva) {
+			dtos.add(new OdsustvoFarmaceutDTO(o));
+		}
+		
+		return new ResponseEntity<List<OdsustvoFarmaceutDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatolog/all/{id}")
+	public ResponseEntity<List<OdsustvoDermatologDTO>> getAllForDermatolog(@PathVariable Integer id){
+		List<OdsustvoDermatolog> odsustva=odDermService.findAllByDermatologId(id);
+		ArrayList<OdsustvoDermatologDTO> dtos=new ArrayList<OdsustvoDermatologDTO>();
+		for(OdsustvoDermatolog o:odsustva) {
+			dtos.add(new OdsustvoDermatologDTO(o));
+		}
+		
+		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
 	}
 
 }
