@@ -2,7 +2,7 @@
   <v-row>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="zalba in zalbe"
+        v-for="zalba in neobradjene"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -29,6 +29,7 @@
 
           <v-textarea
           outlined
+          label="Odgovor"
           v-model="odgovor">
           </v-textarea>
 
@@ -51,35 +52,38 @@
 </template>
 
 <script>
-
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   data: () => ({
-    zalbe: [
-      {dermatologIP: "Deermatolog gg", pacijentIP: "PAC PAC", id: 1, tekst: "BLABLA"},
-
-    ],
     selektovanaZalba: {},
     selektovanaZalbaID: -1,
     odgovor: "",
   }),
 
-  mounted() {
-    this.loadZalbeNaDermatologe();
+  computed: {
+    ...mapGetters({
+      neobradjene: "zalbe/getNeobradjeneDermatolog",
+    })
+  },
+
+  async mounted() {
+    this.getNeobradjeneDermatologAction();
   },
 
   methods: {
-    loadZalbeNaDermatologe(){
-
-    },
+    ...mapActions({
+      getNeobradjeneDermatologAction: "zalbe/getNeobradjeneDermatologAction",
+      sendOdgovorDermatologAction: "zalbe/sendOdgovorDermatologAction"
+    }),
 
     selekcija(id){
       this.selektovanaZalbaID = id;
-      alert("SELEKTOVAN"+id);
     },
 
     odgovoriNaZalbu(){
-      alert("ODGOVARAM");
+      this.sendOdgovorDermatologAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+      alert("Uspesan odgovor");
     },
 
   }

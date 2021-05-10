@@ -6,7 +6,7 @@ import com.backend.springboot.domain.ZalbaNaApoteku;
 
 public class ZalbaNaApotekuDTO {
 	private Integer id, pacijentId, apotekaId;
-	private String tekst, odgovor;
+	private String tekst, odgovor, apotekaNaziv, pacijentIP;
 	private Boolean obradjena;
 	
 	
@@ -23,6 +23,8 @@ public class ZalbaNaApotekuDTO {
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
+		this.apotekaNaziv = "";
+		this.pacijentIP = "";
 	}
 
 	public ZalbaNaApotekuDTO(ZalbaNaApoteku z) {
@@ -33,6 +35,25 @@ public class ZalbaNaApotekuDTO {
 		this.pacijentId = z.getPacijent().getId();
 		this.apotekaId = z.getApoteka().getId();
 		this.odgovor = z.getOdgovor();
+		this.apotekaNaziv = z.getApoteka().getNaziv();
+		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
+	}
+	
+
+	public String getApotekaNaziv() {
+		return apotekaNaziv;
+	}
+
+	public void setApotekaNaziv(String apotekaNaziv) {
+		this.apotekaNaziv = apotekaNaziv;
+	}
+
+	public String getPacijentIP() {
+		return pacijentIP;
+	}
+
+	public void setPacijentIP(String pacijentIP) {
+		this.pacijentIP = pacijentIP;
 	}
 
 	public String getOdgovor() {

@@ -2,7 +2,7 @@ import Vue from "vue";
 
 const initStanje = () => {
   return {
-    zalbeNaApoteke: [],
+    //zalbeNaApoteke: [],
     moguciFarmaceuti: [],
     moguciDermatolozi: [],
     moguceApoteke: [],
@@ -15,22 +15,25 @@ const initStanje = () => {
 const state = initStanje();
 
 const getters = {
-  getZalbeNaApoteke: state => state.zalbeNaApoteke,
+  //getZalbeNaApoteke: state => state.zalbeNaApoteke,
   getMoguciFarmaceuti: state => state.moguciFarmaceuti,
   getMoguciDermatolozi: state => state.moguciDermatolozi,
   getMoguceApoteke: state => state.moguceApoteke,
   getNeobradjeneApoteka: state => state.neobradjeneApoteka,
+  getNeobradjeneFarmaceut: state => state.neobradjeneFarmaceut,
+  getNeobradjeneDermatolog: state => state.neobradjeneDermatolog
 }
 
 const actions = {
-  async getZalbeNaApotekeAction({commit}){
-    try{
-      const { data : zalbe } = await Vue.axios.get("/zalbe/apoteka");
-      commit("setZalbeNaApoteke", zalbe);
-    } catch(error){
-      alert("Greska pri dobavljanju zalbi za Apoteke");
-    }
-  },
+
+  // async getZalbeNaApotekeAction({commit}){
+  //   try{
+  //     const { data : zalbe } = await Vue.axios.get("/zalbe/apoteka");
+  //     commit("setZalbeNaApoteke", zalbe);
+  //   } catch(error){
+  //     alert("Greska pri dobavljanju zalbi za Apoteke");
+  //   }
+  // },
 
   async addZalbaNaApotekuAction({commit}, zalbaDTO){
     try{
@@ -101,22 +104,52 @@ const actions = {
 
     commit("setMoguceFarmaceute", response.data);
   },
-
+//METODE ZA GETOVANJE ZALBI ZA ADMINA
   async getNeobradjeneApotekaAction({commit}){
-    const response = await Vue.axios.get("/apoteka/neobradjene");
+    const response = await Vue.axios.get("/zalbe/apoteka/neobradjene");
 
     console.log("NEOBRADJENE APOTEKA")
     console.log(response)
     commit("setNeobradjeneApoteka", response.data)
   },
 
-  async sendOdgovorApotekaAction({commit}, odg){
-    const response = await Vue.axios.put("/apoteka/{id}", odg);
+  async getNeobradjeneFarmaceutAction({commit}){
+    const response = await Vue.axios.get("/zalbe/farmaceut/neobradjene")
 
-    console.log("ODGOVOR")
+    commit("setNeobradjeneFarmaceut", response.data)
+  },
+
+  async getNeobradjeneDermatologAction({commit}){
+    const response = await Vue.axios.get("/zalbe/dermatolog/neobradjene")
+
+    commit("setNeobradjeneDermatolog", response.data)
+  },
+
+
+  async sendOdgovorApotekaAction({commit}, {id, odg}){
+    const response = await Vue.axios.put("/zalbe/apoteka/"+ id, odg);
+
+
+    console.log("ODGOVOR");
     console.log(response);
-    console.log(commit);
-  }
+    commit("setObradjenaZaApoteku", id);
+  },
+
+  async sendOdgovorFarmaceutAction({commit}, {id, odg}){
+    const response = await Vue.axios.put("zalbe/farmaceut/"+id, odg);
+
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaFarmaceuta", id);
+  },
+
+  async sendOdgovorDermatologAction({commit}, {id, odg}){
+    const response = await Vue.axios.put("zalbe/dermatolog/"+id, odg);
+
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaDermatologa", id);
+  },
 
 }
 
@@ -125,6 +158,29 @@ const mutations = {
   resetState(state){
     state = initStanje();
   },
+
+  setObradjenaZaApoteku(state, id){
+    const index = state.neobradjeneApoteka.findIndex((l) => l.id === id);
+    state.neobradjeneApoteka.splice(index,1);
+    //za svaku zalbu, ako je id takav, njenbool je true
+    // var i;
+    // for (i = 0; i < state.neobradjeneApoteka.length; i++) {
+    //   if(state.neobradjeneApoteka[i].id == id){
+    //     state.neobradjeneApoteka[i].obradjena = true;           //ako bude trebao pregled svih zalbi, onda treba pri odgovaranju ovo odraditi
+    //   }
+    // }
+  },
+
+  setObradjenaZaFarmaceuta(state, id){
+    const index = state.neobradjeneFarmaceut.findIndex((l) => l.id === id);
+    state.neobradjeneFarmaceut.splice(index,1);
+  },
+
+  setObradjenaZaDermatologa(state, id){
+    const index = state.neobradjeneDermatolog.findIndex((l) => l.id === id);
+    state.neobradjeneDermatolog.splice(index,1);
+  },
+
   setNeobradjeneApoteka(state, zalbe){
     state.neobradjeneApoteka = zalbe;
   },

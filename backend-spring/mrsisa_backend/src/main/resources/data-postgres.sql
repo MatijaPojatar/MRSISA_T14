@@ -131,3 +131,12 @@ insert into osoba_role (osoba_id, role_id) values (10, 4);
 insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,4);
+
+insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena, odgovor) values(2, 1, 'Kao pacijent id=2 zalim se na apoteku id=1',true, 'Kao admin odgovaram na zalbu pacijenta 2 na apoteku 1');
+insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena) values(2, 1, 'Kao pacijent id=2 po drugi put se zalim na apoteku id=1',false);
+
+insert into zalba_dermatolog(pacijent_id,dermatolog_id, tekst, obradjena) values (2, 3, 'Kao pacijent id=2 zalim se na dermatologa id=3',false);
+
+insert into zalba_farmaceut(pacijent_id,farmaceut_id, tekst, obradjena) values (2,6, 'Kao pacijent id=2 zalim se na farmaceuta id=6',false);
+
+

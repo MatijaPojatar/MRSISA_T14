@@ -4,7 +4,7 @@ import com.backend.springboot.domain.ZalbaNaDermatologa;
 
 public class ZalbaNaDermatologaDTO {
 	private Integer id, pacijentId, dermatologId;
-	private String tekst, odgovor;
+	private String tekst, odgovor, dermatologIP, pacijentIP;
 	private Boolean obradjena;
 
 
@@ -21,6 +21,8 @@ public class ZalbaNaDermatologaDTO {
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
+		this.dermatologIP = "";
+		this.pacijentIP = "";
 	}
 	
 	public ZalbaNaDermatologaDTO(ZalbaNaDermatologa z) {
@@ -31,9 +33,27 @@ public class ZalbaNaDermatologaDTO {
 		this.pacijentId = z.getPacijent().getId();
 		this.dermatologId = z.getDermatolog().getId();
 		this.odgovor = z.getOdgovor();
+		this.dermatologIP = z.getDermatolog().getIme() + " " + z.getDermatolog().getPrezime();
+		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
 	}
 	
 	
+	public String getDermatologIP() {
+		return dermatologIP;
+	}
+
+	public void setDermatologIP(String dermatologIP) {
+		this.dermatologIP = dermatologIP;
+	}
+
+	public String getPacijentIP() {
+		return pacijentIP;
+	}
+
+	public void setPacijentIP(String pacijentIP) {
+		this.pacijentIP = pacijentIP;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -2,7 +2,7 @@
   <v-row>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="zalba in zalbe"
+        v-for="zalba in neobradjene"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -51,35 +51,39 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 
 
 export default {
   data: () => ({
-    zalbe: [
-      {farmaceutIP: "FARM DARM", pacijentIP: "PAC PAC", id: 1, tekst: "BLABLA"},
-
-    ],
     selektovanaZalba: {},
     selektovanaZalbaID: -1,
     odgovor: "",
   }),
 
-  mounted() {
-    this.loadZalbeNaFarmaceute();
+  computed: {
+    ...mapGetters({
+      neobradjene: "zalbe/getNeobradjeneFarmaceut"
+    })
+  },
+
+  async mounted() {
+    this.getNeobradjeneFarmaceutAction();
   },
 
   methods: {
-    loadZalbeNaFarmaceute(){
-
-    },
+    ...mapActions({
+      getNeobradjeneFarmaceutAction: "zalbe/getNeobradjeneFarmaceutAction",
+      sendOdgovorFarmaceutAction: "zalbe/sendOdgovorFarmaceutAction"
+    }),
 
     selekcija(id){
       this.selektovanaZalbaID = id;
-      alert("SELEKTOVAN"+id);
     },
 
     odgovoriNaZalbu(){
-      alert("ODGOVARAM");
+      this.sendOdgovorFarmaceutAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+      alert("Uspesan odgovor");
     },
 
   }

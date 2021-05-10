@@ -15,11 +15,10 @@ public class ZalbaNaDermatologaService {
 	@Autowired
 	private ZalbaNaDermatologaRepository zalbeRep;
 	
-	public void odgovoriNaZalbu(ZalbaNaDermatologa zalba, String odgovor) {
+	public ZalbaNaDermatologa odgovoriNaZalbu(ZalbaNaDermatologa zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
 		zalba.setObradjena(true);
-		zalbeRep.save(zalba);
-		return;
+		return zalbeRep.save(zalba);
 	}
 	
 	public ZalbaNaDermatologa dodajZalbu(ZalbaNaDermatologa zalba) {

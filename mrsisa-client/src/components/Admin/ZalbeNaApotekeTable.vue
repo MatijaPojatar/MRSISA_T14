@@ -2,7 +2,7 @@
   <v-row>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="zalba in zalbe"
+        v-for="zalba in neobradjene"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -29,17 +29,17 @@
 
           <v-textarea
           outlined
-          v-model="odgovor">
+          v-model="odgovor"
+          label="Odgovor">
           </v-textarea>
 
-          <br/>
-            <v-btn
-            dark
-            color="green"
-            @click="odgovoriNaZalbu"
-            >
-              Odgovori
-            </v-btn>
+          <v-btn
+          dark
+          color="green"
+          @click="odgovoriNaZalbu"
+          >
+            Odgovori
+          </v-btn>
 
         </v-expansion-panel-content>
 
@@ -51,35 +51,39 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 
 
 export default {
   data: () => ({
-    zalbe: [
-      {apotekaNaziv: "Apotekk", pacijentIP: "PAC PAC", id: 1, tekst: "BLABLA"},
-
-    ],
     selektovanaZalba: {},
     selektovanaZalbaID: -1,
     odgovor: "",
   }),
 
-  mounted() {
-    this.loadZalbeNaApoteke();
+  computed: {
+    ...mapGetters({
+      neobradjene: "zalbe/getNeobradjeneApoteka",
+    })
+  },
+
+   async mounted() {
+    this.getNeobradjeneApotekaAction();
   },
 
   methods: {
-    loadZalbeNaApoteke(){
-
-    },
+    ...mapActions({
+      getNeobradjeneApotekaAction: "zalbe/getNeobradjeneApotekaAction",
+      sendOdgovorApotekaAction: "zalbe/sendOdgovorApotekaAction"
+    }),
 
     selekcija(id){
       this.selektovanaZalbaID = id;
-      alert("SELEKTOVAN"+id);
     },
 
     odgovoriNaZalbu(){
-      alert("ODGOVARAM");
+      this.sendOdgovorApotekaAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+      alert("Uspesan odgovor");
     },
 
   }

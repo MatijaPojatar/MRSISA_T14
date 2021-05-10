@@ -90,10 +90,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/apoteka/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaApoteku odabrana = servisZaApoteke.findOne(id);
-		servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaApoteku zalba = servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
+		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/farmaceut")
@@ -131,10 +131,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/farmaceut/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
-		servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
+		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/dermatolog")
@@ -172,10 +172,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/dermatolog/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
-		servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
+		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
 }

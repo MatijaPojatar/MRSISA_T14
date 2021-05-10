@@ -16,11 +16,10 @@ public class ZalbaNaFarmaceutaService {
 	@Autowired
 	private ZalbaNaFarmaceutaRepository zalbeRep; 
 	
-	public void odgovoriNaZalbu(ZalbaNaFarmaceuta zalba, String odgovor) {
+	public ZalbaNaFarmaceuta odgovoriNaZalbu(ZalbaNaFarmaceuta zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
 		zalba.setObradjena(true);
-		zalbeRep.save(zalba);
-		return;
+		return zalbeRep.save(zalba);
 	}
 	
 	public ZalbaNaFarmaceuta dodajZalbu(ZalbaNaFarmaceuta zalba) {
