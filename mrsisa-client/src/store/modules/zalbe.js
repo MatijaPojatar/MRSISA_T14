@@ -21,7 +21,11 @@ const getters = {
   getMoguceApoteke: state => state.moguceApoteke,
   getNeobradjeneApoteka: state => state.neobradjeneApoteka,
   getNeobradjeneFarmaceut: state => state.neobradjeneFarmaceut,
-  getNeobradjeneDermatolog: state => state.neobradjeneDermatolog
+  getNeobradjeneDermatolog: state => state.neobradjeneDermatolog,
+  getNemaZalbiZaApoteke: state => state.neobradjeneApoteka.length == 0,
+  getNemaZalbiZaFarmaceuta: state => state.neobradjeneFarmaceut.length == 0,
+  getNemaZalbizaDermatologa: state => state.neobradjeneDermatolog.length == 0,
+
 }
 
 const actions = {
@@ -150,6 +154,7 @@ const actions = {
     console.log(response);
     commit("setObradjenaZaDermatologa", id);
   },
+
 
 }
 

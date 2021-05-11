@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.domain.ZalbaNaApoteku;
+import com.backend.springboot.domain.ZalbaNaDermatologa;
+import com.backend.springboot.domain.ZalbaNaFarmaceuta;
 
 @Service
 public class EmailService {
@@ -46,6 +49,48 @@ public class EmailService {
 				   + "\nFarmaceut: dr. " + savetovanje.getFarmaceut().getPrezime()
 				   + "\nTermin: " + savetovanje.getPocetak().format(formatter) + " - " + savetovanje.getKraj().format(formatter)
 				   + "\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void noviOdgovorNaZalbuNaApoteku(ZalbaNaApoteku zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(zalba.getPacijent().getMail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odgovor na žalbu");
+		mail.setText("Poštovani \n\nObaveštavamo Vas da je vaša žalba pregledana i sledi odgovor koji smo Vam pripremili:\n"+
+						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
+						"\nApoteka: "+ zalba.getApoteka().getNaziv() +
+						"\nTekst žalbe: " + zalba.getTekst() +
+						"\n\nOdgovor: " + zalba.getOdgovor()+
+						"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void noviOdgovorNaZalbuNaFarmaceuta(ZalbaNaFarmaceuta zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(zalba.getPacijent().getMail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odgovor na žalbu");
+		mail.setText("Poštovani \n\nObaveštavamo Vas da je vaša žalba pregledana i sledi odgovor koji smo Vam pripremili:\n"+
+						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
+						"\nFarmaceut: "+ zalba.getFarmaceut().getIme() + " " + zalba.getFarmaceut().getPrezime()+ 
+						"\nTekst žalbe: " + zalba.getTekst() +
+						"\n\nOdgovor: " + zalba.getOdgovor()+
+						"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void noviOdgovorNaZalbuNaDermatologa(ZalbaNaDermatologa zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(zalba.getPacijent().getMail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odgovor na žalbu");
+		mail.setText("Poštovani \n\nObaveštavamo Vas da je vaša žalba pregledana i sledi odgovor koji smo Vam pripremili:\n"+
+						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
+						"\nDermatolog: "+ zalba.getDermatolog().getIme() + " " + zalba.getDermatolog().getPrezime() + 
+						"\nTekst žalbe: " + zalba.getTekst() +
+						"\n\nOdgovor: " + zalba.getOdgovor()+
+						"\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}
 }

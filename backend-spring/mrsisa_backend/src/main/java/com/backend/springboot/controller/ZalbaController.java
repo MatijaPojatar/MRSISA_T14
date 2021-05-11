@@ -24,6 +24,7 @@ import com.backend.springboot.dto.ZalbaNaFarmaceutaDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.ZalbaNaApotekuService;
 import com.backend.springboot.service.ZalbaNaDermatologaService;
@@ -54,6 +55,10 @@ public class ZalbaController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private EmailService emailService;
+	
 
 	@GetMapping("/apoteka")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNA() {
@@ -93,6 +98,13 @@ public class ZalbaController {
 	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaApoteku odabrana = servisZaApoteke.findOne(id);
 		ZalbaNaApoteku zalba = servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaApoteku(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
 		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
 	}
 
@@ -134,6 +146,13 @@ public class ZalbaController {
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
 		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
@@ -175,6 +194,13 @@ public class ZalbaController {
 	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
 		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
 		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 

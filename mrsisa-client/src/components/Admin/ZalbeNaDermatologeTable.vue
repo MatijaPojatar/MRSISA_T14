@@ -1,5 +1,10 @@
 <template>
   <v-row>
+    <div v-if="nemaZalbi">
+      <v-card>
+        <v-card-title>Trenutno nema žalbi na dermatologe</v-card-title>
+      </v-card>
+    </div>
     <v-expansion-panels>
       <v-expansion-panel
         v-for="zalba in neobradjene"
@@ -64,7 +69,8 @@ export default {
   computed: {
     ...mapGetters({
       neobradjene: "zalbe/getNeobradjeneDermatolog",
-    })
+      nemaZalbi: "zalbe/getNemaZalbizaDermatologa"
+    }),
   },
 
   async mounted() {
