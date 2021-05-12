@@ -139,4 +139,6 @@ insert into zalba_dermatolog(pacijent_id,dermatolog_id, tekst, obradjena) values
 
 insert into zalba_farmaceut(pacijent_id,farmaceut_id, tekst, obradjena) values (2,6, 'Kao pacijent id=2 zalim se na farmaceuta id=6',false);
 
-
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa dobavljaca','0651236680','1995-12-02','Srbija','Novi Sad','Mika','Mikic','imenkoprezimic94@gmaill.com','$2a$10$OLvOIAY5./MlO73z7NYLyeBRN6.vPmNo2R0s3sov86e3mpOkOMqxO',0,true, false, true); --sifra je 94
+insert into dobavljaci(id, naziv_preduzeca) values (11, 'MExpress');
+insert into osoba_role (osoba_id, role_id) values (11, 6);
