@@ -132,3 +132,8 @@ insert into osoba_role (osoba_id, role_id) values (10, 4);
 insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,4);
+
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-05-12 16:00','2021-05-12 17:00',1,2);
+insert into savetovanja (id,farmaceut_id) values (13,1);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-05-14 12:00','2021-05-14 13:00',1,2);
+insert into pregledi (id,dermatolog_id,cena) values (14,3,3000);

@@ -220,7 +220,7 @@
         <v-card-title class="headline">
           Greška
         </v-card-title>
-        <v-card-text>Nemoguće je izvršiti ovu akciju van termina.</v-card-text>
+        <v-card-text>Nemoguće je otkazati termin koji počinje za manje od 24h.</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -488,12 +488,18 @@
           this.selectedOpen=false
       },
       async cancelPregled(){
-          if(this.selectedEvent.isPregled) {
-            await axios.delete(`http://localhost:8080/pregled/${this.selectedEvent.id}`)
+          var oneDay = new Date().getTime() + (24 * 60 * 60 * 1000)
+          if (oneDay > Date.parse(this.selectedEvent.start)) {
+            this.dialog = true
           } else {
-            await axios.delete(`http://localhost:8080/savetovanje/${this.selectedEvent.id}`)
+            if(this.selectedEvent.isPregled) {
+              await axios.delete(`http://localhost:8080/pregled/${this.selectedEvent.id}`)
+            } else {
+              await axios.delete(`http://localhost:8080/savetovanje/${this.selectedEvent.id}`)
+            }
+            this.updateRangePacijentAxios()
           }
-          this.updateRangePacijentAxios()
+          this.selectedOpen=false
       },
       async reportMiss(){
           let now = new Date();

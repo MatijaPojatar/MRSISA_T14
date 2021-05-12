@@ -3,7 +3,6 @@ package com.backend.springboot.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,21 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
-import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.DermatologDTO;
-import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
-import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.EmailService;
@@ -102,8 +97,9 @@ public class PregledController {
 		System.out.println(pregledi.size());
 
 		List<PregledDTO> preglediDTO = new ArrayList<>();
-		for (Pregled s : pregledi) {
-			preglediDTO.add(new PregledDTO(s));
+		for (Pregled p : pregledi) {
+			if (LocalDateTime.now().compareTo(p.getPocetak()) <= 0)
+				preglediDTO.add(new PregledDTO(p));
 		}
 
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);

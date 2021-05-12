@@ -170,7 +170,8 @@ public class SavetovanjeController {
 
 		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
 		for (Savetovanje s : savetovanja) {
-			savetovanjaDTO.add(new SavetovanjeDTO(s));
+			if (LocalDateTime.now().compareTo(s.getPocetak()) <= 0)
+				savetovanjaDTO.add(new SavetovanjeDTO(s));
 		}
 
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
