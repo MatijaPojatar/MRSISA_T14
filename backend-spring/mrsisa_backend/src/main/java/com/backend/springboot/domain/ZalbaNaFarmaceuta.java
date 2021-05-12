@@ -28,11 +28,11 @@ public class ZalbaNaFarmaceuta {
 	private Boolean obradjena;
 	
 	//jedan pac vise zalbi
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
-	//apoteka
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Farmaceut farmaceut;
 
 	public ZalbaNaFarmaceuta() {

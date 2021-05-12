@@ -30,8 +30,8 @@ insert into role (name) values ('ROLE_DOBAVLJAC');
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 1','0651234567','1990-01-01','Srbija','Novi Sad','Pera','Peric','perap@gmail.com','$2a$10$m45abtHydLkNASwq61g8r.NFJjn/UsRZIUFQVshzd1Ntr69c7ISx2',0,true, false, true); --sifra je pera121
 insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (1,'16:00','08:00',1);
 insert into osoba_role (osoba_id, role_id) values (1, 5);	--role farmaceut
-
-insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','markom@gmail.com','$2a$10$tChEqmOzl.2w6gMny6UXe.iH/Q6mb/zvoNLfxCXwVn5tu5Bxhpxhi',0,true, false, true); -- sifra je mare121
+--markom
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','sovara.sovic@gmail.com','$2a$10$tChEqmOzl.2w6gMny6UXe.iH/Q6mb/zvoNLfxCXwVn5tu5Bxhpxhi',0,true, false, true); -- sifra je mare121
 insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 insert into osoba_role (osoba_id, role_id) values (2, 1); --role pacijent
 
@@ -137,3 +137,13 @@ insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) value
 insert into savetovanja (id,farmaceut_id) values (13,1);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-05-14 12:00','2021-05-14 13:00',1,2);
 insert into pregledi (id,dermatolog_id,cena) values (14,3,3000);
+insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena, odgovor) values(2, 1, 'Kao pacijent id=2 zalim se na apoteku id=1',true, 'Kao admin odgovaram na zalbu pacijenta 2 na apoteku 1');
+insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena) values(2, 1, 'Kao pacijent id=2 po drugi put se zalim na apoteku id=1',false);
+
+insert into zalba_dermatolog(pacijent_id,dermatolog_id, tekst, obradjena) values (2, 3, 'Kao pacijent id=2 zalim se na dermatologa id=3',false);
+
+insert into zalba_farmaceut(pacijent_id,farmaceut_id, tekst, obradjena) values (2,6, 'Kao pacijent id=2 zalim se na farmaceuta id=6',false);
+
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa dobavljaca','0651236680','1995-12-02','Srbija','Novi Sad','Mika','Mikic','imenkoprezimic94@gmaill.com','$2a$10$OLvOIAY5./MlO73z7NYLyeBRN6.vPmNo2R0s3sov86e3mpOkOMqxO',0,true, false, true); --sifra je 94
+insert into dobavljaci(id, naziv_preduzeca) values (11, 'MExpress');
+insert into osoba_role (osoba_id, role_id) values (11, 6);

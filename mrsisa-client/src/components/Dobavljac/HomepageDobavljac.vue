@@ -58,42 +58,34 @@
                 </div></v-list-item-title>
           </v-list-item>
           
-          <v-list-item link @click="kreirajLek">
+          <v-list-item link @click="kreirajPonudu">
+            <v-list-item-icon>
+              <v-icon>mdi-note-plus</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Kreiraj Ponudu
+                </div></v-list-item-title>
+          </v-list-item>
+
+          <v-list-item link @click="pregledPonuda">
+            <v-list-item-icon>
+              <v-icon>mdi-note-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Pregled ponuda
+                </div></v-list-item-title>
+          </v-list-item>
+
+
+          <v-list-item link @click="lekoviNaStanju">
             <v-list-item-icon>
               <v-icon>mdi-pill</v-icon>
             </v-list-item-icon>
             <v-list-item-title><div class="wh">
-                    Unesi lek
+                  Magacin lekova
                 </div></v-list-item-title>
           </v-list-item>
-
-          <v-list-item link @click="registrujApoteku">
-            <v-list-item-icon>
-              <v-icon>mdi-home</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title><div class="wh">
-                    Registruj apoteku
-                </div></v-list-item-title>
-          </v-list-item>
-
-          <v-list-item link @click="registrujZaposlenog">
-            <v-list-item-icon>
-              <v-icon>mdi-stethoscope</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title><div class="wh">
-                    Registruj zaposlenog
-                </div></v-list-item-title>
-          </v-list-item>
-
-          <v-list-item link @click="odgovoriNaZalbe">
-            <v-list-item-icon>
-              <v-icon>mdi-alert-circle-check</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title><div class="wh">
-                    Odgovori na zalbe
-                </div></v-list-item-title>
-          </v-list-item>
-        </v-list>
+         </v-list>
 
         <template v-slot:append>
         <div class="pa-2">
@@ -117,22 +109,17 @@
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
       </v-container>
       
-      <v-containter fluid v-if="showKreirajLek" :style="{width:'70vh'}">
-        <KreirajLek/>
+      <v-containter fluid v-if="showKreirajPonudu" :style="{width:'70vh'}">
+        <KreirajPonudu/>
       </v-containter>
 
-      <v-container fluid v-if="showRegApoteku" :style="{width:'70vh'}">
-        <RegApoteka/>
+      <v-container fluid v-if="showPregledPonuda" :style="{width:'70vh'}">
+        <PregledPonuda/>
       </v-container>
 
-      <v-container fluid v-if="showRegZaposlenog" :style="{width:'70vh'}">
-        <RegZaposlenog/>
+      <v-container fluid v-if="showLekoviNaStanju" :style="{width:'70vh'}">
+        <LekoviNaStanju/>
       </v-container>
-      
-      <v-container fluid v-if="showZalbeOdgovor" :style="{width:'70vh'}">
-        <ZalbeOdgovor/>
-      </v-container>
-
 
     </v-main>
       </v-app>
@@ -142,10 +129,9 @@
 
 import AccountView from "../AccountView";
 import PasswordSwitch from "../PasswordSwitch";
-import KreirajLek from "./KreirajLek";
-import RegApoteka from "./RegApoteka";
-import RegZaposlenog from "./RegZaposlenog";
-import ZalbeOdgovor from "./ZalbeOdgovor";
+import KreirajPonudu from "./KreirajPonudu";
+import LekoviNaStanju from "./LekoviNaStanju";
+import PregledPonuda from "./PregledPonuda";
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -154,21 +140,18 @@ export default {
     components:{
       AccountView,
       PasswordSwitch,
-      KreirajLek,
-      RegApoteka,
-      RegZaposlenog,
-      ZalbeOdgovor
+      KreirajPonudu,
+      LekoviNaStanju,
+      PregledPonuda
     },
     data: () => ({
     showAccount: false,
     showPassword: false,
-    showKreirajLek: false,
-    showRegApoteku: false,
-    showRegZaposlenog: false,
-    showZalbeOdgovor: false,
+    showKreirajPonudu: false,
+    showPregledPonuda: false,
+    showLekoviNaStanju: false,
   }),
   mounted(){
-    console.log(window.location.pathname) //?
  
     
   },
@@ -186,56 +169,41 @@ export default {
     accountView(){
       this.showAccount=true;
       this.showPassword=false;
-      this.showKreirajLek = false;
-      this.showRegApoteku = false;
-      this.showRegZaposlenog = false;
-      this.showZalbeOdgovor = false;
+      this.showKreirajPonudu = false;
+      this.showPregledPonuda = false;
+      this.showLekoviNaStanju = false;
     },
 
     changePassword(){
       this.showAccount=false;
       this.showPassword=true;
-      this.showKreirajLek = false;
-      this.showRegApoteku = false;
-      this.showRegZaposlenog = false;
-      this.showZalbeOdgovor = false;
-        
+      this.showKreirajPonudu = false;
+      this.showPregledPonuda = false;
+      this.showLekoviNaStanju = false;
     },
 
-    kreirajLek() {
+    kreirajPonudu() {
       this.showAccount=false;
       this.showPassword=false;
-      this.showKreirajLek = true;
-      this.showRegApoteku = false;
-      this.showRegZaposlenog = false;
-      this.showZalbeOdgovor = false;
+      this.showKreirajPonudu = true;
+      this.showPregledPonuda = false;
+      this.showLekoviNaStanju = false;
     },
 
-    registrujApoteku(){
+    pregledPonuda(){
       this.showAccount=false;
       this.showPassword=false;
-      this.showKreirajLek = false;
-      this.showRegApoteku = true;
-      this.showRegZaposlenog = false;
-      this.showZalbeOdgovor = false;
+      this.showKreirajPonudu = false;
+      this.showPregledPonuda = true;
+      this.showLekoviNaStanju = false;
     },
 
-    registrujZaposlenog(){
+    lekoviNaStanju(){
       this.showAccount=false;
       this.showPassword=false;
-      this.showKreirajLek = false;
-      this.showRegApoteku = false;
-      this.showRegZaposlenog = true;
-      this.showZalbeOdgovor = false;
-    },
-
-    odgovoriNaZalbe(){
-      this.showAccount=false;
-      this.showPassword=false;
-      this.showKreirajLek = false;
-      this.showRegApoteku = false;
-      this.showRegZaposlenog = false;
-      this.showZalbeOdgovor = true;
+      this.showKreirajPonudu = false;
+      this.showPregledPonuda = false;
+      this.showLekoviNaStanju = true;
     },
 
     onLogout(){

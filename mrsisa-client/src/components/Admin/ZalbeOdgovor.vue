@@ -1,12 +1,9 @@
 <template>
   <div>
-    <h3>Zalbe na Apoteke</h3>
     <ZalbeNaApotekeTable></ZalbeNaApotekeTable>
 
-    <h3>Zalbe na Farmaceute</h3>
     <ZalbeNaFarmaceuteTable></ZalbeNaFarmaceuteTable>
 
-    <h3>Zalbe na Dermatologe</h3>
     <ZalbeNaDermatologeTable></ZalbeNaDermatologeTable>
   </div>
 </template>

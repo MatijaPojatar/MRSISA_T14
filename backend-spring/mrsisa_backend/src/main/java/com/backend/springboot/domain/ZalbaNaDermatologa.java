@@ -30,12 +30,12 @@ public class ZalbaNaDermatologa {
 	private Boolean obradjena;
 	
 	//jedan pac vise zalbi
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
 	
 	//dermatolog
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Dermatolog dermatolog;
 
 	

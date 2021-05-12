@@ -24,6 +24,7 @@ import com.backend.springboot.dto.ZalbaNaFarmaceutaDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.ZalbaNaApotekuService;
 import com.backend.springboot.service.ZalbaNaDermatologaService;
@@ -54,7 +55,18 @@ public class ZalbaController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private EmailService emailService;
+	
 
+	@GetMapping("/apoteka/{id}")
+	public ResponseEntity<ZalbaNaApotekuDTO> getZNAById(@PathVariable Integer id){
+		ZalbaNaApoteku zalba = servisZaApoteke.findOne(id);
+		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/apoteka")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNA() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAll();
@@ -78,6 +90,18 @@ public class ZalbaController {
 
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
+	
+	@GetMapping("/apoteka/obradjene")
+	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAObradjene() {
+		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllObradjene();
+
+		List<ZalbaNaApotekuDTO> dtos = new ArrayList<ZalbaNaApotekuDTO>();
+		for (ZalbaNaApoteku z : zalbe) {
+			dtos.add(new ZalbaNaApotekuDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
+	}
 
 	@PostMapping("/apoteka")
 	public ResponseEntity<ZalbaNaApotekuDTO> kreirajZalbuNaApoteku(@RequestBody ZalbaNaApotekuDTO dto) {
@@ -90,10 +114,17 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/apoteka/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaApoteku odabrana = servisZaApoteke.findOne(id);
-		servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaApoteku zalba = servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaApoteku(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/farmaceut")
@@ -106,6 +137,12 @@ public class ZalbaController {
 		}
 
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/farmaceut/{id}")
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> getZNFById(@PathVariable Integer id){
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.findOne(id);
+		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/farmaceut/neobradjene")
@@ -131,10 +168,17 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/farmaceut/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
-		servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/dermatolog")
@@ -147,6 +191,12 @@ public class ZalbaController {
 		}
 
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatolog/{id}")
+	public ResponseEntity<ZalbaNaDermatologaDTO> getZNDById(@PathVariable Integer id){
+		ZalbaNaDermatologa zalba = servisZaDermatologe.findOne(id);
+		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/dermatolog/neobradjene")
@@ -172,10 +222,17 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/dermatolog/{id}")
-	public ResponseEntity<String> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
 		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
-		servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
-		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
 }

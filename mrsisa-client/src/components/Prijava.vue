@@ -104,6 +104,9 @@ export default {
           case "ROLE_ADMIN_APOTEKE":
             this.$router.push("/adminApoteke");
             break;
+          case "ROLE_DOBAVLJAC":
+            this.$router.push("/dobavljac");
+            break;
         }
       } catch (error) {
         alert("Greska pri prijavi");

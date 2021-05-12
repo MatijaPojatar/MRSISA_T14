@@ -15,11 +15,10 @@ public class ZalbaNaApotekuService {
 	private ZalbaNaApotekuRepository zalbeRep;
 	
 	
-	public void odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor) {
+	public ZalbaNaApoteku odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor) {
 		zalba.setOdgovor(odgovor);
 		zalba.setObradjena(true);
-		zalbeRep.save(zalba);
-		return;
+		return zalbeRep.save(zalba);
 	}
 	
 	public ZalbaNaApoteku dodajZalbu(ZalbaNaApoteku zalba) {
@@ -35,6 +34,10 @@ public class ZalbaNaApotekuService {
 	}
 	public List<ZalbaNaApoteku> findAllNeobradjene(){
 		return zalbeRep.findByObradjenaFalse();
+	}
+	
+	public List<ZalbaNaApoteku> findAllObradjene(){
+		return zalbeRep.findByObradjenaTrue();
 	}
 	
 }

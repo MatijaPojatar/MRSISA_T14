@@ -1,77 +1,126 @@
 <template>
-  <div>
-    <v-card>
-      <v-data-table
-      :items="zalbe"
-      :headers="headers"
+  <v-row>
+    <div v-if="nemaZalbi">
+      <v-card
+      flat
+      width="500">
+        <v-card-title>Trenutno nema žalbi na apoteke</v-card-title>
+      </v-card>
+    </div>
+    <v-expansion-panels>
+      <v-expansion-panel
+        v-for="zalba in neobradjene"
+        :key="zalba.id"
+        @click="selekcija(zalba.id)"
       >
-        <template v-slot:item.actions="{ item }">
-          <v-btn small @click="openZalbaDialog(item)">Otvori</v-btn>
-        </template>
-      </v-data-table>
-    </v-card>
 
-    <v-dialog v-model="zalbaDialog">
+        <v-expansion-panel-header>
+          Žalba na apoteku: {{zalba.apotekaNaziv}}
+        </v-expansion-panel-header>
+
+
+        <v-expansion-panel-content>
+          <div>
+            Naziv apoteke: {{zalba.apotekaNaziv}}
+          </div>
+          <v-divider/>
+          <div>
+            Autor žalbe: {{zalba.pacijentIP}}
+          </div>
+          <v-divider/>
+
+          <div>
+            Tekst: {{zalba.tekst}}
+          </div>
+          <v-divider/>
+
+          <v-textarea
+          outlined
+          v-model="odgovor"
+          label="Odgovor">
+          </v-textarea>
+
+          <v-btn
+          dark
+          color="green"
+          @click="odgovoriNaZalbu"
+          >
+            Odgovori
+          </v-btn>
+
+        </v-expansion-panel-content>
+
+
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-dialog
+      v-model="potvrda"
+      persistent
+      max-width="300"
+    >
       <v-card>
-        <v-card-title>Zalba na apoteku</v-card-title>
-
-        <v-card-text>
-          <v-textarea v-model="activeZalba.tekst" readonly></v-textarea>
-          <v-textarea v-model="activeZalba.odgovor"></v-textarea>
-        </v-card-text>
-
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Uspešno ste odgovorili na žalbu.</v-card-text>
         <v-card-actions>
-          <v-btn color="error" @click="closeZalbaDialog">Zatvori</v-btn>
-          <v-btn color="success" @click="sendOdgovor">Posalji</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPotvrda"
+          >
+            Ok
+          </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
-  </div>
+  </v-dialog>
+  </v-row>
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
+
 
 export default {
   data: () => ({
-    headers: [
-      { text: 'Apoteka', value: 'naziv' }
-    ],
-
-    zalbaDialog: false,
-    activeZalba: null
+    selektovanaZalba: {},
+    selektovanaZalbaID: -1,
+    odgovor: "",
+    potvrda: false,
   }),
 
-  async beforeMount() {
-    await this.getZalbeAction();
+  computed: {
+    ...mapGetters({
+      neobradjene: "zalbe/getNeobradjeneApoteka",
+      nemaZalbi: "zalbe/getNemaZalbiZaApoteke"
+    })
+  },
+
+   async mounted() {
+    this.getNeobradjeneApotekaAction();
   },
 
   methods: {
     ...mapActions({
-      getZalbeAction: "zalbe/getNeobradjeneApotekaAction",
-      sendOdgovorAction: "zalbe/sendOdgovorApotekaAction"
+      getNeobradjeneApotekaAction: "zalbe/getNeobradjeneApotekaAction",
+      sendOdgovorApotekaAction: "zalbe/sendOdgovorApotekaAction"
     }),
 
-    openZalbaDialog(item) {
-      this.activeZalba = item;
-      this.zalbaDialog = true;
+    selekcija(id){
+      this.selektovanaZalbaID = id;
     },
 
-    closeZalbaDialog() {
-      this.zalbaDialog = false;
+    odgovoriNaZalbu(){
+      this.sendOdgovorApotekaAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+      this.potvrda = true;
     },
 
-    async sendOdgovor() {
-      await this.sendOdgovorAction(this.activeZalba.odgovor);
-      alert("Uspesno ste odgovorili na zalbu");
+    endPotvrda(){
+      this.potvrda = false;
     }
-  },
-
-  computed: {
-    ...mapGetters({
-      zalbe: "zalbe/getNeobradjeneApoteka"
-    })
   }
+
 }
 </script>
 

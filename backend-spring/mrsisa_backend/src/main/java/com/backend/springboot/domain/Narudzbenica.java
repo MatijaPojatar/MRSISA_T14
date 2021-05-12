@@ -30,19 +30,33 @@ public class Narudzbenica {
 	
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<LekIzNarudzbenice> lekovi = new ArrayList<LekIzNarudzbenice>();
-	
-	//DODATI LISTU PONUDA
+
+	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Ponuda> ponude = new ArrayList<Ponuda>();
 	
 	public Narudzbenica() {
 	}
 
-	public Narudzbenica(int id, Date rok, Apoteka apoteka, List<LekIzNarudzbenice> lekovi) {
+	public Narudzbenica(Integer id, Date rok, Apoteka apoteka, List<LekIzNarudzbenice> lekovi, List<Ponuda> ponude) {
 		super();
 		this.id = id;
 		this.rok = rok;
 		this.apoteka = apoteka;
 		this.lekovi = lekovi;
+		this.ponude = ponude;
 	}
+
+	public List<Ponuda> getPonude() {
+		return ponude;
+	}
+
+
+
+	public void setPonude(List<Ponuda> ponude) {
+		this.ponude = ponude;
+	}
+
+
 
 	public Integer getId() {
 		return id;
