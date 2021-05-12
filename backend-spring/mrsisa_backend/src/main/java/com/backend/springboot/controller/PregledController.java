@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,6 +29,7 @@ import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
@@ -34,6 +37,7 @@ import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.EmailService;
@@ -65,6 +69,18 @@ public class PregledController {
 	@Autowired
 	private EmailService emailService;
 	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deletePregled(@PathVariable("id") int id) {
+		try {
+			service.deletePregled(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<PregledDTO>> getAll() {
 
@@ -77,6 +93,23 @@ public class PregledController {
 
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/pacijent/{id}")
+	public ResponseEntity<List<PregledDTO>> getAllForPacijent(@PathVariable Integer id) {		
+
+		List<Pregled> pregledi = service.findAllByPacijentId(id);
+		
+		System.out.println(pregledi.size());
+
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled s : pregledi) {
+			preglediDTO.add(new PregledDTO(s));
+		}
+
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
+	
+	
 	
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){

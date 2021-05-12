@@ -20,6 +20,10 @@ public class PregledService {
 	@Autowired
 	private PregledRepository pregledRep;
 	
+	public void deletePregled(int id) {
+		pregledRep.deleteById(id);
+	}
+	
 	public List<Pregled> findAllByPacijentId(Integer pacijentId) {
 		return pregledRep.findAllByPacijentId(pacijentId);
 	}

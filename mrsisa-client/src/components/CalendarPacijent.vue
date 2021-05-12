@@ -84,8 +84,12 @@
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
-          @change="preglediAxios(), savetovanjaAxios()" 
-        > <!-- TODO -->
+          @change="updateRangePacijentAxios()"
+        >
+         <!--
+          :first-interval= 8 
+          :interval-count= 12
+          -->
         <template v-slot:day-body="{ date, week }">
             <div
               class="v-current-time"
@@ -106,29 +110,29 @@
             flat
           >
             <v-toolbar
-              :color="'#1976D2'"
+              :color=" selectedEvent.pacijent ? selectedEvent.izvrsen ? 'grey': '#1976D2': 'green'"
               dark
             >
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <!--<v-spacer></v-spacer>
-              <v-btn icon @click="beginPregled" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen" >
+              <v-spacer></v-spacer>
+              <!-- <v-btn icon @click="beginPregled" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen" >
                 <v-icon>mdi-forward</v-icon>
               </v-btn>
               <v-btn icon @click="reportMiss" v-if="selectedEvent.pacijent && !selectedEvent.izvrsen">
                 <v-icon>mdi-account-cancel</v-icon>
-              </v-btn>
+              </v-btn> -->
               <v-btn icon @click="cancelPregled">
                 <v-icon>mdi-close-circle-outline</v-icon>
-              </v-btn>-->
+              </v-btn>
             </v-toolbar>
             <v-card-text>
               <div >Start: {{selectedEvent.start}}</div>
               <div >End: {{selectedEvent.end}}</div>
-              <div v-if="selectedEvent.pacijent">Pacijent: {{selectedEvent.pacijent}}
+              <!-- <div v-if="selectedEvent.pacijent">Pacijent: {{selectedEvent.pacijent}}
                   <v-btn icon @click="viewAccount">
                     <v-icon>mdi-account</v-icon>
                 </v-btn>
-              </div>
+              </div> -->
               <div v-if="selectedEvent.started">
                 <v-textarea
                   v-model="selectedEvent.izvestaj"
@@ -157,6 +161,38 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     {{selectedEvent.izvestaj}}
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    Preporučeni lekovi
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <template>
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                Naziv
+                              </th>
+                              <th class="text-left">
+                                Terapija
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="item in selectedPreporuceni"
+                              :key="item.id"
+                            >
+                              <td>{{ item.naziv }}</td>
+                              <td>{{ item.terapija }}</td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </template>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
                 </v-expansion-panels>
@@ -207,7 +243,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi"/>
+        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey" :pacijentId="selectedEvent.pacijent"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -231,7 +267,7 @@
           Termin je završen
         </v-card-title>
         <v-card-text>
-        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id"/>
+        <TerminPicker @termin-end="endTerminDialog" :izvestaj="selectedEvent.izvestaj" :apotekaId="selectedEvent.apoteka" :pacijentId="selectedEvent.pacijent" :farmaceut="farmaceut" :doktorId="user.id" :lekovi="preporuceniLekovi" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -245,6 +281,31 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog
+    v-model="pacijentDialog"
+    persistent
+    scrollable
+    retain-focus
+      max-width="960">
+      <v-card>
+        <v-card-title class="headline">
+          Nalog pacijenta
+        </v-card-title>
+        <v-card-text>
+        <AccountView :user="selectedPacijent" :farmaceut="farmaceut" :editable="false" :key="componentKey"/>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPacijentDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -252,15 +313,17 @@
   import axios from "axios";
   import ListLekoviV2 from "./ListLekoviV2"
   import TerminPicker from "./TerminPicker"
+  import AccountView from "./AccountView";
 
   export default {
     components:{
       ListLekoviV2,
       TerminPicker,
+      AccountView,
     },
       data: ()=>({
             focus: "",
-            type: "day",
+            type: "month",
             typeToLabel: {
                 month: "Month",
                 week: "Week",
@@ -274,17 +337,18 @@
             color: "#1976D2",
             currentlyEditing: null,
             selectedEvent: {},
+            selectedPreporuceni: [],
             selectedElement: null,
             selectedOpen: false,
-            selectedEventPreDialog: {},
-            selectedElementPreDialog: null,
-            selectedOpenPreDialog: false,
+            selectedPacijent: {},
             events: [],
             dialog: false,
             lekDialog: false,
             terminDialog: false,
+            pacijentDialog: false,
             ready: false,
             preporuceniLekovi: [],
+            componentKey:0,
       }),
       props: {
         farmaceut: Boolean,
@@ -299,6 +363,7 @@
         },
         },
       mounted(){
+          console.log(this.user);
           this.$refs.calendar.checkChange()
           this.ready = true
           this.scrollToTime()
@@ -324,8 +389,26 @@
         },
         showEvent ({ nativeEvent, event }) {
             const open = () => {
+              this.selectedPreporuceni=[]
             this.selectedEvent = event
             this.selectedElement = nativeEvent.target
+            if( this.selectedEvent.izvrsen){
+              let path="pregled"
+              if(this.farmaceut){
+                path="savetovanje"
+              }
+              axios.get(`http://localhost:8080/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
+                const lekovi=[];
+                response.data.forEach(element => {
+                  lekovi.push({
+                    terapija: element.terapija,
+                    naziv: element.nazivLeka,
+                    id: element.id,
+                  })
+                  this.selectedPreporuceni=lekovi;
+                });
+              })
+            }
             setTimeout(() => {
                 this.selectedOpen = true
             }, 10)
@@ -341,46 +424,45 @@
 
             nativeEvent.stopPropagation()
         },
-      preglediAxios (){
-        axios.get(`http://localhost:8080/pregled/all/3`).then(response => {
-           const pregledi = []
+        async updateRangePacijentAxios(){
+          await axios.get(`http://localhost:8080/savetovanje/pacijent/${this.user.id}`).then(response => {
+           const events = []
           response.data.forEach(element => {
-            pregledi.push({
-              name: element.name,
-              pacijent: element.pacijentId,
+            events.push({
+              name:element.name,
+              pacijent:element.pacijentId,
               apoteka: element.apotekaId,
-              start: new Date(element.start),
-              end: new Date(element.end),
+              start: new Date(element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString()),
+              end: new Date(element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString()),
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
               id: element.id,
               started: false,
               timed: true,
+              isPregled: false
             })
-            this.events = pregledi
+            this.events = events
           });
         });
-      },
-      savetovanjaAxios (){
-        axios.get(`http://localhost:8080/savetovanje/all/3`).then(response => {
-           const savetovanja = []
+
+        await axios.get(`http://localhost:8080/pregled/pacijent/${this.user.id}`).then(response => {
           response.data.forEach(element => {
-            savetovanja.push({
-              name: element.name,
-              pacijent: element.pacijentId,
+            this.events.push({
+              name:element.name,
+              pacijent:element.pacijentId,
               apoteka: element.apotekaId,
-              start: new Date(element.start),
-              end: new Date(element.end),
+              start: new Date(element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString()),
+              end: new Date(element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString()),
               izvrsen: element.izvrsen,
               izvestaj: element.izvestaj,
               id: element.id,
               started: false,
               timed: true,
+              isPregled: true
             })
-            this.events = savetovanja
           });
         });
-      },
+        },
       
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
@@ -397,13 +479,23 @@
       updateTime () {
         setInterval(() => this.cal.updateTimes(), 60 * 1000)
       },
-      viewAccount(){
-          console.log(this.selectedEvent);
+      async viewAccount(){
+          await axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
+            this.selectedPacijent=response.data
+          })
+          this.componentKey+=1;
+          this.pacijentDialog= true
+          this.selectedOpen=false
       },
-      cancelPregled(){
-          console.log(this.selectedEvent);
+      async cancelPregled(){
+          if(this.selectedEvent.isPregled) {
+            await axios.delete(`http://localhost:8080/pregled/${this.selectedEvent.id}`)
+          } else {
+            await axios.delete(`http://localhost:8080/savetovanje/${this.selectedEvent.id}`)
+          }
+          this.updateRangePacijentAxios()
       },
-      reportMiss(){
+      async reportMiss(){
           let now = new Date();
           if(now.getTime()<this.selectedEvent.start.getTime() && now.getTime()>this.selectedEvent.end.getTime()){
             this.dialog=true
@@ -412,9 +504,11 @@
             if(this.farmaceut){
               path="savetovanje"
             }
-            axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
-            axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
-            Object.assign(this.$data, this.$options.data.apply(this))
+            await axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
+            await axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
+            //Object.assign(this.$data, this.$options.data.apply(this))
+            this.selectedOpen=false
+            this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
             
           }   
       },
@@ -427,7 +521,21 @@
             this.selectedEvent.started=true;
           }
       },
-      endTermin(){
+      getEventColor (event) {
+        if(!event.timed){
+          return '#027e00';
+        }
+        if(event.pacijent){
+          if(event.izvrsen){
+              return 'grey';
+          } else{
+              return '#1976D2';
+          }
+        }else{
+          return 'green';
+        }
+      },
+      async endTermin(){
         let path="pregled"
         if(this.farmaceut){
           path="savetovanje"
@@ -440,19 +548,20 @@
             lekId: element.lek.id
           })
         });
-        axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        await axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        this.componentKey+=1;
         this.terminDialog=true
         this.selectedOpen=false
       },
       endDialog(){
         this.dialog=false;
       },
+      endPacijentDialog(){
+        this.pacijentDialog= false
+        this.selectedOpen=true
+      },
       openLekList(){
-        this.selectedElementPreDialog=this.selectedElement
-        this.selectedEventPreDialog=this.selectedEvent
-        this.selectedOpenPreDialog=this.selectedOpen
-        this.selectedElement=null
-        this.selectedEvent={}
+        this.componentKey+=1;
         this.selectedOpen=false
         this.lekDialog=true;
       },
@@ -461,18 +570,15 @@
         setTimeout(() => {
           
         }, 1000);
-        this.selectedElement=this.selectedElementPreDialog
-        this.selectedEvent=this.selectedEventPreDialog
-        this.selectedOpen=this.selectedOpenPreDialog
-        this.selectedElementPreDialog=null
-        this.selectedEventPreDialog={}
-        this.selectedOpenPreDialog=false
+
+        this.selectedOpen=true
       },
       endTerminDialog(){
         this.terminDialog=false;
         this.selectedElement=null
         this.selectedEvent={}
-        Object.assign(this.$data, this.$options.data.apply(this))
+        //Object.assign(this.$data, this.$options.data.apply(this))
+        this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
       },
       }
   }

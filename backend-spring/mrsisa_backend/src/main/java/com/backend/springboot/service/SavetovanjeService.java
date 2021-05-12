@@ -19,8 +19,16 @@ public class SavetovanjeService {
 	@Autowired
 	private SavetovanjeRepository savetovanjeRep;
 	
+	public void deleteSavetovanje(int id) {
+		savetovanjeRep.deleteById(id);
+	}
+	
 	public List<Savetovanje> findAllByFarmaceutId(Integer farmaceutId){
 		return savetovanjeRep.findAllByFarmaceutId(farmaceutId);
+	}
+	
+	public List<Savetovanje> findAllByPacijentId(Integer pacijentId){
+		return savetovanjeRep.findAllByPacijentId(pacijentId);
 	}
 	
 	public Savetovanje save(Savetovanje s) {

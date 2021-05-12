@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,7 +63,19 @@ public class SavetovanjeController {
 	private OdsustvoFarmaceutService odsustvoService;
 	@Autowired
 	private EmailService emailService;
-		
+	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Object> deleteSavetovanje(@PathVariable("id") int id) {
+		try {
+			service.deleteSavetovanje(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}catch(EmptyResultDataAccessException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
 
@@ -136,6 +150,21 @@ public class SavetovanjeController {
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForFarmaceut(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(id);
+		
+		System.out.println(savetovanja.size());
+
+		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
+		for (Savetovanje s : savetovanja) {
+			savetovanjaDTO.add(new SavetovanjeDTO(s));
+		}
+
+		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/pacijent/{id}")
+	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
+
+		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
 		
 		System.out.println(savetovanja.size());
 
