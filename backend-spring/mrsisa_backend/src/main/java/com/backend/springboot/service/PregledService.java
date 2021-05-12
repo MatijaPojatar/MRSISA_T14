@@ -24,18 +24,6 @@ public class PregledService {
 		return pregledRep.findAllByPacijentId(pacijentId);
 	}
 	
-//	//daj dermatologe gde je bio pacijent
-//	public Set<Integer> poseceniDermatolozi(Integer pacijentId){
-//		Set<Integer> dermatoloziIds = new HashSet<Integer>();
-//		List<Pregled> pregledi = pregledRep.findAllByPacijentId(pacijentId);
-//		
-//		for (Pregled p : pregledi) {
-//			dermatoloziIds.add(p.getDermatolog().getId());
-//		}
-//		return dermatoloziIds;
-//	}
-	
-	
 	public Set<Dermatolog> poseceniDermatolozi(Integer pacijentId){
 	Set<Dermatolog> dermatolozi = new HashSet<Dermatolog>();
 	List<Pregled> pregledi = pregledRep.findAllByPacijentId(pacijentId);
@@ -56,20 +44,7 @@ public class PregledService {
 		}
 		return apoteke;
 	}
-	
-	
-	
-//	//daj apoteke gde je bio pacijent na pregledu
-//	public Set<Integer> poseceneApoteke(Integer pacijentId){
-//		Set<Integer> apotekeIds = new HashSet<Integer>();
-//		List<Pregled> pregledi = pregledRep.findAllByPacijentId(pacijentId);
-//		
-//		for (Pregled p : pregledi) {
-//			apotekeIds.add(p.getApoteka().getId());
-//		}
-//		return apotekeIds;
-//	}
-	
+		
 	public List<Pregled> findAllByDermatologId(Integer dermatologId){
 		return pregledRep.findAllByDermatologId(dermatologId);
 	}

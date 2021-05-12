@@ -60,6 +60,13 @@ public class ZalbaController {
 	private EmailService emailService;
 	
 
+	@GetMapping("/apoteka/{id}")
+	public ResponseEntity<ZalbaNaApotekuDTO> getZNAById(@PathVariable Integer id){
+		ZalbaNaApoteku zalba = servisZaApoteke.findOne(id);
+		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/apoteka")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNA() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAll();
@@ -75,6 +82,18 @@ public class ZalbaController {
 	@GetMapping("/apoteka/neobradjene")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNANeobradjene() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllNeobradjene();
+
+		List<ZalbaNaApotekuDTO> dtos = new ArrayList<ZalbaNaApotekuDTO>();
+		for (ZalbaNaApoteku z : zalbe) {
+			dtos.add(new ZalbaNaApotekuDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/apoteka/obradjene")
+	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAObradjene() {
+		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllObradjene();
 
 		List<ZalbaNaApotekuDTO> dtos = new ArrayList<ZalbaNaApotekuDTO>();
 		for (ZalbaNaApoteku z : zalbe) {
@@ -118,6 +137,12 @@ public class ZalbaController {
 		}
 
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/farmaceut/{id}")
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> getZNFById(@PathVariable Integer id){
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.findOne(id);
+		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/farmaceut/neobradjene")
@@ -166,6 +191,12 @@ public class ZalbaController {
 		}
 
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatolog/{id}")
+	public ResponseEntity<ZalbaNaDermatologaDTO> getZNDById(@PathVariable Integer id){
+		ZalbaNaDermatologa zalba = servisZaDermatologe.findOne(id);
+		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
 	@GetMapping("/dermatolog/neobradjene")

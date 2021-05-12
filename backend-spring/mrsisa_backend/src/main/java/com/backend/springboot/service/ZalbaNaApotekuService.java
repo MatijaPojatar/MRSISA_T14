@@ -36,4 +36,8 @@ public class ZalbaNaApotekuService {
 		return zalbeRep.findByObradjenaFalse();
 	}
 	
+	public List<ZalbaNaApoteku> findAllObradjene(){
+		return zalbeRep.findByObradjenaTrue();
+	}
+	
 }

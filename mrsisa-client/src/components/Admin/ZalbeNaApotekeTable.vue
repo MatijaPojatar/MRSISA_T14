@@ -1,7 +1,9 @@
 <template>
   <v-row>
     <div v-if="nemaZalbi">
-      <v-card>
+      <v-card
+      flat
+      width="500">
         <v-card-title>Trenutno nema žalbi na apoteke</v-card-title>
       </v-card>
     </div>
@@ -51,7 +53,28 @@
 
       </v-expansion-panel>
     </v-expansion-panels>
-
+    <v-dialog
+      v-model="potvrda"
+      persistent
+      max-width="300"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Uspešno ste odgovorili na žalbu.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPotvrda"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
   </v-row>
 </template>
 
@@ -64,6 +87,7 @@ export default {
     selektovanaZalba: {},
     selektovanaZalbaID: -1,
     odgovor: "",
+    potvrda: false,
   }),
 
   computed: {
@@ -89,9 +113,12 @@ export default {
 
     odgovoriNaZalbu(){
       this.sendOdgovorApotekaAction({id: this.selektovanaZalbaID, odg: this.odgovor});
-      alert("Uspesan odgovor");
+      this.potvrda = true;
     },
 
+    endPotvrda(){
+      this.potvrda = false;
+    }
   }
 
 }
