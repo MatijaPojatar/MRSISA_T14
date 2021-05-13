@@ -1,20 +1,26 @@
 package com.backend.springboot.service;
 
-import java.util.Collection;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezervacijaLeka;
-import com.backend.springboot.domain.RezimIzdavanja;
-import com.backend.springboot.domain.VrstaLeka;
+import com.backend.springboot.repository.RezervacijaRepository;
 
-public interface RezervacijaService {
-	Collection<RezervacijaLeka> findAll();
+@Service
+public class RezervacijaService {
+
+	@Autowired
+	private RezervacijaRepository rep;
 	
-	RezervacijaLeka addRezervacija(RezervacijaLeka rezervacija);
+	public RezervacijaLeka findOneActiveByCodeAndApoteka(String code,Integer apotekaId) {
+		return rep.findOneActiveByCodeAndApoteka(code,apotekaId);
+	}
 	
-	RezervacijaLeka findOne(String id);
+	public RezervacijaLeka findOneActiveByCode(String code) {
+		return rep.findOneActiveByCode(code);
+	}
 	
-	void delete(String id);
-	
-	Collection<RezervacijaLeka> findWithParams(int sifraLeka,String naziv,OblikLeka oblik,VrstaLeka vrsta,RezimIzdavanja rezim,String sifraApoteke);
+	public void save(RezervacijaLeka rl) {
+		rep.save(rl);
+	}
 }

@@ -1,11 +1,14 @@
 package com.backend.springboot.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,6 +58,9 @@ public class Lek {
 	
 	@ManyToMany(mappedBy = "alergije")
 	private List<Pacijent> alergicniPacijenti = new ArrayList<Pacijent>();
+	
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<RezervacijaLeka> rezervacije = new HashSet<RezervacijaLeka>();
 	
 	public Lek() {
 		super();
@@ -192,4 +198,14 @@ public class Lek {
 	public void setAlergicniPacijenti(List<Pacijent> alergicniPacijenti) {
 		this.alergicniPacijenti = alergicniPacijenti;
 	}
+
+	public Set<RezervacijaLeka> getRezervacije() {
+		return rezervacije;
+	}
+
+	public void setRezervacije(Set<RezervacijaLeka> rezervacije) {
+		this.rezervacije = rezervacije;
+	}
+	
+	
 }

@@ -8,7 +8,7 @@ import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Pol;
 
 public class FarmaceutDTO {
-	private Integer id;
+	private Integer id,apotekaId;
 	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona, pocetakRadnogVremenaStr, krajRadnogVremenaStr;
 	private Pol pol;
 	private LocalDate datumRodjenja;
@@ -31,6 +31,7 @@ public class FarmaceutDTO {
 		this.datumRodjenja=f.getDatumRodjenja();
 		this.pocetakRadnogVremena = f.getPocetakRadnogVremena();
 		this.krajRadnogVremena = f.getKrajRadnogVremena();
+		this.apotekaId=f.getApoteka().getId();
 		
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
@@ -149,6 +150,14 @@ public class FarmaceutDTO {
 
 	public void setKrajRadnogVremenaStr(String krajRadnogVremenaStr) {
 		this.krajRadnogVremenaStr = krajRadnogVremenaStr;
+	}
+
+	public Integer getApotekaId() {
+		return apotekaId;
+	}
+
+	public void setApotekaId(Integer apotekaId) {
+		this.apotekaId = apotekaId;
 	}
 	
 	

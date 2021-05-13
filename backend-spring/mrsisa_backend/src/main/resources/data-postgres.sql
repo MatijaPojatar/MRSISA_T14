@@ -141,3 +141,7 @@ insert into zalba_farmaceut(pacijent_id,farmaceut_id, tekst, obradjena) values (
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa dobavljaca','0651236680','1995-12-02','Srbija','Novi Sad','Mika','Mikic','imenkoprezimic94@gmaill.com','$2a$10$OLvOIAY5./MlO73z7NYLyeBRN6.vPmNo2R0s3sov86e3mpOkOMqxO',0,true, false, true); --sifra je 94
 insert into dobavljaci(id, naziv_preduzeca) values (11, 'MExpress');
 insert into osoba_role (osoba_id, role_id) values (11, 6);
+
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h22ad',0,'2021-05-22',2.0,1,2,1);
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h23ad',0,'2021-05-22',2.0,2,2,4);
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h24ad',0,'2021-05-13',2.0,1,2,1);

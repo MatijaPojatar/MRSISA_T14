@@ -2,7 +2,9 @@ package com.backend.springboot.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,6 +41,9 @@ public class Pacijent extends Osoba {
 	@ManyToMany
 	@JoinTable(name = "pacijent_alergije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private List<Lek> alergije = new ArrayList<Lek>();
+	
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<RezervacijaLeka> rezervacije = new HashSet<RezervacijaLeka>();
 	
 	public Pacijent() {
 		super();
@@ -115,4 +120,14 @@ public class Pacijent extends Osoba {
 	public void setAlergije(List<Lek> alergije) {
 		this.alergije = alergije;
 	}
+
+	public Set<RezervacijaLeka> getRezervacije() {
+		return rezervacije;
+	}
+
+	public void setRezervacije(Set<RezervacijaLeka> rezervacije) {
+		this.rezervacije = rezervacije;
+	}
+	
+	
 }

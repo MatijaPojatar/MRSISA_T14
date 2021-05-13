@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
@@ -252,6 +253,28 @@ public class LekController {
 			}
 		}
 		return new ResponseEntity<LekDTO>(dto,HttpStatus.OK);
+	}
+	
+	@GetMapping("/findOne/{id}")
+	public ResponseEntity<LekDTO> findOne(@PathVariable Integer id){
+		Lek l=lekService.findOneById(id);
+		LekDTO dto=new LekDTO(l);
+		
+		return new ResponseEntity<LekDTO>(dto,HttpStatus.OK);
+	}
+	
+	@GetMapping("/findOneInApoteka/{id}")
+	public ResponseEntity<LekUMagacinuDTO> findOneInApoteka(@PathVariable Integer id,@RequestParam Integer apotekaId){
+		Magacin m=magacinService.findOneByApotekaId(apotekaId);
+		LekUMagacinuDTO dto=new LekUMagacinuDTO();
+		for(LekUMagacinu l:m.getLekovi()) {
+			if(l.getLek().getId()==id) {
+				dto=new LekUMagacinuDTO(l);
+				break;
+			}
+		}
+		
+		return new ResponseEntity<LekUMagacinuDTO>(dto,HttpStatus.OK);
 	}
 
 }

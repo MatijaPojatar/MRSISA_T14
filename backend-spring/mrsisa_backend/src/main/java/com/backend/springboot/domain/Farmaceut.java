@@ -30,7 +30,7 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	private LocalTime pocetakRadnogVremena;
 	@Column(name = "krajRadnogVremena", nullable = false)
 	private LocalTime krajRadnogVremena;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Apoteka apoteka;
 	@OneToMany(mappedBy = "farmaceut", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Savetovanje> savetovanja=new ArrayList<Savetovanje>();

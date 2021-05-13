@@ -89,8 +89,15 @@
                     Pregledani pacijenti 
                 </div></v-list-item-title>
           </v-list-item>
+          <v-list-item link @click="rezervacijaView" v-if="farmaceut">
+            <v-list-item-icon>
+              <v-icon>mdi-pill</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Preuzimanje leka 
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
-
         <template v-slot:append>
         <div class="pa-2">
           <v-btn block @click="onLogout">
@@ -119,6 +126,9 @@
       <v-container fluid v-if="showAllPacijenti" :style="{width:'70vh'}">
         <SearchPacijenti/>
       </v-container>
+      <v-container fluid v-if="showRezervacija" :style="{width:'70vh'}" grid-list-md>
+        <RezervacijaInput :id="user.id"/>
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -131,6 +141,7 @@ import PasswordSwitch from "./PasswordSwitch";
 import CreateOdsustvo from "./CreateOdsustvo";
 import PacijentList from "./PacijentList"
 import SearchPacijenti from "./SearchPacijenti"
+import RezervacijaInput from "./RezervacijaInput";
 import {mapActions, mapGetters} from 'vuex'
 
 export default {
@@ -142,6 +153,7 @@ export default {
         CreateOdsustvo,
         PacijentList,
         SearchPacijenti,
+        RezervacijaInput,
     },
     data: () => ({
     showCalendar: false,
@@ -150,6 +162,7 @@ export default {
     showOdsustvo: false,
     showPacijenti: false,
     showAllPacijenti: false,
+    showRezervacija: false,
     farmaceut: true,
     baseUrl: "https://randomuser.me/api/portraits/",
   }),
@@ -176,6 +189,7 @@ export default {
         this.showOdsustvo=false;
         this.showPacijenti=false;
         this.showAllPacijenti= false;
+        this.showRezervacija= false;
       },
       calendarView(){
           this.closeAll();
@@ -210,6 +224,10 @@ export default {
       allPacijentView(){
         this.closeAll();
         this.showAllPacijenti= true;
+      },
+      rezervacijaView(){
+        this.closeAll();
+        this.showRezervacija= true;
       },
   },
 }

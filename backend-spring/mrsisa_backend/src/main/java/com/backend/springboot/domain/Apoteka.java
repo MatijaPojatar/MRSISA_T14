@@ -59,6 +59,9 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka")
 	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
 	
+	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<RezervacijaLeka> rezervacije = new HashSet<RezervacijaLeka>();
+	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
 			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
@@ -282,6 +285,16 @@ public class Apoteka {
 		}
 		return dermatolozi;
 	}
+
+	public Set<RezervacijaLeka> getRezervacije() {
+		return rezervacije;
+	}
+
+	public void setRezervacije(Set<RezervacijaLeka> rezervacije) {
+		this.rezervacije = rezervacije;
+	}
+	
+	
 	
 	
 	
