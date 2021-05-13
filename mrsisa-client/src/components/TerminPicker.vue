@@ -231,7 +231,9 @@ export default{
         lekovi: Array,
     },
     mounted(){
-        this.loadTermini();
+        if(!this.farmaceut){
+            this.loadTermini();
+        }
         this.loadRadnoVreme();
         let tren=new Date()
         this.trenutniDatum=new Date(tren)
@@ -241,24 +243,20 @@ export default{
     },
     methods:{
         loadTermini(){
-            let path="pregled"
-            if(this.farmaceut){
-                path="savetovanje"
-            }
-            axios.get(`http://localhost:8080/${path}/all/active/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
-           const termini = []
-            response.data.forEach(element => {
-            termini.push({
-              name:element.name,
-              pacijent:element.pacijentId,
-              apoteka: element.apotekaId,
-              start: new Date(element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString()),
-              end: new Date(element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString()),
-              izvrsen: element.izvrsen,
-              izvestaj: element.izvestaj,
-              id: element.id,
-            })
-            this.termini = termini
+            axios.get(`http://localhost:8080/pregled/all/active/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
+                const termini = []
+                response.data.forEach(element => {
+                termini.push({
+                name:element.name,
+                pacijent:element.pacijentId,
+                apoteka: element.apotekaId,
+                start: new Date(element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString()),
+                end: new Date(element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString()),
+                izvrsen: element.izvrsen,
+                izvestaj: element.izvestaj,
+                id: element.id,
+                })
+                this.termini = termini
           });
         });
         },

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.ParametriPretrageOsoba;
@@ -126,9 +127,9 @@ public class DermatologController {
 	}
 	
 	@GetMapping("/radnoVreme/{id}")
-	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id){
-		Dermatolog d=service.findOne(id);
-		RadnoVremeDTO rv=new RadnoVremeDTO(d.getPocetakRadnogVremena(),d.getKrajRadnogVremena());
+	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id,@RequestParam Integer apotekaId){
+		DermatologApoteka da=service.findZaposlenje(apotekaId, id);
+		RadnoVremeDTO rv=new RadnoVremeDTO(da.getPocetakRadnogVremena(),da.getKrajRadnogVremena());
 		
 		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
 		

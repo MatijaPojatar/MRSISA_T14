@@ -239,5 +239,9 @@ public class DermatologService {
 	public static boolean preklapaSe(LocalTime start1, LocalTime end1, LocalTime start2, LocalTime end2) {
 	    return start1.isBefore(end2) && start2.isBefore(end1);
 	}
+	
+	public DermatologApoteka findZaposlenje(Integer apotekaId,Integer dermatologId) {
+		return zaposlenjeRep.findOneByApotekaIdAndDermatologId(apotekaId, dermatologId);
+	}
 
 }

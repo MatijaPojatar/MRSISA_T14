@@ -96,32 +96,26 @@ insert into osoba_role (osoba_id, role_id) values (9, 3); --ima ulogu admin sist
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-28 12:50','2021-04-28 14:00',1,2);
 insert into savetovanja (id,farmaceut_id) values (3,6);
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-28 11:00','2021-04-28 12:30',1);
-insert into savetovanja (id,farmaceut_id) values (4,1);
-
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-28 15:00','2021-04-28 16:00',1);
-insert into pregledi (id,dermatolog_id,cena) values (5,3,3000);
-
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-04-29 12:50','2021-04-29 14:00',1);
-insert into savetovanja (id,farmaceut_id) values (6,1);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id) values ('',false,'2021-05-16 15:00','2021-05-16 16:00',2);
+insert into pregledi (id,dermatolog_id,cena) values (4,3,3000);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-29 11:00','2021-04-29 12:00',1,8);
-insert into savetovanja (id,farmaceut_id) values (7,1);
+insert into savetovanja (id,farmaceut_id) values (5,1);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('Primer izvrsenog savetovanaja 1',true,'2021-04-26 11:00','2021-04-26 12:00',1,8);
-insert into savetovanja (id,farmaceut_id) values (8,1);
+insert into savetovanja (id,farmaceut_id) values (6,1);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('Primer izvrsenog savetovanaja 2',true,'2021-04-26 12:15','2021-04-26 13:00',1,2);
-insert into savetovanja (id,farmaceut_id) values (9,1);
+insert into savetovanja (id,farmaceut_id) values (7,1);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('Primer izvrsenog pregleda 1',true,'2021-04-25 12:00','2021-04-25 12:00',1,2);
-insert into pregledi (id,dermatolog_id,cena) values (10,3,3000);
+insert into pregledi (id,dermatolog_id,cena) values (8,3,3000);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('Primer izvrsenog pregleda 2',true,'2021-04-24 15:00','2021-04-24 16:00',1,8);
-insert into pregledi (id,dermatolog_id,cena) values (11,3,3000);
+insert into pregledi (id,dermatolog_id,cena) values (9,3,3000);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-04-27 15:00','2021-04-27 16:00',2,8);
-insert into pregledi (id,dermatolog_id,cena) values (12,3,3000);
+insert into pregledi (id,dermatolog_id,cena) values (10,3,3000);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','$2a$10$UnO./eDTpKBzdcDio.khoO5/Egozb0LUrLR.ANtjFJQN7pVcEdGEy',0,true, false, true); --sifra je luka
 insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (10,'16:00','08:00');
@@ -134,9 +128,9 @@ insert into zamenski_lekovi (lek_id,zamenski_id) values (2,1);
 insert into zamenski_lekovi (lek_id,zamenski_id) values (2,4);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-05-12 16:00','2021-05-12 17:00',1,2);
-insert into savetovanja (id,farmaceut_id) values (13,1);
+insert into savetovanja (id,farmaceut_id) values (11,1);
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id) values ('',false,'2021-05-14 12:00','2021-05-14 13:00',1,2);
-insert into pregledi (id,dermatolog_id,cena) values (14,3,3000);
+insert into pregledi (id,dermatolog_id,cena) values (12,3,3000);
 insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena, odgovor) values(2, 1, 'Kao pacijent id=2 zalim se na apoteku id=1',true, 'Kao admin odgovaram na zalbu pacijenta 2 na apoteku 1');
 insert into zalba_apoteka(pacijent_id,apoteka_id, tekst, obradjena) values(2, 1, 'Kao pacijent id=2 po drugi put se zalim na apoteku id=1',false);
 

@@ -176,22 +176,22 @@ public class SavetovanjeController {
 
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
 	}
-	
-	@GetMapping(value = "/all/active/{id}")
-	public ResponseEntity<List<SavetovanjeDTO>> getAllActiveForFarmaceut(@PathVariable Integer id,@RequestParam Integer apotekaId) {		
-
-		LocalDateTime pocetak=LocalDateTime.now();
-		List<Savetovanje> savetovanja = service.findAllActive(id, apotekaId, pocetak);
-		
-		System.out.println(savetovanja.size());
-
-		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
-		for (Savetovanje s : savetovanja) {
-			savetovanjaDTO.add(new SavetovanjeDTO(s));
-		}
-
-		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
-	}
+//	
+//	@GetMapping(value = "/all/active/{id}")
+//	public ResponseEntity<List<SavetovanjeDTO>> getAllActiveForFarmaceut(@PathVariable Integer id,@RequestParam Integer apotekaId) {		
+//
+//		LocalDateTime pocetak=LocalDateTime.now();
+//		List<Savetovanje> savetovanja = service.findAllActive(id, apotekaId, pocetak);
+//		
+//		System.out.println(savetovanja.size());
+//
+//		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
+//		for (Savetovanje s : savetovanja) {
+//			savetovanjaDTO.add(new SavetovanjeDTO(s));
+//		}
+//
+//		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
+//	}
 	
 	@PutMapping("/zauzmi/{id}/{pacijentId}")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
