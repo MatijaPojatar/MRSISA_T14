@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.repository.ZalbaNaApotekuRepository;
 
@@ -15,9 +16,10 @@ public class ZalbaNaApotekuService {
 	private ZalbaNaApotekuRepository zalbeRep;
 	
 	
-	public ZalbaNaApoteku odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor) {
+	public ZalbaNaApoteku odgovoriNaZalbu(ZalbaNaApoteku zalba, String odgovor, AdministratorSistema admin) {
 		zalba.setOdgovor(odgovor);
 		zalba.setObradjena(true);
+		zalba.setAdministrator(admin);
 		return zalbeRep.save(zalba);
 	}
 	
@@ -36,8 +38,11 @@ public class ZalbaNaApotekuService {
 		return zalbeRep.findByObradjenaFalse();
 	}
 	
-	public List<ZalbaNaApoteku> findAllObradjene(){
-		return zalbeRep.findByObradjenaTrue();
+	public List<ZalbaNaApoteku> findAllObradjeneByAdmin(Integer id){
+		return zalbeRep.findByObradjenaTrueAndAdministrator(id);
 	}
 	
+	public List<ZalbaNaApoteku> findAllByPacijent(Integer id){
+		return zalbeRep.findByPacijent(id);
+	}
 }

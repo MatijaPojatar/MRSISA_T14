@@ -3,8 +3,8 @@ package com.backend.springboot.dto;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
 
 public class ZalbaNaDermatologaDTO {
-	private Integer id, pacijentId, dermatologId;
-	private String tekst, odgovor, dermatologIP, pacijentIP;
+	private Integer id, pacijentId, dermatologId, administratorId;
+	private String tekst, odgovor, dermatologIP, pacijentIP, administratorIP;
 	private Boolean obradjena;
 
 
@@ -12,17 +12,19 @@ public class ZalbaNaDermatologaDTO {
 		super();
 	}
 
-	public ZalbaNaDermatologaDTO(Integer id, Integer pacijentId, Integer dermatologId, String tekst, String odgovor,
+	public ZalbaNaDermatologaDTO(Integer id, Integer pacijentId, Integer dermatologId, Integer administratorId, String tekst, String odgovor,
 			Boolean obradjena) {
 		super();
 		this.id = id;
 		this.pacijentId = pacijentId;
 		this.dermatologId = dermatologId;
+		this.administratorId = administratorId;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.dermatologIP = "";
 		this.pacijentIP = "";
+		this.administratorIP = "";
 	}
 	
 	public ZalbaNaDermatologaDTO(ZalbaNaDermatologa z) {
@@ -32,12 +34,30 @@ public class ZalbaNaDermatologaDTO {
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
 		this.dermatologId = z.getDermatolog().getId();
+		this.administratorId = z.getAdministrator().getId();
 		this.odgovor = z.getOdgovor();
 		this.dermatologIP = z.getDermatolog().getIme() + " " + z.getDermatolog().getPrezime();
 		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
+		this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
 	}
 	
 	
+	public Integer getAdministratorId() {
+		return administratorId;
+	}
+
+	public void setAdministratorId(Integer administratorId) {
+		this.administratorId = administratorId;
+	}
+
+	public String getAdministratorIP() {
+		return administratorIP;
+	}
+
+	public void setAdministratorIP(String administratorIP) {
+		this.administratorIP = administratorIP;
+	}
+
 	public String getDermatologIP() {
 		return dermatologIP;
 	}
