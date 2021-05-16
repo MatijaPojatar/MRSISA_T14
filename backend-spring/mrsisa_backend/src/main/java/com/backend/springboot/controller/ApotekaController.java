@@ -28,7 +28,9 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.ParametriPretrageLeka;
+import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -116,5 +118,19 @@ public class ApotekaController {
 		boolean check=magacinService.proveriStanje(m.getId(), lekId, kolicina);
 		
 		return new ResponseEntity<Boolean>(check,HttpStatus.OK);
+	}
+	
+	@GetMapping("/upiti/{id}")
+	public ResponseEntity<List<UpitDTO>> preuzmiUpite(@PathVariable Integer id){
+		Magacin m=magacinService.findOneByApotekaId(id);
+		
+		List<Upit> upiti= magacinService.preuzmiUpite(m.getId());
+		List<UpitDTO> dto = new ArrayList<UpitDTO>();
+		for (Upit u: upiti) {
+			dto.add(new UpitDTO(u));
+		}
+		
+		return new ResponseEntity<List<UpitDTO>>(dto, HttpStatus.OK);
+		
 	}
 }

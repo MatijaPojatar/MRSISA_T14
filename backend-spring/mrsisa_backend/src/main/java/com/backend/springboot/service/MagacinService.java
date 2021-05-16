@@ -55,6 +55,9 @@ public class MagacinService {
 	public Magacin findOneByApotekaId(Integer apotekaId) {
 		return magacinRep.findOneByApotekaId(apotekaId);
 	}
+	public List<Upit> preuzmiUpite(Integer magacinId){
+		return upitRep.findAllByMagacinId(magacinId);
+	}
 	
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
@@ -67,6 +70,7 @@ public class MagacinService {
 				upit.setKolicina(1.0);
 				upit.setMagacin(m);
 				upit.setLek(l);
+				upit.setObrisan(false);
 			}else {
 				u.setKolicina(u.getKolicina()+1);
 			}
