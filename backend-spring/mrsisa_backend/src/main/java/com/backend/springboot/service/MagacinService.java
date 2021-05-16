@@ -15,12 +15,14 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.StavkaCenovnika;
+import com.backend.springboot.domain.Upit;
 import com.backend.springboot.domain.VrstaLeka;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.StavkaCenovnikaRepository;
+import com.backend.springboot.repository.UpitRepository;
 
 @Service
 public class MagacinService {
@@ -35,6 +37,8 @@ public class MagacinService {
 	private ApotekaRepository apotekaRep;
 	@Autowired
 	private StavkaCenovnikaRepository cenovnikRep;
+	@Autowired
+	private UpitRepository upitRep;
 	
 	public List<Magacin> findAll(){
 		return magacinRep.findAll();
@@ -55,6 +59,17 @@ public class MagacinService {
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
 		if(lum==null) {
+			Upit u = upitRep.findOneByMagacinIdAndLekId(magacinId, lekId);
+			if (u == null) {
+				Magacin m = magacinRep.getOne(magacinId);
+				Lek l = lekRep.findOneById(lekId);
+				Upit upit = new Upit();
+				upit.setKolicina(1.0);
+				upit.setMagacin(m);
+				upit.setLek(l);
+			}else {
+				u.setKolicina(u.getKolicina()+1);
+			}
 			return false;
 		}
 		return true;
