@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div justify="space-around" align="center">
+    <br/>
     <div>
     <v-btn
         class="mx-2"
@@ -31,8 +32,6 @@
     <br/>
 
     
-  <br/>
-  <br/>
     
     <v-container fluid v-if="showUpiti">
         <TableUpiti :apotekaId="apotekaId"/>
