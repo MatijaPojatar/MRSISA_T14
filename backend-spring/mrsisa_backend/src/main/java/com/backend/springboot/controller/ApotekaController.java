@@ -27,9 +27,12 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.ParametriPretrageLeka;
+import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.dto.NarudzbenicaDTO;
 import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.LekDTO;
@@ -131,6 +134,34 @@ public class ApotekaController {
 		}
 		
 		return new ResponseEntity<List<UpitDTO>>(dto, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/narudzbenice/{id}")
+	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiSveNarudzbenice(@PathVariable Integer id){
+		Magacin m=magacinService.findOneByApotekaId(id);
+		
+		List<Narudzbenica> nar= magacinService.preuzmiSveNarudzbenice(m.getId());
+		List<NarudzbenicaDTO> dto = new ArrayList<NarudzbenicaDTO>();
+		for (Narudzbenica n: nar) {
+			dto.add(new NarudzbenicaDTO(n));
+		}
+		
+		return new ResponseEntity<List<NarudzbenicaDTO>>(dto, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/narudzbeniceStatus/{id}")
+	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiNarudzbenicePoStatusu(@PathVariable Integer id, @RequestBody StatusNarudzbenice status){
+		Magacin m=magacinService.findOneByApotekaId(id);
+		
+		List<Narudzbenica> nar= magacinService.preuzmiNarudzbenicePoStatusu(m.getId(), status);
+		List<NarudzbenicaDTO> dto = new ArrayList<NarudzbenicaDTO>();
+		for (Narudzbenica n: nar) {
+			dto.add(new NarudzbenicaDTO(n));
+		}
+		
+		return new ResponseEntity<List<NarudzbenicaDTO>>(dto, HttpStatus.OK);
 		
 	}
 }

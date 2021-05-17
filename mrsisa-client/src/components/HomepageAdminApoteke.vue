@@ -137,7 +137,7 @@
         <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showNarucivanje" :style="{width:'180vh'}">
-        <TableUpiti :apotekaId="user.apotekaId"/>
+        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
     </v-main>
       </v-app>
@@ -151,7 +151,7 @@ import PasswordSwitch from "./PasswordSwitch";
 import LekoviAdminApoteke from "./LekoviAdminApoteke";
 import FarmaceutiAdminApoteke from "./FarmaceutiAdminApoteke";
 import DermatoloziAdminApoteke from "./DermatoloziAdminApoteke";
-import TableUpiti from "./TableUpiti";
+import NarucivanjeAdminApoteke from "./NarucivanjeAdminApoteke";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -164,7 +164,7 @@ export default {
         LekoviAdminApoteke,
         FarmaceutiAdminApoteke,
         DermatoloziAdminApoteke,
-        TableUpiti
+        NarucivanjeAdminApoteke
     },
     data: () => ({
     showCalendar: false,

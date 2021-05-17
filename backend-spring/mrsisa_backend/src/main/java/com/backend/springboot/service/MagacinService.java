@@ -12,8 +12,10 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
+import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.domain.StavkaCenovnika;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.domain.VrstaLeka;
@@ -21,6 +23,7 @@ import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.MagacinRepository;
+import com.backend.springboot.repository.NarudzbenicaRepository;
 import com.backend.springboot.repository.StavkaCenovnikaRepository;
 import com.backend.springboot.repository.UpitRepository;
 
@@ -39,6 +42,8 @@ public class MagacinService {
 	private StavkaCenovnikaRepository cenovnikRep;
 	@Autowired
 	private UpitRepository upitRep;
+	@Autowired
+	private NarudzbenicaRepository narudzbenicaRep;
 	
 	public List<Magacin> findAll(){
 		return magacinRep.findAll();
@@ -57,6 +62,14 @@ public class MagacinService {
 	}
 	public List<Upit> preuzmiUpite(Integer magacinId){
 		return upitRep.findAllByMagacinId(magacinId);
+	}
+	
+	public List<Narudzbenica> preuzmiSveNarudzbenice(Integer magacinId){
+		return narudzbenicaRep.findAllByMagacinId(magacinId);
+	}
+	
+	public List<Narudzbenica> preuzmiNarudzbenicePoStatusu(Integer magacinId, StatusNarudzbenice status){
+		return narudzbenicaRep.findAllByStatusAndMagacinId(status, magacinId);
 	}
 	
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {

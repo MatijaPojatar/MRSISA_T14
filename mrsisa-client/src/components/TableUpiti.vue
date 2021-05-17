@@ -28,7 +28,7 @@
             value: 'id',
           },
           { text: 'Naziv leka', value: 'nazivLeka' },
-          { text: 'Količina', value: 'kolicina' },
+          { text: 'Broj upita za lek', value: 'kolicina' },
           
         ],
             upiti: [],

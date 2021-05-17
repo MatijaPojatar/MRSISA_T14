@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,10 +24,10 @@ public class Narudzbenica {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "rok", nullable = false)
-	private Date rok;
+	private LocalDate rok;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Apoteka apoteka;
+	private Magacin magacin;
 	
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<LekIzNarudzbenice> lekovi = new ArrayList<LekIzNarudzbenice>();
@@ -34,16 +35,20 @@ public class Narudzbenica {
 	@OneToMany(mappedBy = "narudzbenica", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Ponuda> ponude = new ArrayList<Ponuda>();
 	
+	@Column(name = "status", nullable = false)
+	private StatusNarudzbenice status;
+	
 	public Narudzbenica() {
 	}
 
-	public Narudzbenica(Integer id, Date rok, Apoteka apoteka, List<LekIzNarudzbenice> lekovi, List<Ponuda> ponude) {
-		super();
-		this.id = id;
-		this.rok = rok;
-		this.apoteka = apoteka;
-		this.lekovi = lekovi;
-		this.ponude = ponude;
+	
+
+	public StatusNarudzbenice getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusNarudzbenice status) {
+		this.status = status;
 	}
 
 	public List<Ponuda> getPonude() {
@@ -66,21 +71,27 @@ public class Narudzbenica {
 		this.id = id;
 	}
 
-	public Date getRok() {
+	public LocalDate getRok() {
 		return rok;
 	}
 
-	public void setRok(Date rok) {
+	public void setRok(LocalDate rok) {
 		this.rok = rok;
 	}
 
-	public Apoteka getApoteka() {
-		return apoteka;
+	
+
+	public Magacin getMagacin() {
+		return magacin;
 	}
 
-	public void setApoteka(Apoteka apoteka) {
-		this.apoteka = apoteka;
+
+
+	public void setMagacin(Magacin magacin) {
+		this.magacin = magacin;
 	}
+
+
 
 	public List<LekIzNarudzbenice> getLekovi() {
 		return lekovi;

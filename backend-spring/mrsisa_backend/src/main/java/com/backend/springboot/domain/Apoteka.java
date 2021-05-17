@@ -48,8 +48,6 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<Narudzbenica> narudzbenice = new ArrayList<Narudzbenica>();
-	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<AdministratorApoteke> administratori = new HashSet<AdministratorApoteke>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<ZalbaNaApoteku> zalbe = new ArrayList<ZalbaNaApoteku>();
@@ -138,7 +136,6 @@ public class Apoteka {
 		this.termini = dto.getTermini();
 		this.magacin = dto.getMagacin();
 		this.akcije = dto.getAkcije();
-		this.narudzbenice = dto.getNarudzbenice();
 		this.administratori = dto.getAdministratori();
 	}
 
@@ -246,13 +243,7 @@ public class Apoteka {
 		this.akcije = akcije;
 	}
 
-	public List<Narudzbenica> getNarudzbenice() {
-		return narudzbenice;
-	}
-
-	public void setNarudzbenice(List<Narudzbenica> narudzbenice) {
-		this.narudzbenice = narudzbenice;
-	}
+	
 
 	public Set<AdministratorApoteke> getAdministratori() {
 		return administratori;

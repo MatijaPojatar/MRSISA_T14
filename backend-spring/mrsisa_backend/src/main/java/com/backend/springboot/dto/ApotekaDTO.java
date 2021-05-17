@@ -28,7 +28,6 @@ public class ApotekaDTO {
 	private List<Termin> termini;
 	private Magacin magacin;
 	private List<AkcijaPromocija> akcije;
-	private List<Narudzbenica> narudzbenice;
 	private Set<AdministratorApoteke> administratori;
 	
 	
@@ -48,7 +47,6 @@ public class ApotekaDTO {
 		this.termini = a.getTermini();
 		this.magacin = a.getMagacin();
 		this.akcije = a.getAkcije();
-		this.narudzbenice = a.getNarudzbenice();
 		this.administratori = getAdministratori();
 	}
 	public Integer getId() {
@@ -122,12 +120,6 @@ public class ApotekaDTO {
 	}
 	public void setAkcije(List<AkcijaPromocija> akcije) {
 		this.akcije = akcije;
-	}
-	public List<Narudzbenica> getNarudzbenice() {
-		return narudzbenice;
-	}
-	public void setNarudzbenice(List<Narudzbenica> narudzbenice) {
-		this.narudzbenice = narudzbenice;
 	}
 	public Set<AdministratorApoteke> getAdministratori() {
 		return administratori;

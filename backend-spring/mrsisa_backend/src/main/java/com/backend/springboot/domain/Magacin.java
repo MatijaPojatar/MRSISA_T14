@@ -34,6 +34,9 @@ public class Magacin {
 	@OneToMany(mappedBy = "magacin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Upit> upiti = new ArrayList<Upit>();
 	
+	@OneToMany(mappedBy = "magacin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Narudzbenica> narudzbenice = new ArrayList<Narudzbenica>();
+	
 	public Magacin() {
 		// TODO Auto-generated constructor stub
 	}
@@ -68,6 +71,14 @@ public class Magacin {
 
 	public void setUpiti(List<Upit> upiti) {
 		this.upiti = upiti;
+	}
+
+	public List<Narudzbenica> getNarudzbenice() {
+		return narudzbenice;
+	}
+
+	public void setNarudzbenice(List<Narudzbenica> narudzbenice) {
+		this.narudzbenice = narudzbenice;
 	}
 
 	
