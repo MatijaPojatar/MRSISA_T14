@@ -40,7 +40,7 @@ public class ZalbaNaDermatologaService {
 	}
 	
 	public List<ZalbaNaDermatologa> findAllObradjeneByAdmin(Integer id){
-		return zalbeRep.findByObradjenaTrueAndAdministrator(id);
+		return zalbeRep.findByObradjenaTrueAndAdministratorId(id);
 	}
 	
 	public List<ZalbaNaDermatologa> findAllByPacijent(Integer id){

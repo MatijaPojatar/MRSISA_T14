@@ -1,12 +1,25 @@
 <template>
-  <v-row>
-    <ZalbeNaApotekeTable :zalbe="zalbeAdminNaA" :canAnswer="false"></ZalbeNaApotekeTable>
+<v-container>
+    <v-row>
+      <v-col>
+        <ZalbeNaApotekeTable :zalbe="zalbeAdminNaA" :canAnswer="false"></ZalbeNaApotekeTable>
+      </v-col>
+    </v-row>
 
-    <ZalbeNaFarmaceuteTable :zalbe="zalbeAdminNaF" :canAnswer="false"></ZalbeNaFarmaceuteTable>
+    <v-row>
+      <v-col>
+        <ZalbeNaFarmaceuteTable :zalbe="zalbeAdminNaF" :canAnswer="false"></ZalbeNaFarmaceuteTable>
 
-    <ZalbeNaDermatologeTable :zalbe="zalbeAdminNaD" :canAnswer="false"></ZalbeNaDermatologeTable>
+      </v-col>
+    </v-row>
 
-  </v-row>
+    <v-row>
+      <v-col>
+        <ZalbeNaDermatologeTable :zalbe="zalbeAdminNaD" :canAnswer="false"></ZalbeNaDermatologeTable>
+
+      </v-col>
+    </v-row>
+  </v-container>
   
 </template>
 
@@ -28,7 +41,7 @@ export default {
     ...mapGetters({
       zalbeAdminNaA: "zalbe/getZalbeAdminNaA",
       zalbeAdminNaF: "zalbe/getZalbeAdminNaF",
-      zalbeAdminNaD: "zalba/getZalbeAdminNaD",
+      zalbeAdminNaD: "zalbe/getZalbeAdminNaD",
       user: "korisnici/getKorisnik"
     })
   },

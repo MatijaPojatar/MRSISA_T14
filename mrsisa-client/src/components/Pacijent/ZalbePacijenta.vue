@@ -1,13 +1,25 @@
 <template>
-  <v-row>
-    <ZalbeNaApotekeTable :zalbe="zalbePacNaA" :canAnswer="false"></ZalbeNaApotekeTable>
+  <v-container>
+    <v-row>
+      <v-col>
+        <ZalbeNaApotekeTable :zalbe="zalbePacNaA" :canAnswer="false"></ZalbeNaApotekeTable>
+      </v-col>
+    </v-row>
 
-    <ZalbeNaFarmaceuteTable :zalbe="zalbePacNaF" :canAnswer="false"></ZalbeNaFarmaceuteTable>
+    <v-row>
+      <v-col>
+        <ZalbeNaFarmaceuteTable :zalbe="zalbePacNaF" :canAnswer="false"></ZalbeNaFarmaceuteTable>
 
-    <ZalbeNaDermatologeTable :zalbe="zalbePacNaD" :canAnswer="false"></ZalbeNaDermatologeTable>
+      </v-col>
+    </v-row>
 
+    <v-row>
+      <v-col>
+        <ZalbeNaDermatologeTable :zalbe="zalbePacNaD" :canAnswer="false"></ZalbeNaDermatologeTable>
 
-  </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

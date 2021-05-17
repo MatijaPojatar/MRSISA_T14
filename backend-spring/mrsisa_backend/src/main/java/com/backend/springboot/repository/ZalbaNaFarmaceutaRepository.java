@@ -17,5 +17,5 @@ public interface ZalbaNaFarmaceutaRepository extends JpaRepository<ZalbaNaFarmac
 	
 	List<ZalbaNaFarmaceuta> findAllByPacijentId(Integer id);
 	
-	List<ZalbaNaFarmaceuta> findByObradjenaTrueAndAdministrator(Integer id);
+	List<ZalbaNaFarmaceuta> findByObradjenaTrueAndAdministratorId(Integer id);
 }

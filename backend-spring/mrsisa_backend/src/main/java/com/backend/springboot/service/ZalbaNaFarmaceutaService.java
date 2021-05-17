@@ -42,7 +42,7 @@ public class ZalbaNaFarmaceutaService {
 	}
 	
 	public List<ZalbaNaFarmaceuta> findAllObradjeneByAdmin(Integer id){
-		return zalbeRep.findByObradjenaTrueAndAdministrator(id);
+		return zalbeRep.findByObradjenaTrueAndAdministratorId(id);
 	}
 	
 	public List<ZalbaNaFarmaceuta> findAllByPacijent(Integer id){

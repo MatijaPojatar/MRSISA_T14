@@ -39,7 +39,7 @@ public class ZalbaNaApotekuService {
 	}
 	
 	public List<ZalbaNaApoteku> findAllObradjeneByAdmin(Integer id){
-		return zalbeRep.findByObradjenaTrueAndAdministrator(id);
+		return zalbeRep.findByObradjenaTrueAndAdministratorId(id);
 	}
 	
 	public List<ZalbaNaApoteku> findAllByPacijent(Integer id){

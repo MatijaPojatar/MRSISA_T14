@@ -41,15 +41,6 @@ const getters = {
 
 const actions = {
 
-  // async getZalbeNaApotekeAction({commit}){
-  //   try{
-  //     const { data : zalbe } = await Vue.axios.get("/zalbe/apoteka");
-  //     commit("setZalbeNaApoteke", zalbe);
-  //   } catch(error){
-  //     alert("Greska pri dobavljanju zalbi za Apoteke");
-  //   }
-  // },
-
   async addZalbaNaApotekuAction({commit}, zalbaDTO){
     try{
       const { data: zalba } = await Vue.axios.post("/zalbe/apoteka", zalbaDTO)
@@ -180,7 +171,7 @@ const actions = {
     zalba.administratorId = idAdmina;
     zalba.odgovor = odg;
 
-    const response = await Vue.axios.put("/zalbe/apoteka/"+ zalba.id, zalba);  //DODATI ADMINA KOJI SALJE
+    const response = await Vue.axios.put("/zalbe/apoteka/"+ zalba.id, zalba); 
 
 
     console.log("ODGOVOR");
@@ -188,21 +179,27 @@ const actions = {
     commit("setObradjenaZaApoteku", zalba.id);
   },
 
-  // async sendOdgovorFarmaceutAction({commit}, {id, odg}){
-  //   const response = await Vue.axios.put("zalbe/farmaceut/"+id, odg);
+  async sendOdgovorFarmaceutAction({commit}, {zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
 
-  //   console.log("ODGOVOR");
-  //   console.log(response);
-  //   commit("setObradjenaZaFarmaceuta", id);
-  // },
+    const response = await Vue.axios.put("zalbe/farmaceut/"+zalba.id, zalba);
 
-  // async sendOdgovorDermatologAction({commit}, {id, odg}){
-  //   const response = await Vue.axios.put("zalbe/dermatolog/"+id, odg);
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaFarmaceuta", zalba.id);
+  },
 
-  //   console.log("ODGOVOR");
-  //   console.log(response);
-  //   commit("setObradjenaZaDermatologa", id);
-  // },
+  async sendOdgovorDermatologAction({commit},{zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
+
+    const response = await Vue.axios.put("zalbe/dermatolog/"+zalba.id, zalba);
+
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaDermatologa", zalba.id);
+  },
 
 
 }

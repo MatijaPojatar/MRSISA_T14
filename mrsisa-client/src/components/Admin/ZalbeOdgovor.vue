@@ -1,11 +1,25 @@
 <template>
-  <div>
-    <ZalbeNaApotekeTable :zalbe="neobradjeneApoteka" :canAnswer="true"></ZalbeNaApotekeTable>
+   <v-container>
+    <v-row>
+      <v-col>
+        <ZalbeNaApotekeTable :zalbe="neobradjeneApoteka" :canAnswer="true"></ZalbeNaApotekeTable>
+      </v-col>
+    </v-row>
 
-    <ZalbeNaFarmaceuteTable :zalbe="neobradjeneFarmaceut" :canAnswer="true"></ZalbeNaFarmaceuteTable>
+    <v-row>
+      <v-col>
+        <ZalbeNaFarmaceuteTable :zalbe="neobradjeneFarmaceut" :canAnswer="true"></ZalbeNaFarmaceuteTable>
 
-    <ZalbeNaDermatologeTable :zalbe="neobradjeneDermatolog" :canAnswer="true"></ZalbeNaDermatologeTable>
-  </div>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
+        <ZalbeNaDermatologeTable :zalbe="neobradjeneDermatolog" :canAnswer="true"></ZalbeNaDermatologeTable>
+
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

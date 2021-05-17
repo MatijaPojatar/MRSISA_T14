@@ -209,20 +209,21 @@ public class ZalbaController {
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
-//	@PutMapping("/farmaceut/{id}")
-//	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
-//		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
-//		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
-//		
-//		try {
-//			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
-//		} catch(Exception e){
-//			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-//		}
-//		
-//		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
-//	}
-
+	@PutMapping("/farmaceut/{id}")
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody ZalbaNaApotekuDTO apdejtovana) {
+		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, 
+				apdejtovana.getOdgovor(), adminService.findOne( apdejtovana.getAdministratorId()));
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
+	}
+	
 	@GetMapping("/dermatolog")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZND() {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAll();
@@ -287,18 +288,19 @@ public class ZalbaController {
 		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
-//	@PutMapping("/dermatolog/{id}")
-//	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
-//		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
-//		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
-//		
-//		try {
-//			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);
-//		} catch(Exception e){
-//			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-//		}
-//		
-//		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
-//	}
+	@PutMapping("/dermatolog/{id}")
+	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody  ZalbaNaApotekuDTO apdejtovana) {
+		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
+		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana,
+				apdejtovana.getOdgovor(), adminService.findOne( apdejtovana.getAdministratorId()));
+		
+		try {
+			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
+	}
 
 }
