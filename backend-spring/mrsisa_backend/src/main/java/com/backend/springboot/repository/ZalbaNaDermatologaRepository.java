@@ -15,7 +15,7 @@ public interface ZalbaNaDermatologaRepository extends JpaRepository<ZalbaNaDerma
 	
 	List<ZalbaNaDermatologa> findByObradjenaFalse();
 	
-	List<ZalbaNaDermatologa> findByPacijent(Integer id);
+	List<ZalbaNaDermatologa> findAllByPacijentId(Integer id);
 	
 	List<ZalbaNaDermatologa> findByObradjenaTrueAndAdministrator(Integer id);
 }

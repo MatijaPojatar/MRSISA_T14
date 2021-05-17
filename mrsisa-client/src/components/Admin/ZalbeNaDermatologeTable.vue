@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <div v-if="nemaZalbi">
+    <div v-if="zalbe.length==0">
       <v-card
       flat
       width="500">
@@ -9,7 +9,7 @@
     </div>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="zalba in neobradjene"
+        v-for="zalba in zalbe"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -42,6 +42,7 @@
 
           <br/>
             <v-btn
+            v-if="canAnswer"
             dark
             color="green"
             @click="odgovoriNaZalbu"
@@ -81,7 +82,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   data: () => ({
@@ -91,20 +92,13 @@ export default {
     potvrda: false,
   }),
 
-  computed: {
-    ...mapGetters({
-      neobradjene: "zalbe/getNeobradjeneDermatolog",
-      nemaZalbi: "zalbe/getNemaZalbizaDermatologa"
-    }),
-  },
-
-  async mounted() {
-    this.getNeobradjeneDermatologAction();
-  },
+  props: [
+    "zalbe",
+    "canAnswer"
+  ],
 
   methods: {
     ...mapActions({
-      getNeobradjeneDermatologAction: "zalbe/getNeobradjeneDermatologAction",
       sendOdgovorDermatologAction: "zalbe/sendOdgovorDermatologAction"
     }),
 

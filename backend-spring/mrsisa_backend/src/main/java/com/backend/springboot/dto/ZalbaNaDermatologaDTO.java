@@ -34,11 +34,16 @@ public class ZalbaNaDermatologaDTO {
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
 		this.dermatologId = z.getDermatolog().getId();
-		this.administratorId = z.getAdministrator().getId();
+		if(z.getAdministrator() == null) {
+			this.administratorId = -1;
+			this.administratorIP = "";
+		}else {
+			this.administratorId = z.getAdministrator().getId();
+			this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		}
 		this.odgovor = z.getOdgovor();
 		this.dermatologIP = z.getDermatolog().getIme() + " " + z.getDermatolog().getPrezime();
 		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
-		this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
 	}
 	
 	

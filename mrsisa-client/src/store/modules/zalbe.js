@@ -8,7 +8,13 @@ const initStanje = () => {
     moguceApoteke: [],
     neobradjeneApoteka: [],
     neobradjeneFarmaceut: [],
-    neobradjeneDermatolog: []
+    neobradjeneDermatolog: [],
+    zalbePacNaA: [],
+    zalbePacNaF: [],
+    zalbePacNaD: [],
+    zalbeAdminNaA: [],
+    zalbeAdminNaF: [],
+    zalbeAdminNaD: [],
   }
 }
 
@@ -19,13 +25,18 @@ const getters = {
   getMoguciFarmaceuti: state => state.moguciFarmaceuti,
   getMoguciDermatolozi: state => state.moguciDermatolozi,
   getMoguceApoteke: state => state.moguceApoteke,
+
   getNeobradjeneApoteka: state => state.neobradjeneApoteka,
   getNeobradjeneFarmaceut: state => state.neobradjeneFarmaceut,
   getNeobradjeneDermatolog: state => state.neobradjeneDermatolog,
-  getNemaZalbiZaApoteke: state => state.neobradjeneApoteka.length == 0,
-  getNemaZalbiZaFarmaceuta: state => state.neobradjeneFarmaceut.length == 0,
-  getNemaZalbizaDermatologa: state => state.neobradjeneDermatolog.length == 0,
 
+  getZalbePacNaA: state => state.zalbePacNaA,
+  getZalbePacNaF: state => state.zalbePacNaF,
+  getZalbePacNaD: state => state.zalbePacNaD,
+
+  getZalbeAdminNaA: state => state.zalbeAdminNaA,
+  getZalbeAdminNaF: state => state.zalbeAdminNaF,
+  getZalbeAdminNaD: state => state.zalbeAdminNaD
 }
 
 const actions = {
@@ -129,31 +140,69 @@ const actions = {
     commit("setNeobradjeneDermatolog", response.data)
   },
 
+  async getZalbePacNaAAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/apoteka/pacijent/"+ pacijentId);
 
-  async sendOdgovorApotekaAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("/zalbe/apoteka/"+ id, odg);
+    commit("setZalbePacNaA", response.data);
+  },
+
+  async getZalbePacNaFAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/farmaceut/pacijent/" + pacijentId);
+
+    commit("setZalbePacNaF", response.data);
+  },
+
+  async getZalbePacNaDAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/dermatolog/pacijent/" + pacijentId);
+
+    commit("setZalbePacNaD", response.data);
+  },
+
+  async getZalbeAdminNaAAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/apoteka/obradjene/" + adminId);
+
+    commit("setZalbeAdminNaA", response.data);
+  },
+
+  async getZalbeAdminNaFAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/farmaceut/obradjene/" + adminId);
+
+    commit("setZalbeAdminNaF", response.data);
+  },
+
+  async getZalbeAdminNaDAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/dermatolog/obradjene/"+ adminId);
+
+    commit("setZalbeAdminNaD", response.data);
+  },
+
+  async sendOdgovorApotekaAction({commit}, {zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
+
+    const response = await Vue.axios.put("/zalbe/apoteka/"+ zalba.id, zalba);  //DODATI ADMINA KOJI SALJE
 
 
     console.log("ODGOVOR");
     console.log(response);
-    commit("setObradjenaZaApoteku", id);
+    commit("setObradjenaZaApoteku", zalba.id);
   },
 
-  async sendOdgovorFarmaceutAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("zalbe/farmaceut/"+id, odg);
+  // async sendOdgovorFarmaceutAction({commit}, {id, odg}){
+  //   const response = await Vue.axios.put("zalbe/farmaceut/"+id, odg);
 
-    console.log("ODGOVOR");
-    console.log(response);
-    commit("setObradjenaZaFarmaceuta", id);
-  },
+  //   console.log("ODGOVOR");
+  //   console.log(response);
+  //   commit("setObradjenaZaFarmaceuta", id);
+  // },
 
-  async sendOdgovorDermatologAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("zalbe/dermatolog/"+id, odg);
+  // async sendOdgovorDermatologAction({commit}, {id, odg}){
+  //   const response = await Vue.axios.put("zalbe/dermatolog/"+id, odg);
 
-    console.log("ODGOVOR");
-    console.log(response);
-    commit("setObradjenaZaDermatologa", id);
-  },
+  //   console.log("ODGOVOR");
+  //   console.log(response);
+  //   commit("setObradjenaZaDermatologa", id);
+  // },
 
 
 }
@@ -167,13 +216,6 @@ const mutations = {
   setObradjenaZaApoteku(state, id){
     const index = state.neobradjeneApoteka.findIndex((l) => l.id === id);
     state.neobradjeneApoteka.splice(index,1);
-    //za svaku zalbu, ako je id takav, njenbool je true
-    // var i;
-    // for (i = 0; i < state.neobradjeneApoteka.length; i++) {
-    //   if(state.neobradjeneApoteka[i].id == id){
-    //     state.neobradjeneApoteka[i].obradjena = true;           //ako bude trebao pregled svih zalbi, onda treba pri odgovaranju ovo odraditi
-    //   }
-    // }
   },
 
   setObradjenaZaFarmaceuta(state, id){
@@ -216,7 +258,32 @@ const mutations = {
 
   addZalbaNaApoteku(state, zalba){
     state.zalbeNaApoteke.push(zalba);
-  }
+  },
+
+  setZalbePacNaA(state, lista){
+    state.zalbePacNaA = lista;
+  },
+
+  setZalbePacNaF(state, lista){
+    state.zalbePacNaF = lista;
+  },
+
+  setZalbePacNaD(state, lista){
+    state.zalbePacNaD = lista;
+  },
+
+  setZalbeAdminNaA(state, lista){
+    state.zalbeAdminNaA = lista;
+  },
+
+  setZalbeAdminNaF(state, lista){
+    state.zalbeAdminNaF = lista;
+  },
+
+  setZalbeAdminNaD(state, lista){
+    state.zalbeAdminNaD = lista;
+  },
+
 }
 
 export default { state, mutations, actions, getters, namespaced: true}

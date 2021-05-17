@@ -6,7 +6,6 @@ import apoteke from './modules/apoteke'
 import korisnici from './modules/korisnici'
 import lekovi from './modules/lekovi'
 import narudzbenice from './modules/narudzbenice'
-import ocene from './modules/ocene'
 import ponude from './modules/ponude'
 import zalbe from './modules/zalbe'
 import termini from './modules/termini'
@@ -24,7 +23,6 @@ const modules ={
   lekovi,
   korisnici,
   narudzbenice,
-  ocene,
   ponude,
   zalbe,
   termini

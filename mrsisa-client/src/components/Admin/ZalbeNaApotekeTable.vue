@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <div v-if="nemaZalbi">
+    <div v-if="zalbe.length==0">
       <v-card
       flat
       width="500">
@@ -9,7 +9,7 @@
     </div>
     <v-expansion-panels>
       <v-expansion-panel
-        v-for="zalba in neobradjene"
+        v-for="zalba in zalbe"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -41,9 +41,10 @@
           </v-textarea>
 
           <v-btn
+          v-if="canAnswer"
           dark
           color="green"
-          @click="odgovoriNaZalbu"
+          @click="odgovoriNaZalbu(zalba)"
           >
             Odgovori
           </v-btn>
@@ -90,20 +91,19 @@ export default {
     potvrda: false,
   }),
 
+  props: [
+    "zalbe",
+    "canAnswer"
+  ],
+
   computed: {
     ...mapGetters({
-      neobradjene: "zalbe/getNeobradjeneApoteka",
-      nemaZalbi: "zalbe/getNemaZalbiZaApoteke"
+      user: "korisnici/getKorisnik"
     })
   },
-
-   async mounted() {
-    this.getNeobradjeneApotekaAction();
-  },
-
+    
   methods: {
     ...mapActions({
-      getNeobradjeneApotekaAction: "zalbe/getNeobradjeneApotekaAction",
       sendOdgovorApotekaAction: "zalbe/sendOdgovorApotekaAction"
     }),
 
@@ -111,8 +111,8 @@ export default {
       this.selektovanaZalbaID = id;
     },
 
-    odgovoriNaZalbu(){
-      this.sendOdgovorApotekaAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+    odgovoriNaZalbu(zalbaUObradi){//{zalba, idAdmina, odg}
+      this.sendOdgovorApotekaAction({zalba: zalbaUObradi, idAdmina: this.user.id, odg: this.odgovor});
       this.potvrda = true;
     },
 

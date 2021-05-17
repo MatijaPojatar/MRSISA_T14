@@ -36,11 +36,17 @@ public class ZalbaNaApotekuDTO {
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
 		this.apotekaId = z.getApoteka().getId();
-		this.administratorId = z.getAdministrator().getId();
+		if(z.getAdministrator() == null) {
+			this.administratorId = -1;
+			this.administratorIP = "";
+		}else {
+			this.administratorId = z.getAdministrator().getId();
+			this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		}
 		this.odgovor = z.getOdgovor();
 		this.apotekaNaziv = z.getApoteka().getNaziv();
 		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
-		this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		
 	}
 	
 

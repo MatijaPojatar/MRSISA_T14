@@ -34,11 +34,17 @@ public class ZalbaNaFarmaceutaDTO {
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
 		this.farmaceutId = z.getFarmaceut().getId();
-		this.administratorId = z.getAdministrator().getId();
+		if(z.getAdministrator() == null) {
+			this.administratorId = -1;
+			this.administratorIP = "";
+		}else {
+			this.administratorId = z.getAdministrator().getId();
+			this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		}
 		this.odgovor = z.getOdgovor();
 		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
 		this.farmaceutIP = z.getFarmaceut().getIme() + " " + z.getFarmaceut().getPrezime();
-		this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		
 	}
 	
 	

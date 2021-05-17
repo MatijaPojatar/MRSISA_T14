@@ -43,6 +43,6 @@ public class ZalbaNaApotekuService {
 	}
 	
 	public List<ZalbaNaApoteku> findAllByPacijent(Integer id){
-		return zalbeRep.findByPacijent(id);
+		return zalbeRep.findAllByPacijentId(id);
 	}
 }
