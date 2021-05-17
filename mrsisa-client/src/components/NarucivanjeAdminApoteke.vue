@@ -38,7 +38,7 @@
       </v-container>
 
     <v-container fluid v-if="showNarudzbenice">
-        <TableNarudzbenice :apotekaId="apotekaId"/>
+        <TableNarudzbenice :apotekaId="apotekaId" :userId="this.user.id"/>
       </v-container>
 
    

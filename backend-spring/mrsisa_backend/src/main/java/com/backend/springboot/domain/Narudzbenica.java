@@ -38,10 +38,25 @@ public class Narudzbenica {
 	@Column(name = "status", nullable = false)
 	private StatusNarudzbenice status;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private AdministratorApoteke admin;
+	
 	public Narudzbenica() {
 	}
 
 	
+
+	public AdministratorApoteke getAdmin() {
+		return admin;
+	}
+
+
+
+	public void setAdmin(AdministratorApoteke admin) {
+		this.admin = admin;
+	}
+
+
 
 	public StatusNarudzbenice getStatus() {
 		return status;

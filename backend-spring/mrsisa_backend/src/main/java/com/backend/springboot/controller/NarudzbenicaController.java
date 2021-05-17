@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.LekIzNarudzbenice;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Ponuda;
@@ -72,6 +73,28 @@ public class NarudzbenicaController {
 		}
 		
 		return new ResponseEntity<List<PonudaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/lekovi/{id}")
+	public ResponseEntity<String> preuzmiLekove(@PathVariable Integer id){
+		List<LekIzNarudzbenice> lista = narudzbenicaService.preuzmiLekove(id);
+		
+		StringBuilder lekovi = new StringBuilder();
+		for(LekIzNarudzbenice l : lista) {
+			lekovi.append(l.getLek().getNaziv() + "\t");
+			lekovi.append(l.getKolicina().toString() + "\n");
+		}
+		
+		return new ResponseEntity<String>(lekovi.toString(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/prihvatiPonudu/{ponudaId}")
+	public ResponseEntity<Boolean> prihvatiPonudu(@PathVariable Integer ponudaId, @RequestBody String narId){
+		magacinService.prihvatiPonudu(Integer.parseInt(narId), ponudaId);
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
 	}
 
 }

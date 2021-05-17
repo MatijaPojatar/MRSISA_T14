@@ -5,6 +5,7 @@
     <v-radio-group
     label="Status:"
       v-model="radio"
+      
       @change="filtriraj()"
       row
     >
@@ -75,7 +76,33 @@
         <v-card-title class="headline">
           Ponude
         </v-card-title>
-        <TablePonude :apotekaId="this.apotekaId" :narudzbenicaId="this.selektovana" :key="this.componentKey"/>
+        <TablePonude :apotekaId="this.apotekaId" :narudzbenica="this.selektovanaNarudzbenica" :key="this.componentKey" :userId="this.userId" :obradjena="this.obradjena"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPonudeDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+     <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Lekovi
+        </v-card-title>
+        <v-textarea
+          v-model="this.lekoviStr"
+          readonly="true"
+        ></v-textarea>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -83,11 +110,13 @@
             text
             @click="endDialog"
           >
-            Povratak
+            Ok
           </v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+  </v-dialog>
+
+  
 
   </v-container>
 </template>
@@ -99,8 +128,11 @@ import Vue from "vue";
     export default{
       name: "TableNarudzbenice",
         data: () => ({
+            obradjena: false,
+            lekoviStr: "",
             componentKey: 0,
             ponudeDialog: false,
+            dialog: false,
             selektovanaNarudzbenica: {},
             selektovana: "",
             radio: "SVE",
@@ -110,6 +142,7 @@ import Vue from "vue";
             align: 'start',
             value: 'id',
           },
+          { text: 'Administrator', value: 'adminMail' },
           { text: 'Rok za ponude', value: 'rokStr' },
           { text: 'Status', value: 'statusStr' },
           { text: 'Lekovi', value: 'lekoviActions', sortable: false },
@@ -119,6 +152,7 @@ import Vue from "vue";
          }),
         props:{
             apotekaId: Number,
+            userId: Number,
             
         },
         components:{
@@ -136,11 +170,12 @@ import Vue from "vue";
                             narudzbenice.push({
                                 id: element.id,
                                 magacinId : element.magacinId,
-                                rok: element.rok,
+                                rok: new Date(element.rok[0].toString()+"-"+element.rok[1].toString()+"-"+element.rok[2].toString()),
                                 status: element.status,
                                 rokStr: element.rokStr,
-                                statusStr: element.statusStr
-                                
+                                statusStr: element.statusStr,
+                                adminId:element.adminId,
+                                adminMail:element.adminMail,
                                 
                             })
                             this.narudzbenice = narudzbenice
@@ -149,15 +184,28 @@ import Vue from "vue";
              },
              prikaziLekove(item){
                  console.log(item);
+                 Vue.axios.get(`http://localhost:8080/narudzbenice/lekovi/${item.id}`).then(response => {
+                    this.lekoviStr=response.data;
+                    this.dialog = true
+                 });
              },
              prikaziPonude(item){
                  this.selektovanaNarudzbenica=Object.assign({}, item);
                  this.selektovana = this.selektovanaNarudzbenica.id;
-                 console.log(this.selektovana);
+                 this.obradjena = false;
+                 if (this.selektovanaNarudzbenica.status == "OBRADJENA"){
+                   this.obradjena = true;
+                 }
+                 console.log(this.obradjena);
                  this.componentKey += 1
                  this.ponudeDialog = true;
+                 
+                 
              },
              endDialog(){
+                 this.dialog = false;
+             },
+             endPonudeDialog(){
                  this.ponudeDialog = false;
              },
              filtriraj(){

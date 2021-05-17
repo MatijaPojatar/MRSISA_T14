@@ -10,12 +10,15 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekIzNarudzbenice;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.OblikLeka;
+import com.backend.springboot.domain.Ponuda;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.StatusNarudzbenice;
+import com.backend.springboot.domain.StatusPonude;
 import com.backend.springboot.domain.StavkaCenovnika;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.domain.VrstaLeka;
@@ -24,6 +27,7 @@ import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.NarudzbenicaRepository;
+import com.backend.springboot.repository.PonudaRepository;
 import com.backend.springboot.repository.StavkaCenovnikaRepository;
 import com.backend.springboot.repository.UpitRepository;
 
@@ -44,6 +48,8 @@ public class MagacinService {
 	private UpitRepository upitRep;
 	@Autowired
 	private NarudzbenicaRepository narudzbenicaRep;
+	@Autowired
+	private PonudaRepository ponudeRep;
 	
 	public List<Magacin> findAll(){
 		return magacinRep.findAll();
@@ -72,6 +78,34 @@ public class MagacinService {
 		return narudzbenicaRep.findAllByStatusAndMagacinId(status, magacinId);
 	}
 	
+	public void prihvatiPonudu(Integer narudzbenicaId, Integer ponudaId) {
+		//dodati slanje mejla
+		Narudzbenica narudzbenica = narudzbenicaRep.findOneById(narudzbenicaId);
+		narudzbenica.setStatus(StatusNarudzbenice.OBRADJENA);
+		for(Ponuda p : ponudeRep.findAllByNarudzbenicaId(narudzbenicaId)) {
+			if (p.getId() != ponudaId) {
+				p.setStatus(StatusPonude.ODBIJENA);
+				ponudeRep.save(p);
+				continue;
+			}
+			p.setStatus(StatusPonude.PRIHVACENA);
+			ponudeRep.save(p);
+			
+		}
+		for(LekIzNarudzbenice lek: narudzbenica.getLekovi()) {
+			LekUMagacinu m = lekUMagacinuRep.findOneByMagacinIdAndLekId(narudzbenica.getMagacin().getId(), lek.getLek().getId());
+			if (m != null) {
+				m.setKolicina(m.getKolicina() + lek.getKolicina());
+				lekUMagacinuRep.save(m);
+			}
+			else {
+				dodajLek(LocalDateTime.now(), 200.0, lek.getLek().getId(), narudzbenica.getMagacin().getApoteka().getId(), lek.getKolicina());
+			}
+		}
+		
+	}
+	
+	
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
 		if(lum==null) {
@@ -92,10 +126,10 @@ public class MagacinService {
 		return true;
 	};
 	
-	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena,  Integer lekId, Integer apotekaId) {
+	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena,  Integer lekId, Integer apotekaId, Double kolicina) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);
-		l.setKolicina(0.0);
+		l.setKolicina(kolicina);
 		l.setLek(lekRep.findOneById(lekId));
 		l.setMagacin(apotekaRep.getOne(apotekaId).getMagacin());
 		l.setObrisan(false);

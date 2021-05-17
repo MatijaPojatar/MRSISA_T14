@@ -7,10 +7,10 @@ import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.StatusNarudzbenice;
 
 public class NarudzbenicaDTO {
-	private Integer id, magacinId;
+	private Integer id, magacinId, adminId;
 	private LocalDate rok; 
 	private StatusNarudzbenice status;
-	private String statusStr, rokStr;
+	private String statusStr, rokStr, adminMail;
 	
 	public NarudzbenicaDTO(Narudzbenica n) {
 		this.id = n.getId();
@@ -27,8 +27,27 @@ public class NarudzbenicaDTO {
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 		this.rokStr = this.rok.format(dtf);
+		
+		this.adminId = n.getAdmin().getId();
+		this.adminMail = n.getAdmin().getMail();
 	}
 	
+	public Integer getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(Integer adminId) {
+		this.adminId = adminId;
+	}
+
+	public String getAdminMail() {
+		return adminMail;
+	}
+
+	public void setAdminMail(String adminMail) {
+		this.adminMail = adminMail;
+	}
+
 	public Integer getId() {
 		return id;
 	}

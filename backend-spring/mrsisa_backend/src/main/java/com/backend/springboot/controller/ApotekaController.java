@@ -116,7 +116,7 @@ public class ApotekaController {
 	@PutMapping("/dodajLek/{id}/{apotekaId}")
 	public ResponseEntity<String> dodajLek(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody String cena ) {
 		LocalDateTime pocetakVazenja = LocalDateTime.now();
-		magacinService.dodajLek(pocetakVazenja, Double.parseDouble(cena), id, apotekaId);
+		magacinService.dodajLek(pocetakVazenja, Double.parseDouble(cena), id, apotekaId, 0.0);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	

@@ -133,7 +133,7 @@
         <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showNarucivanje" :style="{width:'180vh'}">
-        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId"/>
+        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showApoteka" :style="{width:'70vh'}">
         <ApotekaForm :apotekaId="user.apotekaId" :editable="true" />

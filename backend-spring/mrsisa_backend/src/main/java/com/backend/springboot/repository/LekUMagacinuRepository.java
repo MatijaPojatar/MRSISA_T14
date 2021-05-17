@@ -12,4 +12,6 @@ public interface LekUMagacinuRepository extends JpaRepository<LekUMagacinu, Inte
 	public List<LekUMagacinu> findAllByMagacinId(Integer MagacinId);
 	
 	public LekUMagacinu findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(Integer magacinId,Integer lekId,Double kolicina);
+	
+	public LekUMagacinu findOneByMagacinIdAndLekId(Integer magacinId,Integer lekId);
 }
