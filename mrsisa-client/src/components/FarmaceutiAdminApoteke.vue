@@ -1,11 +1,12 @@
 <template>
-    <div>
-    <div>
+    <div justify="space-around" align="center">
+    <br/>
+    <div >
     <v-btn
         class="mx-2"
         fab
         dark
-        small
+        medium
         color="light-green"
         @click="DodajFarmaceuta"
     >
@@ -18,7 +19,7 @@
         class="mx-2"
         fab
         dark
-        small
+        medium
         color="light-blue"
         @click="showPretrazi"
     >
