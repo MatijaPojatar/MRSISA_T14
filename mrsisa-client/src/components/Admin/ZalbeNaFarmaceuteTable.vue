@@ -1,15 +1,17 @@
 <template>
-  <v-row>
-    <div v-if="nemaZalbi">
+  <div>
+    <div v-if="zalbe.length==0">
       <v-card
       flat
-      width="500">
+      width="600">
         <v-card-title>Trenutno nema žalbi na farmaceute</v-card-title>
       </v-card>
     </div>
-    <v-expansion-panels>
+    <v-expansion-panels
+      style="width: 600px;"
+    >
       <v-expansion-panel
-        v-for="zalba in neobradjene"
+        v-for="zalba in zalbe"
         :key="zalba.id"
         @click="selekcija(zalba.id)"
       >
@@ -34,16 +36,29 @@
           </div>
           <v-divider/>
 
+
           <v-textarea
+          v-if="canAnswer"
           outlined
-          v-model="odgovor">
+          v-model="odgovor"
+          label="Odgovor">
           </v-textarea>
+
+           <v-textarea
+           v-else
+          readonly
+          outlined
+          v-model="zalba.odgovor"
+          label="Odgovor">
+          </v-textarea>
+
 
           <br/>
             <v-btn
+            v-if="canAnswer"
             dark
             color="green"
-            @click="odgovoriNaZalbu"
+            @click="odgovoriNaZalbu(zalba)"
             >
               Odgovori
             </v-btn>
@@ -76,7 +91,7 @@
       </v-card>
   </v-dialog>
 
-  </v-row>
+  </div>
 </template>
 
 <script>
@@ -91,20 +106,19 @@ export default {
     potvrda: false,
   }),
 
+  props: [
+    "zalbe",
+    "canAnswer"
+  ],
+
   computed: {
     ...mapGetters({
-      neobradjene: "zalbe/getNeobradjeneFarmaceut",
-      nemaZalbi: "zalbe/getNemaZalbiZaFarmaceuta"
+      user: "korisnici/getKorisnik"
     })
-  },
-
-  async mounted() {
-    this.getNeobradjeneFarmaceutAction();
   },
 
   methods: {
     ...mapActions({
-      getNeobradjeneFarmaceutAction: "zalbe/getNeobradjeneFarmaceutAction",
       sendOdgovorFarmaceutAction: "zalbe/sendOdgovorFarmaceutAction"
     }),
 
@@ -112,9 +126,10 @@ export default {
       this.selektovanaZalbaID = id;
     },
 
-    odgovoriNaZalbu(){
-      this.sendOdgovorFarmaceutAction({id: this.selektovanaZalbaID, odg: this.odgovor});
+    odgovoriNaZalbu(zalbaUObradi){
+      this.sendOdgovorFarmaceutAction({zalba: zalbaUObradi, idAdmina: this.user.id, odg: this.odgovor});
       this.potvrda = true;
+      this.odgovor = "";
     },
 
     endPotvrda(){

@@ -62,8 +62,10 @@ public class EmailService {
 						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
 						"\nApoteka: "+ zalba.getApoteka().getNaziv() +
 						"\nTekst žalbe: " + zalba.getTekst() +
+						"\nAutor odgovora: " + zalba.getAdministrator().getIme() + " " + zalba.getAdministrator().getPrezime() +
 						"\n\nOdgovor: " + zalba.getOdgovor()+
-						"\n\nSrdačan pozdrav!");
+						"\n\nSrdačan pozdrav!" +
+						"\nPotpis: " + zalba.getAdministrator().getPotpis());
 		jms.send(mail);
 	}
 	
@@ -76,8 +78,10 @@ public class EmailService {
 						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
 						"\nFarmaceut: "+ zalba.getFarmaceut().getIme() + " " + zalba.getFarmaceut().getPrezime()+ 
 						"\nTekst žalbe: " + zalba.getTekst() +
+						"\nAutor odgovora: " + zalba.getAdministrator().getIme() + " " + zalba.getAdministrator().getPrezime() +
 						"\n\nOdgovor: " + zalba.getOdgovor()+
-						"\n\nSrdačan pozdrav!");
+						"\n\nSrdačan pozdrav!" +
+						"\nPotpis: " + zalba.getAdministrator().getPotpis());
 		jms.send(mail);
 	}
 	
@@ -90,8 +94,10 @@ public class EmailService {
 						"\nPacijent: " + zalba.getPacijent().getIme() + " " + zalba.getPacijent().getPrezime()+
 						"\nDermatolog: "+ zalba.getDermatolog().getIme() + " " + zalba.getDermatolog().getPrezime() + 
 						"\nTekst žalbe: " + zalba.getTekst() +
+						"\nAutor odgovora: " + zalba.getAdministrator().getIme() + " " + zalba.getAdministrator().getPrezime() +
 						"\n\nOdgovor: " + zalba.getOdgovor()+
-						"\n\nSrdačan pozdrav!");
+						"\n\nSrdačan pozdrav!" +
+						"\nPotpis: " + zalba.getAdministrator().getPotpis());
 		jms.send(mail);
 	}
 	

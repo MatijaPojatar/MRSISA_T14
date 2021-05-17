@@ -87,6 +87,7 @@ export default {
 
         await this.addZalbaNaFarmaceutaAction(zalbaDTO);
         alert("Uspesno dodata zalba")
+        this.tekst = "";
       }catch(error){
         alert("Greska pri dodavanju zalbe");
       }

@@ -31,6 +31,8 @@ public class ZalbaNaFarmaceuta {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private AdministratorSistema administrator;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Farmaceut farmaceut;
@@ -39,16 +41,19 @@ public class ZalbaNaFarmaceuta {
 		super();
 	}
 
+
 	public ZalbaNaFarmaceuta(Integer id, String tekst, String odgovor, Boolean obradjena, Pacijent pacijent,
-			Farmaceut farmaceut) {
+			AdministratorSistema administrator, Farmaceut farmaceut) {
 		super();
 		this.id = id;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.pacijent = pacijent;
+		this.administrator = administrator;
 		this.farmaceut = farmaceut;
 	}
+
 
 	public ZalbaNaFarmaceuta(ZalbaNaFarmaceutaDTO dto) {
 		super();
@@ -58,6 +63,14 @@ public class ZalbaNaFarmaceuta {
 		this.odgovor = dto.getOdgovor();
 	}
 	
+	public AdministratorSistema getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(AdministratorSistema administrator) {
+		this.administrator = administrator;
+	}
+
 	public Integer getId() {
 		return id;
 	}
