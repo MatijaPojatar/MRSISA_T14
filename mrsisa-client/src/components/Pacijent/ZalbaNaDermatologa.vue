@@ -82,6 +82,7 @@ export default {
 
         await this.addZalbaNaDermatologaAction(zalbaDTO);
         alert("Uspesno dodata zalba")
+        this.tekst = "";
       }catch(error){
         alert("Greska pri dodavanju zalbe");
       }

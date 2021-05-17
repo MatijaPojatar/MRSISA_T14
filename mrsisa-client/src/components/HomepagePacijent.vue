@@ -106,6 +106,17 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+
+                 <v-list-item link @click="zalbePacijentaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-note-multiple</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Moje žalbe
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
             </v-list>
 
             <template v-slot:append>
@@ -136,7 +147,10 @@
                 <ZalbaNaFarmaceuta />
             </v-container>
              <v-container fluid v-if="showZalbaDermatolog" :style="{width:'70vh'}">
-                <ZalbaNaDermatologa :id="user.id"/>
+                <ZalbaNaDermatologa :id="user.id"/> <!--mislim da ne treba prop-->
+            </v-container>
+            <v-container fluid v-if="showZalbePacijenta" :style="{width:'70vh'}">
+                <ZalbePacijenta/>
             </v-container>
         </v-main>
     </v-app>
@@ -151,6 +165,7 @@ import AddAllergy from "./AddAllergy";
 import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
 import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
+import ZalbePacijenta from "./Pacijent/ZalbePacijenta";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -163,7 +178,8 @@ export default {
         AddAllergy,
         ZalbaNaApoteku,
         ZalbaNaDermatologa,
-        ZalbaNaFarmaceuta
+        ZalbaNaFarmaceuta,
+        ZalbePacijenta
     },
     data: () => ({
     showCalendar: false,
@@ -173,6 +189,7 @@ export default {
     showZalbaApoteka : false,
     showZalbaFarmaceut : false,
     showZalbaDermatolog : false,
+    showZalbePacijenta: false,
     user: {},
   }),
   mounted(){
@@ -196,6 +213,7 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
       },
       accountView(){
           this.showCalendar=false;
@@ -205,6 +223,7 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
       },
       changePassword(){
           this.showCalendar=false;
@@ -214,6 +233,7 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
       },
       allergyView(){
           this.showCalendar=false;
@@ -223,6 +243,7 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
       },
 
       zalbaApotekaView(){
@@ -233,6 +254,7 @@ export default {
           this.showZalbaApoteka = true;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
       },
 
       zalbaDermatologView(){
@@ -243,6 +265,7 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = true;
+          this.showZalbePacijenta = false;
       },
 
       zalbaFarmaceutView() {
@@ -253,6 +276,18 @@ export default {
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = true;
           this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+      },
+
+      zalbePacijentaView() {
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = true;
       },
 
 

@@ -21,6 +21,7 @@ import com.backend.springboot.domain.ZalbaNaFarmaceuta;
 import com.backend.springboot.dto.ZalbaNaApotekuDTO;
 import com.backend.springboot.dto.ZalbaNaDermatologaDTO;
 import com.backend.springboot.dto.ZalbaNaFarmaceutaDTO;
+import com.backend.springboot.service.AdministratorSistemaService;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.DermatologService;
@@ -55,6 +56,9 @@ public class ZalbaController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired 
+	private AdministratorSistemaService adminService;
 	
 	@Autowired
 	private EmailService emailService;
@@ -91,9 +95,9 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
 	
-	@GetMapping("/apoteka/obradjene")
-	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAObradjene() {
-		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllObradjene();
+	@GetMapping("/apoteka/obradjene/{id}")
+	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAObradjeneByAdmin(@PathVariable Integer id) {
+		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllObradjeneByAdmin(id);
 
 		List<ZalbaNaApotekuDTO> dtos = new ArrayList<ZalbaNaApotekuDTO>();
 		for (ZalbaNaApoteku z : zalbe) {
@@ -102,6 +106,19 @@ public class ZalbaController {
 
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
+	
+	@GetMapping("/apoteka/pacijent/{id}")
+	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAByPacijent(@PathVariable Integer id) {
+		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllByPacijent(id);
+		
+		List<ZalbaNaApotekuDTO> dtos = new ArrayList<ZalbaNaApotekuDTO>();
+		for (ZalbaNaApoteku z : zalbe) {
+			dtos.add(new ZalbaNaApotekuDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
+	}
+
 
 	@PostMapping("/apoteka")
 	public ResponseEntity<ZalbaNaApotekuDTO> kreirajZalbuNaApoteku(@RequestBody ZalbaNaApotekuDTO dto) {
@@ -114,9 +131,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/apoteka/{id}")
-	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaApoteku odabrana = servisZaApoteke.findOne(id);
-		ZalbaNaApoteku zalba = servisZaApoteke.odgovoriNaZalbu(odabrana, odgovor);
+		ZalbaNaApoteku zalba = servisZaApoteke.odgovoriNaZalbu(odabrana,
+				apdejtovana.getOdgovor(), adminService.findOne( apdejtovana.getAdministratorId()));
 		
 		try {
 			emailService.noviOdgovorNaZalbuNaApoteku(zalba);
@@ -157,6 +175,30 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
 	}
 
+	@GetMapping("/farmaceut/obradjene/{id}")
+	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNFObradjeneByAdmin(@PathVariable Integer id) {
+		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAllObradjeneByAdmin(id);
+
+		List<ZalbaNaFarmaceutaDTO> dtos = new ArrayList<ZalbaNaFarmaceutaDTO>();
+		for (ZalbaNaFarmaceuta z : zalbe) {
+			dtos.add(new ZalbaNaFarmaceutaDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
+	}
+
+	@GetMapping("/farmaceut/pacijent/{id}")
+	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNFByPacijent(@PathVariable Integer id) {
+		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAllByPacijent(id);
+		
+		List<ZalbaNaFarmaceutaDTO> dtos = new ArrayList<ZalbaNaFarmaceutaDTO>();
+		for (ZalbaNaFarmaceuta z : zalbe) {
+			dtos.add(new ZalbaNaFarmaceutaDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
+	}
+	
 	@PostMapping("/farmaceut")
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> kreirajZalbuNaFarmaceuta(@RequestBody ZalbaNaFarmaceutaDTO dto) {
 		ZalbaNaFarmaceuta kreirana = new ZalbaNaFarmaceuta(dto);
@@ -168,9 +210,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/farmaceut/{id}")
-	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
-		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, odgovor);
+		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.odgovoriNaZalbu(odabrana, 
+				apdejtovana.getOdgovor(), adminService.findOne( apdejtovana.getAdministratorId()));
 		
 		try {
 			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
@@ -180,7 +223,7 @@ public class ZalbaController {
 		
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
-
+	
 	@GetMapping("/dermatolog")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZND() {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAll();
@@ -210,6 +253,30 @@ public class ZalbaController {
 
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
 	}
+	
+	@GetMapping("/dermatolog/obradjene/{id}")
+	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZNDObradjeneByAdmin(@PathVariable Integer id) {
+		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAllObradjeneByAdmin(id);
+
+		List<ZalbaNaDermatologaDTO> dtos = new ArrayList<ZalbaNaDermatologaDTO>();
+		for (ZalbaNaDermatologa z : zalbe) {
+			dtos.add(new ZalbaNaDermatologaDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatolog/pacijent/{id}")
+	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZNDByPacijent(@PathVariable Integer id) {
+		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAllByPacijent(id);
+		
+		List<ZalbaNaDermatologaDTO> dtos = new ArrayList<ZalbaNaDermatologaDTO>();
+		for (ZalbaNaDermatologa z : zalbe) {
+			dtos.add(new ZalbaNaDermatologaDTO(z));
+		}
+
+		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
+	}
 
 	@PostMapping("/dermatolog")
 	public ResponseEntity<ZalbaNaDermatologaDTO> kreirajZalbuNaDermatologa(@RequestBody ZalbaNaDermatologaDTO dto) {
@@ -222,9 +289,10 @@ public class ZalbaController {
 	}
 
 	@PutMapping("/dermatolog/{id}")
-	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody String odgovor) {
+	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody  ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);
-		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana, odgovor);
+		ZalbaNaDermatologa zalba = servisZaDermatologe.odgovoriNaZalbu(odabrana,
+				apdejtovana.getOdgovor(), adminService.findOne( apdejtovana.getAdministratorId()));
 		
 		try {
 			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);

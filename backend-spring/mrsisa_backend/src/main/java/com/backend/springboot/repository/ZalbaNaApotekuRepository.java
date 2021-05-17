@@ -14,6 +14,8 @@ public interface ZalbaNaApotekuRepository extends JpaRepository<ZalbaNaApoteku, 
 	
 	List<ZalbaNaApoteku> findByObradjenaFalse();
 	
-	List<ZalbaNaApoteku> findByObradjenaTrue();
+	List<ZalbaNaApoteku> findAllByPacijentId(Integer id);
+	
+	List<ZalbaNaApoteku> findByObradjenaTrueAndAdministratorId(Integer id);
 }
 

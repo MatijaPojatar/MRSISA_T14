@@ -32,7 +32,11 @@ public class ZalbaNaDermatologa {
 	//jedan pac vise zalbi
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private AdministratorSistema administrator;
 	
+
 	
 	//dermatolog
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -44,15 +48,15 @@ public class ZalbaNaDermatologa {
 		super();
 	}
 
-
 	public ZalbaNaDermatologa(Integer id, String tekst, String odgovor, Boolean obradjena, Pacijent pacijent,
-			Dermatolog dermatolog) {
+			AdministratorSistema administrator, Dermatolog dermatolog) {
 		super();
 		this.id = id;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.pacijent = pacijent;
+		this.administrator = administrator;
 		this.dermatolog = dermatolog;
 	}
 
@@ -64,6 +68,15 @@ public class ZalbaNaDermatologa {
 		this.odgovor = dto.getOdgovor();
 	}
 	
+	
+	public AdministratorSistema getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(AdministratorSistema administrator) {
+		this.administrator = administrator;
+	}
+
 	public Integer getId() {
 		return id;
 	}

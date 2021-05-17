@@ -8,7 +8,13 @@ const initStanje = () => {
     moguceApoteke: [],
     neobradjeneApoteka: [],
     neobradjeneFarmaceut: [],
-    neobradjeneDermatolog: []
+    neobradjeneDermatolog: [],
+    zalbePacNaA: [],
+    zalbePacNaF: [],
+    zalbePacNaD: [],
+    zalbeAdminNaA: [],
+    zalbeAdminNaF: [],
+    zalbeAdminNaD: [],
   }
 }
 
@@ -19,25 +25,21 @@ const getters = {
   getMoguciFarmaceuti: state => state.moguciFarmaceuti,
   getMoguciDermatolozi: state => state.moguciDermatolozi,
   getMoguceApoteke: state => state.moguceApoteke,
+
   getNeobradjeneApoteka: state => state.neobradjeneApoteka,
   getNeobradjeneFarmaceut: state => state.neobradjeneFarmaceut,
   getNeobradjeneDermatolog: state => state.neobradjeneDermatolog,
-  getNemaZalbiZaApoteke: state => state.neobradjeneApoteka.length == 0,
-  getNemaZalbiZaFarmaceuta: state => state.neobradjeneFarmaceut.length == 0,
-  getNemaZalbizaDermatologa: state => state.neobradjeneDermatolog.length == 0,
 
+  getZalbePacNaA: state => state.zalbePacNaA,
+  getZalbePacNaF: state => state.zalbePacNaF,
+  getZalbePacNaD: state => state.zalbePacNaD,
+
+  getZalbeAdminNaA: state => state.zalbeAdminNaA,
+  getZalbeAdminNaF: state => state.zalbeAdminNaF,
+  getZalbeAdminNaD: state => state.zalbeAdminNaD
 }
 
 const actions = {
-
-  // async getZalbeNaApotekeAction({commit}){
-  //   try{
-  //     const { data : zalbe } = await Vue.axios.get("/zalbe/apoteka");
-  //     commit("setZalbeNaApoteke", zalbe);
-  //   } catch(error){
-  //     alert("Greska pri dobavljanju zalbi za Apoteke");
-  //   }
-  // },
 
   async addZalbaNaApotekuAction({commit}, zalbaDTO){
     try{
@@ -75,16 +77,22 @@ const actions = {
     
     const response1 = await Vue.axios.get("/pregled/apotekePacijenta/" + pacijentId);
     const response2 = await Vue.axios.get("/savetovanje/apotekePacijenta/" + pacijentId);
+    const response3 = await Vue.axios.get("/rezervacija/apotekePacijenta/" + pacijentId);
 
     console.log("OVO SU MOGUCE APOTEKE")
     console.log(response1);
     console.log(response2);
+    console.log(response3);
 
     response1.data.forEach(item => {  
       moguceApoteke.add(item);
      })
      response2.data.forEach(item => {  
       moguceApoteke.add(item);
+     })
+
+     response3.data.forEach(item => {
+       moguceApoteke.add(item);
      })
 
     console.log(moguceApoteke);
@@ -129,30 +137,74 @@ const actions = {
     commit("setNeobradjeneDermatolog", response.data)
   },
 
+  async getZalbePacNaAAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/apoteka/pacijent/"+ pacijentId);
 
-  async sendOdgovorApotekaAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("/zalbe/apoteka/"+ id, odg);
-
-
-    console.log("ODGOVOR");
-    console.log(response);
-    commit("setObradjenaZaApoteku", id);
+    commit("setZalbePacNaA", response.data);
   },
 
-  async sendOdgovorFarmaceutAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("zalbe/farmaceut/"+id, odg);
+  async getZalbePacNaFAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/farmaceut/pacijent/" + pacijentId);
 
-    console.log("ODGOVOR");
-    console.log(response);
-    commit("setObradjenaZaFarmaceuta", id);
+    commit("setZalbePacNaF", response.data);
   },
 
-  async sendOdgovorDermatologAction({commit}, {id, odg}){
-    const response = await Vue.axios.put("zalbe/dermatolog/"+id, odg);
+  async getZalbePacNaDAction({commit}, pacijentId){
+    const response = await Vue.axios.get("zalbe/dermatolog/pacijent/" + pacijentId);
+
+    commit("setZalbePacNaD", response.data);
+  },
+
+  async getZalbeAdminNaAAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/apoteka/obradjene/" + adminId);
+
+    commit("setZalbeAdminNaA", response.data);
+  },
+
+  async getZalbeAdminNaFAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/farmaceut/obradjene/" + adminId);
+
+    commit("setZalbeAdminNaF", response.data);
+  },
+
+  async getZalbeAdminNaDAction({commit}, adminId){
+    const response = await Vue.axios.get("zalbe/dermatolog/obradjene/"+ adminId);
+
+    commit("setZalbeAdminNaD", response.data);
+  },
+
+  async sendOdgovorApotekaAction({commit}, {zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
+
+    const response = await Vue.axios.put("/zalbe/apoteka/"+ zalba.id, zalba); 
+
 
     console.log("ODGOVOR");
     console.log(response);
-    commit("setObradjenaZaDermatologa", id);
+    commit("setObradjenaZaApoteku", zalba.id);
+  },
+
+  async sendOdgovorFarmaceutAction({commit}, {zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
+
+    const response = await Vue.axios.put("zalbe/farmaceut/"+zalba.id, zalba);
+
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaFarmaceuta", zalba.id);
+  },
+
+  async sendOdgovorDermatologAction({commit},{zalba, idAdmina, odg}){
+    zalba.administratorId = idAdmina;
+    zalba.odgovor = odg;
+
+    const response = await Vue.axios.put("zalbe/dermatolog/"+zalba.id, zalba);
+
+    console.log("ODGOVOR");
+    console.log(response);
+    commit("setObradjenaZaDermatologa", zalba.id);
   },
 
 
@@ -167,13 +219,6 @@ const mutations = {
   setObradjenaZaApoteku(state, id){
     const index = state.neobradjeneApoteka.findIndex((l) => l.id === id);
     state.neobradjeneApoteka.splice(index,1);
-    //za svaku zalbu, ako je id takav, njenbool je true
-    // var i;
-    // for (i = 0; i < state.neobradjeneApoteka.length; i++) {
-    //   if(state.neobradjeneApoteka[i].id == id){
-    //     state.neobradjeneApoteka[i].obradjena = true;           //ako bude trebao pregled svih zalbi, onda treba pri odgovaranju ovo odraditi
-    //   }
-    // }
   },
 
   setObradjenaZaFarmaceuta(state, id){
@@ -216,7 +261,32 @@ const mutations = {
 
   addZalbaNaApoteku(state, zalba){
     state.zalbeNaApoteke.push(zalba);
-  }
+  },
+
+  setZalbePacNaA(state, lista){
+    state.zalbePacNaA = lista;
+  },
+
+  setZalbePacNaF(state, lista){
+    state.zalbePacNaF = lista;
+  },
+
+  setZalbePacNaD(state, lista){
+    state.zalbePacNaD = lista;
+  },
+
+  setZalbeAdminNaA(state, lista){
+    state.zalbeAdminNaA = lista;
+  },
+
+  setZalbeAdminNaF(state, lista){
+    state.zalbeAdminNaF = lista;
+  },
+
+  setZalbeAdminNaD(state, lista){
+    state.zalbeAdminNaD = lista;
+  },
+
 }
 
 export default { state, mutations, actions, getters, namespaced: true}

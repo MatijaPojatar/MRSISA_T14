@@ -5,8 +5,8 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 
 public class ZalbaNaApotekuDTO {
-	private Integer id, pacijentId, apotekaId;
-	private String tekst, odgovor, apotekaNaziv, pacijentIP;
+	private Integer id, pacijentId, apotekaId, administratorId;
+	private String tekst, odgovor, apotekaNaziv, pacijentIP, administratorIP;
 	private Boolean obradjena;
 	
 	
@@ -14,17 +14,19 @@ public class ZalbaNaApotekuDTO {
 		super();
 	}
 
-	public ZalbaNaApotekuDTO(Integer id, Integer pacijentId, Integer apotekaId, String tekst, String odgovor,
+	public ZalbaNaApotekuDTO(Integer id, Integer pacijentId, Integer apotekaId, Integer administratorId, String tekst, String odgovor,
 			Boolean obradjena) {
 		super();
 		this.id = id;
 		this.pacijentId = pacijentId;
 		this.apotekaId = apotekaId;
+		this.administratorId = administratorId;
 		this.tekst = tekst;
 		this.odgovor = odgovor;
 		this.obradjena = obradjena;
 		this.apotekaNaziv = "";
 		this.pacijentIP = "";
+		this.administratorIP = "";
 	}
 
 	public ZalbaNaApotekuDTO(ZalbaNaApoteku z) {
@@ -34,11 +36,35 @@ public class ZalbaNaApotekuDTO {
 		this.obradjena = z.getObradjena();
 		this.pacijentId = z.getPacijent().getId();
 		this.apotekaId = z.getApoteka().getId();
+		if(z.getAdministrator() == null) {
+			this.administratorId = -1;
+			this.administratorIP = "";
+		}else {
+			this.administratorId = z.getAdministrator().getId();
+			this.administratorIP = z.getAdministrator().getIme() + " " + z.getAdministrator().getPrezime();
+		}
 		this.odgovor = z.getOdgovor();
 		this.apotekaNaziv = z.getApoteka().getNaziv();
 		this.pacijentIP = z.getPacijent().getIme() + " " + z.getPacijent().getPrezime();
+		
 	}
 	
+
+	public Integer getAdministratorId() {
+		return administratorId;
+	}
+
+	public void setAdministratorId(Integer administratorId) {
+		this.administratorId = administratorId;
+	}
+
+	public String getAdministratorIP() {
+		return administratorIP;
+	}
+
+	public void setAdministratorIP(String administratorIP) {
+		this.administratorIP = administratorIP;
+	}
 
 	public String getApotekaNaziv() {
 		return apotekaNaziv;

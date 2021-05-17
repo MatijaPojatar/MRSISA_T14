@@ -93,6 +93,15 @@
                     Odgovori na zalbe
                 </div></v-list-item-title>
           </v-list-item>
+
+          <v-list-item link @click="mojeZalbe">
+            <v-list-item-icon>
+              <v-icon>mdi-note-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Moje Žalbe
+                </div></v-list-item-title>
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
@@ -133,6 +142,9 @@
         <ZalbeOdgovor/>
       </v-container>
 
+      <v-container fluid v-if="showMojeZalbe" :style="{width:'70vh'}">
+        <ZalbeAdmina/>
+      </v-container>
 
     </v-main>
       </v-app>
@@ -146,6 +158,7 @@ import KreirajLek from "./KreirajLek";
 import RegApoteka from "./RegApoteka";
 import RegZaposlenog from "./RegZaposlenog";
 import ZalbeOdgovor from "./ZalbeOdgovor";
+import ZalbeAdmina from "./ZalbeAdmina";
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -157,7 +170,8 @@ export default {
       KreirajLek,
       RegApoteka,
       RegZaposlenog,
-      ZalbeOdgovor
+      ZalbeOdgovor,
+      ZalbeAdmina,
     },
     data: () => ({
     showAccount: false,
@@ -166,6 +180,7 @@ export default {
     showRegApoteku: false,
     showRegZaposlenog: false,
     showZalbeOdgovor: false,
+    showMojeZalbe: false,
   }),
   mounted(){
     console.log(window.location.pathname) //?
@@ -190,6 +205,7 @@ export default {
       this.showRegApoteku = false;
       this.showRegZaposlenog = false;
       this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
     },
 
     changePassword(){
@@ -199,7 +215,7 @@ export default {
       this.showRegApoteku = false;
       this.showRegZaposlenog = false;
       this.showZalbeOdgovor = false;
-        
+      this.showMojeZalbe = false;
     },
 
     kreirajLek() {
@@ -209,6 +225,7 @@ export default {
       this.showRegApoteku = false;
       this.showRegZaposlenog = false;
       this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
     },
 
     registrujApoteku(){
@@ -218,6 +235,7 @@ export default {
       this.showRegApoteku = true;
       this.showRegZaposlenog = false;
       this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
     },
 
     registrujZaposlenog(){
@@ -227,6 +245,7 @@ export default {
       this.showRegApoteku = false;
       this.showRegZaposlenog = true;
       this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
     },
 
     odgovoriNaZalbe(){
@@ -236,6 +255,17 @@ export default {
       this.showRegApoteku = false;
       this.showRegZaposlenog = false;
       this.showZalbeOdgovor = true;
+      this.showMojeZalbe = false;
+    },
+
+    mojeZalbe(){
+       this.showAccount=false;
+      this.showPassword=false;
+      this.showKreirajLek = false;
+      this.showRegApoteku = false;
+      this.showRegZaposlenog = false;
+      this.showZalbeOdgovor = false;
+      this.showMojeZalbe = true;
     },
 
     onLogout(){

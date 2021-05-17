@@ -8,11 +8,14 @@ import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaFarmaceuta;
 
 public interface ZalbaNaFarmaceutaRepository extends JpaRepository<ZalbaNaFarmaceuta, Integer>{
-
 	
 	List<ZalbaNaFarmaceuta> findAll();
 	
 	ZalbaNaFarmaceuta findOneById(Integer id);
 	
 	List<ZalbaNaFarmaceuta> findByObradjenaFalse();
+	
+	List<ZalbaNaFarmaceuta> findAllByPacijentId(Integer id);
+	
+	List<ZalbaNaFarmaceuta> findByObradjenaTrueAndAdministratorId(Integer id);
 }
