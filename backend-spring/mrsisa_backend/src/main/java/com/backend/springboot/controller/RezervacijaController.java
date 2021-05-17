@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.backend.springboot.domain.ParametriPretrageRezervacije;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
 import com.backend.springboot.dto.RezervacijaLekaDTO;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.RezervacijaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -32,6 +34,9 @@ public class RezervacijaController {
 	
 	@Autowired
 	private RezervacijaService rezService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@GetMapping("checkOne/{code}")
 	public ResponseEntity<String> proveriRezervaciju(@PathVariable String code,@RequestParam Integer apotekaId){
@@ -64,6 +69,12 @@ public class RezervacijaController {
 		RezervacijaLeka rl=rezService.findOneActiveByCode(code);
 		rl.setStatus(StatusRezervacije.PREUZETA);
 		rezService.save(rl);
+		
+		try {
+			emailService.preuzimanjeRezervacije(rl);
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}

@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
@@ -91,6 +92,22 @@ public class EmailService {
 						"\nTekst žalbe: " + zalba.getTekst() +
 						"\n\nOdgovor: " + zalba.getOdgovor()+
 						"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void preuzimanjeRezervacije(RezervacijaLeka rl) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Preuzimanje rezervacije leka");
+		mail.setText("Poštovani "+rl.getPacijent().getIme()+"\n\nObaveštavamo Vas da je vaša rezervacija na lek: \n"+
+				"\nNaziv: " + rl.getLek().getNaziv()+
+				"\nProizvođač: "+ rl.getLek().getProizvodjac() + 
+				"\nKoličina: " + rl.getKolicina() +
+				"\n preuzeta od strane našeg farmaceuta apoteke "+rl.getApoteka().getNaziv() +
+				"\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}
 }
