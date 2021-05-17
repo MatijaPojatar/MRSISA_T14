@@ -38,6 +38,10 @@
         <TableUpiti :apotekaId="apotekaId"/>
       </v-container>
 
+    <v-container fluid v-if="showNarudzbenice">
+        <TableNarudzbenice :apotekaId="apotekaId"/>
+      </v-container>
+
    
 
     <v-dialog
@@ -68,19 +72,21 @@
 
 <script>
 import TableUpiti from "./TableUpiti";
+import TableNarudzbenice from "./TableNarudzbenice";
 
 
 export default{
     name: "NarucivanjeAdminApoteke",
     components: {
         TableUpiti,
+        TableNarudzbenice,
     },
     data: () => ({
         
         obavestenjeDialog: false,
-        showNarucivanje:false,
+        showNarudzbenice:false,
         showUpiti:true,
-        
+        showNovaNarudzbenica:false,
     }),
     props :{
         user: {},
@@ -94,11 +100,18 @@ export default{
         viewUpiti(){
             this.showUpiti = true;
             this.showNarudzbenice = false;
+            this.showNovaNarudzbenica = false;
         },
         viewNarudzbenice(){
             this.showUpiti = false;
             this.showNarudzbenice = true;
+            this.showNovaNarudzbenica = false;
         },
+        viewDodajNarudzbenicu(){
+            this.showUpiti = false;
+            this.showNarudzbenice = false;
+            this.showNovaNarudzbenica = true;
+        }
         
         
     },

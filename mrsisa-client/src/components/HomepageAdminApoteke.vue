@@ -78,7 +78,7 @@
 
           <v-list-item link @click="farmaceutiView">
             <v-list-item-icon>
-              <v-icon>mdi-beaker-outline</v-icon>
+              <v-icon>mdi-test-tube</v-icon>
             </v-list-item-icon>
             <v-list-item-title><div class="wh">
                     Farmaceuti
@@ -105,11 +105,7 @@
 
         <template v-slot:append>
         <div class="pa-2">
-            <v-switch
-            v-model="$vuetify.theme.dark"
-            label="Dark mode"
-            color="black"
-            ></v-switch>
+            
           <v-btn block @click="onLogout">
             Logout
           </v-btn>
