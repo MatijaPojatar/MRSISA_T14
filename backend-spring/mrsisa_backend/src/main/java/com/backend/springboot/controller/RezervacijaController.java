@@ -4,6 +4,8 @@ package com.backend.springboot.controller;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.ParametriPretrageRezervacije;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
+import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.RezervacijaLekaDTO;
 import com.backend.springboot.service.RezervacijaService;
 
@@ -67,4 +71,21 @@ public class RezervacijaController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("/apotekePacijenta/{id}")
+	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
+		
+		Set<Apoteka> apoteke = rezService.poseceneApoteke(id);
+		
+		List<MinimalApotekaDTO> minimalne = new ArrayList<MinimalApotekaDTO>();
+		for(Apoteka a : apoteke) {
+			minimalne.add(new MinimalApotekaDTO(a));
+		}
+		
+		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
+	}
+	
+	
+	
 }

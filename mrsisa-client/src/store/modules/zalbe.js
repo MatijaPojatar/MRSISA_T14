@@ -77,16 +77,22 @@ const actions = {
     
     const response1 = await Vue.axios.get("/pregled/apotekePacijenta/" + pacijentId);
     const response2 = await Vue.axios.get("/savetovanje/apotekePacijenta/" + pacijentId);
+    const response3 = await Vue.axios.get("/rezervacija/apotekePacijenta/" + pacijentId);
 
     console.log("OVO SU MOGUCE APOTEKE")
     console.log(response1);
     console.log(response2);
+    console.log(response3);
 
     response1.data.forEach(item => {  
       moguceApoteke.add(item);
      })
      response2.data.forEach(item => {  
       moguceApoteke.add(item);
+     })
+
+     response3.data.forEach(item => {
+       moguceApoteke.add(item);
      })
 
     console.log(moguceApoteke);
