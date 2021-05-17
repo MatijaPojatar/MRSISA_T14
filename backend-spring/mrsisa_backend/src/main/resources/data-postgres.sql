@@ -65,8 +65,10 @@ insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obr
 
 insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 6, 1, false);
 
+insert into narudzbenice(rok, magacin_id, status) values ('2021-05-15', 1, 1);
+insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (10, 1, 1);
 insert into narudzbenice(rok, magacin_id, status) values ('2021-05-31', 1, 0);
-insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (5, 7, 1);
+insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (5, 7, 2);
 
 insert into cenovnik(pocetak_vazenja, cena, lekUMagacinu_id) values ('2021-04-06 14:00', 100, 1);
 insert into cenovnik( pocetak_vazenja, cena, lekUMagacinu_id ) values ('2021-04-06 14:00', 200, 2 );

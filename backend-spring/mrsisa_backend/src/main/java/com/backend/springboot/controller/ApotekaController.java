@@ -151,11 +151,11 @@ public class ApotekaController {
 		
 	}
 	
-	@GetMapping("/narudzbeniceStatus/{id}")
-	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiNarudzbenicePoStatusu(@PathVariable Integer id, @RequestBody StatusNarudzbenice status){
+	@PostMapping("/narudzbeniceStatus/{id}")
+	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiNarudzbenicePoStatusu(@PathVariable Integer id, @RequestBody String status){
 		Magacin m=magacinService.findOneByApotekaId(id);
 		
-		List<Narudzbenica> nar= magacinService.preuzmiNarudzbenicePoStatusu(m.getId(), status);
+		List<Narudzbenica> nar= magacinService.preuzmiNarudzbenicePoStatusu(m.getId(), StatusNarudzbenice.valueOf(status));
 		List<NarudzbenicaDTO> dto = new ArrayList<NarudzbenicaDTO>();
 		for (Narudzbenica n: nar) {
 			dto.add(new NarudzbenicaDTO(n));

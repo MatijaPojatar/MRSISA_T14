@@ -1,5 +1,32 @@
 <template>
-  <v-row justify="center">
+  <v-container justify="center">
+  <div>
+  <v-card>
+    <v-radio-group
+    label="Status:"
+      v-model="radio"
+      @change="filtriraj()"
+      row
+    >
+      <v-radio
+        label="čeka obradu"
+        value="CEKA_PONUDE"
+      ></v-radio>
+      <v-radio
+        label="obrađene"
+        value="OBRADJENA"
+        
+      ></v-radio>
+      <v-radio
+        label="sve"
+        value="SVE"
+      ></v-radio>
+    </v-radio-group>
+    </v-card>
+    </div>
+    <br/>
+    <br/>
+    <div>
      <v-data-table
     :headers="headers"
     :items="narudzbenice"
@@ -37,16 +64,17 @@
     
   </v-data-table>
 
-   
-  </v-row>
+   </div>
+  </v-container>
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
 
     export default{
       name: "TableNarudzbenice",
         data: () => ({
+            radio: "SVE",
             headers: [
           {
             text: 'Id',
@@ -70,7 +98,7 @@
         methods:{
              loadNarudzbenice(){
                 const narudzbenice = []
-                axios.get(`http://localhost:8080/apoteke/narudzbenice/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`http://localhost:8080/apoteke/narudzbenice/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             narudzbenice.push({
@@ -80,6 +108,7 @@
                                 status: element.status,
                                 rokStr: element.rokStr,
                                 statusStr: element.statusStr
+                                
                                 
                             })
                             this.narudzbenice = narudzbenice
@@ -92,6 +121,34 @@
              prikaziPonude(item){
                  console.log(item);
              },
+             filtriraj(){
+                 console.log(this.radio)
+                 if (this.radio != "SVE"){
+                     this.prikaziPoStatusu()
+                 }
+                 else{
+                     this.loadNarudzbenice()
+                 }
+             },
+             prikaziPoStatusu(){
+                const narudzbenice = []
+                Vue.axios.post(`http://localhost:8080/apoteke/narudzbeniceStatus/${this.apotekaId}`, this.radio, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                        
+                        response.data.forEach(element => {
+                            narudzbenice.push({
+                                id: element.id,
+                                magacinId : element.magacinId,
+                                rok: element.rok,
+                                status: element.status,
+                                rokStr: element.rokStr,
+                                statusStr: element.statusStr
+                                
+                            })
+                            this.narudzbenice = narudzbenice
+                            console.log("bla bla bla")
+                        })
+                    });
+             }
 
              
 
