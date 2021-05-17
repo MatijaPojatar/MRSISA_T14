@@ -41,6 +41,7 @@
                     Dashboard
                 </div></v-list-item-title>
           </v-list-item>
+
           <v-list-item link  @click="accountView">
             <v-list-item-icon>
               <v-icon>mdi-account-box</v-icon>
@@ -49,6 +50,7 @@
                     Nalog
                 </div></v-list-item-title>
           </v-list-item>
+
           <v-list-item link  @click="changePassword">
             <v-list-item-icon>
               <v-icon>mdi-lock-reset</v-icon>
@@ -58,12 +60,12 @@
                 </div></v-list-item-title>
           </v-list-item>
           
-          <v-list-item link @click="calendarView">
+          <v-list-item link @click="apotekaView">
             <v-list-item-icon>
-              <v-icon>mdi-calendar</v-icon>
+              <v-icon>mdi-gamepad-round-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title><div class="wh">
-                    Kalendar
+                    Apoteka
                 </div></v-list-item-title>
           </v-list-item>
           
@@ -93,6 +95,7 @@
                     Dermatolozi
                 </div></v-list-item-title>
           </v-list-item>
+
            <v-list-item link @click="narucivanjeView">
             <v-list-item-icon>
               <v-icon>mdi-clipboard-edit-outline</v-icon>
@@ -114,9 +117,6 @@
     </v-navigation-drawer>
 
     <v-main >
-     <v-container fluid fill-height v-if="showCalendar">
-        <Calendar  :user="user"/>
-      </v-container>
      <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
         <AccountView :user="user" :editable = "true" :adminApoteke="true"/>
       </v-container>
@@ -133,7 +133,10 @@
         <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showNarucivanje" :style="{width:'180vh'}">
-        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId"/>
+      </v-container>
+      <v-container fluid v-if="showApoteka" :style="{width:'70vh'}">
+        <ApotekaForm :apotekaId="user.apotekaId" :editable="true" />
       </v-container>
     </v-main>
       </v-app>
@@ -141,7 +144,7 @@
 
 <script>
 
-import Calendar from "./Calendar";
+import ApotekaForm from "./ApotekaForm";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import LekoviAdminApoteke from "./LekoviAdminApoteke";
@@ -154,7 +157,7 @@ import {mapActions} from 'vuex';
 export default {
     name: "HomepageAdminApoteke",
     components:{
-        Calendar,
+        ApotekaForm,
         AccountView,
         PasswordSwitch,
         LekoviAdminApoteke,
@@ -163,7 +166,7 @@ export default {
         NarucivanjeAdminApoteke
     },
     data: () => ({
-    showCalendar: false,
+    showApoteka: false,
     showAccount: false,
     showPassword: false,
     showLekovi: false,
@@ -187,8 +190,8 @@ export default {
         logout: "korisnici/logoutAction",
         resetStore: "resetStore"
       }),
-      calendarView(){
-          this.showCalendar=true;
+      apotekaView(){
+          this.showApoteka=true;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = false;
@@ -197,7 +200,7 @@ export default {
           this.showNarucivanje = false;
       },
       accountView(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=true;
           this.showPassword=false;
           this.showLekovi = false;
@@ -213,7 +216,7 @@ export default {
       },
 
       changePassword(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=false;
           this.showPassword=true;
           this.showLekovi = false;
@@ -222,7 +225,7 @@ export default {
           this.showNarucivanje = false;
       },
       lekoviView(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = true;
@@ -231,7 +234,7 @@ export default {
           this.showNarucivanje = false;
       },
       farmaceutiView(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = false;
@@ -240,7 +243,7 @@ export default {
           this.showNarucivanje = false;
       },
       dermatoloziView(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = false;
@@ -249,7 +252,7 @@ export default {
           this.showNarucivanje = false;
       },
       narucivanjeView(){
-          this.showCalendar=false;
+          this.showApoteka=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showLekovi = false;

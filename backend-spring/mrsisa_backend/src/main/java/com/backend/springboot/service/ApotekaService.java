@@ -29,15 +29,13 @@ public class ApotekaService  {
 	}
 
 	
-	
-
-	
 	public Apoteka findOne(Integer sifra) {
 		return apotekaRep.findOneById(sifra);
 	}
-
 	
-	
+	public Apoteka save(Apoteka a) {
+		return apotekaRep.save(a);
+	}
 
 	public Collection<Lek> preuzmiLekoveApoteke(String sifra) {
 		Apoteka a = apotekaRep.findOneById(Integer.parseInt(sifra));

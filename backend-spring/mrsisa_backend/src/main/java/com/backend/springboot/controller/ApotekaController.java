@@ -35,6 +35,7 @@ import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.NarudzbenicaDTO;
 import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.dto.ApotekaDTO;
+import com.backend.springboot.dto.ApotekaMainInfoDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.MagacinService;
@@ -62,6 +63,8 @@ public class ApotekaController {
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
 	
+	
+	
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
 		try {
@@ -75,7 +78,23 @@ public class ApotekaController {
         }
 	}
 	
+	@GetMapping("/getOne/{id}")
+	public ResponseEntity<ApotekaMainInfoDTO> getOne(@PathVariable Integer id){
+		ApotekaMainInfoDTO apoteka = new ApotekaMainInfoDTO(apotekaService.findOne(id));
+		return new ResponseEntity<ApotekaMainInfoDTO>(apoteka, HttpStatus.OK);
+	}
 	
+	@PutMapping("/save/{id}")
+	public ResponseEntity<Boolean> saveUpdates(@PathVariable Integer id, @RequestBody ApotekaMainInfoDTO dto){
+		Apoteka a = apotekaService.findOne(id);
+		a.setNaziv(dto.getNaziv());
+		a.setOpis(dto.getOpis());
+		a.setGrad(dto.getGrad());
+		a.setDrzava(dto.getDrzava());
+		a.setAdresa(dto.getAdresa());
+		apotekaService.save(a);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
 	
 	@PostMapping("/rezultat")
 	public ResponseEntity<Collection<Apoteka>> pretrazi(String naziv, String grad) {
