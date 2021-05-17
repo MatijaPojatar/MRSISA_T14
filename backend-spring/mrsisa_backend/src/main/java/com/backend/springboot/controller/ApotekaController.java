@@ -156,31 +156,5 @@ public class ApotekaController {
 		
 	}
 	
-	@GetMapping("/narudzbenice/{id}")
-	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiSveNarudzbenice(@PathVariable Integer id){
-		Magacin m=magacinService.findOneByApotekaId(id);
-		
-		List<Narudzbenica> nar= magacinService.preuzmiSveNarudzbenice(m.getId());
-		List<NarudzbenicaDTO> dto = new ArrayList<NarudzbenicaDTO>();
-		for (Narudzbenica n: nar) {
-			dto.add(new NarudzbenicaDTO(n));
-		}
-		
-		return new ResponseEntity<List<NarudzbenicaDTO>>(dto, HttpStatus.OK);
-		
-	}
 	
-	@PostMapping("/narudzbeniceStatus/{id}")
-	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiNarudzbenicePoStatusu(@PathVariable Integer id, @RequestBody String status){
-		Magacin m=magacinService.findOneByApotekaId(id);
-		
-		List<Narudzbenica> nar= magacinService.preuzmiNarudzbenicePoStatusu(m.getId(), StatusNarudzbenice.valueOf(status));
-		List<NarudzbenicaDTO> dto = new ArrayList<NarudzbenicaDTO>();
-		for (Narudzbenica n: nar) {
-			dto.add(new NarudzbenicaDTO(n));
-		}
-		
-		return new ResponseEntity<List<NarudzbenicaDTO>>(dto, HttpStatus.OK);
-		
-	}
 }

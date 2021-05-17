@@ -1,6 +1,7 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.Ponuda;
 import com.backend.springboot.domain.StatusPonude;
@@ -9,6 +10,7 @@ public class PonudaDTO {
 	private Integer id, cena,dobavljacId, narudzbenicaId;
 	private LocalDateTime rokIsporuke;
 	private StatusPonude status;
+	private String rokStr, nazivDobavljaca;
 	
 	public PonudaDTO(Integer id, Integer cena, Integer dobavljacId, Integer narudzbenicaId, LocalDateTime rokIsporuke,
 			StatusPonude status) {
@@ -20,6 +22,7 @@ public class PonudaDTO {
 		this.rokIsporuke = rokIsporuke;
 		this.status = status;
 	}
+	
 
 	public PonudaDTO() {
 		super();
@@ -32,6 +35,11 @@ public class PonudaDTO {
 		this.narudzbenicaId = p.getNarudzbenica().getId();
 		this.rokIsporuke = p.getRokIsporuke();
 		this.status = p.getStatus();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		this.rokStr = this.rokIsporuke.format(dtf);
+		
+		this.nazivDobavljaca = p.getDobavljac().getNazivPreduzeca();
 	}
 
 	public Integer getId() {
@@ -80,6 +88,26 @@ public class PonudaDTO {
 
 	public void setStatus(StatusPonude status) {
 		this.status = status;
+	}
+
+
+	public String getRokStr() {
+		return rokStr;
+	}
+
+
+	public void setRokStr(String rokStr) {
+		this.rokStr = rokStr;
+	}
+
+
+	public String getNazivDobavljaca() {
+		return nazivDobavljaca;
+	}
+
+
+	public void setNazivDobavljaca(String nazivDobavljaca) {
+		this.nazivDobavljaca = nazivDobavljaca;
 	}
 	
 	

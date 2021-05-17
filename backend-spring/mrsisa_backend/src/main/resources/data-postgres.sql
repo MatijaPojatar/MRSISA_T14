@@ -70,6 +70,8 @@ insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (10, 1, 1
 insert into narudzbenice(rok, magacin_id, status) values ('2021-05-31', 1, 0);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (5, 7, 2);
 
+
+
 insert into cenovnik(pocetak_vazenja, cena, lekUMagacinu_id) values ('2021-04-06 14:00', 100, 1);
 insert into cenovnik( pocetak_vazenja, cena, lekUMagacinu_id ) values ('2021-04-06 14:00', 200, 2 );
 insert into cenovnik(pocetak_vazenja, cena,  lekUMagacinu_id ) values ( '2021-04-06 14:00', 300, 3 );
@@ -155,3 +157,7 @@ insert into osoba_role (osoba_id, role_id) values (11, 6);
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h22ad',0,'2021-05-22',2.0,1,2,1);
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h23ad',0,'2021-05-22',2.0,2,2,4);
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h24ad',0,'2021-05-13',2.0,1,2,1);
+
+insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (50000, '2021-05-25', 0, 11, 1);
+insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (58900, '2021-05-25', 2, 11, 2);
+insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (65000, '2021-05-20', 2, 11, 2);

@@ -9,7 +9,7 @@
       row
     >
       <v-radio
-        label="čeka obradu"
+        label="čeka ponude"
         value="CEKA_PONUDE"
       ></v-radio>
       <v-radio
@@ -65,15 +65,44 @@
   </v-data-table>
 
    </div>
+
+    <v-dialog
+    v-model="ponudeDialog"
+    persistent
+    scrollable
+      max-width="760">
+      <v-card>
+        <v-card-title class="headline">
+          Ponude
+        </v-card-title>
+        <TablePonude :apotekaId="this.apotekaId" :narudzbenicaId="this.selektovana" :key="this.componentKey"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </v-container>
 </template>
 
 <script>
- import Vue from "vue";
+import TablePonude from "./TablePonude";
+import Vue from "vue";
 
     export default{
       name: "TableNarudzbenice",
         data: () => ({
+            componentKey: 0,
+            ponudeDialog: false,
+            selektovanaNarudzbenica: {},
+            selektovana: "",
             radio: "SVE",
             headers: [
           {
@@ -92,13 +121,16 @@
             apotekaId: Number,
             
         },
+        components:{
+            TablePonude,
+        },
         mounted(){
             this.loadNarudzbenice();
         },
         methods:{
              loadNarudzbenice(){
                 const narudzbenice = []
-                Vue.axios.get(`http://localhost:8080/apoteke/narudzbenice/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`http://localhost:8080/narudzbenice/apoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             narudzbenice.push({
@@ -119,7 +151,14 @@
                  console.log(item);
              },
              prikaziPonude(item){
-                 console.log(item);
+                 this.selektovanaNarudzbenica=Object.assign({}, item);
+                 this.selektovana = this.selektovanaNarudzbenica.id;
+                 console.log(this.selektovana);
+                 this.componentKey += 1
+                 this.ponudeDialog = true;
+             },
+             endDialog(){
+                 this.ponudeDialog = false;
              },
              filtriraj(){
                  console.log(this.radio)
@@ -132,7 +171,7 @@
              },
              prikaziPoStatusu(){
                 const narudzbenice = []
-                Vue.axios.post(`http://localhost:8080/apoteke/narudzbeniceStatus/${this.apotekaId}`, this.radio, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                Vue.axios.post(`http://localhost:8080/narudzbenice/statusApoteka/${this.apotekaId}`, this.radio, {headers: {"Content-Type": "text/plain"}}).then(response => {
                         
                         response.data.forEach(element => {
                             narudzbenice.push({
