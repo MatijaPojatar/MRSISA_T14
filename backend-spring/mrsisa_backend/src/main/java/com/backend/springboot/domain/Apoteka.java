@@ -54,6 +54,9 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
+	@ManyToMany(mappedBy = "pretplaceneApoteke")
+	private List<Pacijent> pretplaceniPacijenti = new ArrayList<Pacijent>();
+	
 	@OneToMany(mappedBy = "apoteka")
 	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
 	
