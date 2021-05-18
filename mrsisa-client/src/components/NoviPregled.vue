@@ -20,42 +20,37 @@
     </v-card-text>
     <v-card>
       <v-data-table :headers="headeri" :items="pregledi">
-        <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2" @click="showAccount(item)">
-            mdi-account
-          </v-icon>
+        <template v-slot:item="red">
+          <tr>
+            <td>{{ red.item.name }}</td>
+            <td>{{ red.item.datum }}</td>
+            <td>{{ red.item.pocetak }}</td>
+            <td>{{ red.item.kraj }}</td>
+            <td>{{ red.item.dermatolog }}</td>
+            <td>{{ red.item.ocena }}</td>
+            <td>{{ red.item.cena }}</td>
+            <td>
+              <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="blue"
+                @click="zakazi(red.item)"
+              >
+                <v-icon dark>mdi-check</v-icon>
+              </v-btn>
+            </td>
+          </tr>
         </template>
       </v-data-table>
     </v-card>
-    <v-dialog
-      v-model="dialog"
-      persistent
-      scrollable
-      retain-focus
-      max-width="960"
-    >
-      <v-card>
-        <v-card-title class="headline"> Nalog pacijenta </v-card-title>
-        <v-card-text>
-          <AccountView
-            :user="selectedUser"
-            :farmaceut="false"
-            :editable="false"
-            :adminView="false"
-            :key="componentKey"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="endDialog"> Ok </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-card>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   name: "NoviPregled",
@@ -72,6 +67,7 @@ export default {
       { text: "Dermatolog", value: "dermatolog", sortable: false },
       { text: "Ocena", value: "ocena", sortable: false },
       { text: "Cena", value: "cena", sortable: true },
+      { text: "Zakaži" },
     ],
 
     pregledi: [],
@@ -105,6 +101,7 @@ export default {
             apotekaId: 1,
             id: 13,
             dermatolog: "Petar Petrovic",
+            dermatologId: 3,
             izvrsen: false,
             cena: 2500.0,
           },
@@ -117,6 +114,7 @@ export default {
             apotekaId: 1,
             id: 14,
             dermatolog: "Petar Petrovic",
+            dermatologId: 3,
             izvrsen: false,
             cena: 3000.0,
           },
@@ -132,6 +130,7 @@ export default {
             apotekaId: 2,
             id: 15,
             dermatolog: "Luka Lukic",
+            dermatologId: 10,
             izvrsen: false,
             cena: 4000.0,
           },
@@ -139,6 +138,32 @@ export default {
       } else {
         this.pregledi = [];
       }
+    },
+
+    zakazi(item) {
+      let pregled = {
+        name: item.name,
+        izvestaj: '',
+        start: [
+            2021,
+            5,
+            20,
+            12,
+            0
+        ],
+        end: [
+            2021,
+            5,
+            20,
+            12,
+            45
+        ],
+        pacijentId: this.korisnik.id,
+        dermatologId: item.dermatologId,
+        apotekaId: item.apotekaId,
+        izvrsen: false
+      };
+      axios.put(`http://localhost:8080/pregled/dodaj/${item.id}`, pregled);
     },
   },
 };

@@ -27,13 +27,14 @@ public class EmailService {
 
 	@Async
 	public void noviPregled(Pregled pregled) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(pregled.getPacijent().getMail());
+		//mail.setTo(pregled.getPacijent().getMail());
+	    mail.setTo("imenkoprezimic94@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Zakazan novi termin pregleda");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 		mail.setText("Poštovani,\n\nObaveštavamo Vas da je kreiran novi termin pregleda.\n"
 				   + "\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() 
-				   + "\nFarmaceut: dr. " + pregled.getDermatolog().getPrezime()
+				   + "\nDermatolog: dr. " + pregled.getDermatolog().getPrezime()
 				   + "\nTermin: " + pregled.getPocetak().format(formatter) + " - " + pregled.getKraj().format(formatter)
 				   + "\n\nSrdačan pozdrav!");
 		jms.send(mail);
