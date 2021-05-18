@@ -27,11 +27,11 @@ public class AkcijaPromocijaController {
 	public ResponseEntity<List<AkcijaPromocijaDTO>> getAPByPacijent(@PathVariable Integer id){
 		List<AkcijaPromocija> akcijePromocije = apService.findAllByPacijent(id);
 		
-		List<AkcijaPromocijaDTO> akcijePromocijeDTO = new ArrayList<AkcijaPromocijaDTO>();
+		List<AkcijaPromocijaDTO> dtos = new ArrayList<AkcijaPromocijaDTO>();
 		for(AkcijaPromocija ap : akcijePromocije) {
-			akcijePromocijeDTO.add(new AkcijaPromocijaDTO(ap));
+			dtos.add(new AkcijaPromocijaDTO(ap));
 		}
 
-		return new ResponseEntity<List<AkcijaPromocijaDTO>>(akcijePromocijeDTO, HttpStatus.OK);	
+		return new ResponseEntity<List<AkcijaPromocijaDTO>>(dtos, HttpStatus.OK);	
 	}
 }

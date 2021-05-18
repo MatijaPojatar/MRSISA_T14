@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Pregled;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.repository.PregledRepository;
 
 @Service
@@ -59,6 +58,10 @@ public class PregledService {
 	
 	public Pregled findOne(Integer id) {
 		return pregledRep.findOneById(id);
+	}
+	
+	public List<Pregled> findAllActive(LocalDateTime pocetak){
+		return pregledRep.findAllByPocetakGreaterThanEqual(pocetak);
 	}
 	
 	public List<Pregled> findAllActive(Integer dermatologId,Integer apotekaId,LocalDateTime pocetak){

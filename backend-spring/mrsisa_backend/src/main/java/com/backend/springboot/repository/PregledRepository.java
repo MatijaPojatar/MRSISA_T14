@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.backend.springboot.domain.Pregled;
-import com.backend.springboot.domain.Savetovanje;
 
 public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	
@@ -20,6 +19,8 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	
 	public List<Pregled> findAllByPacijentId(Integer id);
 	
+	public List<Pregled> findAllByPocetakGreaterThanEqual(LocalDateTime pocetak);
+
 	public List<Pregled> findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer dermatologId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
 	@Query("select p from Pregled p where p.dermatolog.id = :id and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")

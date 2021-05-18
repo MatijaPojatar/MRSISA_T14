@@ -2,6 +2,7 @@ package com.backend.springboot.service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +22,7 @@ public class ApotekaService  {
 	@Autowired
 	private ApotekaRepository apotekaRep;
 	
-	
-	
-	
-	public Collection<Apoteka> findAll() {
+	public List<Apoteka> findAll() {
 		return apotekaRep.findAll();
 	}
 

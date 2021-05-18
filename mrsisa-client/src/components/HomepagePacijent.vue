@@ -48,13 +48,13 @@
                     </v-list-item-icon>
                     <v-list-item-title>
                         <div class="wh">
-                            Promeni šifru
+                            Promena šifre
                         </div>
                     </v-list-item-title>
                 </v-list-item>
                 <v-list-item link @click="allergyView">
                     <v-list-item-icon>
-                        <v-icon>mdi-account-box</v-icon>
+                        <v-icon>mdi-virus-outline</v-icon>
                     </v-list-item-icon>
                     <v-list-item-title>
                         <div class="wh">
@@ -72,6 +72,66 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="noviPregledView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-stethoscope</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zakazivanje pregleda
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="novoSavetovanjeView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-test-tube</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zakazivanje savetovanja
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="zalbaApotekaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-a-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Žalba na apoteku
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="zalbaDermatologView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-d-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Žalba na dermatologa
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="zalbaFarmaceutView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-alpha-f-circle-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Žalba na farmaceuta
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                 <v-list-item link @click="zalbePacijentaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-file-document-multiple-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Moje žalbe
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="akcijeView">
                     <v-list-item-icon>
                         <v-icon>mdi-sale</v-icon>
@@ -82,53 +142,8 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
-
-
-                <v-list-item link @click="zalbaApotekaView">
-                    <v-list-item-icon>
-                        <v-icon>mdi-alpha-a-circle-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                        <div class="wh">
-                            Zalba na apoteku
-                        </div>
-                    </v-list-item-title>
-                </v-list-item>
-
-                <v-list-item link @click="zalbaDermatologView">
-                    <v-list-item-icon>
-                        <v-icon>mdi-alpha-d-circle-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                        <div class="wh">
-                            Zalba na Dermatologa
-                        </div>
-                    </v-list-item-title>
-                </v-list-item>
-
-                <v-list-item link @click="zalbaFarmaceutView">
-                    <v-list-item-icon>
-                        <v-icon>mdi-alpha-f-circle-outline</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                        <div class="wh">
-                            Zalba na Farmaceuta
-                        </div>
-                    </v-list-item-title>
-                </v-list-item>
-
-                 <v-list-item link @click="zalbePacijentaView">
-                    <v-list-item-icon>
-                        <v-icon>mdi-note-multiple</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                        <div class="wh">
-                            Moje žalbe
-                        </div>
-                    </v-list-item-title>
-                </v-list-item>
             </v-list>
-
+        
             <template v-slot:append>
                 <div class="pa-2">
                     <v-btn block @click="onLogout">
@@ -150,8 +165,11 @@
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
                 <AddAllergy :id="user.id"/>
             </v-container>
-            <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">
-                <AkcijePromocije />
+            <v-container fluid v-if="showNoviPregled" :style="{width:'70vh'}">
+                <NoviPregled/>
+            </v-container>
+            <v-container fluid v-if="showNovoSavetovanje" :style="{width:'70vh'}">
+                <NovoSavetovanje/>
             </v-container>
              <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
                 <ZalbaNaApoteku />
@@ -165,6 +183,9 @@
             <v-container fluid v-if="showZalbePacijenta" :style="{width:'70vh'}">
                 <ZalbePacijenta/>
             </v-container>
+            <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">
+                <AkcijePromocije/>
+            </v-container>
         </v-main>
     </v-app>
 </template>
@@ -175,11 +196,13 @@ import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
-import AkcijePromocije from "./AkcijePromocije";
+import NoviPregled from "./NoviPregled";
+import NovoSavetovanje from "./NovoSavetovanje";
 import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
 import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
 import ZalbePacijenta from "./Pacijent/ZalbePacijenta";
+import AkcijePromocije from "./AkcijePromocije";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -190,22 +213,26 @@ export default {
         AccountView,
         PasswordSwitch,
         AddAllergy,
-        AkcijePromocije,
+        NoviPregled,
+        NovoSavetovanje,
         ZalbaNaApoteku,
         ZalbaNaDermatologa,
         ZalbaNaFarmaceuta,
-        ZalbePacijenta
+        ZalbePacijenta,
+        AkcijePromocije
     },
     data: () => ({
     showCalendar: false,
     showAccount: false,
     showPassword: false,
     showAllergy: false,
-    showAkcije: false,
+    showNoviPregled: false,
+    showNovoSavetovanje: false,
     showZalbaApoteka : false,
     showZalbaFarmaceut : false,
     showZalbaDermatolog : false,
     showZalbePacijenta: false,
+    showAkcije: false,
     user: {},
   }),
   mounted(){
@@ -226,103 +253,143 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
-          this.showAkcije=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
+          this.showAkcije=false;
       },
       accountView(){
           this.showCalendar=false;
           this.showAccount=true;
           this.showPassword=false;
           this.showAllergy=false;
-          this.showAkcije=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
+          this.showAkcije=false;
       },
       changePassword(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=true;
           this.showAllergy=false;
-          this.showAkcije=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
+          this.showAkcije=false;
       },
       allergyView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=true;
-          this.showAkcije=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      noviPregledView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = true;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      novoSavetovanjeView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = true;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      zalbaApotekaView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = true;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      zalbaDermatologView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = true;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      zalbaFarmaceutView() {
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = true;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      zalbePacijentaView() {
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = true;
+          this.showAkcije=false;
       },
       akcijeView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
           this.showAkcije=true;
-          this.showZalbaApoteka = false;
-          this.showZalbaFarmaceut = false;
-          this.showZalbaDermatolog = false;
-          this.showZalbePacijenta = false;
-      },
-
-      zalbaApotekaView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
-          this.showAkcije=false;
-          this.showZalbaApoteka = true;
-          this.showZalbaFarmaceut = false;
-          this.showZalbaDermatolog = false;
-          this.showZalbePacijenta = false;
-      },
-
-      zalbaDermatologView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
-          this.showAkcije=false;
-          this.showZalbaApoteka = false;
-          this.showZalbaFarmaceut = false;
-          this.showZalbaDermatolog = true;
-          this.showZalbePacijenta = false;
-      },
-
-      zalbaFarmaceutView() {
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
-          this.showAkcije=false;
-          this.showZalbaApoteka = false;
-          this.showZalbaFarmaceut = true;
-          this.showZalbaDermatolog = false;
-          this.showZalbePacijenta = false;
-      },
-
-      zalbePacijentaView() {
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
-          this.showAkcije=false;
-          this.showZalbaApoteka = false;
-          this.showZalbaFarmaceut = false;
-          this.showZalbaDermatolog = false;
-          this.showZalbePacijenta = true;
       },
 
 

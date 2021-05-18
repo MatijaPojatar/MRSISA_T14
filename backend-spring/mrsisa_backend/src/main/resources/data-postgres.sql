@@ -177,3 +177,9 @@ insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 1);
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
 
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1);
+insert into pregledi(id, dermatolog_id, cena) values (13, 3, 2500);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id) values ('', false, '2021-05-21 13:10', '2021-05-21 14:30', 1);
+insert into pregledi(id, dermatolog_id, cena) values (14, 3, 3000);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id) values ('', false, '2021-05-19 10:45', '2021-05-19 11:30', 2);
+insert into pregledi(id, dermatolog_id, cena) values (15, 10, 4000);

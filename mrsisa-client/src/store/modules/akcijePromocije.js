@@ -20,6 +20,11 @@ const actions = {
 }
 
 const mutations = {
+  // eslint-disable-next-line no-unused-vars
+  resetState(state){
+    state = initStanje();
+  },
+  
   setAkcijePromocije(state, lista){
     state.akcijePromocije = lista;
   },

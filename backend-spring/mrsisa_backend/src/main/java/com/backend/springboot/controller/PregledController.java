@@ -280,5 +280,17 @@ public class PregledController {
 		
 		return new ResponseEntity<List<LekUIzvestajuDTO>>(dtos,HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/slobodni")
+	public ResponseEntity<List<PregledDTO>> getSlobodni() {		
+		LocalDateTime pocetak = LocalDateTime.now();
+		List<Pregled> pregledi = service.findAllActive(pocetak);
 
+		List<PregledDTO> dtos = new ArrayList<>();
+		for (Pregled p : pregledi) {
+			dtos.add(new PregledDTO(p));
+		}
+
+		return new ResponseEntity<List<PregledDTO>>(dtos, HttpStatus.OK);
+	}
 }

@@ -1,10 +1,8 @@
 package com.backend.springboot.controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,19 +21,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
-import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
-import com.backend.springboot.domain.Narudzbenica;
-import com.backend.springboot.domain.ParametriPretrageLeka;
-import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.domain.Upit;
-import com.backend.springboot.dto.LekUMagacinuDTO;
-import com.backend.springboot.dto.NarudzbenicaDTO;
-import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
 import com.backend.springboot.dto.LekDTO;
+import com.backend.springboot.dto.LekUMagacinuDTO;
+import com.backend.springboot.dto.MinimalApotekaDTO;
+import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.MagacinService;
 
@@ -63,8 +56,6 @@ public class ApotekaController {
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
 	
-	
-	
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
 		try {
@@ -76,6 +67,18 @@ public class ApotekaController {
         } catch (Exception e) {
         	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+	}
+	
+	@GetMapping()
+	public ResponseEntity<List<MinimalApotekaDTO>> findAll(){
+		List<Apoteka> apoteke = apotekaService.findAll();
+		
+		List<MinimalApotekaDTO> dtos = new ArrayList<>();
+		for(Apoteka a : apoteke) {
+			dtos.add(new MinimalApotekaDTO(a));
+		}
+		
+		return new ResponseEntity<List<MinimalApotekaDTO>>(dtos, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getOne/{id}")

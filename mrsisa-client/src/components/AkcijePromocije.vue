@@ -24,6 +24,8 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  name: "AkcijePromocije",
+  
   components: {},
 
   computed: {
