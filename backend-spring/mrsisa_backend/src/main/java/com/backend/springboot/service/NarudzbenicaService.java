@@ -90,8 +90,10 @@ public class NarudzbenicaService {
 		
 		for (LekIzNarudzbenice l:lekovi) { 
 			Upit upit =upitRep.findOneByMagacinIdAndLekId(mag.getId(), l.getLek().getId());
-			if(upit!= null)
-				upitRep.delete(upit); 
+			if(upit!= null) {
+				upit.setObrisan(true);
+				upitRep.save(upit);
+			}
 		}
 		 
 		return narudzbenicaRep.save(narudzbenica);

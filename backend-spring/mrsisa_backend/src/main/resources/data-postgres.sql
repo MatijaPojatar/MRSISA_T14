@@ -154,7 +154,7 @@ insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h24ad',0,'2021-05-13',2.0,1,2,1);
 
 
-insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 6, 1, false);
+insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);
 
 insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-05-15', 1, 1, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (10, 1, 1);
