@@ -165,3 +165,9 @@ insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (11000, 4
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (50000, '2021-05-25', 0, 11, 1);
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (58900, '2021-05-25', 2, 11, 2);
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (65000, '2021-05-20', 2, 11, 2);
+
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '15% popusta na sve kreme', '2021-05-18', '2021-06-18');
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(2, '3 + 1 gratis - Konjska mast', '2021-04-18', '2021-06-18');
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-10% na cene savetovanja', '2021-05-22', '2021-06-12');
+insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 1);
+insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);

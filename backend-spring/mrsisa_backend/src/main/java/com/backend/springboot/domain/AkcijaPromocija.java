@@ -1,6 +1,6 @@
 package com.backend.springboot.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,14 +20,24 @@ public class AkcijaPromocija {
 	@Column(name = "opis", nullable = false)
 	private String opis;
 	@Column(name = "pocetak_vazenja", nullable = false)
-	private Date pocetakVazenja;
+	private LocalDateTime pocetakVazenja;
 	@Column(name = "kraj_vazenja", nullable = false)
-	private Date krajVazenja;
+	private LocalDateTime krajVazenja;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Apoteka apoteka;
 	
 	public AkcijaPromocija() {
+	}
+	
+	public AkcijaPromocija(Integer id, String opis, LocalDateTime pocetakVazenja, LocalDateTime krajVazenja,
+			Apoteka apoteka) {
+		super();
+		this.id = id;
+		this.opis = opis;
+		this.pocetakVazenja = pocetakVazenja;
+		this.krajVazenja = krajVazenja;
+		this.apoteka = apoteka;
 	}
 
 	public Integer getId() {
@@ -48,19 +56,19 @@ public class AkcijaPromocija {
 		this.opis = opis;
 	}
 
-	public Date getPocetakVazenja() {
+	public LocalDateTime getPocetakVazenja() {
 		return pocetakVazenja;
 	}
 
-	public void setPocetakVazenja(Date pocetakVazenja) {
+	public void setPocetakVazenja(LocalDateTime pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
 	}
 
-	public Date getKrajVazenja() {
+	public LocalDateTime getKrajVazenja() {
 		return krajVazenja;
 	}
 
-	public void setKrajVazenja(Date krajVazenja) {
+	public void setKrajVazenja(LocalDateTime krajVazenja) {
 		this.krajVazenja = krajVazenja;
 	}
 

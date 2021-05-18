@@ -28,6 +28,10 @@ public class Pacijent extends Osoba {
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
 	
+	@ManyToMany
+	@JoinTable(name = "pacijent_akcije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
+	private List<Apoteka> pretplaceneApoteke = new ArrayList<Apoteka>(); 
+	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaApoteku> zalbeNaApoteke = new ArrayList<ZalbaNaApoteku>();
 	
@@ -36,7 +40,6 @@ public class Pacijent extends Osoba {
 	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaFarmaceuta> zalbeNaFarmaceute = new ArrayList<ZalbaNaFarmaceuta>();
-	
 	
 	@ManyToMany
 	@JoinTable(name = "pacijent_alergije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
@@ -113,6 +116,14 @@ public class Pacijent extends Osoba {
 		this.termini = termini;
 	}
 
+	public List<Apoteka> getPretplaceneApoteke() {
+		return pretplaceneApoteke;
+	}
+
+	public void setPretplaceneApoteke(List<Apoteka> pretplaceneApoteke) {
+		this.pretplaceneApoteke = pretplaceneApoteke;
+	}
+
 	public List<Lek> getAlergije() {
 		return alergije;
 	}
@@ -128,6 +139,4 @@ public class Pacijent extends Osoba {
 	public void setRezervacije(Set<RezervacijaLeka> rezervacije) {
 		this.rezervacije = rezervacije;
 	}
-	
-	
 }

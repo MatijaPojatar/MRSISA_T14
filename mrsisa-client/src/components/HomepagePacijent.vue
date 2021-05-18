@@ -72,6 +72,16 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="akcijeView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-sale</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Akcije i promocije
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
 
 
                 <v-list-item link @click="zalbaApotekaView">
@@ -140,6 +150,9 @@
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
                 <AddAllergy :id="user.id"/>
             </v-container>
+            <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">
+                <AkcijePromocije />
+            </v-container>
              <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
                 <ZalbaNaApoteku />
             </v-container>
@@ -162,6 +175,7 @@ import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
+import AkcijePromocije from "./AkcijePromocije";
 import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
 import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
@@ -176,6 +190,7 @@ export default {
         AccountView,
         PasswordSwitch,
         AddAllergy,
+        AkcijePromocije,
         ZalbaNaApoteku,
         ZalbaNaDermatologa,
         ZalbaNaFarmaceuta,
@@ -186,6 +201,7 @@ export default {
     showAccount: false,
     showPassword: false,
     showAllergy: false,
+    showAkcije: false,
     showZalbaApoteka : false,
     showZalbaFarmaceut : false,
     showZalbaDermatolog : false,
@@ -210,6 +226,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -220,6 +237,7 @@ export default {
           this.showAccount=true;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -230,6 +248,7 @@ export default {
           this.showAccount=false;
           this.showPassword=true;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -240,6 +259,18 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=true;
+          this.showAkcije=false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+      },
+      akcijeView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showAkcije=true;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -251,6 +282,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = true;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -262,6 +294,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = true;
@@ -273,6 +306,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = true;
           this.showZalbaDermatolog = false;
@@ -284,6 +318,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showAkcije=false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
