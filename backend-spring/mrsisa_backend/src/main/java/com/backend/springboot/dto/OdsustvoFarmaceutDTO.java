@@ -1,6 +1,7 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 
@@ -9,7 +10,7 @@ public class OdsustvoFarmaceutDTO {
 	private Integer id,farmaceutId,apotekaId;
 	private LocalDateTime pocetak,kraj;
 	private boolean odobren;
-	
+	private String mail, pocetakStr, krajStr;
 	
 	
 	public OdsustvoFarmaceutDTO() {
@@ -26,6 +27,47 @@ public class OdsustvoFarmaceutDTO {
 		this.pocetak=o.getPocetak();
 		this.kraj=o.getKraj();
 		this.odobren=o.isOdobren();
+		this.mail = o.getFarmaceut().getMail();
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		this.pocetakStr= this.pocetak.format(dtf);
+		this.krajStr= this.kraj.format(dtf);
+	}
+
+
+
+	public String getPocetakStr() {
+		return pocetakStr;
+	}
+
+
+
+	public void setPocetakStr(String pocetakStr) {
+		this.pocetakStr = pocetakStr;
+	}
+
+
+
+	public String getKrajStr() {
+		return krajStr;
+	}
+
+
+
+	public void setKrajStr(String krajStr) {
+		this.krajStr = krajStr;
+	}
+
+
+
+	public String getMail() {
+		return mail;
+	}
+
+
+
+	public void setMail(String mail) {
+		this.mail = mail;
 	}
 
 

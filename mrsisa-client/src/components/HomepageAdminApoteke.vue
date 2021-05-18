@@ -104,6 +104,16 @@
                     Naručivanje
                 </div></v-list-item-title>
           </v-list-item>
+
+          <v-list-item link @click="odsustvaView">
+            <v-list-item-icon>
+              <v-icon>mdi-palm-tree</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Odsustva
+                </div></v-list-item-title>
+          </v-list-item>
+
         </v-list>
 
         <template v-slot:append>
@@ -138,6 +148,9 @@
       <v-container fluid v-if="showApoteka" :style="{width:'70vh'}">
         <ApotekaForm :apotekaId="user.apotekaId" :editable="true" />
       </v-container>
+      <v-container fluid v-if="showOdsustva" :style="{width:'70vh'}">
+        <TableOdsustva :apotekaId="user.apotekaId" :farmaceut=true />
+      </v-container>
     </v-main>
       </v-app>
 </template>
@@ -151,6 +164,7 @@ import LekoviAdminApoteke from "./LekoviAdminApoteke";
 import FarmaceutiAdminApoteke from "./FarmaceutiAdminApoteke";
 import DermatoloziAdminApoteke from "./DermatoloziAdminApoteke";
 import NarucivanjeAdminApoteke from "./NarucivanjeAdminApoteke";
+import TableOdsustva from "./TableOdsustva";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -163,7 +177,8 @@ export default {
         LekoviAdminApoteke,
         FarmaceutiAdminApoteke,
         DermatoloziAdminApoteke,
-        NarucivanjeAdminApoteke
+        NarucivanjeAdminApoteke,
+        TableOdsustva
     },
     data: () => ({
     showApoteka: false,
@@ -173,6 +188,7 @@ export default {
     showFarmaceuti: false,
     showDermatolozi: false,
     showNarucivanje: false,
+    showOdsustva: false,
     user: {},
   }),
   mounted(){
@@ -198,6 +214,7 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
       accountView(){
           this.showApoteka=false;
@@ -207,6 +224,7 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
 
       onLogout(){
@@ -223,6 +241,7 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
       lekoviView(){
           this.showApoteka=false;
@@ -232,6 +251,7 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
       farmaceutiView(){
           this.showApoteka=false;
@@ -241,6 +261,7 @@ export default {
           this.showFarmaceuti = true;
           this.showDermatolozi = false;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
       dermatoloziView(){
           this.showApoteka=false;
@@ -250,6 +271,7 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = true;
           this.showNarucivanje = false;
+          this.showOdsustva = false;
       },
       narucivanjeView(){
           this.showApoteka=false;
@@ -259,6 +281,17 @@ export default {
           this.showFarmaceuti = false;
           this.showDermatolozi = false;
           this.showNarucivanje = true;
+          this.showOdsustva = false;
+      },
+      odsustvaView(){
+          this.showApoteka=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showLekovi = false;
+          this.showFarmaceuti = false;
+          this.showDermatolozi = false;
+          this.showNarucivanje = false;
+          this.showOdsustva = true;
       },
   },
 }

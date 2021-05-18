@@ -20,6 +20,16 @@ public class OdsustvoDermatologService {
 		rep.save(od);
 	}
 	
+	public OdsustvoDermatolog getOne(Integer id) {
+		return rep.getOne(id);
+	}
+	
+	public OdsustvoDermatolog odobri(Integer id) {
+		OdsustvoDermatolog o = rep.getOne(id);
+		o.setOdobren(true);
+		return rep.save(o);
+	}
+	
 	public List<OdsustvoDermatolog> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
 		return rep.findExistInTime(id,start, end);
 	}
@@ -27,4 +37,8 @@ public class OdsustvoDermatologService {
 	public List<OdsustvoDermatolog> findAllByDermatologId(Integer dermatologId){
 		return rep.findAllByDermatologId(dermatologId);
 	}
+	
+	public List<OdsustvoDermatolog> findAllNotOdobrenInFuture(LocalDateTime start){
+		return rep.findAllNotOdobrenInFuture(start);
+	} 
 }

@@ -17,5 +17,10 @@ public interface OdsustvoDermatologRepository extends JpaRepository<OdsustvoDerm
 	
 	@Query("select o from OdsustvoDermatolog o where o.dermatolog.id = :id and o.odobren=true")
 	List<OdsustvoDermatolog> findAllByDermatologId(@Param("id")Integer dermatologId);
+	
+	@Query("select o from OdsustvoDermatolog o where o.odobren=false and o.pocetak >= :start")
+	public List<OdsustvoDermatolog> findAllNotOdobrenInFuture(@Param("start") LocalDateTime start);
+	
+	
 
 }

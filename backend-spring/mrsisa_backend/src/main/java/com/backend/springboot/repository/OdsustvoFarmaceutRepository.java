@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Savetovanje;
 
@@ -17,5 +18,8 @@ public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarma
 	
 	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true")
 	List<OdsustvoFarmaceut> findAllByFarmaceutId(@Param("id")Integer farmaceutId);
+	
+	@Query("select o from OdsustvoFarmaceut o where o.apoteka.id = :id and o.odobren=false and o.pocetak >= :start")
+	public List<OdsustvoFarmaceut> findAllNotOdobrenInFutureApoteka(@Param("id") Integer id,@Param("start") LocalDateTime start);
 
 }

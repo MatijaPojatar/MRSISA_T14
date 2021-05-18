@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,6 +118,40 @@ public class OdsustvoController {
 		}
 		
 		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@GetMapping("/farmaceut/zaOdobrenje/{apotekaId}")
+	public ResponseEntity<List<OdsustvoFarmaceutDTO>> getAllZaOdobrenjaForFarmaceut(@PathVariable Integer apotekaId){
+		List<OdsustvoFarmaceut> odsustva=odFarmService.findAllNotOdobrenInFutureApoteka(apotekaId, LocalDateTime.now());
+		ArrayList<OdsustvoFarmaceutDTO> dtos=new ArrayList<OdsustvoFarmaceutDTO>();
+		for(OdsustvoFarmaceut o:odsustva) {
+			dtos.add(new OdsustvoFarmaceutDTO(o));
+		}
+		
+		return new ResponseEntity<List<OdsustvoFarmaceutDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@GetMapping("/dermatolog/zaOdobrenje")
+	public ResponseEntity<List<OdsustvoDermatologDTO>> getAllZaOdobrenjaForDermatolog(){
+		List<OdsustvoDermatolog> odsustva=odDermService.findAllNotOdobrenInFuture(LocalDateTime.now());
+		ArrayList<OdsustvoDermatologDTO> dtos=new ArrayList<OdsustvoDermatologDTO>();
+		for(OdsustvoDermatolog o:odsustva) {
+			dtos.add(new OdsustvoDermatologDTO(o));
+		}
+		
+		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@PutMapping("/farmaceut/zaOdobrenje/{zahtevId}")
+	public ResponseEntity<Boolean> odobriFarmaceut(@PathVariable Integer zahtevId){
+		odFarmService.odobri(zahtevId);
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@PutMapping("/dermatolog/zaOdobrenje/{zahtevId}")
+	public ResponseEntity<Boolean> odobriDermatolog(@PathVariable Integer zahtevId){
+		odDermService.odobri(zahtevId);
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 
 }
