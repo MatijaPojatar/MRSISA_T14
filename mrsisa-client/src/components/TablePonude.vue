@@ -15,7 +15,7 @@
       <v-btn
                 class="mx-2"
                 color="light-green"
-                :disabled="obradjena"
+                :disabled="obradjenaData"
                 @click="odaberiPonudu(item)"
             >
                 Odaberi
@@ -86,6 +86,7 @@
             
         },
         mounted(){
+          this.obradjenaData = this.obradjena;
             this.loadPonude();
         },
         methods:{
@@ -123,6 +124,8 @@
                 }
                 else{
                    Vue.axios.post(`http://localhost:8080/narudzbenice/prihvatiPonudu/${this.odabrana.id}`, this.narudzbenica.id, {headers: {"Content-Type": "text/plain"}})
+                   this.obradjenaData=true;
+                   this.loadPonude();
                    location.reload();
                 }
              },

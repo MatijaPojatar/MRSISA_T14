@@ -188,7 +188,7 @@
   </v-dialog>
 
   <v-dialog
-      v-model="obavestenjeRok"
+      v-model="obavestenje"
       persistent
       max-width="290"
     >
@@ -196,13 +196,13 @@
         <v-card-title class="headline">
           Obaveštenje
         </v-card-title>
-        <v-card-text>Potrebno je uneti rok za ponude.</v-card-text>
+        <v-card-text>{{message}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
             color="green darken-1"
             text
-            @click="endObavestenjeRok"
+            @click="endObavestenje"
           >
             Ok
           </v-btn>
@@ -242,8 +242,9 @@
             definisanaCena: "",
             definisanRok: null,
             menu: false,
-            obavestenjeRok:false,
-            
+            obavestenje:false,
+            naruceniLekoviCnt:0,
+            message:"",
 
             valid: true,
             validRok: false,
@@ -317,6 +318,27 @@
                             this.lekoviOstali = lekovi2
                         })
                     });
+
+                    const lekovi3 = []
+                    await Vue.axios.get(`http://localhost:8080/apoteke/upitiLekovi/${this.apotekaId}`).then(response => {
+                        response.data.forEach(element => {
+                            lekovi3.push({
+                                naziv: element.naziv,
+                                id: element.id,
+                                proizvodjac : element.proizvodjac,
+                                sastav: element.sastav,
+                                napomena: element.napomena,
+                                rezim: element.rezimIzdavanja,
+                                oblik: element.oblikLeka,
+                                vrsta: element.vrstaLeka, 
+                                cena: 0,
+                                kolicina: 0,
+                                lekMagacinId: element.id,
+                                alergija: 0,
+                            })
+                            this.lekoviUpit = lekovi3
+                        })
+                    });
                 },
                 PanelSelected(lek){
                  this.selektovanLek = lek;
@@ -357,22 +379,84 @@
                         )
                         if (this.showLekoviOstali){
                             Vue.axios.put(`http://localhost:8080/apoteke/dodajLek/${this.selektovan}/${this.apotekaId}`,this.definisanaCena, {headers: {"Content-Type": "text/plain"}});
+                            const index=this.lekoviOstali.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviOstali.splice(index, 1);
+                            }
 
+                            const index1=this.lekoviApoteka.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index1 !=-1){
+                                this.lekoviApoteka.splice(index1, 1);
+                            }
+
+                            const index2=this.lekoviUpit.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index2 !=-1){
+                                this.lekoviUpit.splice(index2, 1);
+                            }
+                        }else if(this.showLekoviApoteka){
+                            const index=this.lekoviOstali.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviOstali.splice(index, 1);
+                            }
+
+                            const index1=this.lekoviApoteka.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index1 !=-1){
+                                this.lekoviApoteka.splice(index1, 1);
+                            }
+
+                            const index2=this.lekoviUpit.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index2 !=-1){
+                                this.lekoviUpit.splice(index2, 1);
+                            }
+                        }
+                        else if(this.showLekoviUpit){
+                            const index=this.lekoviOstali.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviOstali.splice(index, 1);
+                            }
+
+                            const index1=this.lekoviApoteka.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index1 !=-1){
+                                this.lekoviApoteka.splice(index1, 1);
+                            }
+
+                            const index2=this.lekoviUpit.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index2 !=-1){
+                                this.lekoviUpit.splice(index2, 1);
+                            }
                         }
                         this.dialog = false;
+                        this.naruceniLekoviCnt+=1;
                         this.definisanaCena="";
                         this.definisanaKolicina="";
                     }
                 },
                 kreirajNarudzbenicu(){
                     if(!this.definisanRok){
-                        this.obavestenjeRok = true;
+                        this.message= "Rok za ponude nije definisan."
+                        this.obavestenje = true;
+                    }
+                    else if(this.naruceniLekoviCnt==0){
+                        this.message= "Lekovi nisu definisani."
+                        this.obavestenje = true;
                     }else{
                         Vue.axios.post(`http://localhost:8080/narudzbenice/dodaj/${this.apotekaId}`, {lekovi:this.naruceniLekovi, adminId:this.user.id, rok:this.definisanRok});
+                        this.message= "Narudžbenica je uspešno kreirana."
+                        this.reset();
+                        this.obavestenje = true;
                     }
                 },
-                endObavestenjeRok(){
-                    this.obavestenjeRok=false;
+                reset(){
+                    this.naruceniLekoviCnt=0;
+                    this.definisanRok=null;
+                    this.naruceniLekovi=[];
+                    this.showLekoviUpit=false;
+                    this.showLekoviOstali=false;
+                    this.showLekoviApoteka=false;
+                    this.loadLekovi();
+                },
+                endObavestenje(){
+                    this.obavestenje=false;
                 }
                 
 

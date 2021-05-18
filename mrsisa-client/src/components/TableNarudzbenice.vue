@@ -101,7 +101,7 @@
         </v-card-title>
         <v-textarea
           v-model="this.lekoviStr"
-          readonly="true"
+          readonly
         ></v-textarea>
         <v-card-actions>
           <v-spacer></v-spacer>
