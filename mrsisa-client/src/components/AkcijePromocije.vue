@@ -8,7 +8,7 @@
         <v-expansion-panel-content>
           <div>Opis: {{ ap.opis }}</div>
           <v-divider />
-          <div>Naziv apoteke: {{ ap.apoteka }}</div>
+          <div>Naziv apoteke: {{ ap.apotekaNaziv }}</div>
           <v-divider />
           <div>Početak važenja: {{ ap.pocetak[0].toString() + "-" + ap.pocetak[1].toString() + "-" + ap.pocetak[2].toString() }}</div>
           <v-divider />
