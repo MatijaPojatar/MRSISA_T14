@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import com.backend.springboot.dto.JwtAuthenticationRequest;
 import com.backend.springboot.dto.OsobaTokenState;
 import com.backend.springboot.dto.PacijentDTO;
 import com.backend.springboot.exception.ResourceConflictException;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.OsobaService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.util.TokenUtils;
@@ -38,6 +40,10 @@ public class AuthenticationController {
 
 	@Autowired
 	private PacijentService pacijentService;
+	
+	@Autowired
+	private EmailService emailService;
+	
 	
 	@PostMapping("/login")
 	public ResponseEntity<OsobaTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response){
@@ -57,7 +63,7 @@ public class AuthenticationController {
 	
 	
 	@PostMapping("/signup")  //ako moze, odvojiti ovo . Proveriti da li je automatski ulogovan, Ako jestem, ovde ostavi, a druge napolje
-	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody PacijentDTO pacijentDTO, UriComponentsBuilder ucBuilder) {
+	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody PacijentDTO pacijentDTO, UriComponentsBuilder ucBuilder) throws MailException, InterruptedException {
 		
 		Pacijent existPacijent = this.pacijentService.findByMail(pacijentDTO.getMail());
 		
@@ -66,6 +72,12 @@ public class AuthenticationController {
 		}
 		
 		Pacijent pacijent = this.pacijentService.save(new Pacijent(pacijentDTO));
+		
+		try {
+			emailService.aktivacija(pacijent, "http://localhost:8081/pacijent/aktivacija/"+pacijent.getId());
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		
 		return new ResponseEntity<>(pacijent, HttpStatus.CREATED);
 		

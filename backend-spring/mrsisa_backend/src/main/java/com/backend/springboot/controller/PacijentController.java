@@ -29,7 +29,7 @@ import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
 
 
-@CrossOrigin(origins = {"http://localhost:8081" })
+@CrossOrigin(origins = {"http://localhost:8081" }) 
 @RestController
 @RequestMapping("/pacijent")
 public class PacijentController {
