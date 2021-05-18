@@ -122,9 +122,11 @@ public class EmailService {
 	public void aktivacija(Osoba osoba, String link) throws MailException, InterruptedException{
 		SimpleMailMessage mail = new SimpleMailMessage();
 		
-		mail.setText(osoba.getMail());
+		mail.setTo(osoba.getMail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Link za aktivaciju profila");
 		mail.setText("Poštovani \n\nProfil za "+ osoba.getIme() +" "+osoba.getPrezime() + " možete aktivirati klikom na link: \n"+link);
+	
+		jms.send(mail);
 	}
 }

@@ -203,7 +203,7 @@ export default {
 
         brojTelefona: this.telefon,
         pol: this.pol,
-        datumRodjenja: new Date(this.datum),
+        datumRodjenja: this.datum,
 
         brojPoena: 0,
         penali: 0,
