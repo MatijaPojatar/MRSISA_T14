@@ -41,6 +41,9 @@
         <TableNarudzbenice :apotekaId="apotekaId" :userId="this.user.id"/>
       </v-container>
 
+    <v-container fluid v-if="showNovaNarudzbenica">
+        <NovaNarudzbenica :apotekaId="apotekaId" :user="this.user"/>
+      </v-container>
    
 
     <v-dialog
@@ -72,6 +75,7 @@
 <script>
 import TableUpiti from "./TableUpiti";
 import TableNarudzbenice from "./TableNarudzbenice";
+import NovaNarudzbenica from "./NovaNarudzbenica";
 
 
 export default{
@@ -79,6 +83,7 @@ export default{
     components: {
         TableUpiti,
         TableNarudzbenice,
+        NovaNarudzbenica
     },
     data: () => ({
         

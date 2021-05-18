@@ -21,6 +21,7 @@ import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Ponuda;
 import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.dto.NarudzbenicaDTO;
+import com.backend.springboot.dto.NovaNarudzbenicaDTO;
 import com.backend.springboot.dto.PonudaDTO;
 import com.backend.springboot.service.MagacinService;
 import com.backend.springboot.service.NarudzbenicaService;
@@ -92,6 +93,14 @@ public class NarudzbenicaController {
 	@PostMapping("/prihvatiPonudu/{ponudaId}")
 	public ResponseEntity<Boolean> prihvatiPonudu(@PathVariable Integer ponudaId, @RequestBody String narId){
 		magacinService.prihvatiPonudu(Integer.parseInt(narId), ponudaId);
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("/dodaj/{apotekaId}")
+	public ResponseEntity<Boolean> dodajNarudzbenicu(@PathVariable Integer apotekaId, @RequestBody NovaNarudzbenicaDTO narDTO){
+		System.out.println("\n\n--------------------------" + narDTO.getRok());
 		
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
