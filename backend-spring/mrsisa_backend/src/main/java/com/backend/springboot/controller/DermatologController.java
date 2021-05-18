@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Dobavljac;
@@ -69,6 +70,19 @@ public class DermatologController {
 		DermatologDTO dto=new DermatologDTO(d, Integer.parseInt(apotekaId));
 		
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
+	}
+	
+	@PutMapping("/aktivacija/{id}")
+	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
+		Dermatolog p = service.findOne(id);
+		
+		if(!p.isEnabled()) {
+			p.setEnabled(true);
+			service.save(p);
+			return new ResponseEntity<String>("Uspešno ste aktivirali profil "+ p.getIme() + " " + p.getPrezime() + ".", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
 	}
 	
 	@PostMapping()

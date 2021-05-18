@@ -55,6 +55,7 @@ public class PacijentController {
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/mail/{mail}")
 	public ResponseEntity<PacijentDTO> getOne(@PathVariable String mail){
 		Pacijent p = pacijentService.findByMail(mail);
@@ -82,6 +83,19 @@ public class PacijentController {
 		
 		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.OK);
 		
+	}
+	
+	@PutMapping("/aktivacija/{id}")
+	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
+		Pacijent p = pacijentService.findOne(id);
+		
+		if(!p.isEnabled()) {
+			p.setEnabled(true);
+			pacijentService.save(p);
+			return new ResponseEntity<String>("Uspešno ste aktivirali profil "+ p.getIme() + " " + p.getPrezime() + ".", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")

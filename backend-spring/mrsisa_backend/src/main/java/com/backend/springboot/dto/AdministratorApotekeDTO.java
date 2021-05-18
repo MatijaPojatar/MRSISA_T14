@@ -10,6 +10,7 @@ public class AdministratorApotekeDTO {
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public AdministratorApotekeDTO() {
 		
@@ -28,6 +29,24 @@ public class AdministratorApotekeDTO {
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.apotekaId = d.getApoteka().getId();
+		this.promenjenaLozinka = d.isPromenjenaLozinka();
+		this.enabled = d.isEnabled();
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getId() {

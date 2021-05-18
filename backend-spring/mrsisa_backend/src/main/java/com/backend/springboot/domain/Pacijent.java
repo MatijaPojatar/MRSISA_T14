@@ -50,8 +50,8 @@ public class Pacijent extends Osoba {
 	}
 
 	public Pacijent(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, Integer brojPoena, Integer penali) {
-		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka,boolean enabled, Integer brojPoena, Integer penali) {
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.brojPoena = brojPoena;
 		this.penali = penali;
 	}
@@ -71,6 +71,24 @@ public class Pacijent extends Osoba {
 		this.setDatumRodjenja(p.getDatumRodjenja());
 		this.setBrojPoena(p.getBrojPoena());
 		this.setPenali(p.getPenali());
+		this.setPromenjenaLozinka(p.getPromenjenaLozinka());
+		this.setEnabled(p.getEnabled());
+	}
+
+	public List<ZalbaNaDermatologa> getZalbeNaDermatologe() {
+		return zalbeNaDermatologe;
+	}
+
+	public void setZalbeNaDermatologe(List<ZalbaNaDermatologa> zalbeNaDermatologe) {
+		this.zalbeNaDermatologe = zalbeNaDermatologe;
+	}
+
+	public List<ZalbaNaFarmaceuta> getZalbeNaFarmaceute() {
+		return zalbeNaFarmaceute;
+	}
+
+	public void setZalbeNaFarmaceute(List<ZalbaNaFarmaceuta> zalbeNaFarmaceute) {
+		this.zalbeNaFarmaceute = zalbeNaFarmaceute;
 	}
 
 	public List<ZalbaNaApoteku> getZalbeNaApoteke() {

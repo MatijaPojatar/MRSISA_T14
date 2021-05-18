@@ -13,6 +13,7 @@ public class FarmaceutDTO {
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public FarmaceutDTO() {
 		
@@ -32,11 +33,28 @@ public class FarmaceutDTO {
 		this.pocetakRadnogVremena = f.getPocetakRadnogVremena();
 		this.krajRadnogVremena = f.getKrajRadnogVremena();
 		this.apotekaId=f.getApoteka().getId();
-		
+		this.promenjenaLozinka = f.isPromenjenaLozinka();
+		this.enabled = f.isEnabled();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
 		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public LocalTime getPocetakRadnogVremena() {

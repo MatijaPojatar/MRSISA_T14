@@ -20,6 +20,21 @@ const getters = {
 }
 
 const actions = {
+  async signUpAction({commit}, dto){
+    console.log(commit);
+    console.log("ULAZAK U FUNCIJU SIGNUP")
+    
+    // try{
+      const response = await Vue.axios.post("/auth/signup", dto);
+
+      alert("Uspešna registracija" + response.data.mail);
+      // return true;
+    // }catch(error){
+    //   alert("Email adresa zauzeta.");
+    //   return false;
+    // }
+  },
+
   async logInAction({dispatch}, credentials) {
     try{
       const response = await Vue.axios.post("/auth/login", credentials); //printovati todo

@@ -47,9 +47,9 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	
 
 	public Farmaceut(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, boolean enabled
 			,Apoteka apoteka,LocalTime pocetakRadnogVremena,LocalTime krajRadnogVremena) {
-		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.pocetakRadnogVremena=pocetakRadnogVremena;
 		this.krajRadnogVremena=krajRadnogVremena;
 		this.apoteka=apoteka;
@@ -78,11 +78,6 @@ public class Farmaceut extends Osoba implements IFarmaceutDermatolog {
 	public void setSavetovanja(List<Savetovanje> savetovanja) {
 		this.savetovanja = savetovanja;
 	}
-
-
-
-
-
 
 
 	public Apoteka getApoteka() {

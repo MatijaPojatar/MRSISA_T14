@@ -11,6 +11,7 @@ public class OsobaDTO {
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public OsobaDTO(Osoba p) {
 		this.setId(p.getId());
@@ -24,8 +25,26 @@ public class OsobaDTO {
 		this.setBrojTelefona(p.getBrojTelefona());
 		this.setPol(p.getPol());
 		this.setDatumRodjenja(p.getDatumRodjenja());
+		this.setPromenjenaLozinka(p.isPromenjenaLozinka());
+		this.setEnabled(p.isEnabled());
 	}
 	
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public Integer getId() {
 		return id;
 	}

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.AdministratorApotekeDTO;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.service.AdministratorApotekeService;
@@ -48,5 +49,18 @@ public class AdministratorApotekeController {
 		service.save(a);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PutMapping("/aktivacija/{id}")
+	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
+		AdministratorApoteke p = service.findOne(id);
+		
+		if(!p.isEnabled()) {
+			p.setEnabled(true);
+			service.save(p);
+			return new ResponseEntity<String>("Uspešno ste aktivirali profil "+ p.getIme() + " " + p.getPrezime() + ".", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
 	}
 }
