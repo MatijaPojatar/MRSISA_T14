@@ -20,6 +20,7 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Ponuda;
 import com.backend.springboot.domain.StatusNarudzbenice;
+import com.backend.springboot.dto.LekIzNarudzbeniceDTO;
 import com.backend.springboot.dto.NarudzbenicaDTO;
 import com.backend.springboot.dto.NovaNarudzbenicaDTO;
 import com.backend.springboot.dto.PonudaDTO;
@@ -101,7 +102,8 @@ public class NarudzbenicaController {
 	@PostMapping("/dodaj/{apotekaId}")
 	public ResponseEntity<Boolean> dodajNarudzbenicu(@PathVariable Integer apotekaId, @RequestBody NovaNarudzbenicaDTO narDTO){
 		System.out.println("\n\n--------------------------" + narDTO.getRok());
-		
+		List<LekIzNarudzbenice> lekovi = new ArrayList<LekIzNarudzbenice>();
+		narudzbenicaService.dodajNarudzbenicu(apotekaId, narDTO.getRok(), narDTO.getLekovi(), narDTO.getAdminId());
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
 	}

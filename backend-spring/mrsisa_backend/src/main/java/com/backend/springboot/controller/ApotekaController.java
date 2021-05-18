@@ -156,5 +156,19 @@ public class ApotekaController {
 		
 	}
 	
+	@GetMapping("/upitiLekovi/{id}")
+	public ResponseEntity<List<LekDTO>> preuzmiLekoveUpita(@PathVariable Integer id){
+		Magacin m=magacinService.findOneByApotekaId(id);
+		
+		List<Upit> upiti= magacinService.preuzmiUpite(m.getId());
+		List<LekDTO> dto = new ArrayList<LekDTO>();
+		for (Upit u: upiti) {
+			dto.add(new LekDTO(u.getLek()));
+		}
+		
+		return new ResponseEntity<List<LekDTO>>(dto, HttpStatus.OK);
+		
+	}
+	
 	
 }

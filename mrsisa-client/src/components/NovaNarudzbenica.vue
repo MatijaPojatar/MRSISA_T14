@@ -317,6 +317,27 @@
                             this.lekoviOstali = lekovi2
                         })
                     });
+
+                    const lekovi3 = []
+                    await Vue.axios.get(`http://localhost:8080/apoteke/upitiLekovi/${this.apotekaId}`).then(response => {
+                        response.data.forEach(element => {
+                            lekovi3.push({
+                                naziv: element.naziv,
+                                id: element.id,
+                                proizvodjac : element.proizvodjac,
+                                sastav: element.sastav,
+                                napomena: element.napomena,
+                                rezim: element.rezimIzdavanja,
+                                oblik: element.oblikLeka,
+                                vrsta: element.vrstaLeka, 
+                                cena: 0,
+                                kolicina: 0,
+                                lekMagacinId: element.id,
+                                alergija: 0,
+                            })
+                            this.lekoviUpit = lekovi3
+                        })
+                    });
                 },
                 PanelSelected(lek){
                  this.selektovanLek = lek;
@@ -357,7 +378,21 @@
                         )
                         if (this.showLekoviOstali){
                             Vue.axios.put(`http://localhost:8080/apoteke/dodajLek/${this.selektovan}/${this.apotekaId}`,this.definisanaCena, {headers: {"Content-Type": "text/plain"}});
-
+                            const index=this.lekoviOstali.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviOstali.splice(index, 1);
+                                }
+                        }else if(this.showLekoviApoteka){
+                            const index=this.lekoviApoteka.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviApoteka.splice(index, 1);
+                                }
+                        }
+                        else if(this.showLekoviUpit){
+                            const index=this.lekoviUpit.findIndex((l)=>l.id==this.selektovanLek.id)
+                            if(index !=-1){
+                                this.lekoviUpit.splice(index, 1);
+                                }
                         }
                         this.dialog = false;
                         this.definisanaCena="";

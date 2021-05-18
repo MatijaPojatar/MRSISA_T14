@@ -107,7 +107,7 @@ export default {
                     pocetak:pocetak,
                     kraj: kraj,
                     farmaceutId: this.doktorId,
-                    odobren: true,
+                    odobren: false,
                     apotekaId: null,
                 }
             }else{
@@ -115,7 +115,7 @@ export default {
                     pocetak:pocetak,
                     kraj: kraj,
                     dermatologId: this.doktorId,
-                    odobren: true,
+                    odobren: false,
                 }
             }
             await axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
