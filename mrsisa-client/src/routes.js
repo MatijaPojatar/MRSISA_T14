@@ -12,6 +12,11 @@ const router = new Router({
       component: () => import("./components/Prijava")
     },
     {
+      path: "/:tip/aktiviraj/:id",
+      name: "Aktivacija",
+      component: () => import("./components/Aktivacija")
+    },
+    {
       path: "/prijava",
       name: "Prijava",
       component: () => import("./components/Prijava")

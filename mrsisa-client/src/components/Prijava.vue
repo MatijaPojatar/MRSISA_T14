@@ -109,7 +109,8 @@ export default {
             break;
         }
       } catch (error) {
-        alert("Greska pri prijavi");
+        console.log(error);
+        alert("Greska pri prijavi. Nekorektni kredencijali ili profil nije aktiviran");
       }
     },
   },

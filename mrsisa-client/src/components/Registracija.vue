@@ -71,7 +71,7 @@
          <v-text-field
           v-model="datum"
           :rules="[rules.required, rules.counter]"
-          label="Datum rođenja (22/02/1999)"
+          label="Datum rođenja (1999-02-02)"
           required
           />
 
@@ -220,7 +220,7 @@ export default {
     console.log(PacDTO);
 
   }catch(error){
-    alert("Email vec postoji")
+    alert("Greska pri registraciji")
   }
 
     },

@@ -117,6 +117,10 @@ public class Osoba implements UserDetails{
 		return roles;
 	}
 
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
+	
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}

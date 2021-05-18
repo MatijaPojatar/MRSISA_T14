@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +47,7 @@ public class AuthenticationController {
 	
 	
 	@PostMapping("/login")
-	public ResponseEntity<OsobaTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response){
+	public ResponseEntity<OsobaTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, HttpServletResponse response) throws Exception{
 		//mogucnost za authenticationExc
 		
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -55,6 +56,11 @@ public class AuthenticationController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		Osoba osoba = (Osoba)authentication.getPrincipal();
+		
+		if(!osoba.isEnabled()) {
+			throw new Exception();
+		}
+		
 		String jwt = tokenUtils.generateToken(osoba); //todo
 		int expiresIn = tokenUtils.getExpiredIn();
 		
@@ -71,10 +77,13 @@ public class AuthenticationController {
 			throw new ResourceConflictException(pacijentDTO.getId(), "Email vec postoji");
 		}
 		
-		Pacijent pacijent = this.pacijentService.save(new Pacijent(pacijentDTO));
+		Pacijent novi = new Pacijent(pacijentDTO);
+		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
+		
+		Pacijent pacijent = this.pacijentService.save(novi);
 		
 		try {
-			emailService.aktivacija(pacijent, "http://localhost:8081/pacijent/aktivacija/"+pacijent.getId());
+			emailService.aktivacija(pacijent, "http://localhost:8081/pacijent/aktiviraj/"+pacijent.getId());
 		} catch(Exception e){
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
