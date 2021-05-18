@@ -1,5 +1,8 @@
 package com.backend.springboot.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Role;
 import com.backend.springboot.dto.JwtAuthenticationRequest;
 import com.backend.springboot.dto.OsobaTokenState;
 import com.backend.springboot.dto.PacijentDTO;
@@ -27,6 +31,7 @@ import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.OsobaService;
 import com.backend.springboot.service.PacijentService;
+import com.backend.springboot.service.RoleService;
 import com.backend.springboot.util.TokenUtils;
 
 @RestController
@@ -44,6 +49,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	
 	@PostMapping("/login")
@@ -79,6 +87,9 @@ public class AuthenticationController {
 		
 		Pacijent novi = new Pacijent(pacijentDTO);
 		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_PACIJENT"));
+		novi.setRoles(roles);
 		
 		Pacijent pacijent = this.pacijentService.save(novi);
 		
@@ -94,17 +105,5 @@ public class AuthenticationController {
 	
 	
 	//registracije ovde napisati MOZDA
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
