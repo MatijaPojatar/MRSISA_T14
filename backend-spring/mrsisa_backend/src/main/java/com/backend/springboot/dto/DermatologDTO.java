@@ -15,6 +15,7 @@ public class DermatologDTO {
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public DermatologDTO() {
 		
@@ -33,6 +34,8 @@ public class DermatologDTO {
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.pocetakRadnogVremena = d.getPocetakRadnogVremena();
 		this.krajRadnogVremena = d.getKrajRadnogVremena();
+		this.promenjenaLozinka = d.isPromenjenaLozinka();
+		this.enabled = d.isEnabled();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
@@ -61,6 +64,22 @@ public class DermatologDTO {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
 		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public LocalTime getPocetakRadnogVremena() {

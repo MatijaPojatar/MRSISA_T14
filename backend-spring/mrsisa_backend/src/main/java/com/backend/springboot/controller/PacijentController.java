@@ -29,7 +29,7 @@ import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
 
 
-@CrossOrigin(origins = {"http://localhost:8081" })
+@CrossOrigin(origins = {"http://localhost:8081" }) 
 @RestController
 @RequestMapping("/pacijent")
 public class PacijentController {
@@ -55,6 +55,7 @@ public class PacijentController {
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
 	
+	
 	@GetMapping("/mail/{mail}")
 	public ResponseEntity<PacijentDTO> getOne(@PathVariable String mail){
 		Pacijent p = pacijentService.findByMail(mail);
@@ -63,13 +64,7 @@ public class PacijentController {
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
 	
-//	@PostMapping()
-//	public ResponseEntity<Pacijent> registrujPacijenta(@RequestBody Pacijent pacijentInfo){
-//		Pacijent pacijent = pacijentService.save(pacijentInfo);
-//		
-//		return new ResponseEntity<Pacijent>(pacijent, HttpStatus.OK);
-//	}
-	
+
 	@PutMapping("/penal/{id}")
 	public ResponseEntity<String> dodeliPenal(@PathVariable Integer id){
 		
@@ -82,6 +77,19 @@ public class PacijentController {
 		
 		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.OK);
 		
+	}
+	
+	@PutMapping("/aktivacija/{id}")
+	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
+		Pacijent p = pacijentService.findOne(id);
+		
+		if(!p.isEnabled()) {
+			p.setEnabled(true);
+			pacijentService.save(p);
+			return new ResponseEntity<String>("Uspešno ste aktivirali profil "+ p.getIme() + " " + p.getPrezime() + ".", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")

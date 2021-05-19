@@ -12,6 +12,16 @@ const router = new Router({
       component: () => import("./components/Prijava")
     },
     {
+      path: "/promenaSifre",
+      name: "ObaveznaPromenaSifre",
+      component: () => import("./components/ObaveznaPromenaSifre")
+    },
+    {
+      path: "/pacijent/aktiviraj/:id",
+      name: "Aktivacija",
+      component: () => import("./components/Aktivacija")
+    },
+    {
       path: "/prijava",
       name: "Prijava",
       component: () => import("./components/Prijava")

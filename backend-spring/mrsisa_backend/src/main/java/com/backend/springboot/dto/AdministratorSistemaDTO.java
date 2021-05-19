@@ -10,6 +10,7 @@ public class AdministratorSistemaDTO {
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, potpis;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public AdministratorSistemaDTO(AdministratorSistema a) {
 		super();
@@ -25,6 +26,24 @@ public class AdministratorSistemaDTO {
 		this.pol = a.getPol();
 		this.datumRodjenja = a.getDatumRodjenja();
 		this.potpis = a.getPotpis();
+		this.promenjenaLozinka = a.isPromenjenaLozinka();
+	    this.enabled = a.isEnabled();
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getId() {

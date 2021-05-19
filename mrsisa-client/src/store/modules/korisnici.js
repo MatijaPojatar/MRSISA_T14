@@ -20,21 +20,42 @@ const getters = {
 }
 
 const actions = {
+  async prvaPromenaSifreAction({commit}, {id, sifra}){
+    console.log(commit);
+    Vue.axios.put("/osobe/lozinka/"+id, sifra);
+  },
+
+
+  async aktivacijaProfilaAction({commit},  id){
+    console.log(commit);
+    console.log("SALJEMO AKTIVACIJU")
+    Vue.axios.put("/pacijent/aktivacija/" + id);
+
+    console.log("poslata AKTIVACIJA")
+  },
+
+  async signUpAction({commit}, dto){
+    console.log(commit);
+    console.log("ULAZAK U FUNCIJU SIGNUP")
+
+    const response = await Vue.axios.post("/auth/signup", dto);
+
+    alert("Uspešna registracija" + response.data.mail);
+
+  },
+
   async logInAction({dispatch}, credentials) {
-    try{
-      const response = await Vue.axios.post("/auth/login", credentials); //printovati todo
+    
+    const response = await Vue.axios.post("/auth/login", credentials); //printovati todo
 
-      let accessToken = response.data.accessToken;
-      console.log(accessToken, "SMO DOBILI ZA TOKEN")
+    let accessToken = response.data.accessToken;
+    console.log(accessToken, "SMO DOBILI ZA TOKEN")
 
-      localStorage.setItem("token", accessToken);
+    localStorage.setItem("token", accessToken);
 
-      dispatch('updateAxiosAuth');
-      dispatch('updateState', accessToken);
-      console.log("Sacekali update")
-    }catch(error){
-      alert("Greska log in- u");
-    }
+    dispatch('updateAxiosAuth');
+    dispatch('updateState', accessToken);
+    console.log("Sacekali update")
   },
 
   async logoutAction({commit}){

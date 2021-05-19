@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.dto.AdministratorSistemaDTO;
 import com.backend.springboot.service.AdministratorSistemaService;
@@ -28,5 +30,6 @@ public class AdministratorSistemaController {
 		
 		return new ResponseEntity<AdministratorSistemaDTO>(dto, HttpStatus.OK);
 	}
+	
 	
 }

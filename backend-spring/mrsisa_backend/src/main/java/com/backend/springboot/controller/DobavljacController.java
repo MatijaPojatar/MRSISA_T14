@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.DermatologDTO;
@@ -50,6 +51,7 @@ public class DobavljacController {
 		return new ResponseEntity<DobavljacDTO>(dto,HttpStatus.OK);
 	}
 	
+
 	@PostMapping()
 	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dto){
 		Dobavljac dobavljac = dobavljacService.save(new Dobavljac(dto));

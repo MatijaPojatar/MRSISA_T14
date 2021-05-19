@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.Savetovanje;
@@ -115,6 +116,18 @@ public class EmailService {
 				"\nKoličina: " + rl.getKolicina() +
 				"\n preuzeta od strane našeg farmaceuta apoteke "+rl.getApoteka().getNaziv() +
 				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+
+	@Async
+	public void aktivacija(Osoba osoba, String link) throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
+		
+		mail.setTo(osoba.getMail());
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Link za aktivaciju profila");
+		mail.setText("Poštovani \n\nProfil za "+ osoba.getIme() +" "+osoba.getPrezime() + " možete aktivirati klikom na link: \n"+link);
+	
 		jms.send(mail);
 	}
 }

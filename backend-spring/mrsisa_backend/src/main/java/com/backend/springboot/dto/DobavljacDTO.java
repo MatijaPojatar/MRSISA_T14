@@ -10,6 +10,7 @@ public class DobavljacDTO {
 	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, nazivPreduzeca;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public DobavljacDTO() {
 		super();
@@ -28,6 +29,24 @@ public class DobavljacDTO {
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.nazivPreduzeca = d.getNazivPreduzeca();
+		this.promenjenaLozinka = d.isPromenjenaLozinka();
+		this.enabled = d.isEnabled();
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getNazivPreduzeca() {

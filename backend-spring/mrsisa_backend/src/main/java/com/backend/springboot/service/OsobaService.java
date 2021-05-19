@@ -55,4 +55,8 @@ public class OsobaService implements UserDetailsService{
 		}
 	}
 
+	public Osoba save(Osoba osoba) {
+		return osobaRep.save(osoba);
+	}
+
 }

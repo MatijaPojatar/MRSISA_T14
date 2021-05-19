@@ -185,6 +185,11 @@ export default {
 
 
     async onSubmitDerm(){
+      if(this.lozinka !== this.potvrdaLozinke){
+        alert("Lozinke nisu iste!");
+        return;
+      }
+
       const DermDTO = {
         ime: this.ime,
         prezime: this.prezime,
@@ -200,6 +205,7 @@ export default {
         krajRadnogVremena: this.krajRadnogVremena
       }
       try{
+        ///////////////////////
         alert("Uspesna registracija "+ this.ime + this.prezime);
         this.cancel();
         console.log(DermDTO);

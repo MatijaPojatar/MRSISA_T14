@@ -33,9 +33,9 @@ public class AdministratorSistema extends Osoba {
 	}
 	
 	public AdministratorSistema(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, String potpis) {
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka,boolean enabled, String potpis) {
 		
-		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.potpis = potpis;
 	}
 

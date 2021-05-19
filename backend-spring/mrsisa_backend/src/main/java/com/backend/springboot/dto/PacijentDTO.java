@@ -10,6 +10,7 @@ public class PacijentDTO {
 	private String ime, prezime, mail, password, adresa, grad, drzava, brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
+	private Boolean promenjenaLozinka, enabled;
 	
 	public PacijentDTO() {
 		
@@ -29,6 +30,24 @@ public class PacijentDTO {
 		this.brojTelefona = p.getBrojTelefona();
 		this.pol = p.getPol();
 		this.datumRodjenja = p.getDatumRodjenja();
+		this.promenjenaLozinka = p.isPromenjenaLozinka();
+		this.enabled = p.isEnabled();
+	}
+
+	public Boolean getPromenjenaLozinka() {
+		return promenjenaLozinka;
+	}
+
+	public void setPromenjenaLozinka(Boolean promenjenaLozinka) {
+		this.promenjenaLozinka = promenjenaLozinka;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public Integer getId() {

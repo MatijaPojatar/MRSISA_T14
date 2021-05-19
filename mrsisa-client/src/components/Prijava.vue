@@ -62,6 +62,7 @@ export default {
     ...mapGetters({
       currentMail: "korisnici/getMail",
       currentRole: "korisnici/getRole",
+      korisnik: "korisnici/getKorisnik"
     }),
   },
   methods: {
@@ -86,6 +87,12 @@ export default {
         };
         await this.logInAction(credentials);
 
+        if (!this.korisnik.promenjenaLozinka){
+          alert("Usli ovde")
+          this.$router.push("/promenaSifre");
+          return;
+        }
+
         let role = this.currentRole;
         console.log(role);
         switch (role) {
@@ -109,7 +116,8 @@ export default {
             break;
         }
       } catch (error) {
-        alert("Greska pri prijavi");
+        console.log(error);
+        alert("Greska pri prijavi. Nekorektni kredencijali ili profil nije aktiviran");
       }
     },
   },

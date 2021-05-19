@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Dobavljac;
@@ -70,6 +71,8 @@ public class DermatologController {
 		
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
 	}
+	
+
 	
 	@PostMapping()
 	@PreAuthorize("hasRole('ADMIN')")

@@ -27,8 +27,8 @@ public class Dobavljac extends Osoba{
 	private List<LekNaStanju> lekoviNaStanju;
 
 	public Dobavljac(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka,String nazivPreduzeca) {
-		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka,boolean enabled,String nazivPreduzeca) {
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.nazivPreduzeca = nazivPreduzeca;
 	}
 

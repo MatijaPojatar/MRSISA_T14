@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.AdministratorApotekeDTO;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.service.AdministratorApotekeService;
@@ -49,4 +50,6 @@ public class AdministratorApotekeController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+
 }

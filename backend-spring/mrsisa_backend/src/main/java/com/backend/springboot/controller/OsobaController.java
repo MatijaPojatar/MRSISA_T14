@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.security.Timestamp;
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -8,9 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,6 +45,21 @@ public class OsobaController {
 		Osoba osoba = osobaService.addOsoba(osobaInfo);
 		
 		return new ResponseEntity<Osoba>(osoba, HttpStatus.OK);
+	}
+	
+	@PutMapping("/lozinka/{id}")
+	public ResponseEntity<String> promeniLozinkuPrviPut(@PathVariable Integer id, @RequestBody String lozinka){
+		Osoba osoba = osobaService.findOne(id);
+		
+		if(osoba.isPromenjenaLozinka()) {
+			return new ResponseEntity<String>("Lozinka je vec promenjena", HttpStatus.METHOD_NOT_ALLOWED);
+		}
+		
+		osoba.setPassword(new BCryptPasswordEncoder().encode( lozinka));
+		osoba.setPromenjenaLozinka(true);
+		
+		osobaService.save(osoba);
+		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
 	}
 	
 }

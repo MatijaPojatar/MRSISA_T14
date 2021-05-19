@@ -53,8 +53,8 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
 
 	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
-		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka);
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, boolean enabled, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
+		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 		this.krajRadnogVremena = krajRadnogVremena;
 	}

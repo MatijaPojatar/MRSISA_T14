@@ -67,7 +67,7 @@ public class Osoba implements UserDetails{
 	@Column(name = "promenjenaLozinka", nullable = false)
 	private boolean promenjenaLozinka;
 	@Column(name="enabled")  //todo napraviti non nullable, modifikovati konstruktor i default podatke u bazi
-	private boolean enabled = true;
+	private boolean enabled;
 	
 	@Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;   //mozda i nepotrebno, ali stavljeno zbog tokena
@@ -88,7 +88,7 @@ public class Osoba implements UserDetails{
 	}
 
 	public Osoba(Integer id, String ime, String prezime, String mail, String password, String adresa, String grad,
-			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka) {
+			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, boolean enabled) {
 		this.id = id;
 		this.ime = ime;
 		this.prezime = prezime;
@@ -102,7 +102,7 @@ public class Osoba implements UserDetails{
 		this.datumRodjenja = datumRodjenja;
 		this.promenjenaLozinka = promenjenaLozinka;
 		this.obrisan = false;
-		this.enabled = true;  //todo promeniti kad naucimo mejlove i aktivaciju
+		this.enabled = enabled; 
 	}
 
 	public Timestamp getLastPasswordResetDate() {
@@ -117,6 +117,10 @@ public class Osoba implements UserDetails{
 		return roles;
 	}
 
+	public void addRole(Role role) {
+		this.roles.add(role);
+	}
+	
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}

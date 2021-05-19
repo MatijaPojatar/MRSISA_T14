@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.ParametriPretrageLeka;
@@ -51,6 +52,8 @@ public class FarmaceutController {
 		
 		return new ResponseEntity<FarmaceutDTO>(dto,HttpStatus.OK);
 	}
+	
+
 	
 	@PutMapping("/save/{id}")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
