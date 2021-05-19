@@ -41,6 +41,9 @@ public class Pacijent extends Osoba {
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaFarmaceuta> zalbeNaFarmaceute = new ArrayList<ZalbaNaFarmaceuta>();
 	
+	@OneToMany(mappedBy= "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ERecept> erecepti = new ArrayList<ERecept>();
+	
 	@ManyToMany
 	@JoinTable(name = "pacijent_alergije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "lek_id", referencedColumnName = "id"))
 	private List<Lek> alergije = new ArrayList<Lek>();
@@ -76,6 +79,14 @@ public class Pacijent extends Osoba {
 		this.setPenali(p.getPenali());
 		this.setPromenjenaLozinka(p.getPromenjenaLozinka());
 		this.setEnabled(p.getEnabled());
+	}
+
+	public List<ERecept> getErecepti() {
+		return erecepti;
+	}
+
+	public void setErecepti(List<ERecept> erecepti) {
+		this.erecepti = erecepti;
 	}
 
 	public List<ZalbaNaDermatologa> getZalbeNaDermatologe() {
