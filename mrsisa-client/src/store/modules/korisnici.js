@@ -20,10 +20,16 @@ const getters = {
 }
 
 const actions = {
-  async aktivacijaProfilaAction({commit}, {tip, id}){
+  async prvaPromenaSifreAction({commit}, {id, sifra}){
+    console.log(commit);
+    Vue.axios.put("/osobe/lozinka/"+id, sifra);
+  },
+
+
+  async aktivacijaProfilaAction({commit},  id){
     console.log(commit);
     console.log("SALJEMO AKTIVACIJU")
-    Vue.axios.put("/" + tip + "/aktivacija/" + id);
+    Vue.axios.put("/pacijent/aktivacija/" + id);
 
     console.log("poslata AKTIVACIJA")
   },

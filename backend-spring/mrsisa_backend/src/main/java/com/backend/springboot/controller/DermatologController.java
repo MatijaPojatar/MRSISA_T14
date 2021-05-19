@@ -72,18 +72,7 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
 	}
 	
-	@PutMapping("/aktivacija/{id}")
-	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
-		Dermatolog p = service.findOne(id);
-		
-		if(!p.isEnabled()) {
-			p.setEnabled(true);
-			service.save(p);
-			return new ResponseEntity<String>("Uspešno ste aktivirali profil "+ p.getIme() + " " + p.getPrezime() + ".", HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
-	}
+
 	
 	@PostMapping()
 	@PreAuthorize("hasRole('ADMIN')")

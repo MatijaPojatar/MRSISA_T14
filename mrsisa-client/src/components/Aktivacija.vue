@@ -4,7 +4,7 @@
       <v-card center width="600">
       <v-card-title> Uspešna aktivacija profila!</v-card-title>
 
-      <h4>Tip korisnika: {{this.$route.params.tip}}</h4>
+      <h4>Tip korisnika: Pacijent</h4>
 
       <v-card-actions>
         <v-btn @click="pocetna">Početna strana</v-btn>
@@ -33,7 +33,7 @@ export default {
 
   async mounted(){
     try{
-      this.aktivacijaProfilaAction({tip: this.$route.params.tip,id: this.$route.params.id})
+      this.aktivacijaProfilaAction(this.$route.params.id)
     }catch(error){
       alert("Greska pri aktivaciji")
     }

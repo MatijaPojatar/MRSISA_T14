@@ -185,7 +185,7 @@ export default {
     },
 
     async onSubmit() {
-      if(this.lozinka.localeCompare(this.potvrdaLozinke)){
+      if(this.lozinka.localeCompare(this.potvrdaLozinke)){ //ako su iste, vraca 0, pa je falsy
         alert("Lozinke nisu iste!");
         return;
       }

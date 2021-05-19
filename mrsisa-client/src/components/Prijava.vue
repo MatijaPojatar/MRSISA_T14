@@ -62,6 +62,7 @@ export default {
     ...mapGetters({
       currentMail: "korisnici/getMail",
       currentRole: "korisnici/getRole",
+      korisnik: "korisnici/getKorisnik"
     }),
   },
   methods: {
@@ -85,6 +86,12 @@ export default {
           password: this.lozinka,
         };
         await this.logInAction(credentials);
+
+        if (!this.korisnik.promenjenaLozinka){
+          alert("Usli ovde")
+          this.$router.push("/promenaSifre");
+          return;
+        }
 
         let role = this.currentRole;
         console.log(role);
