@@ -43,6 +43,13 @@ public class DobavljacController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	
+	@GetMapping("/nazivPreduzeca/{id}")
+	public ResponseEntity<String> getNazivPreduzeca(@PathVariable Integer id){
+		Dobavljac d = dobavljacService.findOne(id);
+		return new ResponseEntity<String>(d.getNazivPreduzeca(), HttpStatus.OK);
+	}
+	
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<DobavljacDTO> getOne(@PathVariable Integer id){
 		Dobavljac d = dobavljacService.findOne(id);

@@ -66,6 +66,13 @@
       required
     ></v-select>
 
+    <v-text-field
+      v-if="this.dobavljac"
+      v-model="newInfo.nazivPreduzeca"
+      :readonly="!editable"
+      label="Naziv preduzeća"
+    ></v-text-field>
+
     <v-row v-if = "adminView">
     <v-col
       cols="11"
@@ -139,6 +146,8 @@
       </v-menu>
     </v-col>
     </v-row>
+
+    
 
     <v-checkbox
       v-model="checkbox"
@@ -233,6 +242,7 @@ import Vue from "vue";
           pol: "",
           pocetakRadnogVremena: null,
           krajRadnogVremena: null,
+          nazivPreduzeca: "",
       },
       valid: true,
       nameRules: [
@@ -262,12 +272,18 @@ import Vue from "vue";
         editable: Boolean,
         adminView: Boolean,
         apotekaId: Number,
+        dobavljac: Boolean
     },
     created(){
         this.reset()
     },
-    mounted(){
+    async mounted(){
       this.reset()
+      if(this.dobavljac){
+        let resp = await Vue.axios.get("http://localhost:8080/dobavljaci/nazivPreduzeca/"+this.user.id);
+        this.newInfo.nazivPreduzeca = resp.data;
+        this.user.nazivPreduzeca = resp.data;
+      }
       if(this.adminView){
         console.log(this.user)
         if (this.newInfo.pocetakRadnogVremena[0].toString().length == 1){
@@ -302,7 +318,7 @@ import Vue from "vue";
     },
 
     methods: {
-      validate () {
+      async validate () {
         if(this.$refs.form.validate()){
             this.user.ime=this.newInfo.ime
             this.user.prezime=this.newInfo.prezime
@@ -311,16 +327,47 @@ import Vue from "vue";
             this.user.grad=this.newInfo.grad
             this.user.drzava=this.newInfo.drzava
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
+
             if(this.adminApoteke){
                 Vue.axios.put(`http://localhost:8080/adminApoteke/save/${this.user.id}`,this.user)
                 this.dialog=true;
-            }else{
+            }else if(this.dobavljac){
+                console.log("EVO SALJEM")
+                this.user.nazivPreduzeca = this.newInfo.nazivPreduzeca
+                console.log(this.user)
+                const dto = {
+                  id: this.user.id,
+                  ime: this.user.ime,
+                  prezime: this.user.prezime,
+                  brojTelefona: this.user.brojTelefona,
+                  adresa: this.user.adresa,
+                  grad: this.user.grad,
+                  drzava: this.user.drzava,
+                  pol: this.user.pol,
+                  nazivPreduzeca: this.user.nazivPreduzeca,
+                  datumRodjenja: [this.user.datumRodjenja.year, this.user.datumRodjenja.monthValue, this.user.datumRodjenja.dayOfMonth]
+                };
+	
+                try{
+                  await Vue.axios.put(`http://localhost:8080/dobavljaci/save/${this.user.id}`, dto)
+                  this.dialog = true;
+                }catch(error){
+                  console.log(error)
+                }
+                
+                
+            }
+            else{
               this.user.pocetakRadnogVremena=this.newInfo.pocetakRadnogVremena
               this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
 
               if(this.farmaceut){
                   Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
                   this.dialog=true;
+              }else if(this.dobavljac){
+                this.user.nazivPreduzeca = this.newInfo.nazivPreduzeca
+                Vue.axios.put("/dobavljaci/save/"+this.user.id, this.user)
+                this.dialog=true;
               }else{
                   if (this.adminView){
                       Vue.axios.put(`http://localhost:8080/dermatolog/updateRadnoVreme/${this.apotekaId}`,this.user).then(response=>{
@@ -354,8 +401,11 @@ import Vue from "vue";
         this.newInfo.grad=this.user.grad
         this.newInfo.drzava=this.user.drzava
         this.newInfo.pol= this.user.pol==="MUSKI" ? "M" : "Ž"
+
         this.newInfo.pocetakRadnogVremena=this.user.pocetakRadnogVremena
         this.newInfo.krajRadnogVremena=this.user.krajRadnogVremena
+
+        this.newInfo.nazivPreduzeca = this.user.nazivPreduzeca
       },
       endDialog(){
         this.dialog=false;

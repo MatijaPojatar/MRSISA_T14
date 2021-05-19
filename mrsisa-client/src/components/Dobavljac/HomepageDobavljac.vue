@@ -103,7 +103,7 @@
 
     <v-main >
      <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
-        <AccountView :user="user" />
+        <AccountView :user="user" :editable = "true" :dobavljac="true" />
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
