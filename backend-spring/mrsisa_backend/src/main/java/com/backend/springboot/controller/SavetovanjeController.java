@@ -24,14 +24,17 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
+import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
+import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.EmailService;
@@ -236,6 +239,27 @@ public class SavetovanjeController {
 		}
 		
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@PutMapping("/zakazi")
+	public ResponseEntity<Boolean> zakaziSavetovanje(@RequestBody SavetovanjeDTO savetovanje){		
+		List<OdsustvoFarmaceut> checkOdsustva = odsustvoService.findExistInTime(savetovanje.getFarmaceutId(), savetovanje.getStart(), savetovanje.getEnd());
+		if(checkOdsustva.size() != 0) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
+		
+		Savetovanje s = new Savetovanje();
+		s.setFarmaceut(farmService.findOne(savetovanje.getFarmaceutId()));
+		s.setIzvrsen(savetovanje.isIzvrsen());
+		s.setApoteka(apotekaService.findOne(savetovanje.getApotekaId()));
+		s.setPacijent(pacijentService.findOne(savetovanje.getPacijentId()));
+		s.setIzvestaj(savetovanje.getIzvestaj());
+		s.setKraj(savetovanje.getEnd());
+		s.setPocetak(savetovanje.getStart());
+		
+		service.save(s);
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")

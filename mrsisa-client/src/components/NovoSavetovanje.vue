@@ -44,6 +44,7 @@ export default {
   components: {},
 
   data: () => ({
+    odabrano: true,
     headeri: [
       { text: "Naziv", value: "name", sortable: false },
       { text: "Mesto", value: "mesto", sortable: false },
@@ -61,7 +62,6 @@ export default {
         opis: "Test",
       },
     ],
-    savetovanja: [],
   }),
 
   computed: {
@@ -72,82 +72,70 @@ export default {
 
   methods: {
     odaberi() {
-      this.headeri = [
-        { text: "Ime", value: "ime", sortable: false },
-        { text: "Prezime", value: "prezime", sortable: false },
-        { text: "Ocena", value: "ocena", sortable: true },
-        { text: "Cena", value: "cena", sortable: true },
-        { text: "Odaberi" },
-      ],
-      this.apoteke = [
-          {
-            id: 1,
-            apotekaId: 1,
-            naziv: "Pera",
-            mesto: "Peric",
-            mail: "perap@gmail.com",
-            adresa: "Adresa 1",
-            grad: "Novi Sad",
-            drzava: "Srbija",
-            brojTelefona: "0651234567",
-            pocetakRadnogVremenaStr: "08:00",
-            krajRadnogVremenaStr: "16:00",
-            pol: "MUSKI",
-            datumRodjenja: [1990, 1, 1],
-            pocetakRadnogVremena: [8, 0],
-            krajRadnogVremena: [16, 0],
-            promenjenaLozinka: true,
-            enabled: true,
-          },
-          {
-            id: 6,
-            apotekaId: 1,
-            naziv: "Maja",
-            mesto: "Majic",
-            mail: "maja93@gmail.com",
-            adresa: "Adresa 2",
-            grad: "Novi Sad",
-            drzava: "Srbija",
-            brojTelefona: "0651234567",
-            pocetakRadnogVremenaStr: "08:00",
-            krajRadnogVremenaStr: "16:00",
-            pol: "ZENSKI",
-            datumRodjenja: [1993, 1, 1],
-            pocetakRadnogVremena: [8, 0],
-            krajRadnogVremena: [16, 0],
-            promenjenaLozinka: true,
-            enabled: true,
-          },
-        ];
-    },
-
-    zakazi(item) {
-      this.pregledi = [
-        {
-          name: "Pregled 14",
-          datum: "2021-05-21",
-          pocetak: "13:10",
-          kraj: "14:30",
-          ocena: 5,
+      if (this.odabrano) {
+        (this.headeri = [
+          { text: "Ime", value: "ime", sortable: false },
+          { text: "Prezime", value: "prezime", sortable: false },
+          { text: "Ocena", value: "ocena", sortable: true },
+          { text: "Cena", value: "cena", sortable: true },
+          { text: "Odaberi" },
+        ]),
+          (this.apoteke = [
+            {
+              id: 1,
+              apotekaId: 1,
+              naziv: "Pera",
+              mesto: "Peric",
+              mail: "perap@gmail.com",
+              adresa: "Adresa 1",
+              grad: "Novi Sad",
+              drzava: "Srbija",
+              brojTelefona: "0651234567",
+              pocetakRadnogVremenaStr: "08:00",
+              krajRadnogVremenaStr: "16:00",
+              pol: "MUSKI",
+              datumRodjenja: [1990, 1, 1],
+              pocetakRadnogVremena: [8, 0],
+              krajRadnogVremena: [16, 0],
+              promenjenaLozinka: true,
+              enabled: true,
+            },
+            {
+              id: 6,
+              apotekaId: 1,
+              naziv: "Maja",
+              mesto: "Majic",
+              mail: "maja93@gmail.com",
+              adresa: "Adresa 2",
+              grad: "Novi Sad",
+              drzava: "Srbija",
+              brojTelefona: "0651234567",
+              pocetakRadnogVremenaStr: "08:00",
+              krajRadnogVremenaStr: "16:00",
+              pol: "ZENSKI",
+              datumRodjenja: [1993, 1, 1],
+              pocetakRadnogVremena: [8, 0],
+              krajRadnogVremena: [16, 0],
+              promenjenaLozinka: true,
+              enabled: true,
+            },
+          ]);
+          this.odabrano = false;
+      } else {
+        alert(213)
+        let savetovanje = {
+          name: "Savetovanje 16",
+          izvestaj: "",
+          start: [2021, 5, 21, 9, 0],
+          end: [2021, 5, 21, 9, 45],
+          pacijentId: this.korisnik.id,
+          farmaceutId: 1,
+          id: 16,
           apotekaId: 1,
-          id: 14,
-          dermatolog: "Petar Petrovic",
-          dermatologId: 3,
           izvrsen: false,
-          cena: 3000.0,
-        },
-      ];
-      let pregled = {
-        name: item.name,
-        izvestaj: "",
-        start: [2021, 5, 20, 12, 0],
-        end: [2021, 5, 20, 12, 45],
-        pacijentId: this.korisnik.id,
-        dermatologId: item.dermatologId,
-        apotekaId: item.apotekaId,
-        izvrsen: false,
-      };
-      axios.put(`http://localhost:8080/pregled/zakazi`, pregled);
+        };
+        axios.put(`http://localhost:8080/savetovanje/zakazi`, savetovanje);
+      }
     },
   },
 };
