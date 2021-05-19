@@ -40,4 +40,8 @@ public class RezervacijaService {
 	public void save(RezervacijaLeka rl) {
 		rep.save(rl);
 	}
+	
+	public List<RezervacijaLeka> findAllActive(){
+		return rep.findAllActive();
+	}
 }
