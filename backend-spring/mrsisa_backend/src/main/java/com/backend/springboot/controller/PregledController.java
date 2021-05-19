@@ -236,6 +236,33 @@ public class PregledController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PutMapping("/zakazi")
+	public ResponseEntity<Boolean> zakaziPregled(@RequestBody PregledDTO pregled){		
+		List<OdsustvoDermatolog> checkOdsustva = odsustvoService.findExistInTime(pregled.getDermatologId(), pregled.getStart(), pregled.getEnd());
+		if(checkOdsustva.size() != 0) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
+		
+		Pregled p = new Pregled();
+		p.setDermatolog(derService.findOne(pregled.getDermatologId()));
+		p.setIzvrsen(pregled.isIzvrsen());
+		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
+		p.setPacijent(pacijentService.findOne(pregled.getPacijentId()));
+		p.setIzvestaj(pregled.getIzvestaj());
+		p.setKraj(pregled.getEnd());
+		p.setPocetak(pregled.getStart());
+		
+		service.save(p);
+		
+		try {
+			emailService.noviPregled(p);
+		} catch(Exception e){
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/all/pacijenti/{id}")
 	public ResponseEntity<List<PacijentTerminDTO>> getAllPacijentiForDermatolog(@PathVariable Integer id) {	
 		
