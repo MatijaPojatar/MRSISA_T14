@@ -20,15 +20,20 @@ public class DobavljacDTO {
 		this.id=d.getId();
 		this.ime=d.getIme();
 		this.prezime=d.getPrezime();
+		
 		this.mail=d.getMail();
 		this.password=d.getPassword();
+		
 		this.adresa=d.getAdresa();
 		this.grad=d.getGrad();
 		this.drzava=d.getDrzava();
+		
 		this.brojTelefona=d.getBrojTelefona();
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
+		
 		this.nazivPreduzeca = d.getNazivPreduzeca();
+		
 		this.promenjenaLozinka = d.isPromenjenaLozinka();
 		this.enabled = d.isEnabled();
 	}
