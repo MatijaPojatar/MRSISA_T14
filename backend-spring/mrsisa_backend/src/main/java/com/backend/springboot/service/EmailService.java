@@ -10,6 +10,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.RezervacijaLeka;
@@ -130,4 +132,49 @@ public class EmailService {
 	
 		jms.send(mail);
 	}
+	
+	@Async
+	public void odobravanjeOdsustvaDermatolog(OdsustvoDermatolog odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odobren zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getDermatolog().getIme() +"\n\nObaveštavamo Vas da je odobren Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void odobravanjeOdsustvaFarmaceut(OdsustvoFarmaceut odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odobren zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getFarmaceut().getIme() +"\n\nObaveštavamo Vas da je odobren Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void odgovorPonuda(Integer narudzbenicaId, Integer ponudaId, String status) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Obrađena ponuda");
+		mail.setText("Poštovani,  \n\nObaveštavamo Vas da je " + status +" Vaša ponuda. \n"+
+				"\nNarudzbenica ID: " + narudzbenicaId+
+				"\nPonuda ID: "+ ponudaId + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
 }

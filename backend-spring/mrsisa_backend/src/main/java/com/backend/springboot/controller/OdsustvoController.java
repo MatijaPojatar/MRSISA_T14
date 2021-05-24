@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.OdsustvoDermatologDTO;
 import com.backend.springboot.dto.OdsustvoFarmaceutDTO;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.OdsustvoDermatologService;
 import com.backend.springboot.service.OdsustvoFarmaceutService;
@@ -48,6 +50,8 @@ public class OdsustvoController {
 	private PregledService preService;
 	@Autowired
 	private DermatologService dermService;
+	@Autowired
+	private EmailService emailService;
 	
 	@PutMapping("/farmaceut/dodaj/{id}")
 	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
@@ -144,13 +148,23 @@ public class OdsustvoController {
 	
 	@PutMapping("/farmaceut/zaOdobrenje/{zahtevId}")
 	public ResponseEntity<Boolean> odobriFarmaceut(@PathVariable Integer zahtevId){
-		odFarmService.odobri(zahtevId);
+		OdsustvoFarmaceut odsustvo = odFarmService.odobri(zahtevId);
+		try {
+			emailService.odobravanjeOdsustvaFarmaceut(odsustvo);
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
 	@PutMapping("/dermatolog/zaOdobrenje/{zahtevId}")
 	public ResponseEntity<Boolean> odobriDermatolog(@PathVariable Integer zahtevId){
-		odDermService.odobri(zahtevId);
+		OdsustvoDermatolog odsustvo = odDermService.odobri(zahtevId);
+		try {
+			emailService.odobravanjeOdsustvaDermatolog(odsustvo);
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 
