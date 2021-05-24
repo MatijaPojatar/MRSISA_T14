@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.AdministratorApoteke;
+import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.AdministratorApotekeDTO;
@@ -50,6 +52,8 @@ public class AdministratorApotekeController {
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
+	
+	
 	
 
 }

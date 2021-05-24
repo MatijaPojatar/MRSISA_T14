@@ -131,7 +131,7 @@
         <AccountView :user="user" :editable = "true" :adminApoteke="true"/>
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
-        <PasswordSwitch :pass="user.password"  :id="user.id"/>
+        <PasswordSwitch :pass="user.password"  :id="user.id" :adminApoteke="true"/>
       </v-container>
       <v-container fluid v-if="showLekovi" :style="{width:'180vh'}" >
         <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
