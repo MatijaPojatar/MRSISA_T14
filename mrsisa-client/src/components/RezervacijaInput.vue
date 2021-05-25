@@ -188,18 +188,28 @@ export default{
         },
         async pronadjiRezervaciju(){
             let f=false;
+            let g=false;
             await Vue.axios.get(`http://localhost:8080/rezervacija/checkOne/${this.code}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
                 this.message=response.data
                 if(response.data==="Uspeh"){
                     f=true
                 }
+                else if(response.data==="Greska"){
+                    g=true;
+                }
             })
-            if(f){
+            if(g){
+                this.dialog=true;
+                this.message="Došlo je do greške!"
+            }else{
+              if(f){
                 f=await this.dobaviRezervaciju(f);
+              }
+              this.found=f
+              this.saveCode=this.code
+              this.sent=true  
             }
-            this.found=f
-            this.saveCode=this.code
-            this.sent=true
+
         },
         async preuzmiLek(){
             let uspeh=false;

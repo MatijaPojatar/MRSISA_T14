@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.repository.PregledRepository;
 
@@ -80,7 +81,6 @@ public class PregledService {
 		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
 	}
 	
-	@Transactional(readOnly=true)
 	public List<Pregled> findAllInRangeForDermatolog(Integer id,LocalDateTime start,LocalDateTime end){
 		return pregledRep.findInRangeForDermatolog(id,start, end);
 	}
@@ -88,6 +88,15 @@ public class PregledService {
 	@Transactional(readOnly=true)
 	public List<Pregled> findAllInRangeForPacijent(Integer id,LocalDateTime start,LocalDateTime end){
 		return pregledRep.findInRangeForPacijent(id,start, end);
+	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public void zauzmiPregled(Integer id,Pacijent p) {
+		Pregled preg=findOne(id);
+		if(preg!=null) {
+			preg.setPacijent(p);
+			pregledRep.save(preg);
+		}
 	}
 
 }

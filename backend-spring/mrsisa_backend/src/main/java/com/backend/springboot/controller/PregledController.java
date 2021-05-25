@@ -142,7 +142,11 @@ public class PregledController {
 		p.setIzvrsen(true);
 		p.setIzvestaj("Pacijent se nije pojavio");
 		
-		service.save(p);
+		try {
+			service.save(p);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -159,7 +163,11 @@ public class PregledController {
 			p.getLekovi().add(lekIz);
 		}
 		
-		service.save(p);
+		try {
+			service.save(p);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -194,10 +202,12 @@ public class PregledController {
 	
 	@PutMapping("/zauzmi/{id}/{pacijentId}")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
-		Pregled pre=service.findOne(id);
 		Pacijent p=pacijentService.findOne(pacijentId);
-		pre.setPacijent(p);
-		service.save(pre);
+		try {
+			service.zauzmiPregled(id, p);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}

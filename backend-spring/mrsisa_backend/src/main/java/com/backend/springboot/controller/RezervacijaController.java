@@ -9,6 +9,9 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -70,7 +73,11 @@ public class RezervacijaController {
 			LekUMagacinu lek=magacinService.preuzmiJedanLekApoteke(rl.getLek().getId(), rl.getApoteka().getId());
 			magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina()+rl.getKolicina(), rl.getLek().getId(), rl.getApoteka().getId());
 			magacinService.save(m);
-			rezService.save(rl);
+			try {
+				rezService.save(rl);
+			}catch(Exception e){
+				return new ResponseEntity<String>("Greska.",HttpStatus.OK);
+			}
 			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.OK);
 		}
 		
@@ -94,7 +101,11 @@ public class RezervacijaController {
 			return new ResponseEntity<String>("Greska",HttpStatus.OK);
 		}
 		rl.setStatus(StatusRezervacije.PREUZETA);
-		rezService.save(rl);
+		try {
+			rezService.save(rl);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska.",HttpStatus.OK);
+		}
 		
 		try {
 			emailService.preuzimanjeRezervacije(rl);

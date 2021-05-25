@@ -126,7 +126,12 @@ public class SavetovanjeController {
 		s.setIzvrsen(true);
 		s.setIzvestaj("Pacijent se nije pojavio");
 		
-		service.save(s);
+		
+		try {
+			service.save(s);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -144,7 +149,11 @@ public class SavetovanjeController {
 			s.getLekovi().add(lekIz);
 		}
 		
-		service.save(s);
+		try {
+			service.save(s);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
