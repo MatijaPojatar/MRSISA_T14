@@ -149,9 +149,9 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into dobavljaci(id, naziv_preduzeca) values (11, 'MExpress');
 insert into osoba_role (osoba_id, role_id) values (11, 6);
 
-insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h22ad',0,'2021-05-22',2.0,1,2,1);
-insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h23ad',0,'2021-05-22',2.0,2,2,4);
-insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id) values ('h24ad',0,'2021-05-13',2.0,1,2,1);
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version) values ('h22ad',0,'2021-05-27',2.0,1,2,1,1);
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version) values ('h23ad',0,'2021-05-27',2.0,2,2,4,1);
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version) values ('h24ad',0,'2021-05-13',2.0,1,2,1,1);
 
 
 insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);

@@ -90,6 +90,9 @@ public class RezervacijaController {
 	public ResponseEntity<String> preuzmiLek(@PathVariable String code){
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCode(code);
+		if(rl==null) {
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		rl.setStatus(StatusRezervacije.PREUZETA);
 		rezService.save(rl);
 		
@@ -120,7 +123,7 @@ public class RezervacijaController {
 	public void checkRezervacije() {
 		ArrayList<RezervacijaLeka> rezs=(ArrayList<RezervacijaLeka>) rezService.findAllActive();
 		for(RezervacijaLeka rl:rezs) {
-			if(!rl.getDatum().isAfter(LocalDate.now())) {
+			if(!rl.getDatum().isAfter(LocalDate.now()) ) {
 				rl.setStatus(StatusRezervacije.OTKAZANA);
 				Pacijent p=rl.getPacijent();
 				if(p.getPenali()<3) {

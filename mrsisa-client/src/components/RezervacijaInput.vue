@@ -103,7 +103,7 @@
         <v-card-title class="headline">
           Obaveštenje
         </v-card-title>
-        <v-card-text>Lek je uspešno preuzet.</v-card-text>
+        <v-card-text>{{dialogMessage}}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -135,6 +135,7 @@ export default{
       lek:{},
       apotekaId: -1,
       dialog: false,
+      dialogMessage: "",
       codeRules: [
         v => !!v || 'Obavezno polje',
         v => (v.length == 5) || 'Dužina 5 karaktera',
@@ -153,28 +154,37 @@ export default{
                 this.apotekaId=response.data.apotekaId
             })
         },
-        async dobaviRezervaciju(){
+        async dobaviRezervaciju(f){
             await Vue.axios.get(`http://localhost:8080/rezervacija/findOne/${this.code}`).then(response=>{
-                this.rezervacija={
+                if(response.data){
+                   this.rezervacija={
                     lekId:response.data.lekId,
                     kolicina: response.data.kolicina,
                     datum: new Date(response.data.datum[0].toString()+"-"+response.data.datum[1].toString()+"-"+response.data.datum[2].toString()),
+                    } 
                 }
-            })
+                else{
+                    f=false;
+                }
 
-            await Vue.axios.get(`http://localhost:8080/lekovi/findOneInApoteka/${this.rezervacija.lekId}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
-                this.lek={
-                    naziv: response.data.naziv,
-                    id: response.data.id,
-                    proizvodjac : response.data.proizvodjac,
-                    sastav: response.data.sastav,
-                    napomena: response.data.napomena,
-                    rezim: response.data.rezimIzdavanja,
-                    oblik: response.data.oblikLeka,
-                    vrsta: response.data.vrstaLeka, 
-                    cena: response.data.cena, 
-                }
             })
+            if(f){
+                await Vue.axios.get(`http://localhost:8080/lekovi/findOneInApoteka/${this.rezervacija.lekId}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
+                    this.lek={
+                        naziv: response.data.naziv,
+                        id: response.data.id,
+                        proizvodjac : response.data.proizvodjac,
+                        sastav: response.data.sastav,
+                        napomena: response.data.napomena,
+                        rezim: response.data.rezimIzdavanja,
+                        oblik: response.data.oblikLeka,
+                        vrsta: response.data.vrstaLeka, 
+                        cena: response.data.cena, 
+                    }
+                })
+            }
+
+            return f;
         },
         async pronadjiRezervaciju(){
             let f=false;
@@ -185,14 +195,24 @@ export default{
                 }
             })
             if(f){
-                await this.dobaviRezervaciju();
+                f=await this.dobaviRezervaciju(f);
             }
             this.found=f
             this.saveCode=this.code
             this.sent=true
         },
         async preuzmiLek(){
-            await Vue.axios.put(`http://localhost:8080/rezervacija/preuzmi/${this.code}`)
+            let uspeh=false;
+            await Vue.axios.put(`http://localhost:8080/rezervacija/preuzmi/${this.code}`).then(response=>{
+                if(response.data==="Uspeh"){
+                    uspeh=true;
+                }
+            })
+            if(uspeh){
+                this.dialogMessage="Lek je uspešno preuzet.";
+            }else{
+                this.dialogMessage="Došlo je do greške pri preuzimanju."
+            }
             this.dialog=true
         },
         endDialog(){
