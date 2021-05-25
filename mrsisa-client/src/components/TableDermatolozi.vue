@@ -35,6 +35,19 @@
                     mdi-pencil
                 </v-icon>
             </v-btn>
+
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="light-green"
+                @click="DodajPregled(item)"
+            >
+                <v-icon>
+                    mdi-stethoscope
+                </v-icon>
+            </v-btn>
             </div>
     </template>
   </v-data-table>
@@ -62,12 +75,36 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-dialog
+    v-model="dodajPregledDialog"
+    persistent
+    scrollable
+      max-width="760">
+      <v-card>
+        <v-card-title class="headline">
+          Dodaj slobodan termin
+        </v-card-title>
+        <NoviSlobodanPregled :user="this.selektovanDermatolog"  :apotekaId="this.apotekaId"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPregledDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
  import axios from "axios";
- import  AccountView from "./AccountView";
+ import AccountView from "./AccountView";
+ import NoviSlobodanPregled from "./NoviSlobodanPregled";
 
     export default{
         name: "TableDermatolozi",
@@ -93,6 +130,7 @@
             dermatologUpdateDialog: false,
             selektovanDermatolog: {},
             selektovan: null,
+            dodajPregledDialog: false,
          }),
         props:{
             apotekaId: Number,
@@ -101,6 +139,7 @@
         },
         components:{
             AccountView,
+            NoviSlobodanPregled,
         },
         mounted(){
             console.log(this.apotekaId);
@@ -148,10 +187,22 @@
                     console.log(this.selektovanDermatolog);
                  this.dermatologUpdateDialog = true;
                 });
-                
+
+             },
+             DodajPregled(user){
+                  this.selektovanDermatolog=Object.assign({}, user);
+                 this.selektovan = this.selektovanDermatolog.id;
+                 axios.post(`http://localhost:8080/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                     
+                    this.selektovanDermatolog=response.data;
+                 this.dodajPregledDialog = true;
+                 });
              },
              endDialog(){
                 this.dermatologUpdateDialog = false;
+             },
+             endPregledDialog(){
+                this.dodajPregledDialog = false;
              },
 
          }

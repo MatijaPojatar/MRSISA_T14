@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -236,6 +237,41 @@ public class PregledController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PutMapping("/dodajSlobodan/{id}")
+	public ResponseEntity<Boolean> dodajSlobodanTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
+		LocalDateTime pocetak=pregled.getStart().plusHours(2);
+		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		
+		List<Pregled> checkList=service.findAllInRangeForDermatolog(id,pocetak,kraj);
+		if(checkList.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
+		List<OdsustvoDermatolog> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
+		if(checkOdsustva.size()!=0) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		}
+		
+		Pregled p=new Pregled();
+		p.setDermatolog(derService.findOne(id));
+		p.setIzvrsen(pregled.isIzvrsen());
+		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
+		p.setPacijent(null);
+		p.setIzvestaj(null);
+		p.setKraj(kraj);
+		p.setPocetak(pocetak);
+		p.setCena(pregled.getCena());
+		
+		service.save(p);
+		
+		/*
+		 * try { emailService.noviPregled(p); } catch(Exception e){
+		 * System.out.println("Greska prilikom slanja emaila: " + e.getMessage()); }
+		 */
+		
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
 	@PutMapping("/zakazi")
 	public ResponseEntity<Boolean> zakaziPregled(@RequestBody PregledDTO pregled){		
 		List<OdsustvoDermatolog> checkOdsustva = odsustvoService.findExistInTime(pregled.getDermatologId(), pregled.getStart(), pregled.getEnd());
@@ -256,7 +292,7 @@ public class PregledController {
 		
 		try {
 			emailService.noviPregled(p);
-		} catch(Exception e){
+		} catch(MailException | InterruptedException e){
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		

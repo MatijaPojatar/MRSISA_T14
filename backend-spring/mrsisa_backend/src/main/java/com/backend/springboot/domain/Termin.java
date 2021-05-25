@@ -30,7 +30,7 @@ public abstract class Termin {
 	private LocalDateTime pocetak;
 	@Column(name = "kraj", nullable = false)
 	private LocalDateTime kraj;
-	@Column(name = "izvestaj", nullable = false)
+	@Column(name = "izvestaj", nullable = true)
 	private String izvestaj;
 	@Column(name = "izvrsen", nullable = false)
 	private boolean izvrsen;
