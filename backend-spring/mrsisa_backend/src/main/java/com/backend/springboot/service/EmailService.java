@@ -10,9 +10,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.AkcijaPromocija;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Osoba;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.Savetovanje;
@@ -173,6 +175,21 @@ public class EmailService {
 		mail.setText("Poštovani,  \n\nObaveštavamo Vas da je " + status +" Vaša ponuda. \n"+
 				"\nNarudzbenica ID: " + narudzbenicaId+
 				"\nPonuda ID: "+ ponudaId + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void novaAkcija(String nazivApoteke, AkcijaPromocija akcija, Pacijent pacijent) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Nova akcija");
+		mail.setText("Poštovani " + pacijent.getIme() +",  \n\nObaveštavamo Vas da je u toku nova akcija u apoteci  " + nazivApoteke +" \n"+
+				"\nOpis: " + akcija.getOpis()+
+				"\nRok važenja: "+ akcija.getKrajVazenja().format(dtf) + 
 				"\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}

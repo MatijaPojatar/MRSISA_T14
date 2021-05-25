@@ -36,6 +36,7 @@ public class AkcijaPromocijaService {
 		nova.setKrajVazenja(kraj);
 		nova.setOpis(opis);
 		nova.setPocetakVazenja(LocalDate.now());
+		
 		return apRep.save(nova);
 		
 	}

@@ -287,6 +287,14 @@ public class Apoteka {
 	public void setRezervacije(Set<RezervacijaLeka> rezervacije) {
 		this.rezervacije = rezervacije;
 	}
+
+	public List<Pacijent> getPretplaceniPacijenti() {
+		return pretplaceniPacijenti;
+	}
+
+	public void setPretplaceniPacijenti(List<Pacijent> pretplaceniPacijenti) {
+		this.pretplaceniPacijenti = pretplaceniPacijenti;
+	}
 	
 	
 	
