@@ -1,5 +1,6 @@
 package com.backend.springboot.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import com.backend.springboot.repository.ApotekaRepository;
 @Service
 public class AkcijaPromocijaService {
 	@Autowired
-	private ApotekaRepository aRep;
+	private ApotekaRepository apotekaRep;
 	
 	@Autowired
 	private AkcijaPromocijaRepository apRep;
@@ -22,10 +23,20 @@ public class AkcijaPromocijaService {
 	public List<AkcijaPromocija> findAllByPacijent(Integer id){
 		List<AkcijaPromocija> akcijePromocije = new ArrayList<AkcijaPromocija>();
 		
-		for (Apoteka a : aRep.findAll()) {
+		for (Apoteka a : apotekaRep.findAll()) {
 			akcijePromocije.addAll(apRep.findAllByApotekaId(a.getId()));
 		}
 		
 		return akcijePromocije;
+	}
+	
+	public AkcijaPromocija dodaj(Integer apotekaId, String opis, LocalDate kraj ) {
+		AkcijaPromocija nova = new AkcijaPromocija();
+		nova.setApoteka(apotekaRep.findOneById(apotekaId));
+		nova.setKrajVazenja(kraj);
+		nova.setOpis(opis);
+		nova.setPocetakVazenja(LocalDate.now());
+		return apRep.save(nova);
+		
 	}
 }

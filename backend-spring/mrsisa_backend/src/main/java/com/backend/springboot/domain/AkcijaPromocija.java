@@ -1,5 +1,6 @@
 package com.backend.springboot.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -20,9 +21,9 @@ public class AkcijaPromocija {
 	@Column(name = "opis", nullable = false)
 	private String opis;
 	@Column(name = "pocetak_vazenja", nullable = false)
-	private LocalDateTime pocetakVazenja;
+	private LocalDate pocetakVazenja;
 	@Column(name = "kraj_vazenja", nullable = false)
-	private LocalDateTime krajVazenja;
+	private LocalDate krajVazenja;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Apoteka apoteka;
@@ -30,7 +31,7 @@ public class AkcijaPromocija {
 	public AkcijaPromocija() {
 	}
 	
-	public AkcijaPromocija(Integer id, String opis, LocalDateTime pocetakVazenja, LocalDateTime krajVazenja,
+	public AkcijaPromocija(Integer id, String opis, LocalDate pocetakVazenja, LocalDate krajVazenja,
 			Apoteka apoteka) {
 		super();
 		this.id = id;
@@ -56,19 +57,19 @@ public class AkcijaPromocija {
 		this.opis = opis;
 	}
 
-	public LocalDateTime getPocetakVazenja() {
+	public LocalDate getPocetakVazenja() {
 		return pocetakVazenja;
 	}
 
-	public void setPocetakVazenja(LocalDateTime pocetakVazenja) {
+	public void setPocetakVazenja(LocalDate pocetakVazenja) {
 		this.pocetakVazenja = pocetakVazenja;
 	}
 
-	public LocalDateTime getKrajVazenja() {
+	public LocalDate getKrajVazenja() {
 		return krajVazenja;
 	}
 
-	public void setKrajVazenja(LocalDateTime krajVazenja) {
+	public void setKrajVazenja(LocalDate krajVazenja) {
 		this.krajVazenja = krajVazenja;
 	}
 
