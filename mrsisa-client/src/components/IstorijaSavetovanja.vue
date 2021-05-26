@@ -1,121 +1,88 @@
 <template>
-<v-row>
-  <v-data-table
-    :headers="headers"
-    :items="pacijenti"
-    :sort-by="'ime'"
-    :sort-desc="[false, true]"
-    multi-sort
-    class="elevation-1"
-  >
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="showAccount(item)"
-      >
-        mdi-account
-      </v-icon>
-    </template>
-  </v-data-table>
-  <v-dialog
-    v-model="dialog"
-    persistent
-    scrollable
-    retain-focus
-      max-width="960">
-      <v-card>
-        <v-card-title class="headline">
-          Nalog pacijenta
-        </v-card-title>
-        <v-card-text>
-        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false" :adminView="false" :key="componentKey"/>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="green darken-1"
-            text
-            @click="endDialog"
-          >
-            Ok
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-</v-row>
+  <v-card>
+    <v-data-table
+      :headers="headers"
+      :items="savetovanja"
+      :sort-desc="[false, true]"
+      multi-sort
+      class="elevation-1"
+    >
+      <template v-slot:item.datum="{ item }">
+        <span>{{ new Date(item.datum).toLocaleDateString("fr-CA") }}</span>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
-
-import axios from "axios";
-import AccountView from "./AccountView";
-
 export default {
-    components:{
-        AccountView,
-    },
-    data: () => ({
-        headers: [
-          {
-            text: 'Ime',
-            align: 'start',
-            value: 'ime',
-          },
-          { text: 'Prezime', value: 'prezime' },
-          { text: 'Datum poslednjeg pregleda', value: 'datum' },
-          { text: 'Nalog', value: 'actions', sortable: false },
-        ],
-        pacijenti: [],
-        dialog: false,
-        selectedUser: {},
-        componentKey:0,
-    }),
-    props: {
-        doktorId: Number,
-        farmaceut: Boolean,
-    },
-    mounted(){
-        this.loadPacijenti();
-    },
-    methods :{
-        async loadPacijenti(){
-            let path="pregled"
-            if(this.farmaceut){
-                path="savetovanje"
-            }
-            await axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
-            {
-                const pacijenti=[];
-                response.data.forEach(element => {
-                    pacijenti.push({
-                        ime: element.ime,
-                        prezime: element.prezime,
-                        brojTelefona: element.brojTelefona,
-                        adresa: element.adresa,
-                        grad: element.grad,
-                        drzava: element.drzava,
-                        pol: element.pol,
-                        datum: new Date(element.poslednjiPregled[0].toString()+"-"+element.poslednjiPregled[1].toString()+"-"+element.poslednjiPregled[2].toString()+" "+element.poslednjiPregled[3].toString()+":"+element.poslednjiPregled[4].toString()),
-                    }
-                    )
-                    this.pacijenti=pacijenti;
-                });
-            }
-            )
+  components: {},
+  data: () => ({
+    headers: [
+      { text: "Savetovanje", value: "naziv", sortable: false },
+      { text: "Datum", value: "datum" },
+      { text: "Trajanje", value: "trajanje" },
+    ],
+    savetovanja: [],
+    dialog: false,
+    selectedUser: {},
+    componentKey: 0,
+  }),
+  mounted() {
+    this.loadSavetovanja();
+  },
+  methods: {
+    async loadSavetovanja() {
+      [
+        {
+          name: "Savetovanje 1",
+          izvestaj: "",
+          start: [2021, 4, 27, 16, 0],
+          end: [2021, 4, 27, 17, 0],
+          pacijentId: 2,
+          id: 1,
+          apotekaId: 1,
+          farmaceutId: 1,
+          izvrsen: false,
         },
-        showAccount(user){
-            console.log(user);
-            //let index=this.pacijenti.indexOf(user)
-            this.selectedUser=Object.assign({}, user);
-            console.log(this.selectedUser);
-            this.componentKey+=1;
-            this.dialog=true;
+        {
+          name: "Savetovanje 7",
+          izvestaj: "Primer izvrsenog savetovanaja 2",
+          start: [2021, 4, 26, 12, 15],
+          end: [2021, 4, 26, 13, 0],
+          pacijentId: 2,
+          id: 7,
+          apotekaId: 1,
+          farmaceutId: 1,
+          izvrsen: true,
         },
-        endDialog(){
-            this.dialog=false;
+        {
+          name: "Savetovanje 11",
+          izvestaj: "",
+          start: [2021, 5, 25, 18, 0],
+          end: [2021, 5, 25, 19, 0],
+          pacijentId: 2,
+          id: 11,
+          apotekaId: 1,
+          farmaceutId: 1,
+          izvrsen: false,
         },
+      ].forEach((element) => {
+        this.savetovanja.push({
+          naziv: element.name,
+          datum: new Date(
+            element.start[0].toString() +
+              "-" +
+              element.start[1].toString() +
+              "-" +
+              element.start[2].toString()
+          ),
+          trajanje:
+            (element.end[3] * 60 + element.end[4]) -
+            (element.start[3] * 60 + element.start[4]),
+        });
+      });
     },
-}
-
+  },
+};
 </script>

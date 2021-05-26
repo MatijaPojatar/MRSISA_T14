@@ -385,7 +385,7 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije=false;
       },
-      IstorijaSavetovanjaView(){
+      istorijaSavetovanjaView(){
           this.showCalendar=false;
           this.showAccount=false;
           this.showPassword=false;
