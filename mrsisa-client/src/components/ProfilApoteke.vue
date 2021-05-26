@@ -62,7 +62,7 @@
     
     
     <v-container fluid v-if="showLekovi">
-        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan"/>
+        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="user.id"/>
       </v-container>
 
     <v-container fluid v-if="showFarmaceuti">
@@ -104,6 +104,8 @@
         </v-card-actions>
       </v-card>
   </v-dialog>
+
+  
     </div>
     
 </template>
@@ -199,6 +201,8 @@ export default{
             this.message = "Uspešno ste se pretplatili na dobijanje obaveštenja o akcijama i promocijama apoteke."
             this.obavestenjeDialog=true;
         },
+
+        
         
         
     },
