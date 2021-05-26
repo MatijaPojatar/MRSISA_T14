@@ -6,7 +6,8 @@ const initStanje = () => {
     vrste: [],
     oblici: [],
     rezimiIzdavanja: [],
-    currentLek: null
+    currentLek: null,
+    currZamenski: [],
   }
 }
 
@@ -17,7 +18,8 @@ const getters = {
 	getVrste: state => state.vrste,
   getOblici: state => state.oblici,
   getRezimiIzdavanja: state => state.rezimiIzdavanja,
-  getCurrentLek: state => state.currentLek
+  getCurrentLek: state => state.currentLek,
+  getCurrZamenski: state => state.currZamenski
 }
 
 const actions = {
@@ -71,6 +73,30 @@ const actions = {
     }
   },
 
+  async izmeniLekAction({ commit }, lekInfo) {
+    try{
+      const { data : lekDTO} = await Vue.axios.put("/lekovi", lekInfo);
+      commit("updateLek", lekDTO)
+      commit("setCurrentLek", lekDTO)
+      return;
+    }catch(error){
+      alert("Greska pri izmeni leka")
+      return;
+    }
+  },
+
+  async getZamenskeAction({ commit }, id) {
+    try{
+      const { data : lista} = await Vue.axios.get("/lekovi/"+id);
+      commit("setCurrZamenske", lista);
+      
+      return;
+    }catch(error){
+      alert("Greska pri dobavljanju zamenskih lekova")
+      return;
+    }
+  },
+
   async removeLekAction({ commit }, id){
     try{
       await Vue.axios.delete("/lekovi/"+ id, id);
@@ -98,6 +124,10 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state= initStanje();
+  },
+
+  setCurrZamenske(state, lista){
+    state.currZamenski = lista;
   },
 
   setRezimi(state, rezimi) {
