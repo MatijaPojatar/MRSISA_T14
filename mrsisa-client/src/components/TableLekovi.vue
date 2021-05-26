@@ -2,12 +2,13 @@
   <v-row justify="center">
    
    <v-data-table
-    :headers="headers"
+    :headers="headersAdmin"
     :items="lekovi"
     :sort-by="'naziv'"
     :sort-desc="[false, true]"
     multi-sort
     class="elevation-1"
+    v-if="adminView"
   >
     <template v-slot:item.actions="{ item }">
         <div>
@@ -18,6 +19,7 @@
                 small
                 color="pink"
                 @click="ObrisiLek(item)"
+                v-if="adminView"
             >
                 <v-icon>
                     mdi-delete
@@ -30,12 +32,38 @@
                 dark
                 small
                 color="cyan"
+                v-if="adminView"
                 @click="IzmeniLek(item)"
             >
                 <v-icon>
                     mdi-pencil
                 </v-icon>
             </v-btn>
+            </div>
+    </template>
+  </v-data-table>
+
+   <v-data-table
+    :headers="headers"
+    :items="lekovi"
+    :sort-by="'naziv'"
+    :sort-desc="[false, true]"
+    multi-sort
+    class="elevation-1"
+    v-if="!adminView"
+  >
+    <template v-slot:item.actions="{ item }">
+        <div>
+      <v-btn
+                class="mx-2"
+                color="light-green"
+                @click="rezervisi(item)"
+                v-if="registrovanView"
+            >
+                Rezerviši
+            </v-btn>
+
+            
             </div>
     </template>
   </v-data-table>
@@ -73,7 +101,7 @@
 
     export default{
         data: () => ({
-            headers: [
+            headersAdmin: [
           {
             text: 'Naziv',
             align: 'start',
@@ -90,6 +118,23 @@
           { text: 'Količina', value: 'kolicina'},
           { text: 'Upravljaj', value: 'actions', sortable: false },
         ],
+        headers: [
+          {
+            text: 'Naziv',
+            align: 'start',
+            value: 'naziv',
+          },
+          { text: 'Id', value: 'id' },
+          { text: 'Proizvođač', value: 'proizvodjac' },
+          { text: 'Sastav', value: 'sastav'},
+          { text: 'Napomena', value: 'napomena' },
+          { text: 'Režim', value: 'rezim' },
+          { text: 'Oblik', value: 'oblik'},
+          { text: 'Vrsta', value: 'vrsta'},
+          { text: 'Cena', value: 'cena'},
+          { text: 'Rezerviši', value: 'actions', sortable: false },
+        ],
+
             lekovi: [],
             lekUpdateDialog: false,
             selektovanLek: {},
@@ -98,7 +143,8 @@
         props:{
             apotekaId: Number,
             adminView: Boolean,
-            
+            registrovanView:Boolean,
+            userId: Number, 
             
         },
         components:{
@@ -149,6 +195,13 @@
                  this.lekUpdateDialog = true;
                 });
                 
+             },
+
+             rezervisi(lek){
+                 this.selektovanLek=Object.assign({}, lek);
+                 this.selektovan = this.selektovanLek.id;
+                 axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
+                 location.reload();
              },
              endDialog(){
                 this.lekUpdateDialog = false;

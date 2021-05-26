@@ -174,7 +174,7 @@ insert into odsustva_dermatolog(pocetak, kraj, odobren, dermatolog_id) values ('
 insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '15% popusta na sve kreme', '2021-05-18', '2021-06-18');
 insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(2, '3 + 1 gratis - Konjska mast', '2021-04-18', '2021-06-18');
 insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-10% na cene savetovanja', '2021-05-22', '2021-06-12');
-insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 1);
+
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
 
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1,1);

@@ -1,6 +1,6 @@
 <template>
   <v-card min-width="700px">
-    <v-card-text>
+    <v-card-text v-if="!fromProfilApoteke">
       <v-autocomplete
         v-model="izabranaApotekaId"
         :items="apoteke"
@@ -78,6 +78,16 @@ export default {
       korisnik: "korisnici/getKorisnik",
       apoteke: "apoteke/getApoteke",
     }),
+  },
+  props:{
+    apotekaId: Number,
+    fromProfilApoteke: Boolean,
+  },
+  mounted(){
+    if (this.fromProfilApoteke){
+      this.izabranaApotekaId = this.apotekaId;
+    }
+    this.updateTable();
   },
 
   async beforeMount() {

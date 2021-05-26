@@ -52,6 +52,16 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link  @click="apotekeView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-gamepad-round-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Apoteke
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="allergyView">
                     <v-list-item-icon>
                         <v-icon>mdi-virus-outline</v-icon>
@@ -186,6 +196,9 @@
             <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">
                 <AkcijePromocije/>
             </v-container>
+            <v-container fluid v-if="showApoteke" :style="{width:'180vh'}">
+                <ProfilApoteke :apotekaId=1 :registrovan="true" :user="user"/>
+            </v-container>
         </v-main>
     </v-app>
 </template>
@@ -203,6 +216,7 @@ import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
 import ZalbePacijenta from "./Pacijent/ZalbePacijenta";
 import AkcijePromocije from "./AkcijePromocije";
+import ProfilApoteke from "./ProfilApoteke";
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -219,7 +233,8 @@ export default {
         ZalbaNaDermatologa,
         ZalbaNaFarmaceuta,
         ZalbePacijenta,
-        AkcijePromocije
+        AkcijePromocije,
+        ProfilApoteke
     },
     data: () => ({
     showCalendar: false,
@@ -233,6 +248,7 @@ export default {
     showZalbaDermatolog : false,
     showZalbePacijenta: false,
     showAkcije: false,
+    showApoteke: false,
     user: {},
   }),
   mounted(){
@@ -260,6 +276,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       accountView(){
           this.showCalendar=false;
@@ -273,6 +290,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       changePassword(){
           this.showCalendar=false;
@@ -286,6 +304,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       allergyView(){
           this.showCalendar=false;
@@ -299,6 +318,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       noviPregledView(){
           this.showCalendar=false;
@@ -312,6 +332,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       novoSavetovanjeView(){
           this.showCalendar=false;
@@ -325,6 +346,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       zalbaApotekaView(){
           this.showCalendar=false;
@@ -338,6 +360,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       zalbaDermatologView(){
           this.showCalendar=false;
@@ -351,6 +374,7 @@ export default {
           this.showZalbaDermatolog = true;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       zalbaFarmaceutView() {
           this.showCalendar=false;
@@ -364,6 +388,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       zalbePacijentaView() {
           this.showCalendar=false;
@@ -377,6 +402,7 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = true;
           this.showAkcije=false;
+          this.showApoteke=false;
       },
       akcijeView(){
           this.showCalendar=false;
@@ -390,6 +416,21 @@ export default {
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
           this.showAkcije=true;
+          this.showApoteke=false;
+      },
+      apotekeView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+          this.showApoteke=true;
       },
 
 
