@@ -57,7 +57,7 @@
       <v-btn
                 class="mx-2"
                 color="light-green"
-                @click="rezervisi(item)"
+                @click="definisiKolicinu(item)"
                 v-if="registrovanView"
             >
                 Rezerviši
@@ -91,7 +91,60 @@
       </v-card>
     </v-dialog>
     
-    
+    <v-dialog
+      v-model="dialogKolicina"
+      persistent
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Definisanje količine
+        </v-card-title>
+        <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+        >
+            <v-text-field
+            v-model="definisanaKolicina"
+            :counter="10"
+            :rules="brojRules"
+            label="Količina"
+            required
+            ></v-text-field>
+            <v-btn
+            class="mr-4"
+            @click="rezervisi"
+            >
+            Ok
+            </v-btn>
+        </v-form>
+        
+      </v-card>
+  </v-dialog>
+
+  <v-dialog
+      v-model="obavestenjeDialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>{{message}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endObavestenjeDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
   </v-row>
 </template>
 
@@ -136,9 +189,23 @@
         ],
 
             lekovi: [],
+            obavestenjeDialog:false,
             lekUpdateDialog: false,
+            dialogKolicina:false,
             selektovanLek: {},
             selektovan: null,
+            definisanaKolicina:"",
+            message:"",
+
+            valid: true,
+            brojRules: [
+                v => !!v || 'Obavezno polje',
+                v => (v && v.length <= 10 ) || 'Dužina maksimalno 10 karaktera',
+                v => (new RegExp("^(0|([1-9][0-9]*))(\\.[0-9]+)?$").test(v)) || 'Loš format',
+            ],
+            requiredRules: [
+                v => !!v || 'Obavezno polje',
+            ],
          }),
         props:{
             apotekaId: Number,
@@ -196,16 +263,27 @@
                 });
                 
              },
+             definisiKolicinu(lek){
+                this.selektovanLek=Object.assign({}, lek);
+                this.selektovan = this.selektovanLek.id;
+                this.dialogKolicina = true;
+             },
 
-             rezervisi(lek){
-                 this.selektovanLek=Object.assign({}, lek);
-                 this.selektovan = this.selektovanLek.id;
-                 axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
-                 location.reload();
+             rezervisi(){
+               axios.post(`http://localhost:8080/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId}).then(response => {
+                     
+                    this.message=response.data;
+                 this.obavestenjeDialog = true;
+                });
+                 
+               this.dialogKolicina = false;
              },
              endDialog(){
                 this.lekUpdateDialog = false;
              },
+             endObavestenjeDialog(){
+                this.obavestenjeDialog = false;
+            },
              
             
 

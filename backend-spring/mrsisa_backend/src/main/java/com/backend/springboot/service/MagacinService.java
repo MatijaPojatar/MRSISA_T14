@@ -140,6 +140,17 @@ public class MagacinService {
 		return true;
 	};
 	
+	public boolean smanjiKolicinuLeka(Integer magacinId,Integer lekId,Double kolicina) {
+		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
+		if(lum==null) {
+			
+			return false;
+		}
+		lum.setKolicina(lum.getKolicina()-kolicina);
+		lekUMagacinuRep.save(lum);
+		return true;
+	};
+	
 	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena,  Integer lekId, Integer apotekaId, Double kolicina) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);

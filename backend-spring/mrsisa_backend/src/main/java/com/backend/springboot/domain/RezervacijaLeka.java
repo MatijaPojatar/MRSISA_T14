@@ -21,7 +21,7 @@ public class RezervacijaLeka {
 	private Integer id;
 	@Column(name = "code", nullable = false,unique=true)
 	private String code;
-	@Column(name = "datum", nullable = false)
+	@Column(name = "datum", nullable = true)
 	private LocalDate datum;
 	@Column(name = "kolicina", nullable = false)
 	private double kolicina;

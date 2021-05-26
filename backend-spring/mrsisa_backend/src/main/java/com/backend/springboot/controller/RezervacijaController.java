@@ -19,7 +19,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -150,6 +152,19 @@ public class RezervacijaController {
 		}
 	}
 	
+	
+	@PostMapping("novaRezervacija")
+	public ResponseEntity<String> novaRezervacija(@RequestBody RezervacijaLekaDTO dto ){
+		Magacin m = magacinService.findOneByApotekaId(dto.getApotekaId());
+		Boolean naStanju = magacinService.proveriStanje(m.getId(), dto.getLekId(), dto.getKolicina());
+		if(!naStanju) {
+			return new ResponseEntity<String>("Leka nema na stanju u željenoj količini.",HttpStatus.OK);
+		}
+		rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina());
+		magacinService.smanjiKolicinuLeka(m.getId(), dto.getLekId(), dto.getKolicina());
+		
+		return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);
+	}
 	
 	
 }
