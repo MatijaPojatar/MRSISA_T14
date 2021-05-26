@@ -102,6 +102,26 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="istorijaPregledaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-calendar-check</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Istorija pregleda
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="istorijaSavetovanjaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-calendar-check</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Istorija savetovanja
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="zalbaApotekaView">
                     <v-list-item-icon>
                         <v-icon>mdi-alpha-a-circle-outline</v-icon>
@@ -181,6 +201,12 @@
             <v-container fluid v-if="showNovoSavetovanje" :style="{width:'70vh'}">
                 <NovoSavetovanje/>
             </v-container>
+            <v-container fluid v-if="showIstorijaPregleda" :style="{width:'70vh'}">
+                <IstorijaPregleda/>
+            </v-container>
+            <v-container fluid v-if="showIstorijaSavetovanja" :style="{width:'70vh'}">
+                <IstorijaSavetovanja/>
+            </v-container>
              <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
                 <ZalbaNaApoteku />
             </v-container>
@@ -211,6 +237,8 @@ import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
 import NoviPregled from "./NoviPregled";
 import NovoSavetovanje from "./NovoSavetovanje";
+import IstorijaPregleda from "./IstorijaPregleda";
+import IstorijaSavetovanja from "./IstorijaSavetovanja";
 import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
 import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
@@ -229,6 +257,8 @@ export default {
         AddAllergy,
         NoviPregled,
         NovoSavetovanje,
+        IstorijaPregleda,
+        IstorijaSavetovanja,
         ZalbaNaApoteku,
         ZalbaNaDermatologa,
         ZalbaNaFarmaceuta,
@@ -243,6 +273,8 @@ export default {
     showAllergy: false,
     showNoviPregled: false,
     showNovoSavetovanje: false,
+    showIstorijaPregleda: false,
+    showIstorijaSavetovanja: false,
     showZalbaApoteka : false,
     showZalbaFarmaceut : false,
     showZalbaDermatolog : false,
@@ -271,6 +303,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -285,6 +319,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -299,6 +335,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -313,6 +351,8 @@ export default {
           this.showAllergy=true;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -327,6 +367,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = true;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -341,6 +383,38 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = true;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      istorijaPregledaView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = true;
+          this.showIstorijaSavetovanja = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+      },
+      istorijaSavetovanjaView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = true;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -355,6 +429,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = true;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -369,6 +445,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = true;
@@ -383,6 +461,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = true;
           this.showZalbaDermatolog = false;
@@ -397,6 +477,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
@@ -411,6 +493,8 @@ export default {
           this.showAllergy=false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
