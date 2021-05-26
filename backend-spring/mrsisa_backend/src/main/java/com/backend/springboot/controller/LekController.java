@@ -90,7 +90,7 @@ public class LekController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<LekDTO> dodajLek(@RequestBody Lek lekInfo) {
+	public ResponseEntity<LekDTO> dodajLek(@RequestBody Lek lekInfo) { //da bude dto?
 		Lek lek = lekService.addLek(lekInfo);
 
 		return new ResponseEntity<LekDTO>(new LekDTO(lek), HttpStatus.OK);
@@ -103,6 +103,13 @@ public class LekController {
 				params.getOblik(), params.getVrsta(), params.getRezim(), 1, params.getProizvodjac());
 
 		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
+	}
+	
+	@PutMapping()
+	public ResponseEntity<LekDTO> izmeniLek(@RequestBody LekDTO lekInfo){
+		Lek lek = lekService.updateLek(new Lek(lekInfo));
+		
+		return new ResponseEntity<LekDTO>(new LekDTO(lek), HttpStatus.OK);
 	}
 
 //	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -197,6 +204,23 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(oblici, HttpStatus.OK);
 	}
 
+	@GetMapping("/zamenski/{id}")
+	public ResponseEntity<List<LekDTO>> getZamenskeZaLek(@PathVariable Integer id){
+		try {
+			List<Lek> zamenski = lekService.getZamenskeZaLek(id);
+			
+			List<LekDTO> dtos = new ArrayList<LekDTO>();
+			
+			for(Lek lek : zamenski) {
+				dtos.add(new LekDTO(lek));
+			}
+			
+			return new ResponseEntity<List<LekDTO>>(dtos,HttpStatus.OK);
+		}catch (Exception e) {
+			return new ResponseEntity<List<LekDTO>>(HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	@PutMapping("/zamenski/{id}")
 	public ResponseEntity<Object> dodajZamenskeZaLek(@RequestBody List<Integer> zamenskiIds, @PathVariable int id){
 		try {
