@@ -12,8 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.repository.PregledRepository;
 
 @Transactional
@@ -22,6 +27,18 @@ public class PregledService {
 	
 	@Autowired
 	private PregledRepository pregledRep;
+	
+	@Autowired
+	private OdsustvoDermatologService odsustvoService;
+	
+	@Autowired
+	private ApotekaService apotekaService;
+	
+	@Autowired
+	private PacijentService pacijentService;
+	
+	@Autowired
+	private DermatologService dermService;
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public void deletePregled(int id) {
@@ -97,6 +114,78 @@ public class PregledService {
 			preg.setPacijent(p);
 			pregledRep.save(preg);
 		}
+	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
+		List<Pregled> checkList;
+		try {
+			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+		}catch(Exception e) {
+			return false;
+		}
+		if(checkList.size()!=0) {
+			return false;
+		}
+		List<OdsustvoDermatolog> checkOdsustva;
+		try {
+			checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
+		}catch(Exception e) {
+			return false;
+		}
+		if(checkOdsustva.size()!=0) {
+			return false;
+		}
+		
+		Pregled p=new Pregled();
+		p.setDermatolog(dermService.findOne(id));
+		p.setIzvrsen(dto.isIzvrsen());
+		p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		p.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		p.setIzvestaj(dto.getIzvestaj());
+		p.setKraj(kraj);
+		p.setPocetak(pocetak);
+		p.setCena(dto.getCena());
+		
+		pregledRep.save(p);
+		
+		return true;
+	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public boolean dodajSlobodanPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
+		List<Pregled> checkList;
+		try {
+			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+		}catch(Exception e) {
+			return false;
+		}
+		if(checkList.size()!=0) {
+			return false;
+		}
+		List<OdsustvoDermatolog> checkOdsustva;
+		try {
+			checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
+		}catch(Exception e) {
+			return false;
+		}
+		if(checkOdsustva.size()!=0) {
+			return false;
+		}
+		
+		Pregled p=new Pregled();
+		p.setDermatolog(dermService.findOne(id));
+		p.setIzvrsen(dto.isIzvrsen());
+		p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		p.setPacijent(null);
+		p.setIzvestaj(null);
+		p.setKraj(kraj);
+		p.setPocetak(pocetak);
+		p.setCena(dto.getCena());
+		
+		pregledRep.save(p);
+		
+		return true;
 	}
 
 }

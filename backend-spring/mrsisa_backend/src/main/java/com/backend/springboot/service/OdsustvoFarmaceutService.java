@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.OdsustvoDermatolog;
@@ -31,6 +32,7 @@ public class OdsustvoFarmaceutService {
 		return rep.save(o);
 	}
 	
+	@Transactional(readOnly=true,propagation=Propagation.MANDATORY)
 	public List<OdsustvoFarmaceut> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
 		return rep.findExistInTime(id,start, end);
 	}

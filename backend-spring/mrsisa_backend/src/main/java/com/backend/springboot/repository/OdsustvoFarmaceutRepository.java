@@ -19,7 +19,7 @@ import com.backend.springboot.domain.Savetovanje;
 public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarmaceut, Integer> {
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="1000")})
+	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true and ((o.pocetak <= :start and o.kraj >= :end) or (o.pocetak >= :start and o.pocetak <= :end and o.kraj >= :end) or (o.kraj >= :start and o.kraj <= :end and o.pocetak <= :start))")
 	public List<OdsustvoFarmaceut> findExistInTime(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	

@@ -220,34 +220,17 @@ public class SavetovanjeController {
 		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
 		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
 		
-		List<Savetovanje> checkList=service.findAllInRangeForFarmaceut(id,pocetak,kraj);
-		if(checkList.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		boolean odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
+		
+		if(odg) {
+			try {
+				emailService.novoSavetovanje(savetovanje);
+			} catch(Exception e){
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
 		}
 		
-		List<OdsustvoFarmaceut> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
-		if(checkOdsustva.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
-		}
-		
-		Savetovanje s=new Savetovanje();
-		s.setFarmaceut(farmService.findOne(id));
-		s.setIzvrsen(savetovanje.isIzvrsen());
-		s.setApoteka(apotekaService.findOne(savetovanje.getApotekaId()));
-		s.setPacijent(pacijentService.findOne(savetovanje.getPacijentId()));
-		s.setIzvestaj(savetovanje.getIzvestaj());
-		s.setKraj(kraj);
-		s.setPocetak(pocetak);
-		
-		service.save(s);
-		
-		try {
-			emailService.novoSavetovanje(s);
-		} catch(Exception e){
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
 	}
 	
 	@PutMapping("/zakazi")

@@ -28,7 +28,7 @@ public interface SavetovanjeRepository extends JpaRepository<Savetovanje, Intege
 	public List<Savetovanje> findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer farmaceutId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="1000")})
+	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	@Query("select s from Savetovanje s where s.farmaceut.id = :id and ((s.pocetak >= :start and s.pocetak<= :end) or (s.kraj>= :start and s.kraj<=:end))")
 	public List<Savetovanje> findInRangeForFarmaceut(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	

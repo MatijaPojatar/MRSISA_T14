@@ -29,7 +29,7 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	public List<Pregled> findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(Integer dermatologId,Integer pacijentId,Integer apotekaId,LocalDateTime pocetak);
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
-	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="1000")})
+	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	@Query("select p from Pregled p where p.dermatolog.id = :id and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
 	public List<Pregled> findInRangeForDermatolog(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	

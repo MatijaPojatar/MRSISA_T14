@@ -217,34 +217,17 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		List<Pregled> checkList=service.findAllInRangeForDermatolog(id,pocetak,kraj);
-		if(checkList.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		
+		if(odg) {
+			try {
+				emailService.noviPregled(pregled);
+			} catch(Exception e){
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
 		}
 		
-		List<OdsustvoDermatolog> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
-		if(checkOdsustva.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
-		}
-		
-		Pregled p=new Pregled();
-		p.setDermatolog(derService.findOne(id));
-		p.setIzvrsen(pregled.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
-		p.setPacijent(pacijentService.findOne(pregled.getPacijentId()));
-		p.setIzvestaj(pregled.getIzvestaj());
-		p.setKraj(kraj);
-		p.setPocetak(pocetak);
-		
-		service.save(p);
-		
-		try {
-			emailService.noviPregled(p);
-		} catch(Exception e){
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
 	}
 	
 	@PutMapping("/dodajSlobodan/{id}")
@@ -252,34 +235,14 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		List<Pregled> checkList=service.findAllInRangeForDermatolog(id,pocetak,kraj);
-		if(checkList.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
-		}
-		
-		List<OdsustvoDermatolog> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
-		if(checkOdsustva.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
-		}
-		
-		Pregled p=new Pregled();
-		p.setDermatolog(derService.findOne(id));
-		p.setIzvrsen(pregled.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
-		p.setPacijent(null);
-		p.setIzvestaj(null);
-		p.setKraj(kraj);
-		p.setPocetak(pocetak);
-		p.setCena(pregled.getCena());
-		
-		service.save(p);
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
 		
 		/*
 		 * try { emailService.noviPregled(p); } catch(Exception e){
 		 * System.out.println("Greska prilikom slanja emaila: " + e.getMessage()); }
 		 */
 		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
 	}
 	
 	@PutMapping("/zakazi")
@@ -301,7 +264,7 @@ public class PregledController {
 		service.save(p);
 		
 		try {
-			emailService.noviPregled(p);
+			emailService.noviPregled(pregled);
 		} catch(MailException | InterruptedException e){
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
