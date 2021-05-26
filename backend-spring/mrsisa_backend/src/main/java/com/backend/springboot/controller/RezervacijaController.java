@@ -160,7 +160,7 @@ public class RezervacijaController {
 		if(!naStanju) {
 			return new ResponseEntity<String>("Leka nema na stanju u željenoj količini.",HttpStatus.OK);
 		}
-		rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina());
+		rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina(), dto.getDatum());
 		magacinService.smanjiKolicinuLeka(m.getId(), dto.getLekId(), dto.getKolicina());
 		
 		return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);

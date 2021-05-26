@@ -71,7 +71,7 @@ public class RezervacijaService {
 		return rep.findAllActive();
 	}
 	
-	public RezervacijaLeka napraviRezervaciju(Integer lekId,Integer pacijentId, Integer apotekaId, Double kolicina) {
+	public RezervacijaLeka napraviRezervaciju(Integer lekId,Integer pacijentId, Integer apotekaId, Double kolicina, LocalDate datum) {
 		Apoteka a = apotekaRep.findOneById(apotekaId);
 		Lek l = lekRep.findOneById(lekId);
 		Pacijent p = pacijentRep.findOneById(pacijentId);
@@ -91,7 +91,7 @@ public class RezervacijaService {
 		rez.setApoteka(a);
 		rez.setLek(l);
 		rez.setPacijent(p);
-		rez.setDatum(LocalDate.now().plusDays(14));
+		rez.setDatum(datum);
 		rez.setKolicina(kolicina);
 		rez.setStatus(StatusRezervacije.KREIRANA);
 		

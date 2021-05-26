@@ -98,7 +98,7 @@
     >
       <v-card>
         <v-card-title class="headline">
-          Definisanje količine
+          Definisanje količine i datuma
         </v-card-title>
         <v-form
             ref="form"
@@ -112,6 +112,38 @@
             label="Količina"
             required
             ></v-text-field>
+
+            <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+    >
+        <template v-slot:activator="{ on, attrs }">
+        
+        <v-text-field
+            v-model="definisanRok"
+            label="Rok za preuzimanje:"
+            prepend-icon="mdi-calendar"
+            readonly
+            required
+            v-bind="attrs"
+            v-on="on"
+        ></v-text-field>
+        
+        </template>
+        <v-date-picker
+        ref="picker"
+        v-model="definisanRok"
+        
+        :min="new Date().toISOString().substr(0, 10)"
+        @change="$refs.menu.save(definisanRok)"
+        ></v-date-picker>
+        
+    </v-menu>
+
             <v-btn
             class="mr-4"
             @click="rezervisi"
@@ -196,6 +228,8 @@
             selektovan: null,
             definisanaKolicina:"",
             message:"",
+            definisanRok:null,
+            menu:false,
 
             valid: true,
             brojRules: [
@@ -270,13 +304,19 @@
              },
 
              rezervisi(){
-               axios.post(`http://localhost:8080/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId}).then(response => {
-                     
-                    this.message=response.data;
-                 this.obavestenjeDialog = true;
-                });
-                 
-               this.dialogKolicina = false;
+               if(!this.definisanRok){
+                        this.message= "Rok preuzimanja definisan."
+                        this.obavestenje = true;
+                }
+                else{
+                  axios.post(`http://localhost:8080/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId, datum:this.definisanRok}).then(response => {
+                        
+                        this.message=response.data;
+                    this.obavestenjeDialog = true;
+                    });
+                    
+                  this.dialogKolicina = false;
+                }
              },
              endDialog(){
                 this.lekUpdateDialog = false;
