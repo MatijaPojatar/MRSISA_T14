@@ -1,12 +1,25 @@
 <template>
   <v-row justify="center">
-     <v-data-table
+  <v-data-table
     :headers="headers"
     :items="farmaceuti"
     :sort-by="'ime'"
     :sort-desc="[false, true]"
     multi-sort
     class="elevation-1"
+    v-if="!adminView"
+  >
+  </v-data-table>
+
+
+     <v-data-table
+    :headers="headersAdmin"
+    :items="farmaceuti"
+    :sort-by="'ime'"
+    :sort-desc="[false, true]"
+    multi-sort
+    class="elevation-1"
+    v-if="adminView"
   >
     <template v-slot:item.actions="{ item }">
         <div>
@@ -71,7 +84,7 @@
     export default{
       name: "TableFarmaceuti",
         data: () => ({
-            headers: [
+            headersAdmin: [
           {
             text: 'Ime',
             align: 'start',
@@ -87,6 +100,20 @@
           { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
           { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
           { text: 'Upravljaj', value: 'actions', sortable: false },
+        ],
+
+        headers: [
+          {
+            text: 'Ime',
+            align: 'start',
+            value: 'ime',
+          },
+          { text: 'Prezime', value: 'prezime' },
+          { text: 'Grad', value: 'grad' },
+          { text: 'Država', value: 'drzava' },
+          { text: 'Pol', value: 'pol'},
+          { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
+          { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
         ],
             farmaceuti: [],
             farmaceutUpdateDialog: false,

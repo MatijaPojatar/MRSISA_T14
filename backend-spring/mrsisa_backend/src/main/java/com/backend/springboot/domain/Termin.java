@@ -17,6 +17,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="termini")
@@ -29,7 +30,7 @@ public abstract class Termin {
 	private LocalDateTime pocetak;
 	@Column(name = "kraj", nullable = false)
 	private LocalDateTime kraj;
-	@Column(name = "izvestaj", nullable = false)
+	@Column(name = "izvestaj", nullable = true)
 	private String izvestaj;
 	@Column(name = "izvrsen", nullable = false)
 	private boolean izvrsen;
@@ -39,6 +40,9 @@ public abstract class Termin {
 	private Apoteka apoteka;
 	@OneToMany(mappedBy = "termin", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<LekUIzvestaju> lekovi=new ArrayList<LekUIzvestaju>();
+	
+	@Version
+	private Long version;
 	
 	
 	
@@ -148,6 +152,15 @@ public abstract class Termin {
 	public void setLekovi(List<LekUIzvestaju> lekovi) {
 		this.lekovi = lekovi;
 	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
 	
 	
 	

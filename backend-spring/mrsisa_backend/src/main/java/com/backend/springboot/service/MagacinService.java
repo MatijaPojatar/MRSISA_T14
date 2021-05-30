@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.Apoteka;
@@ -50,6 +51,8 @@ public class MagacinService {
 	private NarudzbenicaRepository narudzbenicaRep;
 	@Autowired
 	private PonudaRepository ponudeRep;
+	@Autowired
+	private EmailService email;
 	
 	public List<Magacin> findAll(){
 		return magacinRep.findAll();
@@ -86,6 +89,11 @@ public class MagacinService {
 			if (p.getId() != ponudaId) {
 				p.setStatus(StatusPonude.ODBIJENA);
 				ponudeRep.save(p);
+				try {
+					email.odgovorPonuda(narudzbenicaId, p.getId(), "odbijena");
+				} catch (MailException | InterruptedException e) {
+					System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+				}
 				continue;
 			}
 			p.setStatus(StatusPonude.PRIHVACENA);
@@ -101,6 +109,12 @@ public class MagacinService {
 			else {
 				dodajLek(LocalDateTime.now(), 200.0, lek.getLek().getId(), narudzbenica.getMagacin().getApoteka().getId(), lek.getKolicina());
 			}
+		}
+		
+		try {
+			email.odgovorPonuda(narudzbenicaId, ponudaId, "prihvaćena");
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
 	}
@@ -123,6 +137,17 @@ public class MagacinService {
 			}
 			return false;
 		}
+		return true;
+	};
+	
+	public boolean smanjiKolicinuLeka(Integer magacinId,Integer lekId,Double kolicina) {
+		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
+		if(lum==null) {
+			
+			return false;
+		}
+		lum.setKolicina(lum.getKolicina()-kolicina);
+		lekUMagacinuRep.save(lum);
 		return true;
 	};
 	

@@ -327,6 +327,7 @@ import Vue from "vue";
             this.user.grad=this.newInfo.grad
             this.user.drzava=this.newInfo.drzava
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
+
             if(this.adminApoteke){
                 Vue.axios.put(`http://localhost:8080/adminApoteke/save/${this.user.id}`,this.user)
                 this.dialog=true;
@@ -334,8 +335,21 @@ import Vue from "vue";
                 console.log("EVO SALJEM")
                 this.user.nazivPreduzeca = this.newInfo.nazivPreduzeca
                 console.log(this.user)
+                const dto = {
+                  id: this.user.id,
+                  ime: this.user.ime,
+                  prezime: this.user.prezime,
+                  brojTelefona: this.user.brojTelefona,
+                  adresa: this.user.adresa,
+                  grad: this.user.grad,
+                  drzava: this.user.drzava,
+                  pol: this.user.pol,
+                  nazivPreduzeca: this.user.nazivPreduzeca,
+                  datumRodjenja: [this.user.datumRodjenja.year, this.user.datumRodjenja.monthValue, this.user.datumRodjenja.dayOfMonth]
+                };
+	
                 try{
-                  await Vue.axios.put(`http://localhost:8080/dobavljaci/save/${this.user.id}`, this.user)
+                  await Vue.axios.put(`http://localhost:8080/dobavljaci/save/${this.user.id}`, dto)
                   this.dialog = true;
                 }catch(error){
                   console.log(error)
@@ -387,8 +401,10 @@ import Vue from "vue";
         this.newInfo.grad=this.user.grad
         this.newInfo.drzava=this.user.drzava
         this.newInfo.pol= this.user.pol==="MUSKI" ? "M" : "Ž"
+
         this.newInfo.pocetakRadnogVremena=this.user.pocetakRadnogVremena
         this.newInfo.krajRadnogVremena=this.user.krajRadnogVremena
+
         this.newInfo.nazivPreduzeca = this.user.nazivPreduzeca
       },
       endDialog(){

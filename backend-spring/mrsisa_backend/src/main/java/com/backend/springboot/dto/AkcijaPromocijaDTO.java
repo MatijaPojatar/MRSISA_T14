@@ -1,5 +1,6 @@
 package com.backend.springboot.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.backend.springboot.domain.AkcijaPromocija;
@@ -7,7 +8,7 @@ import com.backend.springboot.domain.AkcijaPromocija;
 public class AkcijaPromocijaDTO {	
 	private Integer id, apotekaId;
 	private String apotekaNaziv, opis;
-	private LocalDateTime pocetak, kraj;
+	private LocalDate pocetak, kraj;
 	
 	public AkcijaPromocijaDTO() {
 		super();
@@ -23,7 +24,7 @@ public class AkcijaPromocijaDTO {
 		this.kraj = ap.getKrajVazenja();
 	}
 
-	public AkcijaPromocijaDTO(Integer id, Integer apotekaId, String apotekaNaziv, String opis, LocalDateTime pocetak, LocalDateTime kraj) {
+	public AkcijaPromocijaDTO(Integer id, Integer apotekaId, String apotekaNaziv, String opis, LocalDate pocetak, LocalDate kraj) {
 		super();
 		this.id = id;
 		this.apotekaId = apotekaId;
@@ -65,19 +66,19 @@ public class AkcijaPromocijaDTO {
 		this.opis = opis;
 	}
 
-	public LocalDateTime getPocetak() {
+	public LocalDate getPocetak() {
 		return pocetak;
 	}
 
-	public void setPocetak(LocalDateTime pocetak) {
+	public void setPocetak(LocalDate pocetak) {
 		this.pocetak = pocetak;
 	}
 
-	public LocalDateTime getKraj() {
+	public LocalDate getKraj() {
 		return kraj;
 	}
 
-	public void setKraj(LocalDateTime kraj) {
+	public void setKraj(LocalDate kraj) {
 		this.kraj = kraj;
 	}
 }

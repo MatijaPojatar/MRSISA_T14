@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="rezervacije")
@@ -20,7 +21,7 @@ public class RezervacijaLeka {
 	private Integer id;
 	@Column(name = "code", nullable = false,unique=true)
 	private String code;
-	@Column(name = "datum", nullable = false)
+	@Column(name = "datum", nullable = true)
 	private LocalDate datum;
 	@Column(name = "kolicina", nullable = false)
 	private double kolicina;
@@ -32,6 +33,9 @@ public class RezervacijaLeka {
 	private Pacijent pacijent;
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Lek lek;
+	
+	@Version
+	private Long version;
 	
 	public RezervacijaLeka() {
 		super();
@@ -112,6 +116,16 @@ public class RezervacijaLeka {
 	public void setStatus(StatusRezervacije status) {
 		this.status = status;
 	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+	
+	
 	
 	
 	

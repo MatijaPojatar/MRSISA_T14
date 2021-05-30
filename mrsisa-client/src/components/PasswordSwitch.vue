@@ -112,16 +112,12 @@
 
     methods: {
       async validate () {
-        let path="dermatolog"
-        if(this.farmaceut){
-          path="farmaceut"
-        }
         if(this.$refs.form.validate()){
-            await axios.get(`http://localhost:8080/${path}/pass/check/${this.id}`,{params:{pass:this.oldPass}}).then(response=>{
+            await axios.get(`http://localhost:8080/osobe/novaLozinka/${this.id}`,{params:{lozinka:this.oldPass}}).then(response=>{
               this.oldPassValid=response.data
             })
             if(this.oldPassValid){
-              axios.put(`http://localhost:8080/${path}/pass/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
+              axios.put(`http://localhost:8080/osobe/novaLozinka/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
               this.dialogTitle="Obaveštenje"
               this.dialogMessage="Vaša šifra je uspešno promenjena."
             }else{

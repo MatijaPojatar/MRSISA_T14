@@ -20,4 +20,7 @@ public interface RezervacijaRepository extends JpaRepository<RezervacijaLeka, In
 	
 	public List<RezervacijaLeka> findAllByPacijentId(Integer pacijentId);
 	
+	@Query("select r from RezervacijaLeka r where r.status=0")
+	public List<RezervacijaLeka> findAllActive();
+	
 }

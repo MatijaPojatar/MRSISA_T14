@@ -162,31 +162,9 @@
         >
         <v-card>
             <v-card-title class="headline">
-            Greška
+            {{dialogTitle}}
             </v-card-title>
-            <v-card-text>Termin može trajati između 30min i 2h.</v-card-text>
-            <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-                color="green darken-1"
-                text
-                @click="endDialog"
-            >
-                Ok
-            </v-btn>
-            </v-card-actions>
-        </v-card>
-        </v-dialog>
-        <v-dialog
-        v-model="dialogAdd"
-        persistent
-        max-width="290"
-        >
-        <v-card>
-            <v-card-title class="headline">
-            Greška
-            </v-card-title>
-            <v-card-text>Termin je već zauzet.</v-card-text>
+            <v-card-text>{{dialogMessage}}</v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -221,6 +199,8 @@ export default{
         dialog: false,
         dialogAdd: false,
         check: false,
+        dialogTitle: "",
+        dialogMessage: "",
     }),
     props:{
         izvestaj: String,
@@ -260,14 +240,24 @@ export default{
           });
         });
         },
-        zauzmiTermin(id){
+        async zauzmiTermin(id){
             let path="pregled"
             if(this.farmaceut){
                 path="savetovanje"
             }
             console.log(id);
-            axios.put(`http://localhost:8080/${path}/zauzmi/${id}/${this.pacijentId}`)
-            this.$emit('termin-end')
+            await axios.put(`http://localhost:8080/${path}/zauzmi/${id}/${this.pacijentId}`).then(response=>{
+                if(response.data==="Uspeh"){
+                    this.dialog=true
+                    this.dialogMessage="Termin zauzet."
+                    this.dialogTitle="Uspeh"
+                    this.$emit('termin-end')
+                }else{
+                    this.dialog=true
+                    this.dialogMessage="Došlo je do greške pri zauzimanju termina."
+                    this.dialogTitle="Greška"
+                }
+            })
         },
         loadRadnoVreme(){
             let path="dermatolog"
@@ -288,6 +278,8 @@ export default{
             console.log(pocetak);
             if(kraj-pocetak>7200000 || kraj-pocetak<1800000){
                 this.dialog=true
+                this.dialogMessage="Termin može trajati između 30min i 2h."
+                this.dialogTitle="Greška"
             }else{
                  let path="pregled"
                 if(this.farmaceut){
@@ -312,11 +304,15 @@ export default{
                     if(this.check){
                         this.$emit('termin-end')
                     }else{
-                        this.dialogAdd=true;
+                        this.dialog=true
+                        this.dialogMessage="Termin je već zauzet."
+                        this.dialogTitle="Greška"
                     }
                 }
                 else{
-                    this.dialogAdd=true;
+                    this.dialog=true
+                    this.dialogMessage="Termin je već zauzet."
+                    this.dialogTitle="Greška"
                 }
             }
         },

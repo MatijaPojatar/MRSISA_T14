@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -141,7 +142,11 @@ public class PregledController {
 		p.setIzvrsen(true);
 		p.setIzvestaj("Pacijent se nije pojavio");
 		
-		service.save(p);
+		try {
+			service.save(p);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -158,7 +163,11 @@ public class PregledController {
 			p.getLekovi().add(lekIz);
 		}
 		
-		service.save(p);
+		try {
+			service.save(p);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -193,10 +202,12 @@ public class PregledController {
 	
 	@PutMapping("/zauzmi/{id}/{pacijentId}")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
-		Pregled pre=service.findOne(id);
 		Pacijent p=pacijentService.findOne(pacijentId);
-		pre.setPacijent(p);
-		service.save(pre);
+		try {
+			service.zauzmiPregled(id, p);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -206,34 +217,59 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		List<Pregled> checkList=service.findAllInRangeForDermatolog(id,pocetak,kraj);
-		if(checkList.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		
+		if(odg) {
+			try {
+				emailService.noviPregled(pregled);
+			} catch(Exception e){
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
 		}
 		
-		List<OdsustvoDermatolog> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
-		if(checkOdsustva.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+	}
+	
+	@PutMapping("/dodajSlobodan/{id}")
+	public ResponseEntity<Boolean> dodajSlobodanTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
+		LocalDateTime pocetak=pregled.getStart().plusHours(2);
+		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		
+		/*
+		 * try { emailService.noviPregled(p); } catch(Exception e){
+		 * System.out.println("Greska prilikom slanja emaila: " + e.getMessage()); }
+		 */
+		
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+	}
+	
+	@PutMapping("/zakazi")
+	public ResponseEntity<Boolean> zakaziPregled(@RequestBody PregledDTO pregled){		
+		List<OdsustvoDermatolog> checkOdsustva = odsustvoService.findExistInTime(pregled.getDermatologId(), pregled.getStart(), pregled.getEnd());
+		if(checkOdsustva.size() != 0) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 		
-		Pregled p=new Pregled();
-		p.setDermatolog(derService.findOne(id));
+		Pregled p = new Pregled();
+		p.setDermatolog(derService.findOne(pregled.getDermatologId()));
 		p.setIzvrsen(pregled.isIzvrsen());
 		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
 		p.setPacijent(pacijentService.findOne(pregled.getPacijentId()));
 		p.setIzvestaj(pregled.getIzvestaj());
-		p.setKraj(kraj);
-		p.setPocetak(pocetak);
+		p.setKraj(pregled.getEnd());
+		p.setPocetak(pregled.getStart());
 		
 		service.save(p);
 		
 		try {
-			emailService.noviPregled(p);
-		} catch(Exception e){
+			emailService.noviPregled(pregled);
+		} catch(MailException | InterruptedException e){
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")

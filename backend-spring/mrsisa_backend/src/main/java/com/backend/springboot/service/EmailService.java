@@ -10,13 +10,21 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.AkcijaPromocija;
+import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Osoba;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
 import com.backend.springboot.domain.ZalbaNaFarmaceuta;
+import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.dto.SavetovanjeDTO;
 
 @Service
 public class EmailService {
@@ -25,32 +33,45 @@ public class EmailService {
 
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	private PacijentService pacijentService;
+	
+	@Autowired
+	private FarmaceutService farmService;
+	
+	@Autowired
+	private DermatologService dermService;
 
 	@Async
-	public void noviPregled(Pregled pregled) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
+	public void noviPregled(PregledDTO pregled) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
 		//mail.setTo(pregled.getPacijent().getMail());
+		Pacijent p=pacijentService.findOne(pregled.getPacijentId());
+		Dermatolog d=dermService.findOne(pregled.getDermatologId());
 	    mail.setTo("imenkoprezimic94@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Zakazan novi termin pregleda");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 		mail.setText("Poštovani,\n\nObaveštavamo Vas da je kreiran novi termin pregleda.\n"
-				   + "\nPacijent: " + pregled.getPacijent().getIme() + " " + pregled.getPacijent().getPrezime() 
-				   + "\nDermatolog: dr. " + pregled.getDermatolog().getPrezime()
-				   + "\nTermin: " + pregled.getPocetak().format(formatter) + " - " + pregled.getKraj().format(formatter)
+				   + "\nPacijent: " + p.getIme() + " " + p.getPrezime() 
+				   + "\nDermatolog: dr. " + d.getPrezime()
+				   + "\nTermin: " + pregled.getStart().format(formatter) + " - " + pregled.getEnd().format(formatter)
 				   + "\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}
 	
 	@Async
-	public void novoSavetovanje(Savetovanje savetovanje) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(savetovanje.getPacijent().getMail());
+	public void novoSavetovanje(SavetovanjeDTO savetovanje) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
+		Pacijent p=pacijentService.findOne(savetovanje.getPacijentId());
+		Farmaceut f=farmService.findOne(savetovanje.getFarmaceutId());
+		mail.setTo(p.getMail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Zakazan novi termin savetovanja");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 		mail.setText("Poštovani,\n\nObaveštavamo Vas da je kreiran novi termin savetovanja.\n"
-				   + "\nPacijent: " + savetovanje.getPacijent().getIme() + " " + savetovanje.getPacijent().getPrezime() 
-				   + "\nFarmaceut: dr. " + savetovanje.getFarmaceut().getPrezime()
-				   + "\nTermin: " + savetovanje.getPocetak().format(formatter) + " - " + savetovanje.getKraj().format(formatter)
+				   + "\nPacijent: " + p.getIme() + " " + p.getPrezime() 
+				   + "\nFarmaceut: dr. " + f.getPrezime()
+				   + "\nTermin: " + savetovanje.getStart().format(formatter) + " - " + savetovanje.getEnd().format(formatter)
 				   + "\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}
@@ -130,4 +151,64 @@ public class EmailService {
 	
 		jms.send(mail);
 	}
+	
+	@Async
+	public void odobravanjeOdsustvaDermatolog(OdsustvoDermatolog odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odobren zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getDermatolog().getIme() +"\n\nObaveštavamo Vas da je odobren Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void odobravanjeOdsustvaFarmaceut(OdsustvoFarmaceut odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odobren zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getFarmaceut().getIme() +"\n\nObaveštavamo Vas da je odobren Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void odgovorPonuda(Integer narudzbenicaId, Integer ponudaId, String status) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Obrađena ponuda");
+		mail.setText("Poštovani,  \n\nObaveštavamo Vas da je " + status +" Vaša ponuda. \n"+
+				"\nNarudzbenica ID: " + narudzbenicaId+
+				"\nPonuda ID: "+ ponudaId + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void novaAkcija(String nazivApoteke, AkcijaPromocija akcija, Pacijent pacijent) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Nova akcija");
+		mail.setText("Poštovani " + pacijent.getIme() +",  \n\nObaveštavamo Vas da je u toku nova akcija u apoteci  " + nazivApoteke +" \n"+
+				"\nOpis: " + akcija.getOpis()+
+				"\nRok važenja: "+ akcija.getKrajVazenja().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
 }

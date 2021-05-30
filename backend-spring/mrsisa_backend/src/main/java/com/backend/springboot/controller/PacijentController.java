@@ -133,4 +133,13 @@ public class PacijentController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PutMapping("/pretplata/{id}/{apotekaId}")
+	public ResponseEntity<Boolean> pretplati(@PathVariable Integer id, @PathVariable Integer apotekaId){
+		pacijentService.pretplati(id, apotekaId);
+		
+		
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
 }

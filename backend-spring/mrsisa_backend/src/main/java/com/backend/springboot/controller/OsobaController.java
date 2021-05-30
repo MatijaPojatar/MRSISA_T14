@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pol;
@@ -60,6 +62,25 @@ public class OsobaController {
 		
 		osobaService.save(osoba);
 		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+	}
+	
+	@PutMapping("/novaLozinka/{id}")
+	public ResponseEntity<String> promeniLozinku(@PathVariable Integer id, @RequestBody String lozinka){
+		Osoba osoba = osobaService.findOne(id);
+		osoba.setPassword(new BCryptPasswordEncoder().encode( lozinka));
+		
+		osobaService.save(osoba);
+		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+	}
+	
+	@GetMapping("/novaLozinka/{id}")
+	public ResponseEntity<Boolean> proveriStaruLozinku(@PathVariable Integer id,@RequestParam String lozinka){
+		Osoba osoba = osobaService.findOne(id);
+		if(new BCryptPasswordEncoder().matches(lozinka, osoba.getPassword())) {
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
 	}
 	
 }

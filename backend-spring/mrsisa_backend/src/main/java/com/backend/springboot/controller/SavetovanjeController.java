@@ -24,14 +24,17 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
+import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
+import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.EmailService;
@@ -123,7 +126,12 @@ public class SavetovanjeController {
 		s.setIzvrsen(true);
 		s.setIzvestaj("Pacijent se nije pojavio");
 		
-		service.save(s);
+		
+		try {
+			service.save(s);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -141,7 +149,11 @@ public class SavetovanjeController {
 			s.getLekovi().add(lekIz);
 		}
 		
-		service.save(s);
+		try {
+			service.save(s);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
@@ -208,34 +220,38 @@ public class SavetovanjeController {
 		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
 		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
 		
-		List<Savetovanje> checkList=service.findAllInRangeForFarmaceut(id,pocetak,kraj);
-		if(checkList.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		boolean odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
+		
+		if(odg) {
+			try {
+				emailService.novoSavetovanje(savetovanje);
+			} catch(Exception e){
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
 		}
 		
-		List<OdsustvoFarmaceut> checkOdsustva=odsustvoService.findExistInTime(id,pocetak, kraj);
-		if(checkOdsustva.size()!=0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+	}
+	
+	@PutMapping("/zakazi")
+	public ResponseEntity<Boolean> zakaziSavetovanje(@RequestBody SavetovanjeDTO savetovanje){		
+		List<OdsustvoFarmaceut> checkOdsustva = odsustvoService.findExistInTime(savetovanje.getFarmaceutId(), savetovanje.getStart(), savetovanje.getEnd());
+		if(checkOdsustva.size() != 0) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 		}
 		
-		Savetovanje s=new Savetovanje();
-		s.setFarmaceut(farmService.findOne(id));
+		Savetovanje s = new Savetovanje();
+		s.setFarmaceut(farmService.findOne(savetovanje.getFarmaceutId()));
 		s.setIzvrsen(savetovanje.isIzvrsen());
 		s.setApoteka(apotekaService.findOne(savetovanje.getApotekaId()));
 		s.setPacijent(pacijentService.findOne(savetovanje.getPacijentId()));
 		s.setIzvestaj(savetovanje.getIzvestaj());
-		s.setKraj(kraj);
-		s.setPocetak(pocetak);
+		s.setKraj(savetovanje.getEnd());
+		s.setPocetak(savetovanje.getStart());
 		
 		service.save(s);
 		
-		try {
-			emailService.novoSavetovanje(s);
-		} catch(Exception e){
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")

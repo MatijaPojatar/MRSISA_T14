@@ -1,6 +1,6 @@
 <template>
   <v-card min-width="700px">
-    <v-card-text>
+    <v-card-text v-if="!fromProfilApoteke">
       <v-autocomplete
         v-model="izabranaApotekaId"
         :items="apoteke"
@@ -79,6 +79,16 @@ export default {
       apoteke: "apoteke/getApoteke",
     }),
   },
+  props:{
+    apotekaId: Number,
+    fromProfilApoteke: Boolean,
+  },
+  mounted(){
+    if (this.fromProfilApoteke){
+      this.izabranaApotekaId = this.apotekaId;
+    }
+    this.updateTable();
+  },
 
   async beforeMount() {
     await this.getApotekeAction();
@@ -141,6 +151,19 @@ export default {
     },
 
     zakazi(item) {
+      this.pregledi = [{
+            name: "Pregled 14",
+            datum: "2021-05-21",
+            pocetak: "13:10",
+            kraj: "14:30",
+            ocena: 5,
+            apotekaId: 1,
+            id: 14,
+            dermatolog: "Petar Petrovic",
+            dermatologId: 3,
+            izvrsen: false,
+            cena: 3000.0,
+          }]
       let pregled = {
         name: item.name,
         izvestaj: '',
@@ -163,7 +186,7 @@ export default {
         apotekaId: item.apotekaId,
         izvrsen: false
       };
-      axios.put(`http://localhost:8080/pregled/dodaj/${item.id}`, pregled);
+      axios.put(`http://localhost:8080/pregled/zakazi`, pregled);
     },
   },
 };

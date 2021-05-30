@@ -18,6 +18,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.LekDTO;
+
 @Entity
 @Table(name="lekovi")
 public class Lek {
@@ -77,6 +79,17 @@ public class Lek {
 		this.rezimIzdavanja = rezimIzdavanja;
 		this.oblikLeka = oblikLeka;
 		this.vrstaLeka = vrstaLeka;
+	}
+
+	public Lek(LekDTO lekInfo) {
+		this.id = lekInfo.getId();
+		this.naziv = lekInfo.getNaziv();
+		this.sastav = lekInfo.getSastav();
+		this.proizvodjac = lekInfo.getProizvodjac();
+		this.napomena = lekInfo.getNapomena();
+		this.rezimIzdavanja = lekInfo.getRezimIzdavanja();
+		this.oblikLeka = lekInfo.getOblikLeka();
+		this.vrstaLeka = lekInfo.getVrstaLeka();
 	}
 
 	public void addZamenskiLek(Lek lek) {

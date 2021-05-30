@@ -30,7 +30,7 @@ public class Pacijent extends Osoba {
 	
 	@ManyToMany
 	@JoinTable(name = "pacijent_akcije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
-	private List<Apoteka> pretplaceneApoteke = new ArrayList<Apoteka>(); 
+	private Set<Apoteka> pretplaceneApoteke = new HashSet<Apoteka>(); 
 	
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL) //proveriti
 	private List<ZalbaNaApoteku> zalbeNaApoteke = new ArrayList<ZalbaNaApoteku>();
@@ -145,11 +145,11 @@ public class Pacijent extends Osoba {
 		this.termini = termini;
 	}
 
-	public List<Apoteka> getPretplaceneApoteke() {
+	public Set<Apoteka> getPretplaceneApoteke() {
 		return pretplaceneApoteke;
 	}
 
-	public void setPretplaceneApoteke(List<Apoteka> pretplaceneApoteke) {
+	public void setPretplaceneApoteke(Set<Apoteka> pretplaceneApoteke) {
 		this.pretplaceneApoteke = pretplaceneApoteke;
 	}
 
