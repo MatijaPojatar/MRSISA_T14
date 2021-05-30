@@ -10,7 +10,6 @@ import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Magacin;
-import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Termin;
 
 public class ApotekaDTO {

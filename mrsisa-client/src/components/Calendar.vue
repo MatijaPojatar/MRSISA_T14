@@ -243,7 +243,7 @@
         <v-card-title class="headline">
           Lekovi
         </v-card-title>
-        <ListLekoviV2 :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey" :pacijentId="selectedEvent.pacijent"/>
+        <ListLekovi :apotekaId="selectedEvent.apoteka" :preporuceniLekovi="preporuceniLekovi" :key="componentKey" :pacijentId="selectedEvent.pacijent"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -311,13 +311,13 @@
 
 <script>
   import axios from "axios";
-  import ListLekoviV2 from "./ListLekoviV2"
+  import ListLekovi from "./ListLekovi"
   import TerminPicker from "./TerminPicker"
   import AccountView from "./AccountView";
 
   export default {
     components:{
-      ListLekoviV2,
+      ListLekovi,
       TerminPicker,
       AccountView,
     },

@@ -90,7 +90,6 @@ export default {
   components: {},
 
   data: () => ({
-    odabrano: true,
     headeri: [
       { text: "Naziv", value: "naziv", sortable: false },
       { text: "Tip", value: "oblikLeka", sortable: false },

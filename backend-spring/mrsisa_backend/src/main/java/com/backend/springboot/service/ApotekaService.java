@@ -1,6 +1,5 @@
 package com.backend.springboot.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +30,18 @@ public class ApotekaService  {
 		return apotekaRep.findOneById(sifra);
 	}
 	
+	public List<Apoteka> pretraga(String naziv, String grad){
+		if (!naziv.equals("") && !grad.equals("")) {
+			return apotekaRep.findByNazivIgnoringCaseAndGradIgnoringCase(naziv, grad);
+		} else if (!naziv.equals("") && grad.equals("")) {
+			return apotekaRep.findByNazivIgnoringCase(naziv);
+		} else if (naziv.equals("") && !grad.equals("")) {
+			return apotekaRep.findByGradIgnoringCase(grad);
+		} else {
+			return apotekaRep.findAll();
+		}
+	}
+	
 	public Apoteka save(Apoteka a) {
 		return apotekaRep.save(a);
 	}
@@ -41,47 +52,11 @@ public class ApotekaService  {
 		return a.getLekovi();
 		
 	}
-
-	public Collection<Apoteka> pronadjiApoteke(String naziv, String grad) {
-		ArrayList<Apoteka> pronadjene = new ArrayList<Apoteka>();
-		Collection<Apoteka> sve = findAll();
-		
-		if (naziv.equals("") && grad.equals("")) {
-			pronadjene = (ArrayList<Apoteka>) sve;
-		}
-	    else if (naziv.equals("")) {
-			for (Apoteka apoteka : sve) {
-				if (apoteka.getGrad().equals(grad)) {
-					pronadjene.add(apoteka);
-				}
-			}
-		}
-	    else if (grad.equals("")) {
-			for (Apoteka apoteka : sve) {
-				if (apoteka.getNaziv().equals(naziv)) {
-					pronadjene.add(apoteka);
-				}
-			}
-		}
-	    else {
-	    	for (Apoteka apoteka : sve) {
-				if (apoteka.getNaziv().equals(naziv) && apoteka.getGrad().equals(grad)) {
-					pronadjene.add(apoteka);
-				}
-			}
-	    }
-
-		return pronadjene;
-	}
-
-
-
-
-
+	
 	public ApotekaDTO addApoteka(ApotekaDTO dto) throws Exception {
-		Apoteka check = apotekaRep.findByNazivIgnoringCase(dto.getNaziv());
+		List<Apoteka> check = apotekaRep.findByNazivIgnoringCase(dto.getNaziv());
 		System.out.println(dto.getAdresa() + "ADRSEA U SERVISU");
-		if(check != null) {
+		if(!check.isEmpty()) {
 			throw new Exception();
 		}
 		
@@ -90,6 +65,4 @@ public class ApotekaService  {
 		
 		return new ApotekaDTO(apotekaRep.save(apoteka));
 	}
-	
-		
 }

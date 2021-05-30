@@ -368,6 +368,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = true;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;

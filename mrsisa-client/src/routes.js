@@ -47,11 +47,6 @@ const router = new Router({
       component: () => import("./components/Admin/RegZaposlenog")
     },
     {
-      path: "/apoteke",
-      name: "ListApoteke",
-      component: () => import("./components/ListApoteke")
-    },
-    {
       path: "/apoteke/kreiraj",
       name: "RegApoteka",
       component: () => import("./components/Admin/RegApoteka")
@@ -62,34 +57,9 @@ const router = new Router({
       component: () => import("./components/Admin/KreirajLek")
     },
     {
-      path: "/lekovi",
-      name: "Lekovi",
-      component: () => import("./components/LekApp")
-    },
-    {
       path: "/lekovi/lek/:sifra",
       name: "Lek Details",
       component: () => import("./components/LekComponent")
-    },
-    {
-      path: "/lekovi/pretraga",
-      name: "Pretraga Lekova",
-      component: () => import("./components/PretragaLekova")
-    },
-    {
-      path: "/rezervacija/pretraga",
-      name: "Pretraga Rezervacija",
-      component: () => import("./components/PretragaRezervacija")
-    },
-    {
-      path: "/rezervacija",
-      name: "Rezervacije",
-      component: () => import("./components/RezApp")
-    },
-    {
-      path: "/apoteka/lekovi",
-      name: "Lekovi u apoteci",
-      component: () => import("./components/ApotekaApp")
     },
     {
       path: "/farmaceut",
@@ -110,7 +80,12 @@ const router = new Router({
       path: "/admin",
       name: "HomepageAdmin",
       component: () => import("./components/Admin/HomepageAdmin")
-    }
+    },
+    {
+      path: "/pretragaApoteka",
+      name: "PretragaApoteka",
+      component: () => import("./components/PretragaApoteka")
+    },
   ]
 });
 

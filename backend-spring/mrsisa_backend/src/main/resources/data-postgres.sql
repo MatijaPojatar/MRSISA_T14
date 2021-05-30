@@ -9,7 +9,7 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 
 
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
-insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Novi Sad','Apoteka 2','Test apoteka 2');
+insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Subotica','Apoteka 2','Test apoteka 2');
 insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 3','Srbija','Novi Sad','Apoteka 3','Test apoteka 3');
 
 insert into apoteke_lekovi (lek_id,apoteka_id) values (1,1);

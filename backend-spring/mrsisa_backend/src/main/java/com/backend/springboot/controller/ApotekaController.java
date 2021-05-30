@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.ParametriPretrageApoteke;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
@@ -70,7 +71,7 @@ public class ApotekaController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<List<MinimalApotekaDTO>> findAll(){
+	public ResponseEntity<List<MinimalApotekaDTO>> findAllMinimal(){
 		List<Apoteka> apoteke = apotekaService.findAll();
 		
 		List<MinimalApotekaDTO> dtos = new ArrayList<>();
@@ -79,6 +80,18 @@ public class ApotekaController {
 		}
 		
 		return new ResponseEntity<List<MinimalApotekaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/sve")
+	public ResponseEntity<List<ApotekaMainInfoDTO>> findAll(){
+		List<Apoteka> apoteke = apotekaService.findAll();
+		
+		List<ApotekaMainInfoDTO> dtos = new ArrayList<ApotekaMainInfoDTO>();
+		for(Apoteka a : apoteke) {
+			dtos.add(new ApotekaMainInfoDTO(a));
+		}
+		
+		return new ResponseEntity<List<ApotekaMainInfoDTO>>(dtos, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getOne/{id}")
@@ -99,10 +112,16 @@ public class ApotekaController {
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	@PostMapping("/rezultat")
-	public ResponseEntity<Collection<Apoteka>> pretrazi(String naziv, String grad) {
-		pronadjeneApoteke = (ArrayList<Apoteka>) apotekaService.pronadjiApoteke(naziv, grad);
-		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
+	@PostMapping("/pretraga")
+	public ResponseEntity<List<ApotekaMainInfoDTO>> pretrazi(@RequestBody ParametriPretrageApoteke params) {
+		List<Apoteka> apoteke = apotekaService.pretraga(params.getNaziv(), params.getGrad());
+		List<ApotekaMainInfoDTO> dtos = new ArrayList<ApotekaMainInfoDTO>();
+		
+		for (Apoteka apoteka : apoteke) {
+			dtos.add(new ApotekaMainInfoDTO(apoteka));
+		}
+		
+		return new ResponseEntity<List<ApotekaMainInfoDTO>>(dtos, HttpStatus.OK);
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -172,6 +191,4 @@ public class ApotekaController {
 		return new ResponseEntity<List<LekDTO>>(dto, HttpStatus.OK);
 		
 	}
-	
-	
 }

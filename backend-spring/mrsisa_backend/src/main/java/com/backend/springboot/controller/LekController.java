@@ -97,15 +97,6 @@ public class LekController {
 
 		return new ResponseEntity<LekDTO>(new LekDTO(lek), HttpStatus.OK);
 	}
-
-	@PostMapping("/rezultat")
-	public ResponseEntity<Collection<Lek>> pretrazi(@RequestBody ParametriPretrageLeka params) {
-
-		pronadjeniLekovi = (ArrayList<Lek>) lekService.findWithParams(params.getSifra(), params.getNaziv(),
-				params.getOblik(), params.getVrsta(), params.getRezim(), 1, params.getProizvodjac());
-
-		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
-	}
 	
 	@PutMapping()
 	public ResponseEntity<LekDTO> izmeniLek(@RequestBody LekDTO lekInfo){
@@ -306,7 +297,7 @@ public class LekController {
 	@GetMapping(value = "/dostupni")
 	public ResponseEntity<List<LekApotekaDTO>> getAllAvailable() {		
 		List<Apoteka> apoteke = apotekaService.findAll();
-		List<LekApotekaDTO> dto = new ArrayList<LekApotekaDTO>();
+		List<LekApotekaDTO> dtos = new ArrayList<LekApotekaDTO>();
 		LekApotekaDTO la;
 		
 		for (Apoteka apoteka : apoteke) {
@@ -317,14 +308,14 @@ public class LekController {
 				la.setOblikLeka(lek.getOblikLeka());
 				la.setApotekaId(apoteka.getId());
 				la.setNazivApoteke(apoteka.getNaziv());
-				dto.add(la);
+				dtos.add(la);
 			}
 		}
 		
-		for (LekApotekaDTO laDTO : dto) {
+		for (LekApotekaDTO laDTO : dtos) {
 			laDTO.setCena(magacinService.preuzmiTrenutnuCenu(laDTO.getId()).getCena());
 		}
 		
-		return new ResponseEntity<List<LekApotekaDTO>>(dto, HttpStatus.OK);
+		return new ResponseEntity<List<LekApotekaDTO>>(dtos, HttpStatus.OK);
 	}
 }
