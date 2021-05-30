@@ -55,9 +55,7 @@
             ></v-date-picker>
           </v-menu>
           <v-card-actions>
-            <v-btn color="green darken-1" text @click="rezervisi"> 
-              Ok
-            </v-btn>
+            <v-btn color="green darken-1" text @click="rezervisi"> Ok </v-btn>
             <v-spacer></v-spacer>
             <v-btn color="green darken-1" text @click="endDialogKolicina">
               Close
@@ -109,6 +107,14 @@ export default {
     definisanaKolicina: "",
     message: "",
     definisanRok: null,
+    menu: false,
+    valid: true,
+    brojRules: [
+      (v) => !!v || "Obavezno polje",
+      (v) => (v && v.length <= 10) || "Dužina maksimalno 10 karaktera",
+      (v) =>
+        new RegExp("^(0|([1-9][0-9]*))(\\.[0-9]+)?$").test(v) || "Loš format",
+    ],
   }),
 
   async mounted() {
