@@ -35,7 +35,7 @@ public class Apoteka {
 	private String drzava;
 	@Column(name = "opis", nullable = false)
 	private String opis;
-	@ManyToMany(mappedBy = "snabdeveneApoteke")
+	@ManyToMany(mappedBy = "snabdeveneApoteke", fetch = FetchType.LAZY)
 	private List<Lek> lekovi=new ArrayList<Lek>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Farmaceut> farmaceuti = new HashSet<Farmaceut>();

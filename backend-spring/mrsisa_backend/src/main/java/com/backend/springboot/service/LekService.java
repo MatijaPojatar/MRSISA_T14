@@ -13,7 +13,6 @@ import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
-import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.LekUMagacinuRepository;
@@ -173,5 +172,4 @@ public class LekService {
 		Lek lek = lekRep.findOneById(id);
 		return lek.getZamenskiLekovi();
 	}
-
 }

@@ -72,6 +72,16 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="rezervacijaLekaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-pill</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Rezervacija leka
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="calendarView">
                     <v-list-item-icon>
                         <v-icon>mdi-calendar</v-icon>
@@ -195,6 +205,9 @@
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
                 <AddAllergy :id="user.id"/>
             </v-container>
+            <v-container fluid v-if="showRezervacijaLeka" :style="{width:'70vh'}">
+                <RezervacijaLeka/>
+            </v-container>
             <v-container fluid v-if="showNoviPregled" :style="{width:'70vh'}">
                 <NoviPregled/>
             </v-container>
@@ -235,6 +248,7 @@ import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
+import RezervacijaLeka from "./RezervacijaLeka";
 import NoviPregled from "./NoviPregled";
 import NovoSavetovanje from "./NovoSavetovanje";
 import IstorijaPregleda from "./IstorijaPregleda";
@@ -255,6 +269,7 @@ export default {
         AccountView,
         PasswordSwitch,
         AddAllergy,
+        RezervacijaLeka,
         NoviPregled,
         NovoSavetovanje,
         IstorijaPregleda,
@@ -271,6 +286,7 @@ export default {
     showAccount: false,
     showPassword: false,
     showAllergy: false,
+    showRezervacijaLeka: false,
     showNoviPregled: false,
     showNovoSavetovanje: false,
     showIstorijaPregleda: false,
@@ -297,10 +313,11 @@ export default {
         }),
 
       calendarView(){
-          this.showCalendar=true;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = true;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -309,14 +326,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       accountView(){
-          this.showCalendar=false;
-          this.showAccount=true;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = true;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -325,14 +343,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       changePassword(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=true;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = true;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -341,14 +360,14 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       allergyView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=true;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = true;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -357,14 +376,32 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
+      },
+      rezervacijaLekaView(){
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = true;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       noviPregledView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = true;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -373,14 +410,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       novoSavetovanjeView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = true;
           this.showIstorijaPregleda = false;
@@ -389,13 +427,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       istorijaPregledaView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = true;
@@ -404,13 +444,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       istorijaSavetovanjaView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -419,14 +461,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       zalbaApotekaView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -435,14 +478,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       zalbaDermatologView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -451,14 +495,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = true;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       zalbaFarmaceutView() {
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -467,14 +512,15 @@ export default {
           this.showZalbaFarmaceut = true;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       zalbePacijentaView() {
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -483,14 +529,15 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = true;
-          this.showAkcije=false;
-          this.showApoteke=false;
+          this.showAkcije = false;
+          this.showApoteke = false;
       },
       akcijeView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showIstorijaPregleda = false;
@@ -499,24 +546,24 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=true;
-          this.showApoteke=false;
+          this.showAkcije = true;
+          this.showApoteke = false;
       },
       apotekeView(){
-          this.showCalendar=false;
-          this.showAccount=false;
-          this.showPassword=false;
-          this.showAllergy=false;
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije=false;
-          this.showApoteke=true;
+          this.showAkcije = false;
+          this.showApoteke = true;
       },
-
 
       onLogout(){
         this.logout();

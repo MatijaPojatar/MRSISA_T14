@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
@@ -28,6 +29,7 @@ import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
+import com.backend.springboot.dto.LekApotekaDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.service.ApotekaService;
@@ -300,5 +302,29 @@ public class LekController {
 		
 		return new ResponseEntity<LekUMagacinuDTO>(dto,HttpStatus.OK);
 	}
-
+	
+	@GetMapping(value = "/dostupni")
+	public ResponseEntity<List<LekApotekaDTO>> getAllAvailable() {		
+		List<Apoteka> apoteke = apotekaService.findAll();
+		List<LekApotekaDTO> dto = new ArrayList<LekApotekaDTO>();
+		LekApotekaDTO la;
+		
+		for (Apoteka apoteka : apoteke) {
+			for (Lek lek : apoteka.getLekovi()) {
+				la = new LekApotekaDTO();
+				la.setId(lek.getId());
+				la.setNaziv(lek.getNaziv());
+				la.setOblikLeka(lek.getOblikLeka());
+				la.setApotekaId(apoteka.getId());
+				la.setNazivApoteke(apoteka.getNaziv());
+				dto.add(la);
+			}
+		}
+		
+		for (LekApotekaDTO laDTO : dto) {
+			laDTO.setCena(magacinService.preuzmiTrenutnuCenu(laDTO.getId()).getCena());
+		}
+		
+		return new ResponseEntity<List<LekApotekaDTO>>(dto, HttpStatus.OK);
+	}
 }
