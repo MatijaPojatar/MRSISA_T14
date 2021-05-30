@@ -8,6 +8,6 @@ import com.backend.springboot.domain.LekERecepta;
 
 public interface LekEReceptaRepository extends JpaRepository<LekERecepta, Integer>{
 	
-	public List<LekERecepta> findAllByEReceptId(Integer id);
+	public List<LekERecepta> findAllByEreceptId(Integer id);
 
 }

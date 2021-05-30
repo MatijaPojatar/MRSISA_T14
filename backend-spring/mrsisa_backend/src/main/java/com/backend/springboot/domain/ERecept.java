@@ -24,6 +24,9 @@ public class ERecept {
 	@Column(name = "datum_izdavanja")
 	private LocalDate datumIzdavanja;
 	
+	@Column(name = "status")
+	private StatusErecepta status;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
 	
@@ -35,12 +38,32 @@ public class ERecept {
 	}
 	
 
-	public ERecept(Integer id, LocalDate datumIzdavanja, Pacijent pacijent, List<LekERecepta> lekovi) {
+	public ERecept(Integer id, LocalDate datumIzdavanja, StatusErecepta status, Pacijent pacijent,
+			List<LekERecepta> lekovi) {
+		super();
+		this.id = id;
+		this.datumIzdavanja = datumIzdavanja;
+		this.status = status;
+		this.pacijent = pacijent;
+		this.lekovi = lekovi;
+	}
+
+
+	public ERecept(Integer id, LocalDate datumIzdavanja,StatusErecepta status, Pacijent pacijent) {
 		super();
 		this.id = id;
 		this.datumIzdavanja = datumIzdavanja;
 		this.pacijent = pacijent;
-		this.lekovi = lekovi;
+	}
+
+
+	public StatusErecepta getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(StatusErecepta status) {
+		this.status = status;
 	}
 
 
