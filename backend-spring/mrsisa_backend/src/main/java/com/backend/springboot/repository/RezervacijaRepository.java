@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.backend.springboot.domain.RezervacijaLeka;
-import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.domain.StatusRezervacije;
 
 public interface RezervacijaRepository extends JpaRepository<RezervacijaLeka, Integer> {
 	
@@ -23,4 +23,5 @@ public interface RezervacijaRepository extends JpaRepository<RezervacijaLeka, In
 	@Query("select r from RezervacijaLeka r where r.status=0")
 	public List<RezervacijaLeka> findAllActive();
 	
+	public List<RezervacijaLeka> findByPacijentIdAndStatus(Integer pacijentId, StatusRezervacije status);
 }

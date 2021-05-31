@@ -10,6 +10,7 @@ import ponude from './modules/ponude'
 import zalbe from './modules/zalbe'
 import termini from './modules/termini'
 import akcijePromocije from './modules/akcijePromocije'
+import rezervacije from './modules/rezervacije'
 
 
 Vue.use(Vuex)
@@ -27,7 +28,8 @@ const modules ={
   ponude,
   zalbe,
   termini,
-  akcijePromocije
+  akcijePromocije,
+  rezervacije
 }
 
 export default new Vuex.Store({

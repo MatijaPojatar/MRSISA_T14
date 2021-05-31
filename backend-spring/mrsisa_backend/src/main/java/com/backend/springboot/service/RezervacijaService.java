@@ -106,4 +106,8 @@ public class RezervacijaService {
 
 	    return generatedString;
 	}
+	
+	public List<RezervacijaLeka> rezervacijePacijenta(Integer pacijentId, StatusRezervacije status) {
+		return rep.findByPacijentIdAndStatus(pacijentId, status);
+	}
 }

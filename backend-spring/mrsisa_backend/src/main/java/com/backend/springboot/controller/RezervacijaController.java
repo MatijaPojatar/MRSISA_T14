@@ -28,6 +28,7 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
 import com.backend.springboot.dto.MinimalApotekaDTO;
+import com.backend.springboot.dto.RezLekaPacijentDTO;
 import com.backend.springboot.dto.RezervacijaLekaDTO;
 import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.MagacinService;
@@ -147,7 +148,6 @@ public class RezervacijaController {
 		}
 	}
 	
-	
 	@PostMapping("novaRezervacija")
 	public ResponseEntity<String> novaRezervacija(@RequestBody RezervacijaLekaDTO dto ) throws MailException, InterruptedException{
 		Magacin m = magacinService.findOneByApotekaId(dto.getApotekaId());
@@ -162,5 +162,15 @@ public class RezervacijaController {
 		return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);
 	}
 	
-	
+	@GetMapping("pacijent/{id}")
+	public ResponseEntity<List<RezLekaPacijentDTO>> aktivneRezPacijenta(@PathVariable Integer id){
+		List<RezervacijaLeka> rezervacije = rezService.rezervacijePacijenta(id, StatusRezervacije.KREIRANA);
+		List<RezLekaPacijentDTO> dtos = new ArrayList<RezLekaPacijentDTO>();
+		
+		for (RezervacijaLeka r : rezervacije) {
+			dtos.add(new RezLekaPacijentDTO(r));
+		}
+		
+		return new ResponseEntity<List<RezLekaPacijentDTO>>(dtos, HttpStatus.OK);
+	}
 }

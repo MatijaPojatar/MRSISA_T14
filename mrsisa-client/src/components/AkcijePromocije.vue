@@ -31,12 +31,12 @@ export default {
   computed: {
     ...mapGetters({
       akcijePromocije: "akcijePromocije/getAkcijePromocije",
-      user: "korisnici/getKorisnik",
+      korisnik: "korisnici/getKorisnik",
     }),
   },
 
   async mounted() {
-    await this.getAkcijePromocijeAction(this.user.id);
+    await this.getAkcijePromocijeAction(this.korisnik.id);
   },
 
   methods: {
