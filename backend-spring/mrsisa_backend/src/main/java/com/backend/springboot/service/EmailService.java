@@ -17,9 +17,7 @@ import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pacijent;
-import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.RezervacijaLeka;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
 import com.backend.springboot.domain.ZalbaNaFarmaceuta;
@@ -44,10 +42,11 @@ public class EmailService {
 	private DermatologService dermService;
 
 	@Async
-	public void noviPregled(PregledDTO pregled) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
-		//mail.setTo(pregled.getPacijent().getMail());
+	public void noviPregled(PregledDTO pregled) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
 		Pacijent p=pacijentService.findOne(pregled.getPacijentId());
 		Dermatolog d=dermService.findOne(pregled.getDermatologId());
+		//mail.setTo(pregled.getPacijent().getMail());
 	    mail.setTo("imenkoprezimic94@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Zakazan novi termin pregleda");
@@ -61,7 +60,8 @@ public class EmailService {
 	}
 	
 	@Async
-	public void novoSavetovanje(SavetovanjeDTO savetovanje) throws MailException, InterruptedException {SimpleMailMessage mail = new SimpleMailMessage();
+	public void novoSavetovanje(SavetovanjeDTO savetovanje) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
 		Pacijent p=pacijentService.findOne(savetovanje.getPacijentId());
 		Farmaceut f=farmService.findOne(savetovanje.getFarmaceutId());
 		mail.setTo(p.getMail());
@@ -77,7 +77,8 @@ public class EmailService {
 	}
 	
 	@Async
-	public void noviOdgovorNaZalbuNaApoteku(ZalbaNaApoteku zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+	public void noviOdgovorNaZalbuNaApoteku(ZalbaNaApoteku zalba)  throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(zalba.getPacijent().getMail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Odgovor na žalbu");
@@ -93,7 +94,8 @@ public class EmailService {
 	}
 	
 	@Async
-	public void noviOdgovorNaZalbuNaFarmaceuta(ZalbaNaFarmaceuta zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+	public void noviOdgovorNaZalbuNaFarmaceuta(ZalbaNaFarmaceuta zalba)  throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(zalba.getPacijent().getMail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Odgovor na žalbu");
@@ -109,7 +111,8 @@ public class EmailService {
 	}
 	
 	@Async
-	public void noviOdgovorNaZalbuNaDermatologa(ZalbaNaDermatologa zalba)  throws MailException, InterruptedException{SimpleMailMessage mail = new SimpleMailMessage();
+	public void noviOdgovorNaZalbuNaDermatologa(ZalbaNaDermatologa zalba)  throws MailException, InterruptedException{
+		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(zalba.getPacijent().getMail());
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Odgovor na žalbu");
@@ -211,4 +214,22 @@ public class EmailService {
 		jms.send(mail);
 	}
 	
+	@Async
+	public void rezervacijaLeka(RezervacijaLeka rl) throws MailException, InterruptedException {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(pregled.getPacijent().getMail());
+	    mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Rezervisan lek");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		mail.setText("Poštovani,\n\nObaveštavamo Vas da je uspešno rezervisan lek.\n"
+				   + "\nBroj rezervacije: " + rl.getCode()
+				   + "\nPacijent: " + rl.getPacijent().getIme() + " " + rl.getPacijent().getPrezime() 
+				   + "\nNaziv leka: " + rl.getLek().getNaziv()
+				   + "\nProizvođač: " + rl.getLek().getProizvodjac()
+				   + "\nApoteka: " + rl.getApoteka().getNaziv()
+				   + "\nRok preuzimanja: " + rl.getDatum().format(formatter)
+				   + "\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
 }

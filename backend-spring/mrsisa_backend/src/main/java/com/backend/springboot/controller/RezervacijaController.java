@@ -6,12 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
@@ -154,13 +149,14 @@ public class RezervacijaController {
 	
 	
 	@PostMapping("novaRezervacija")
-	public ResponseEntity<String> novaRezervacija(@RequestBody RezervacijaLekaDTO dto ){
+	public ResponseEntity<String> novaRezervacija(@RequestBody RezervacijaLekaDTO dto ) throws MailException, InterruptedException{
 		Magacin m = magacinService.findOneByApotekaId(dto.getApotekaId());
 		Boolean naStanju = magacinService.proveriStanje(m.getId(), dto.getLekId(), dto.getKolicina());
 		if(!naStanju) {
 			return new ResponseEntity<String>("Leka nema na stanju u željenoj količini.",HttpStatus.OK);
 		}
-		rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina(), dto.getDatum());
+		RezervacijaLeka rl = rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina(), dto.getDatum());
+		emailService.rezervacijaLeka(rl);
 		magacinService.smanjiKolicinuLeka(m.getId(), dto.getLekId(), dto.getKolicina());
 		
 		return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);

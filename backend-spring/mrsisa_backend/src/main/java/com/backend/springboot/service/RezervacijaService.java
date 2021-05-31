@@ -1,6 +1,5 @@
 package com.backend.springboot.service;
 
-import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -16,11 +15,9 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.RezervacijaLeka;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.StatusRezervacije;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
-import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.PacijentRepository;
 import com.backend.springboot.repository.RezervacijaRepository;
 
@@ -36,9 +33,6 @@ public class RezervacijaService {
 	private LekRepository lekRep;
 	@Autowired
 	private PacijentRepository pacijentRep;
-	@Autowired
-	private MagacinRepository magacinRep;
-	
 	
 	@Transactional(readOnly=true)
 	public RezervacijaLeka findOneActiveByCodeAndApoteka(String code,Integer apotekaId) {
@@ -94,9 +88,6 @@ public class RezervacijaService {
 		rez.setDatum(datum);
 		rez.setKolicina(kolicina);
 		rez.setStatus(StatusRezervacije.KREIRANA);
-		
-		
-		
 		
 		return rep.save(rez);
 	}
