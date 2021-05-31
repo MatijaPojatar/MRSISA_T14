@@ -186,11 +186,11 @@ insert into pregledi(id, dermatolog_id, cena) values (15, 10, 4000);
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-21 09:00', '2021-05-21 09:45', 1,1);
 insert into savetovanja(id, farmaceut_id) values (16, 1);
 
-insert into erecepti(id, datum_izdavanja, pacijent_id, status) values (1,'2021-05-30', 2, 0);
-insert into erecepti(id, datum_izdavanja, pacijent_id, status) values (2,'2021-05-29', 2, 0);
+insert into erecepti( datum_izdavanja, pacijent_id, status) values ('2021-05-30', 2, 1);
+insert into erecepti( datum_izdavanja, pacijent_id, status) values ('2021-05-29', 2, 1);
 
-insert into lekovi_erecepta(id, erecept_id, kolicina, lek_id) values (1, 1, 3, 2);
-insert into lekovi_erecepta(id, erecept_id, kolicina, lek_id) values (2, 1, 1, 3);
-insert into lekovi_erecepta(id, erecept_id, kolicina, lek_id) values (3, 2, 1, 6);
-insert into lekovi_erecepta(id, erecept_id, kolicina, lek_id) values (4, 2, 1, 7);
+insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 1, 3, 2);
+insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 1, 1, 3);
+insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 2, 1, 6);
+insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 2, 1, 7); --pacijent je alergican na lek sa idjem 1
 

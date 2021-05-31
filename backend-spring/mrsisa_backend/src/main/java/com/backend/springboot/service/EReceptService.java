@@ -44,23 +44,19 @@ public class EReceptService {
 		return ereceptRep.findAllByPacijentId(pacijentId);
 	}
 	
-	public ERecept dodajERecept(Integer pacijentId, LocalDate datumIzdavanja, List<LekEReceptaDTO> lekovi) {
-		Pacijent pacijent = pacijentRep.findOneById(pacijentId);
+	public ERecept update(ERecept erecept) {
+		return ereceptRep.save(erecept);
+	}
+	
+	public ERecept save(ERecept erecept) {
+
+//		erecept = ereceptRep.save(erecept);
 		
-		ERecept erecept = new ERecept();
-		erecept.setDatumIzdavanja(datumIzdavanja);
-		erecept.setPacijent(pacijentRep.findOneById(pacijentId));
-		erecept.setStatus(StatusErecepta.NOV);
-		ereceptRep.save(erecept);
+		List<LekERecepta> lekoviERecepta = new ArrayList<LekERecepta>();
 		
-		ArrayList<LekERecepta> lekoviERecepta = new ArrayList<LekERecepta>();
-		
-		for(LekEReceptaDTO dto : lekovi) {
-			LekERecepta lek = new LekERecepta();
+		for(LekERecepta lek : erecept.getLekovi()) {
 			
-			lek.setErecept(erecept);
-			lek.setKolicina(dto.getKolicina());
-			lek.setLek(lekRep.findOneById(dto.getLekId()));
+			lek.setErecept(erecept); //racunam da lek i kolicinu ima
 			
 			lek = lekoviEReceptaRep.save(lek);
 			
@@ -71,4 +67,32 @@ public class EReceptService {
 		
 		return ereceptRep.save(erecept);
 	}
+	
+//	public ERecept dodajERecept(Integer pacijentId, LocalDate datumIzdavanja, List<LekEReceptaDTO> lekovi) {
+//		Pacijent pacijent = pacijentRep.findOneById(pacijentId);
+//		
+//		ERecept erecept = new ERecept();
+//		erecept.setDatumIzdavanja(datumIzdavanja);
+//		erecept.setPacijent(pacijentRep.findOneById(pacijentId));
+//		erecept.setStatus(StatusErecepta.NOV);
+//		erecept = ereceptRep.save(erecept);
+//		
+//		ArrayList<LekERecepta> lekoviERecepta = new ArrayList<LekERecepta>();
+//		
+//		for(LekEReceptaDTO dto : lekovi) {
+//			LekERecepta lek = new LekERecepta();
+//			
+//			lek.setErecept(erecept);
+//			lek.setKolicina(dto.getKolicina());
+//			lek.setLek(lekRep.findOneById(dto.getLekId()));
+//			
+//			lek = lekoviEReceptaRep.save(lek);
+//			
+//			lekoviERecepta.add(lek);	
+//		}
+//		
+//		erecept.setLekovi(lekoviERecepta);
+//		
+//		return ereceptRep.save(erecept);
+//	}
 }

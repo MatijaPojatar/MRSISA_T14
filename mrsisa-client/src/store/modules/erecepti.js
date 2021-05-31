@@ -19,6 +19,15 @@ const actions = {
     console.log(response.data);
     commit("setEreceptiPacijenta", response.data);
 
+  },
+
+  async sendFileAction({commit} , formData){
+    const response = await Vue.axios.post("/erecepti/upload",formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    console.log(commit); //mozda commit {} ostaviti prazno???
   }
 }
 

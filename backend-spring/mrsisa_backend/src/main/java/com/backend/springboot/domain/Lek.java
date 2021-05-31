@@ -26,7 +26,7 @@ public class Lek {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name = "naziv", nullable = false)
+	@Column(name = "naziv", nullable = false, unique = true)
 	private String naziv;
 	@Column(name = "sastav", nullable = false)
 	private String sastav;

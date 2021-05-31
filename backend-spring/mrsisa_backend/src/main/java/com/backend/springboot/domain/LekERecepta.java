@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.LekEReceptaDTO;
+
 @Entity
 @Table(name="lekovi_erecepta")
 public class LekERecepta {
@@ -29,7 +31,11 @@ public class LekERecepta {
 		super();
 	}
 	
-
+	public LekERecepta(LekEReceptaDTO dto) {
+		this.id = dto.getId();
+		this.kolicina = dto.getKolicina();
+	}
+	
 	public LekERecepta(Integer id, Integer kolicina, Lek lek, ERecept erecept) {
 		super();
 		this.id = id;

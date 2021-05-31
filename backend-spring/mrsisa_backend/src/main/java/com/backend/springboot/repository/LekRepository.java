@@ -20,6 +20,8 @@ public interface LekRepository extends JpaRepository<Lek, Integer> {
 	
 	Lek findOneById(Integer id);
 	
+	Lek findOneByNaziv(String naziv);
+	
 	List<Lek> findAllBySnabdeveneApoteke_Id(Integer id);
 	
 	@Query("select l.zamenskiLekovi from Lek l where l.id=:id")

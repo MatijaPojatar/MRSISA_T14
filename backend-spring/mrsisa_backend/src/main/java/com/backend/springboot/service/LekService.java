@@ -49,6 +49,10 @@ public class LekService {
 		return lekRep.findOneById(sifra);
 	}
 	
+	public Lek findOneByNaziv(String naziv) {
+		return lekRep.findOneByNaziv(naziv);
+	}
+	
 	public void deleteLek(int id) {
 		lekRep.deleteById(id);
 	}
