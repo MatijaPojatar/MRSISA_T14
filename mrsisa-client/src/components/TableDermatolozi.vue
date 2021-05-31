@@ -136,6 +136,7 @@
           { text: 'Pol', value: 'pol'},
           { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
           { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
+          { text: 'Ocena', value: 'ocena'},
           { text: 'Upravljaj', value: 'actions', sortable: false },
         ],
 
@@ -151,6 +152,7 @@
           { text: 'Pol', value: 'pol'},
           { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
           { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
+          { text: 'Ocena', value: 'ocena'},
         ],
             dermatolozi: [],
             dermatologUpdateDialog: false,
@@ -189,7 +191,8 @@
                                 pol: element.pol,
                                 datumRodjenja: element.datumRodjenja,
                                 pocetakRadnogVremena: element.pocetakRadnogVremenaStr,
-                                krajRadnogVremena: element.krajRadnogVremenaStr
+                                krajRadnogVremena: element.krajRadnogVremenaStr,
+                                ocena: element.ocena,
                             })
                             this.dermatolozi = dermatolozi
                         })

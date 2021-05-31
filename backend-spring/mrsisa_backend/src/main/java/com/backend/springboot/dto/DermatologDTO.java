@@ -16,6 +16,7 @@ public class DermatologDTO {
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	private Boolean promenjenaLozinka, enabled;
+	private Double ocena;
 	
 	public DermatologDTO() {
 		
@@ -36,6 +37,7 @@ public class DermatologDTO {
 		this.krajRadnogVremena = d.getKrajRadnogVremena();
 		this.promenjenaLozinka = d.isPromenjenaLozinka();
 		this.enabled = d.isEnabled();
+		this.ocena = d.getOcena();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
@@ -53,6 +55,7 @@ public class DermatologDTO {
 		this.brojTelefona=d.getBrojTelefona();
 		this.pol=d.getPol();
 		this.datumRodjenja=d.getDatumRodjenja();
+		this.ocena = d.getOcena();
 		for (DermatologApoteka z : d.getZaposlenja()) {
 			if (z.getApoteka().getId() == apotekaId) {
 				this.pocetakRadnogVremena = z.getPocetakRadnogVremena();
@@ -64,6 +67,14 @@ public class DermatologDTO {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
 		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
+	}
+
+	public Double getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
 	}
 
 	public Boolean getPromenjenaLozinka() {

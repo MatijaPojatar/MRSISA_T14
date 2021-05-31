@@ -99,6 +99,7 @@
           { text: 'Pol', value: 'pol'},
           { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
           { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
+          { text: 'Ocena', value: 'ocena'},
           { text: 'Upravljaj', value: 'actions', sortable: false },
         ],
 
@@ -114,6 +115,7 @@
           { text: 'Pol', value: 'pol'},
           { text: 'Početak radnog vremena', value: 'pocetakRadnogVremena'},
           { text: 'Kraj radnog vremena', value: 'krajRadnogVremena'},
+          { text: 'Ocena', value: 'ocena'},
         ],
             farmaceuti: [],
             farmaceutUpdateDialog: false,
@@ -149,7 +151,8 @@
                                 brojTelefona: element.brojTelefona, 
                                 pol: element.pol,
                                 pocetakRadnogVremena: element.pocetakRadnogVremenaStr,
-                                krajRadnogVremena: element.krajRadnogVremenaStr
+                                krajRadnogVremena: element.krajRadnogVremenaStr,
+                                ocena: element.ocena,
                             })
                             this.farmaceuti = farmaceuti
                         })

@@ -14,6 +14,7 @@ public class FarmaceutDTO {
 	private LocalDate datumRodjenja;
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	private Boolean promenjenaLozinka, enabled;
+	private Double ocena;
 	
 	public FarmaceutDTO() {
 		
@@ -35,10 +36,19 @@ public class FarmaceutDTO {
 		this.apotekaId=f.getApoteka().getId();
 		this.promenjenaLozinka = f.isPromenjenaLozinka();
 		this.enabled = f.isEnabled();
+		this.ocena = f.getOcena();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		this.pocetakRadnogVremenaStr = this.pocetakRadnogVremena.format(dtf);
 		this.krajRadnogVremenaStr = this.krajRadnogVremena.format(dtf);
+	}
+
+	public Double getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
 	}
 
 	public Boolean getPromenjenaLozinka() {

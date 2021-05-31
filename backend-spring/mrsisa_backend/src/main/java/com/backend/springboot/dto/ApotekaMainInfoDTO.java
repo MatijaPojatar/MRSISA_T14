@@ -11,6 +11,8 @@ private Integer id;
 	private String drzava;
 	private String opis;
 	
+	private Double ocena;
+	
 	public ApotekaMainInfoDTO() {
 	}
 	
@@ -21,6 +23,15 @@ private Integer id;
 		this.grad = a.getGrad();
 		this.drzava = a.getDrzava();
 		this.opis = a.getOpis();
+		this.ocena = a.getOcena();
+	}
+
+	public Double getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
 	}
 
 	public Integer getId() {

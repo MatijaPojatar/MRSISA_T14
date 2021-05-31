@@ -2,68 +2,49 @@
     <div justify="space-around" align="center">
     <br/>
     <br/>
-    <v-card class="mx-2">
-    <br/>
-    <v-rating
-        v-model = "apoteka.ocena"
-        half-increments
-        hover
-        readonly
-        length="5"
-        value="apoteka.ocena"
-    ></v-rating>
-    Naziv: {{apoteka.naziv}} <br/>
-    
-    Opis: {{apoteka.opis}} <br/>
-    Adresa: {{apoteka.adresa}}, {{apoteka.grad}}, {{apoteka.drzava}}<br/>
-    <br/>
-    </v-card>
-    <br/>
     <div>
-    <v-btn
-        class="mx-2"
-        
-        @click="viewLekovi"
-    >
-        Lekovi
-    </v-btn>
 
      <v-btn
         class="mx-2"
         @click="viewFarmaceuti"
     >
-        Farmaceuti
+        Farmaceuti ocene
     </v-btn>
 
      <v-btn
         class="mx-2"
         @click="viewDermatolozi"
     > 
-        Dermatolozi 
+        Dermatolozi ocene 
+    </v-btn>
+     <v-btn
+        class="mx-2"
+        @click="viewApoteka"
+    > 
+        Ocena apoteke
     </v-btn>
     <br/>
     <br/>
+    <v-btn
+        class="mx-2"
+        
+        @click="viewLekovi"
+    >
+        Potrošnja lekova
+    </v-btn>
     <v-btn
         class="mx-2"
         @click="viewPregledi"
-        v-if="registrovan"
     > 
-        Zakaži pregled 
+        Pregledi 
     </v-btn>
     <v-btn
         class="mx-2"
-        @click="viewSavetovanja"
-        v-if="registrovan"
+        @click="viewPrihodi"
     > 
-        Zakaži savetovanje 
+        Prihodi
     </v-btn>
-    <v-btn
-        class="mx-2"
-        @click="pretplatiSe"
-        v-if="registrovan"
-    > 
-        Pretplati se 
-    </v-btn>
+    
     </div>
     <br/>
     <br/>
@@ -82,13 +63,15 @@
         <TableDermatolozi :apotekaId = "apotekaId" :adminView = "false"/>
       </v-container>
 
+      <v-container fluid v-if="showApoteka">
+        <IzvestajOcenaApoteke :apotekaId = "apotekaId"/>
+      </v-container>
+
       <v-container fluid v-if="showPregledi">
         <NoviPregled :apotekaId = "apotekaId" :fromProfilApoteke = "true"/>
       </v-container>
 
-       <v-container fluid v-if="showSavetovanja">
-        <NovoSavetovanje/>
-      </v-container>
+      
    
 
     <v-dialog
@@ -123,19 +106,19 @@
 import TableLekovi from "./TableLekovi";
 import TableFarmaceuti from "./TableFarmaceuti";
 import TableDermatolozi from "./TableDermatolozi";
+import IzvestajOcenaApoteke from "./IzvestajOcenaApoteke";
 import NoviPregled from "./NoviPregled";
-import NovoSavetovanje from "./NovoSavetovanje";
 import Vue from "vue";
 
 
 export default{
-    name: "ProfilApoteke",
     components: {
         TableLekovi,
         TableFarmaceuti,
         TableDermatolozi,
+        IzvestajOcenaApoteke,
         NoviPregled,
-        NovoSavetovanje,
+
     },
     data: () => ({
         
@@ -144,7 +127,8 @@ export default{
         showFarmaceuti:false,
         showDermatolozi:false,
         showPregledi: false,
-        showSavetovanja: false,
+        showApoteka: false,
+        showPrihodi: false,
         message:"",
         apoteka: {
           naziv: "",
@@ -156,9 +140,7 @@ export default{
       },
     }),
     props :{
-        user: {},
         apotekaId: Number,
-        registrovan: Boolean,
     },
     mounted(){
         Vue.axios.get(`http://localhost:8080/apoteke/getOne/${this.apotekaId}`).then(response => {
@@ -175,42 +157,46 @@ export default{
             this.showFarmaceuti = false;
             this.showDermatolozi = false;
             this.showPregledi = false;
-            this.showSavetovanja = false;
+            this.showApoteka = false;
         },
         viewFarmaceuti(){
             this.showLekovi = false;
             this.showFarmaceuti = true;
             this.showDermatolozi = false;
             this.showPregledi = false;
-            this.showSavetovanja = false;
+            this.showApoteka = false;
         },
         viewDermatolozi(){
             this.showLekovi = false;
             this.showFarmaceuti = false;
             this.showDermatolozi = true;
             this.showPregledi = false;
-            this.showSavetovanja = false;
+           this.showApoteka = false;
+        },
+        viewApoteka(){
+            this.showLekovi = false;
+            this.showFarmaceuti = false;
+            this.showDermatolozi = false;
+            this.showPregledi = false;
+            this.showApoteka = true;
         },
         viewPregledi(){
             this.showLekovi = false;
             this.showFarmaceuti = false;
             this.showDermatolozi = false;
             this.showPregledi = true;
-            this.showSavetovanja = false;
+            this.showApoteka = false;
         },
-        viewSavetovanja(){
+        viewPrihodi(){
             this.showLekovi = false;
             this.showFarmaceuti = false;
             this.showDermatolozi = false;
-            this.showPregledi = false;
-            this.showSavetovanja = true;
+            this.showPregledi = true;
+            this.showApoteka = false;
         },
+        
 
-        pretplatiSe(){
-            Vue.axios.put(`http://localhost:8080/pacijent/pretplata/${this.user.id}/${this.apotekaId}`);
-            this.message = "Uspešno ste se pretplatili na dobijanje obaveštenja o akcijama i promocijama apoteke."
-            this.obavestenjeDialog=true;
-        },
+        
 
         
         

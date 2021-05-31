@@ -29,6 +29,7 @@ public class ApotekaDTO {
 	private List<AkcijaPromocija> akcije;
 	private Set<AdministratorApoteke> administratori;
 	
+	private Double ocena;
 	
 	public ApotekaDTO() {
 		super();
@@ -47,6 +48,13 @@ public class ApotekaDTO {
 		this.magacin = a.getMagacin();
 		this.akcije = a.getAkcije();
 		this.administratori = getAdministratori();
+		this.ocena = a.getOcena();
+	}
+	public Double getOcena() {
+		return ocena;
+	}
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
 	}
 	public Integer getId() {
 		return id;

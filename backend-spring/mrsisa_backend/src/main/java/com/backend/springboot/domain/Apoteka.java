@@ -63,6 +63,9 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<RezervacijaLeka> rezervacije = new HashSet<RezervacijaLeka>();
 	
+	@Column(name = "ocena", nullable = false)
+	Double ocena;
+	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
 			List<Lek> lekovi, Set<Farmaceut> farmaceuti, Set<Dermatolog> dermatolozi, List<Termin> termini,
@@ -144,6 +147,14 @@ public class Apoteka {
 
 	public List<ZalbaNaApoteku> getZalbe() {
 		return zalbe;
+	}
+
+	public Double getOcena() {
+		return ocena;
+	}
+
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
 	}
 
 	public void setZalbe(List<ZalbaNaApoteku> zalbe) {

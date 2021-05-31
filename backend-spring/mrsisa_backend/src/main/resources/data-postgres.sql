@@ -8,9 +8,9 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Pažljivo proćitati uputstvo','Brufen',0,'Alims',1,'celuloza, laktoza, ibuprofen',1);
 
 
-insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test');
-insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 2','Srbija','Subotica','Apoteka 2','Test apoteka 2');
-insert into apoteke (adresa,drzava,grad,naziv,opis) values ('Adresa apoteke 3','Srbija','Novi Sad','Apoteka 3','Test apoteka 3');
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test', 4.3);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 2','Srbija','Subotica','Apoteka 2','Test apoteka 2', 4.1);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 3','Srbija','Novi Sad','Apoteka 3','Test apoteka 3', 3.8);
 
 insert into apoteke_lekovi (lek_id,apoteka_id) values (1,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (2,1);
@@ -31,7 +31,7 @@ insert into role (name) values ('ROLE_DOBAVLJAC');
 -- Lozinke su hesovane pomocu BCrypt algoritma https://www.bcryptcalculator.com/
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 1','0651234567','1990-01-01','Srbija','Novi Sad','Pera','Peric','perap@gmail.com','$2a$10$m45abtHydLkNASwq61g8r.NFJjn/UsRZIUFQVshzd1Ntr69c7ISx2',0,true, false, true); --sifra je pera121
-insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (1,'16:00','08:00',1);
+insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id, ocena) values (1,'16:00','08:00',1, 4.7);
 insert into osoba_role (osoba_id, role_id) values (1, 5);	--role farmaceut
 --markom
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234568','1994-02-11','Srbija','Novi Sad','Marko','Markovic','markom@gmail.com','$2a$10$tChEqmOzl.2w6gMny6UXe.iH/Q6mb/zvoNLfxCXwVn5tu5Bxhpxhi',0,true, false, true); -- sifra je mare121
@@ -43,7 +43,7 @@ insert into savetovanja (id,farmaceut_id) values (1,1);
 
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','$2a$10$KHKLhLY7PbDM6KM/mIZC7OBwgXBtTw7l.sB2o.SJW3H.6j8Gb8qJO',0,true, false, true); --sifra je pera
-insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (3,'16:00','08:00');
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena) values (3,'16:00','08:00', 4.3);
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,1,'08:00','12:00', false);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,2,'12:00','16:00', false);
@@ -85,7 +85,7 @@ insert into administratori_apoteke (id,apoteka_id) values (5, 2);
 insert into osoba_role (osoba_id, role_id) values (5, 2); --role admin apoteke
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 2','0651234567','1993-01-01','Srbija','Novi Sad','Maja','Majic','maja93@gmail.com','$2a$10$kzqghgO/vbMZuMNfDy6M9uBXqr3RsWRXtlR.DTkH7LPmM.BE.GeXO',1,true, false, true); -- sifra je maja123
-insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id) values (6,'16:00','08:00',1);
+insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id, ocena) values (6,'16:00','08:00',1, 3.9);
 insert into osoba_role (osoba_id, role_id) values (6, 5); --role farmaceut
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 6','0651234955','1987-04-01','Srbija','Novi Sad','Nikola','Nikola','admin@example.com','$2a$10$YIjbriG.mdkw6P6.tdr4LuwZdTp5RBZAjSo/0mpML8gevssilbjz6',0,true, false, true); --sifra je 123
@@ -125,7 +125,7 @@ insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,versio
 insert into pregledi (id,dermatolog_id,cena) values (10,3,3000);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','$2a$10$UnO./eDTpKBzdcDio.khoO5/Egozb0LUrLR.ANtjFJQN7pVcEdGEy',0,true, false, true); --sifra je luka
-insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena) values (10,'16:00','08:00');
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena) values (10,'16:00','08:00', 4.0);
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (10,2,'08:00','12:00', false);
 insert into osoba_role (osoba_id, role_id) values (10, 4);

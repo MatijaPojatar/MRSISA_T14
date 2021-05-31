@@ -51,6 +51,9 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	
 	@OneToMany(mappedBy = "dermatolog")
 	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
+	
+	@Column(name = "ocena", nullable = false)
+	Double ocena;
 
 	public Dermatolog(int id, String ime, String prezime, String mail, String password, String adresa, String grad,
 			String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, boolean enabled, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena) {
@@ -78,6 +81,16 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		this.setPocetakRadnogVremena(d.getPocetakRadnogVremena());
 		this.setKrajRadnogVremena(d.getKrajRadnogVremena());
 	}
+
+	public Double getOcena() {
+		return ocena;
+	}
+
+
+	public void setOcena(Double ocena) {
+		this.ocena = ocena;
+	}
+
 
 	public List<ZalbaNaDermatologa> getZalbe() {
 		return zalbe;
