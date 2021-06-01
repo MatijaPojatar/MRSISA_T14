@@ -23,6 +23,7 @@ import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.ZalbaNaApoteku;
 import com.backend.springboot.domain.ZalbaNaDermatologa;
 import com.backend.springboot.domain.ZalbaNaFarmaceuta;
+import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 
@@ -207,6 +208,19 @@ public class EmailService {
 		mail.setText("Poštovani " + pacijent.getIme() +",  \n\nObaveštavamo Vas da je u toku nova akcija u apoteci  " + nazivApoteke +" \n"+
 				"\nOpis: " + akcija.getOpis()+
 				"\nRok važenja: "+ akcija.getKrajVazenja().format(dtf) + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+
+	@Async
+	public void potvrdaKupovine(EReceptDTO dto, Pacijent pac, String nazivApoteke) {
+
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(pac.getMail());
+//		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Potvrda o izdavanju lekova preko E-Recepta");
+		mail.setText("Poštovani "+ pac.getIme() +",\n\nObaveštavamo Vas da je E-Recept sa šifrom " + dto.getId() + "uspešno obrađen u apoteci "+ nazivApoteke+
 				"\n\nSrdačan pozdrav!");
 		jms.send(mail);
 	}

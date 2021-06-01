@@ -136,5 +136,22 @@ public class ApotekaService  {
 		
 		return ukupnaCena;
 	}
+
+
+	public void kupiLekove(List<LekEReceptaDTO> lekoviErecepta, Integer idApoteke) {
+		
+		Apoteka a = apotekaRep.findOneById(idApoteke);
+		Magacin m = a.getMagacin();
+		
+		List<LekUMagacinu> trenutniLekovi = m.getLekovi();
+		for(LekEReceptaDTO dto : lekoviErecepta) {
+			
+			for(LekUMagacinu lekMagacin : trenutniLekovi) {
+				if(lekMagacin.getLek().getId() == dto.getLekId()) {
+					lekMagacin.setKolicina(lekMagacin.getKolicina() - dto.getKolicina());
+				}
+			}
+		}
+	}
 	
 }

@@ -3,17 +3,17 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     ereceptiPacijenta: [],
-    currentErecept: null,
-    snabdeveneApoteke: [],
-    // currentErecept: {
-    //   id: 0,
-    //   pacijentId: 0,
-    //   datumIzdavanja: null,
-    //   status: "ODBIJEN",
-    //   lekoviERecepta: [{id : 0, lekId : 0, kolicina: 0, nazivLeka: ""}],
-    //   pacijntIP: ""
-    // },
-    // snabdeveneApoteke: [{nazivApoteke: "", idApoteke: 0, cenaLekova: 0.0 }],
+    // currentErecept: null,
+    // snabdeveneApoteke: [],
+    currentErecept: {
+      id: 0,
+      pacijentId: 0,
+      datumIzdavanja: null,
+      status: "ODBIJEN",
+      lekoviERecepta: [{id : 0, lekId : 0, kolicina: 0, nazivLeka: ""}],
+      pacijntIP: ""
+    },
+    snabdeveneApoteke: [{nazivApoteke: "", idApoteke: 0, cenaLekova: 0.0 }],
   }
 }
 
@@ -48,6 +48,13 @@ const actions = {
     const response = await Vue.axios.post("/apoteke/snabdeveneApoteke", erecept);
     console.log(response.data);
     commit("setSnabdeveneApoteke", response.data);
+  },
+
+  async kupiLekoveAction({commit}, {id, erecept}){
+    await Vue.axios.put("/apoteke/kupiLekove/" + id, erecept);
+    commit("clearErecept");
+    commit("clearSnabdeveneApoteke");
+
   }
 }
 
@@ -62,8 +69,21 @@ const mutations = {
   setCurrentErecept(state, recept){
     state.currentErecept = recept;
   },
+  clearErecept(state){
+    state.currentErecept = {
+      id: 0,
+      pacijentId: 0,
+      datumIzdavanja: null,
+      status: "NOV",
+      lekoviERecepta: [{id : 0, lekId : 0, kolicina: 0, nazivLeka: ""}],
+      pacijntIP: ""
+    };
+  },
   setSnabdeveneApoteke(state, lista){
     state.snabdeveneApoteke = lista;
+  },
+  clearSnabdeveneApoteke(state){
+    state.snabdeveneApoteke = [{nazivApoteke: "", idApoteke: 0, cenaLekova: 0.0 }];
   }
 
 }
