@@ -1,32 +1,45 @@
 package com.backend.springboot;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.PessimisticLockingFailureException;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.backend.springboot.controller.PregledController;
-import com.backend.springboot.domain.Dermatolog;
-import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
-import com.backend.springboot.dto.DermatologDTO;
+import com.backend.springboot.repository.SavetovanjeRepository;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
 
 @SpringBootTest
+@ExtendWith(SpringExtension.class)
 class MrsisaBackendApplicationTests {
 	
 	@Autowired
@@ -40,6 +53,20 @@ class MrsisaBackendApplicationTests {
 	
 	@Autowired
 	PregledService pregledService;
+	
+	@Mock
+	private SavetovanjeRepository savetovanjeRep;
+	
+	@InjectMocks
+	private SavetovanjeService savetovanjeServiceUnit;
+	
+	private MockMvc mockMvc;
+	
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+	
+	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
+			MediaType.APPLICATION_JSON.getSubtype());
 
 	@Test
 	public void testPessimisticLockingScenario() throws Throwable {
@@ -71,47 +98,67 @@ class MrsisaBackendApplicationTests {
 		
 	}
 	
+	//unit testovi
+	
 	@Test
-	public void testGetOneDermatolog() {
-		Dermatolog d=dermService.findOne(3);
-		assertEquals("petar@gmail.com", d.getMail());
+	public void testFindAllByPacijentId() {
+		
+		when(savetovanjeRep.findAllByPacijentId(anyInt())).thenReturn(Arrays.asList(new Savetovanje(),new Savetovanje(),new Savetovanje()));
+		
+		java.util.List<Savetovanje> savetovanja=savetovanjeServiceUnit.findAllByPacijentId(1);
+		
+		assertThat(savetovanja).hasSize(3);
+		
+		verify(savetovanjeRep).findAllByPacijentId(1);
 	}
 	
 	@Test
-	public void testGetAllSavetovanjaForFarmaceut() {
-		ArrayList<Savetovanje> savetovanja=(ArrayList<Savetovanje>) savetovanjeService.findAllByFarmaceutId(1);
-		ArrayList<Integer> savetovanjaIds=new ArrayList<Integer>();
-		for(Savetovanje s:savetovanja) {
-			savetovanjaIds.add(s.getId());
-		}
-		ArrayList<Integer> savetovanjaIdsTest=new ArrayList<Integer>();
-		savetovanjaIdsTest.add(1);
-		savetovanjaIdsTest.add(5);
-		savetovanjaIdsTest.add(6);
-		savetovanjaIdsTest.add(7);
-		savetovanjaIdsTest.add(11);
-		savetovanjaIdsTest.add(16);
+	public void testFindAllByFarmaceutId() {
 		
-		assertArrayEquals(savetovanjaIdsTest.toArray(), savetovanjaIds.toArray());
+		when(savetovanjeRep.findAllByFarmaceutId(anyInt())).thenReturn(Arrays.asList(new Savetovanje(),new Savetovanje()));
 		
+		java.util.List<Savetovanje> savetovanja=savetovanjeServiceUnit.findAllByFarmaceutId(1);
+		
+		assertThat(savetovanja).hasSize(2);
+		
+		verify(savetovanjeRep).findAllByFarmaceutId(1);
 	}
 	
 	@Test
-	public void testGetAllInRangePreglediForDermatolog() {
-		ArrayList<Pregled> pregledi=(ArrayList<Pregled>) pregledService.findAllInRangeForDermatolog(3, LocalDateTime.of(2021, 4, 26, 11, 0), LocalDateTime.of(2021, 4, 28, 11, 0));
-		ArrayList<Integer> preglediIds=new ArrayList<Integer>();
-		for(Pregled p:pregledi) {
-			preglediIds.add(p.getId());
-		}
+	public void testFindOne() {
 		
-		System.out.println(preglediIds.size());
+		Savetovanje sav=new Savetovanje();
 		
-		ArrayList<Integer> preglediIdsTest=new ArrayList<Integer>();
-		preglediIdsTest.add(2);
-		preglediIdsTest.add(10);
+		when(savetovanjeRep.findOneById(anyInt())).thenReturn(sav);
 		
-		assertArrayEquals(preglediIdsTest.toArray(), preglediIds.toArray());
+		Savetovanje savetovanje=savetovanjeServiceUnit.findOne(1);
 		
+		assertEquals(sav, savetovanje);
+		
+		verify(savetovanjeRep).findOneById(1);
+	}
+	
+	//integracioni testovi
+	
+	
+	@Test
+	public void testGetAllSavetovanja() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/savetovanje/all")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(6)));
+	}
+	
+	@Test
+	public void testGetAllSavetovanjaForFarmaceut() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/savetovanje/all/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(6)));
+	}
+	
+	@Test
+	public void testGetAllSavetovanjaForPacijent() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/savetovanje/zauzmi/1/2")).andExpect(status().is(405));
 	}
 
 
