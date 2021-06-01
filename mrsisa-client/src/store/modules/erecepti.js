@@ -3,6 +3,7 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     ereceptiPacijenta: [],
+    currentErecept: null
   }
 }
 
@@ -10,7 +11,7 @@ const state = initStanje();
 
 const getters = {
   getEreceptiPacijenta: state => state.ereceptiPacijenta,
-
+  getCurrentErecept: state => state.currentErecept,
 }
 
 const actions = {
@@ -21,13 +22,15 @@ const actions = {
 
   },
 
-  async sendFileAction({commit} , formData){
-    const response = await Vue.axios.post("/erecepti/upload",formData, {
+  async sendFileAction({commit} , {id, formData}){
+    const response = await Vue.axios.post("/erecepti/upload/" + id,formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
     });
-    console.log(commit); //mozda commit {} ostaviti prazno???
+    let erecept = response.data;
+    console.log(erecept);
+    commit("setCurrentErecept",erecept); 
   }
 }
 
@@ -38,6 +41,9 @@ const mutations = {
   },
   setEreceptiPacijenta(state, lista){
     state.ereceptiPacijenta = lista;
+  },
+  setCurrentErecept(state, recept){
+    state.currentErecept = recept;
   }
 
 }

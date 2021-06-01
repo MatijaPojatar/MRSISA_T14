@@ -50,7 +50,6 @@ public class EReceptService {
 	
 	public ERecept save(ERecept erecept) {
 
-//		erecept = ereceptRep.save(erecept);
 		
 		List<LekERecepta> lekoviERecepta = new ArrayList<LekERecepta>();
 		
@@ -68,31 +67,4 @@ public class EReceptService {
 		return ereceptRep.save(erecept);
 	}
 	
-//	public ERecept dodajERecept(Integer pacijentId, LocalDate datumIzdavanja, List<LekEReceptaDTO> lekovi) {
-//		Pacijent pacijent = pacijentRep.findOneById(pacijentId);
-//		
-//		ERecept erecept = new ERecept();
-//		erecept.setDatumIzdavanja(datumIzdavanja);
-//		erecept.setPacijent(pacijentRep.findOneById(pacijentId));
-//		erecept.setStatus(StatusErecepta.NOV);
-//		erecept = ereceptRep.save(erecept);
-//		
-//		ArrayList<LekERecepta> lekoviERecepta = new ArrayList<LekERecepta>();
-//		
-//		for(LekEReceptaDTO dto : lekovi) {
-//			LekERecepta lek = new LekERecepta();
-//			
-//			lek.setErecept(erecept);
-//			lek.setKolicina(dto.getKolicina());
-//			lek.setLek(lekRep.findOneById(dto.getLekId()));
-//			
-//			lek = lekoviEReceptaRep.save(lek);
-//			
-//			lekoviERecepta.add(lek);	
-//		}
-//		
-//		erecept.setLekovi(lekoviERecepta);
-//		
-//		return ereceptRep.save(erecept);
-//	}
 }

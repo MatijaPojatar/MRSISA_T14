@@ -11,6 +11,7 @@ import com.backend.springboot.domain.StatusErecepta;
 public class EReceptDTO {
 	
 	private Integer id, pacijentId;
+	private String pacijentIP;
 	private LocalDate datumIzdavanja;
 	private StatusErecepta status;
 	private List<LekEReceptaDTO> lekoviErecepta;
@@ -25,14 +26,20 @@ public class EReceptDTO {
 		this.datumIzdavanja = e.getDatumIzdavanja();
 		this.status = e.getStatus();
 		this.lekoviErecepta = new ArrayList<LekEReceptaDTO>();
-		
-//		if(e.getLekovi() != null) {
+		this.pacijentIP = e.getPacijent().getIme() + " " + e.getPacijent().getPrezime();
+
 			for (LekERecepta l : e.getLekovi()) {
 				this.lekoviErecepta.add(new LekEReceptaDTO(l));
 			}
-//		}
+
 	}
 	
+	public String getPacijentIP() {
+		return pacijentIP;
+	}
+	public void setPacijentIP(String pacijentIP) {
+		this.pacijentIP = pacijentIP;
+	}
 	public List<LekEReceptaDTO> getLekoviErecepta() {
 		return lekoviErecepta;
 	}

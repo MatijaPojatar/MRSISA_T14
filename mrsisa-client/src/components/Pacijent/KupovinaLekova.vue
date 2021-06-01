@@ -1,45 +1,70 @@
 <template>
-  <!-- <div
-  v-if="upload">
-    <v-file-input
-      accept="image/*"
-      label="File input"
-    ></v-file-input>
-  </div> -->
+<div>
+    <div v-if="upload">
+      <v-card>
+        <v-card-title>Izaberite QR kod sa E-receptom:</v-card-title>
 
-  <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-      <label>File
-        <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-      </label>
-        <button v-on:click="submitFile()">Submit</button> 
-        <!-- dodati atribut DA SAMO SLIKE PRIMA? -->
-    </div>
+        <v-card-text>
+          <v-file-input
+            v-model="file"
+            accept="image/*"
+            label="File input"
+            
+          ></v-file-input>
+        </v-card-text>
+        
+      <v-card-actions>
+        <v-btn @click="submitFile()">Pošalji</v-btn>
+      </v-card-actions>
+      </v-card>
+    
+    
   </div>
+  <div v-if="!upload">
+    <v-data-table
+    :headers="headersLekovi"
+    :items="erecept.lekoviErecepta"
+    >
+    </v-data-table>
+  </div>
+</div>
 </template>
 
 <script>
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
-  ...mapActions({
-    sendFileAction: "erecepti/sendFileAction",
-  }),
+  
+
+   computed: {
+    ...mapGetters({
+      user: "korisnici/getKorisnik",
+      erecept: "erecepti/getCurrentErecept",
+    })
+  },
+
   data: () => ({
-    file: '',
+    file: null,
+    upload: true,
+    headersLekovi: [
+      { text: 'Naziv leka', value: 'nazivLeka'},
+      { text: 'Količina', value: 'kolicina'},
+      ]
   }),
 
   methods: {
-    handleFileUpload(){
-      this.file = this.$refs.file.files[0]; 
-    },
+    ...mapActions({
+    sendFileAction: "erecepti/sendFileAction",
+  }),
 
     async submitFile(){
       let formData = new FormData();
       formData.append('file', this.file);
       try{
-        await this.sendFileAction(formData);
+        await this.sendFileAction({formData: formData, id: this.user.id} );
+        this.upload = false;
       }catch(error){
+        console.log(error)
         alert("Greska pri upload-u fajla")
       }
       
