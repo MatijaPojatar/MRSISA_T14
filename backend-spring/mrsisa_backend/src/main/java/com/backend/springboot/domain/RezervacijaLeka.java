@@ -34,6 +34,9 @@ public class RezervacijaLeka {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Lek lek;
 	
+	@Column(name = "kreiranje", nullable = true)
+	private LocalDate kreiranje;
+	
 	@Version
 	private Long version;
 	
@@ -51,6 +54,16 @@ public class RezervacijaLeka {
 		this.apoteka = apoteka;
 		this.pacijent = pacijent;
 		this.lek = lek;
+	}
+
+	
+
+	public LocalDate getKreiranje() {
+		return kreiranje;
+	}
+
+	public void setKreiranje(LocalDate kreiranje) {
+		this.kreiranje = kreiranje;
 	}
 
 	public Integer getId() {

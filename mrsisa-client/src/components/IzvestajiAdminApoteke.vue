@@ -52,7 +52,7 @@
     
     
     <v-container fluid v-if="showLekovi">
-        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="user.id"/>
+        <IzvestajPotrosnjaLekova :apotekaId = "apotekaId"/>
       </v-container>
 
     <v-container fluid v-if="showFarmaceuti">
@@ -105,21 +105,21 @@
 </template>
 
 <script>
-import TableLekovi from "./TableLekovi";
 import TableFarmaceuti from "./TableFarmaceuti";
 import TableDermatolozi from "./TableDermatolozi";
 import IzvestajOcenaApoteke from "./IzvestajOcenaApoteke";
 import IzvestajOdrzaniPregledi from "./IzvestajOdrzaniPregledi";
+import IzvestajPotrosnjaLekova from "./IzvestajPotrosnjaLekova";
 import Vue from "vue";
 
 
 export default{
     components: {
-        TableLekovi,
         TableFarmaceuti,
         TableDermatolozi,
         IzvestajOcenaApoteke,
         IzvestajOdrzaniPregledi,
+        IzvestajPotrosnjaLekova,
 
     },
     data: () => ({

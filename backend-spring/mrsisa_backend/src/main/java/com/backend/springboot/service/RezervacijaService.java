@@ -88,6 +88,7 @@ public class RezervacijaService {
 		rez.setDatum(datum);
 		rez.setKolicina(kolicina);
 		rez.setStatus(StatusRezervacije.KREIRANA);
+		rez.setKreiranje(LocalDate.now());
 		
 		return rep.save(rez);
 	}

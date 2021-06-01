@@ -1,6 +1,7 @@
 package com.backend.springboot.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collection;
@@ -27,10 +28,6 @@ public class IzvestajApotekaController {
 	
 	@GetMapping("/pregledi/mesec/{apotekaId}")
 	public ResponseEntity<Collection<Integer>> getOdrzaniPregledMesec(@PathVariable("apotekaId") Integer apotekaId) {
-		
-		
-		
-		
 		
 		Calendar cal = Calendar.getInstance();
 	    int res = cal.getActualMaximum(Calendar.DATE);
@@ -59,6 +56,38 @@ public class IzvestajApotekaController {
 		LocalDateTime pocetak = kraj.minusYears(1);
 		Collection <Integer> rezultat = izvestajService.odrzaniPreglediUIntervalu(pocetak, kraj, apotekaId);
 		return new ResponseEntity<Collection<Integer>>(rezultat, HttpStatus.OK);
+	}
+	
+	@GetMapping("/potrosnja/mesec/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaMesec(@PathVariable("apotekaId") Integer apotekaId) {
+		
+		Calendar cal = Calendar.getInstance();
+	    int res = cal.getActualMaximum(Calendar.DATE);
+	    LocalDate sada = LocalDate.now();
+	    LocalDate kraj = LocalDate.of(sada.getYear(), sada.getMonth(), res);
+	    LocalDate pocetak = kraj.minusMonths(1);
+		Collection <Double> rezultat = izvestajService.potroseniLekoviUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
+	}
+	
+	@GetMapping("/potrosnja/kvartal/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaKvartal(@PathVariable("apotekaId") Integer apotekaId) {
+		Calendar cal = Calendar.getInstance();
+	    int res = cal.getActualMaximum(Calendar.DATE);
+	    LocalDate sada = LocalDate.now();
+	    LocalDate kraj = LocalDate.of(sada.getYear(), sada.getMonth(), res);
+	    LocalDate pocetak = kraj.minusMonths(3);
+		Collection <Double> rezultat = izvestajService.potroseniLekoviUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
+	}
+	
+	@GetMapping("/potrosnja/godina/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaGodina(@PathVariable("apotekaId") Integer apotekaId) {
+		LocalDate sada = LocalDate.now();
+		LocalDate kraj = LocalDate.of(sada.getYear(), 12, 31);
+		LocalDate pocetak = kraj.minusYears(1);
+		Collection <Double> rezultat = izvestajService.potroseniLekoviUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
 	

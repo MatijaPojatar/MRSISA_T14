@@ -26,7 +26,7 @@
     
     <v-card-text>
       <div class="display-1 font-weight-thin">
-        Održani pregledi - ovaj mesec
+        Potrošnja lekova - ovaj mesec
       </div>
     </v-card-text>
 
@@ -68,7 +68,7 @@
 
     <v-card-text>
       <div class="display-1 font-weight-thin">
-        Održani pregledi - kvartal
+        Potrošnja lekova - kvartal
       </div>
     </v-card-text>
 
@@ -121,7 +121,7 @@
 
     <v-card-text>
       <div class="display-1 font-weight-thin">
-        Održani pregledi - godina
+        Potrošnja lekova - godina
       </div>
     </v-card-text>
 
@@ -139,37 +139,19 @@ import Vue from "vue";
       mesecIzvestaj: [],
       kvartalIzvestaj: [],
       godinaIzvestaj: [],
-      labelsKvartal: [
-        "pretprošli mesec",
-        "prošli mesec",
-        "trenutni mesec",
-      ],
-      labelsGodina:[
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAJ",
-        "JUN",
-        "JUL",
-        "AVG",
-        "SEP",
-        "OKT",
-        "NOV",
-        "DEC",
-      ]
+      
     }),
     props :{
         apotekaId: Number,
     },
     mounted(){
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/mesec/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/mesec/${this.apotekaId}`).then(response => {
             this.mesecIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/kvartal/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/kvartal/${this.apotekaId}`).then(response => {
             this.kvartalIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/godina/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/godina/${this.apotekaId}`).then(response => {
             this.godinaIzvestaj = response.data;
         });
     },
