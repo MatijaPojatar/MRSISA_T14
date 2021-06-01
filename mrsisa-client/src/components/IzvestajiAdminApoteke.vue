@@ -71,6 +71,10 @@
         <IzvestajOdrzaniPregledi :apotekaId = "apotekaId"/>
       </v-container>
 
+      <v-container fluid v-if="showPrihodi">
+        <IzvestajPrihodi :apotekaId = "apotekaId"/>
+      </v-container>
+
       
 
       
@@ -110,6 +114,7 @@ import TableDermatolozi from "./TableDermatolozi";
 import IzvestajOcenaApoteke from "./IzvestajOcenaApoteke";
 import IzvestajOdrzaniPregledi from "./IzvestajOdrzaniPregledi";
 import IzvestajPotrosnjaLekova from "./IzvestajPotrosnjaLekova";
+import IzvestajPrihodi from "./IzvestajPrihodi";
 import Vue from "vue";
 
 
@@ -120,6 +125,7 @@ export default{
         IzvestajOcenaApoteke,
         IzvestajOdrzaniPregledi,
         IzvestajPotrosnjaLekova,
+        IzvestajPrihodi,
 
     },
     data: () => ({
@@ -160,6 +166,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showApoteka = false;
+            this.showPrihodi=false;
         },
         viewFarmaceuti(){
             this.showLekovi = false;
@@ -167,6 +174,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showApoteka = false;
+            this.showPrihodi=false;
         },
         viewDermatolozi(){
             this.showLekovi = false;
@@ -174,6 +182,7 @@ export default{
             this.showDermatolozi = true;
             this.showPregledi = false;
            this.showApoteka = false;
+           this.showPrihodi=false;
         },
         viewApoteka(){
             this.showLekovi = false;
@@ -181,6 +190,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showApoteka = true;
+            this.showPrihodi=false;
         },
         viewPregledi(){
             this.showLekovi = false;
@@ -188,13 +198,15 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = true;
             this.showApoteka = false;
+            this.showPrihodi=false;
         },
         viewPrihodi(){
             this.showLekovi = false;
             this.showFarmaceuti = false;
             this.showDermatolozi = false;
-            this.showPregledi = true;
+            this.showPregledi = false;
             this.showApoteka = false;
+            this.showPrihodi=true;
         },
         
 

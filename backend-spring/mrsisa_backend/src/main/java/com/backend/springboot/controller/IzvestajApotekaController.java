@@ -90,5 +90,37 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@GetMapping("/prihodi/mesec/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPrihodiMesec(@PathVariable("apotekaId") Integer apotekaId) {
+		
+		Calendar cal = Calendar.getInstance();
+	    int res = cal.getActualMaximum(Calendar.DATE);
+	    LocalDateTime sada = LocalDateTime.now();
+	    LocalDateTime kraj = LocalDateTime.of(sada.getYear(), sada.getMonth(), res, 23, 59);
+	    LocalDateTime pocetak = kraj.minusMonths(1);
+		Collection <Double> rezultat = izvestajService.prihodiUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
+	}
+	
+	@GetMapping("/prihodi/kvartal/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPrihodiKvartal(@PathVariable("apotekaId") Integer apotekaId) {
+		Calendar cal = Calendar.getInstance();
+	    int res = cal.getActualMaximum(Calendar.DATE);
+	    LocalDateTime sada = LocalDateTime.now();
+	    LocalDateTime kraj = LocalDateTime.of(sada.getYear(), sada.getMonth(), res, 23, 59);
+	    LocalDateTime pocetak = kraj.minusMonths(3);
+		Collection <Double> rezultat = izvestajService.prihodiUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
+	}
+	
+	@GetMapping("/prihodi/godina/{apotekaId}")
+	public ResponseEntity<Collection<Double>> getPrihodiGodina(@PathVariable("apotekaId") Integer apotekaId) {
+		LocalDateTime sada = LocalDateTime.now();
+	    LocalDateTime kraj = LocalDateTime.of(sada.getYear(), 12, 31, 23, 59);
+		LocalDateTime pocetak = kraj.minusYears(1);
+		Collection <Double> rezultat = izvestajService.prihodiUIntervalu(pocetak, kraj, apotekaId);
+		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
+	}
+	
 	
 }
