@@ -36,5 +36,10 @@ public interface PregledRepository extends JpaRepository<Pregled, Integer> {
 	@Query("select p from Pregled p where p.pacijent.id = :id and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
 	public List<Pregled> findInRangeForPacijent(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	
-
+	@Query("select p from Pregled p where p.izvrsen = true and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
+	public List<Pregled> findInRangeIzvrseni(@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
+	
+	@Query("select p from Pregled p where p.izvrsen = true and p.apoteka.id = :apotekaId and ((p.pocetak >= :start and p.pocetak<= :end) or (p.kraj>= :start and p.kraj<=:end))")
+	public List<Pregled> findInRangeIzvrseniApoteka(@Param("start") LocalDateTime start,@Param("end") LocalDateTime end, @Param("apotekaId") Integer apotekaId);
+	
 }

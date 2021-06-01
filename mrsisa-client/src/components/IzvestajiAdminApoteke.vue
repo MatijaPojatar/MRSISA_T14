@@ -68,8 +68,10 @@
       </v-container>
 
       <v-container fluid v-if="showPregledi">
-        <NoviPregled :apotekaId = "apotekaId" :fromProfilApoteke = "true"/>
+        <IzvestajOdrzaniPregledi :apotekaId = "apotekaId"/>
       </v-container>
+
+      
 
       
    
@@ -107,7 +109,7 @@ import TableLekovi from "./TableLekovi";
 import TableFarmaceuti from "./TableFarmaceuti";
 import TableDermatolozi from "./TableDermatolozi";
 import IzvestajOcenaApoteke from "./IzvestajOcenaApoteke";
-import NoviPregled from "./NoviPregled";
+import IzvestajOdrzaniPregledi from "./IzvestajOdrzaniPregledi";
 import Vue from "vue";
 
 
@@ -117,7 +119,7 @@ export default{
         TableFarmaceuti,
         TableDermatolozi,
         IzvestajOcenaApoteke,
-        NoviPregled,
+        IzvestajOdrzaniPregledi,
 
     },
     data: () => ({
