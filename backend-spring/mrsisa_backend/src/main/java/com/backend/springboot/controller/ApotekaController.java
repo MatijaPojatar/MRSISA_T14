@@ -24,8 +24,10 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Upit;
+import com.backend.springboot.dto.ApotekaCenaDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
+import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
@@ -55,6 +57,23 @@ public class ApotekaController {
 		
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
+	
+	@PostMapping("/snabdeveneApoteke")
+	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto){
+		
+		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
+		//za svaku apoteku
+		for (Apoteka a : apotekaService.findAll()) {
+			double cena = apotekaService.getUkupnaCena(a,dto);//proveri da li imaju sve lekove u magacinu i u tim kolicinama, ako da, usput odmah i cenu daj
+			if(cena == 0.0) {
+				continue;
+			} 
+			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
+			result.add(ACdto);
+		}
+		
+		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
+	}
 	
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){

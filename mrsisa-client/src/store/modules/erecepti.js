@@ -3,7 +3,17 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     ereceptiPacijenta: [],
-    currentErecept: null
+    currentErecept: null,
+    snabdeveneApoteke: [],
+    // currentErecept: {
+    //   id: 0,
+    //   pacijentId: 0,
+    //   datumIzdavanja: null,
+    //   status: "ODBIJEN",
+    //   lekoviERecepta: [{id : 0, lekId : 0, kolicina: 0, nazivLeka: ""}],
+    //   pacijntIP: ""
+    // },
+    // snabdeveneApoteke: [{nazivApoteke: "", idApoteke: 0, cenaLekova: 0.0 }],
   }
 }
 
@@ -12,6 +22,7 @@ const state = initStanje();
 const getters = {
   getEreceptiPacijenta: state => state.ereceptiPacijenta,
   getCurrentErecept: state => state.currentErecept,
+  getSnabdeveneApoteke: state => state.snabdeveneApoteke,
 }
 
 const actions = {
@@ -31,6 +42,12 @@ const actions = {
     let erecept = response.data;
     console.log(erecept);
     commit("setCurrentErecept",erecept); 
+  },
+
+  async getSnabdeveneApotekeAction({commit}, erecept){
+    const response = await Vue.axios.post("/apoteke/snabdeveneApoteke", erecept);
+    console.log(response.data);
+    commit("setSnabdeveneApoteke", response.data);
   }
 }
 
@@ -44,6 +61,9 @@ const mutations = {
   },
   setCurrentErecept(state, recept){
     state.currentErecept = recept;
+  },
+  setSnabdeveneApoteke(state, lista){
+    state.snabdeveneApoteke = lista;
   }
 
 }
