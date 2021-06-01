@@ -87,7 +87,7 @@ export default {
         await this.logInAction(credentials);
 
         if (!this.korisnik.promenjenaLozinka) {
-          alert("Usli ovde");
+          
           this.$router.push("/promenaSifre");
           return;
         }
