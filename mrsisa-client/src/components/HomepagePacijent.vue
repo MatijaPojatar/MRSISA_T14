@@ -142,6 +142,27 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                 <v-list-item link @click="kupovinaView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-cart-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Kupovina lekova
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                <v-list-item link @click="ereceptiView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-note-text-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Moji E-Recepti
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
+                
                 <v-list-item link @click="zalbaApotekaView">
                     <v-list-item-icon>
                         <v-icon>mdi-alpha-a-circle-outline</v-icon>
@@ -251,6 +272,12 @@
             <v-container fluid v-if="showApoteke" :style="{width:'180vh'}">
                 <ProfilApoteke :apotekaId=1 :registrovan="true" :user="user"/>
             </v-container>
+            <v-container fluid v-if="showErecepti" :style="{width:'70vh'}">
+                <PregledERecepata/>
+            </v-container>
+            <v-container fluid v-if="showKupovina" :style="{width: '70vh'}">
+                <KupovinaLekova/>
+            </v-container>
         </v-main>
     </v-app>
 </template>
@@ -273,6 +300,8 @@ import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
 import ZalbePacijenta from "./Pacijent/ZalbePacijenta";
 import AkcijePromocije from "./AkcijePromocije";
 import ProfilApoteke from "./ProfilApoteke";
+import PregledERecepata from "./Pacijent/PregledERecepata";
+import KupovinaLekova from "./Pacijent/KupovinaLekova"
 import axios from "axios";
 import {mapActions} from 'vuex';
 
@@ -294,7 +323,9 @@ export default {
         ZalbaNaFarmaceuta,
         ZalbePacijenta,
         AkcijePromocije,
-        ProfilApoteke
+        ProfilApoteke,
+        PregledERecepata,
+        KupovinaLekova
     },
     data: () => ({
     showCalendar: false,
@@ -313,6 +344,8 @@ export default {
     showZalbePacijenta: false,
     showAkcije: false,
     showApoteke: false,
+    showErecepti: false,
+    showKupovina: false,
     user: {},
   }),
   mounted(){
@@ -345,6 +378,8 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije = false;
           this.showApoteke = false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       accountView(){
           this.showCalendar = false;
@@ -363,6 +398,8 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije = false;
           this.showApoteke = false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       changePassword(){
           this.showCalendar = false;
@@ -381,6 +418,8 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije = false;
           this.showApoteke = false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       allergyView(){
           this.showCalendar = false;
@@ -417,6 +456,8 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije = false;
           this.showApoteke = false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       rezervacijaLekaView(){
           this.showCalendar = false;
@@ -435,6 +476,8 @@ export default {
           this.showZalbePacijenta = false;
           this.showAkcije = false;
           this.showApoteke = false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       noviPregledView(){
           this.showCalendar = false;
@@ -451,8 +494,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       novoSavetovanjeView(){
           this.showCalendar = false;
@@ -469,8 +514,9 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       istorijaPregledaView(){
           this.showCalendar = false;
@@ -487,8 +533,9 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       istorijaSavetovanjaView(){
           this.showCalendar = false;
@@ -505,8 +552,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       zalbaApotekaView(){
           this.showCalendar = false;
@@ -523,8 +572,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       zalbaDermatologView(){
           this.showCalendar = false;
@@ -541,8 +592,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = true;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       zalbaFarmaceutView() {
           this.showCalendar = false;
@@ -559,8 +612,10 @@ export default {
           this.showZalbaFarmaceut = true;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       zalbePacijentaView() {
           this.showCalendar = false;
@@ -577,8 +632,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = true;
-          this.showAkcije = false;
-          this.showApoteke = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       akcijeView(){
           this.showCalendar = false;
@@ -595,8 +652,10 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = true;
-          this.showApoteke = false;
+          this.showAkcije=true;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = false;
       },
       apotekeView(){
           this.showCalendar = false;
@@ -611,8 +670,42 @@ export default {
           this.showZalbaFarmaceut = false;
           this.showZalbaDermatolog = false;
           this.showZalbePacijenta = false;
-          this.showAkcije = false;
-          this.showApoteke = true;
+          this.showAkcije=false;
+          this.showApoteke=true;
+          this.showErecepti = false;
+          this.showKupovina = false;
+      },
+      ereceptiView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = true;
+          this.showKupovina = false;
+      },
+      kupovinaView(){
+          this.showCalendar=false;
+          this.showAccount=false;
+          this.showPassword=false;
+          this.showAllergy=false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije=false;
+          this.showApoteke=false;
+          this.showErecepti = false;
+          this.showKupovina = true;
       },
 
       onLogout(){

@@ -21,18 +21,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.ERecept;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.ParametriPretrageApoteke;
+import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.StatusErecepta;
 import com.backend.springboot.domain.Upit;
+import com.backend.springboot.dto.ApotekaCenaDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
+import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.service.ApotekaService;
+import com.backend.springboot.service.EReceptService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.MagacinService;
+import com.backend.springboot.service.PacijentService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -46,6 +54,15 @@ public class ApotekaController {
 	@Autowired 
 	private MagacinService magacinService;
 	
+	@Autowired 
+	private PacijentService pacijentService;
+	
+	@Autowired
+	private EReceptService ereceptService;
+	
+	@Autowired
+	private EmailService emailService;
+	
 	private ArrayList<LekUMagacinu> pronadjeniLekovi;
 	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviDTO;
 	
@@ -56,6 +73,39 @@ public class ApotekaController {
 		
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
+	
+	@PostMapping("/snabdeveneApoteke")
+	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto){
+		
+		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
+		//za svaku apoteku
+		for (Apoteka a : apotekaService.findAll()) {
+			double cena = apotekaService.getUkupnaCena(a,dto);//proveri da li imaju sve lekove u magacinu i u tim kolicinama, ako da, usput odmah i cenu daj
+			if(cena == 0.0) {
+				continue;
+			} 
+			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
+			result.add(ACdto);
+		}
+		
+		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
+	}
+	
+	@PutMapping("/kupiLekove/{idApoteke}")
+	public ResponseEntity<String> kupiLekove(@PathVariable Integer idApoteke ,@RequestBody EReceptDTO dto)
+	{
+		Apoteka a = apotekaService.findOne(idApoteke);
+		apotekaService.kupiLekove(dto.getLekoviErecepta(), idApoteke);
+		
+		//erecept je obradjen, update
+		ERecept erecept = ereceptService.findOne(dto.getId());
+		erecept.setStatus(StatusErecepta.OBRADJEN);
+		ereceptService.save(erecept);
+		
+		Pacijent pac = pacijentService.findOne(dto.getPacijentId());
+		emailService.potvrdaKupovine(dto, pac, a.getNaziv());//mail o potvrdi izdavanja leka preko eRecepta i ažurira se stanje svih izdatih lekova u odabranoj apoteci. 
+		return new ResponseEntity<String>("Lekovi uspešno kupljeni!", HttpStatus.OK);
+	}
 	
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
