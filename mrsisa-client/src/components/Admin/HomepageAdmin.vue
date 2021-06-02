@@ -76,6 +76,15 @@
                 </div></v-list-item-title>
           </v-list-item>
 
+          <v-list-item link @click="sviLekovi">
+            <v-list-item-icon>
+              <v-icon>mdi-pill</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Šifrarnik lekova
+                </div></v-list-item-title>
+          </v-list-item>
+
           <v-list-item link @click="registrujApoteku">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
@@ -174,6 +183,10 @@
         <TableOdsustva  :farmaceut=false />
       </v-container>
 
+      <v-container fluid v-if="showSviLekovi" :style="{width:'70vh'}">
+        <SifrarnikLekova />
+      </v-container>
+
     </v-main>
       </v-app>
 </template>
@@ -189,6 +202,7 @@ import ZalbeOdgovor from "./ZalbeOdgovor";
 import ZalbeAdmina from "./ZalbeAdmina";
 import TableOdsustva from "../TableOdsustva";
 import IzmenaLeka from "./IzmenaLeka";
+import SifrarnikLekova from "./SifrarnikLekova"
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -204,6 +218,7 @@ export default {
       ZalbeAdmina,
       TableOdsustva,
       IzmenaLeka,
+      SifrarnikLekova
     },
     data: () => ({
     showAccount: false,
@@ -215,6 +230,7 @@ export default {
     showMojeZalbe: false,
     showOdsustva: false,
     showIzmeniLek: false,
+    showSviLekovi : false,
     
   }),
   mounted(){
@@ -243,6 +259,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     changePassword(){
@@ -255,6 +272,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     kreirajLek() {
@@ -267,6 +285,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     izmeniLek(){
@@ -279,6 +298,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = true;
+      this.showSviLekovi = false;
     },
 
     registrujApoteku(){
@@ -291,6 +311,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     registrujZaposlenog(){
@@ -303,6 +324,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     odgovoriNaZalbe(){
@@ -315,6 +337,7 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     mojeZalbe(){
@@ -327,6 +350,7 @@ export default {
       this.showMojeZalbe = true;
       this.showOdsustva = false;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
     },
 
     odsustvaView(){
@@ -339,6 +363,20 @@ export default {
       this.showMojeZalbe = false;
       this.showOdsustva = true;
       this.showIzmeniLek = false;
+      this.showSviLekovi = false;
+    },
+
+    sviLekovi(){
+      this.showAccount=false;
+      this.showPassword=false;
+      this.showKreirajLek = false;
+      this.showRegApoteku = false;
+      this.showRegZaposlenog = false;
+      this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
+      this.showOdsustva = false;
+      this.showIzmeniLek = false;
+      this.showSviLekovi = true;
     },
 
     onLogout(){

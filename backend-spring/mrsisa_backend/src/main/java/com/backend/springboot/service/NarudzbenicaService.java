@@ -99,4 +99,18 @@ public class NarudzbenicaService {
 		return narudzbenicaRep.save(narudzbenica);
 	}
 
+	public List<Narudzbenica> getAktivne() {
+		
+		List<Narudzbenica> sve = narudzbenicaRep.findAllByStatus(StatusNarudzbenice.CEKA_PONUDE);
+		List<Narudzbenica> result = new ArrayList<Narudzbenica>();
+		LocalDate sada = LocalDate.now();
+		for(Narudzbenica n : sve) {
+			if(n.getRok().isAfter(sada)) {
+				result.add(n);
+			}
+		}
+		
+		return result;
+	}
+
 }

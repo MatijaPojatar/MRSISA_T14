@@ -219,8 +219,8 @@ public class EmailService {
 	public void potvrdaKupovine(EReceptDTO dto, Pacijent pac, String nazivApoteke) {
 
 		SimpleMailMessage mail = new SimpleMailMessage();
-		mail.setTo(pac.getMail());
-//		mail.setTo("imenkoprezimic94@gmail.com");
+//		mail.setTo(pac.getMail());
+		mail.setTo("sasicnatalija4@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Potvrda o izdavanju lekova preko E-Recepta");
 		mail.setText("Poštovani "+ pac.getIme() +",\n\nObaveštavamo Vas da je E-Recept sa šifrom " + dto.getId() + "uspešno obrađen u apoteci "+ nazivApoteke+

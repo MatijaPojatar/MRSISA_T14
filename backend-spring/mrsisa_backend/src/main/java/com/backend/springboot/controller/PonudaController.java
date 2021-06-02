@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Ponuda;
+import com.backend.springboot.domain.StatusPonude;
 import com.backend.springboot.dto.PonudaDTO;
 import com.backend.springboot.service.DobavljacService;
 import com.backend.springboot.service.NarudzbenicaService;
@@ -52,6 +55,15 @@ public class PonudaController {
 	}
 	
 	//izmena
+	@PutMapping("/{id}")
+	public ResponseEntity<Ponuda> izmeniPonudu(@PathVariable Integer id, @RequestBody PonudaDTO dto){
+		//znaci samo cena i rok isporuke mogu biti izmenjeni
+		Ponuda ponuda = ponudaService.findOne(id);
+		ponuda.setCena(dto.getCena());
+		ponuda.setRokIsporuke(dto.getRokIsporuke());
+		ponuda = ponudaService.izmeniPonudu(ponuda);
+		return new ResponseEntity<Ponuda>(ponuda, HttpStatus.OK);
+	}
 	
 	//za dobavljaca
 	@GetMapping("/dobavljac/{id}")
@@ -64,6 +76,20 @@ public class PonudaController {
 		}
 		
 		return new ResponseEntity<List<PonudaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/izmenaMoguca/{id}")
+	public ResponseEntity<Boolean> isIzmenaMoguca(@PathVariable Integer id){
+		Ponuda p = ponudaService.findOne(id);
+		if(p.getStatus() != StatusPonude.OBRADA) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
+		LocalDate rokN = p.getNarudzbenica().getRok();
+		LocalDate now  = LocalDate.now();
+		if(now.isBefore(rokN)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 	
 	

@@ -86,12 +86,13 @@ export default {
         };
         await this.logInAction(credentials);
 
-        if (!this.korisnik.promenjenaLozinka) {
-          alert("Usli ovde");
-          this.$router.push("/promenaSifre");
-          return;
+        if(this.currentRole != "ROLE_PACIJENT"){
+          if (!this.korisnik.promenjenaLozinka) {
+            
+            this.$router.push("/promenaSifre");
+            return;
+          }
         }
-
         let role = this.currentRole;
         console.log(role);
         switch (role) {

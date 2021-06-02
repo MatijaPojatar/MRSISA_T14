@@ -31,6 +31,7 @@ import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.VrstaLeka;
 import com.backend.springboot.dto.LekApotekaDTO;
 import com.backend.springboot.dto.LekDTO;
+import com.backend.springboot.dto.LekPrikazDTO;
 import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.LekService;
@@ -58,6 +59,23 @@ public class LekController {
 	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviApotekaDTO;
 	private boolean pretragaLekovaApoteka = false;
 	
+	@GetMapping("/minOcena/{ocena}")
+	public ResponseEntity<List<LekPrikazDTO>> getLekoveSaVecomOcenom(@PathVariable Integer ocena){
+		
+		return new ResponseEntity<List<LekPrikazDTO>>(new ArrayList<LekPrikazDTO>(), HttpStatus.OK);
+	}
+	
+	@GetMapping("/zaSifrarnik")
+	public ResponseEntity<List<LekPrikazDTO>> getAllZASifrarnik(){
+		List<Lek> lekovi = lekService.findAll();
+		List<LekPrikazDTO> dto = new ArrayList<>();
+		
+		for (Lek l : lekovi) {
+			dto.add(new LekPrikazDTO(l));
+		}
+
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/all")
 	public ResponseEntity<List<LekDTO>> getAll() {

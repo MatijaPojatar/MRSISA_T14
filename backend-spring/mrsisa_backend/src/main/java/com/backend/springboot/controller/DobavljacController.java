@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
+import com.backend.springboot.domain.LekIzNarudzbenice;
+import com.backend.springboot.domain.LekNaStanju;
+import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
 import com.backend.springboot.service.DobavljacService;
+import com.backend.springboot.service.NarudzbenicaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -30,6 +34,9 @@ public class DobavljacController {
 
 	@Autowired
 	private DobavljacService dobavljacService;
+	
+	@Autowired
+	private NarudzbenicaService narudzbenicaService;
 	
 	@GetMapping()
 	public ResponseEntity<List<DobavljacDTO>> findAll(){
@@ -48,6 +55,29 @@ public class DobavljacController {
 		Dobavljac d = dobavljacService.findOne(id);
 		return new ResponseEntity<String>(d.getNazivPreduzeca(), HttpStatus.OK);
 	}
+	
+	@GetMapping("/{id}/mogucaNarudzbenica/{idNar}")
+	public ResponseEntity<Boolean> isMogucaNarudzbenica(@PathVariable Integer id, @PathVariable Integer idNar){
+		
+		Dobavljac d = dobavljacService.findOne(id);
+		Narudzbenica n = narudzbenicaService.findOne(idNar);
+		
+		for(LekIzNarudzbenice lekNar : n.getLekovi()) {
+			Boolean pronadjen = false;
+			for(LekNaStanju lekStanje : d.getLekoviNaStanju()) {
+				if(lekNar.getLek().getId() == lekStanje.getLek().getId()
+						&& lekStanje.getKolicina() >= lekNar.getKolicina()) {
+					pronadjen = true;
+					break;
+				}
+			}
+			if(!pronadjen) {
+				return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
 	
 	
 	@GetMapping("/{id}")

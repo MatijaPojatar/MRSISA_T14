@@ -52,9 +52,13 @@ public class Ponuda {
 	}
 	
 	public Ponuda(PonudaDTO dto) {
+		
+//		LocalDateTime fromDateAndTime = LocalDateTime.of(currentDate,
+//                currentTime);
+		
 		this.id = dto.getId();
 		this.cena = dto.getCena();
-		this.rokIsporuke = dto.getRokIsporuke();
+		this.rokIsporuke = LocalDateTime.of(dto.getRokDatum(), dto.getRokVreme());
 		this.status = dto.getStatus();
 	}
 

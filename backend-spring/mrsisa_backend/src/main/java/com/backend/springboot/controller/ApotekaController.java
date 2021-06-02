@@ -74,6 +74,25 @@ public class ApotekaController {
 		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
 	}*/
 	
+	
+	@GetMapping("/dostupnostLeka/{id}")
+	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer id){
+		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
+		//za svaku apoteku
+		for (Apoteka a : apotekaService.findAll()) {
+			double cena = apotekaService.getCenaLeka(a,id);
+			if(cena== 0.0) {
+				continue;
+			}
+			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
+			result.add(ACdto);
+		}
+		
+		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
+		
+	}
+	
+	
 	@PostMapping("/snabdeveneApoteke")
 	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto){
 		

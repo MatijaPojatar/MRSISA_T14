@@ -22,10 +22,12 @@ import com.backend.springboot.domain.Ponuda;
 import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.dto.LekIzNarudzbeniceDTO;
 import com.backend.springboot.dto.NarudzbenicaDTO;
+import com.backend.springboot.dto.NarudzbenicaPrikazDTO;
 import com.backend.springboot.dto.NovaNarudzbenicaDTO;
 import com.backend.springboot.dto.PonudaDTO;
 import com.backend.springboot.service.MagacinService;
 import com.backend.springboot.service.NarudzbenicaService;
+import com.backend.springboot.service.PonudaService;
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
 @RequestMapping(value = "/narudzbenice")
@@ -34,8 +36,33 @@ public class NarudzbenicaController {
 	@Autowired
 	private NarudzbenicaService narudzbenicaService;
 	
+	@Autowired
+	private PonudaService ponudaService;
+	
 	@Autowired 
 	private MagacinService magacinService;
+	
+	@GetMapping("/aktivne/{idDob}") //sve koje cekaju ponude i rok je posle danas
+	public ResponseEntity<List<NarudzbenicaPrikazDTO>> getAllAktivne(@PathVariable Integer idDob){
+		List<NarudzbenicaPrikazDTO> lista = new ArrayList<NarudzbenicaPrikazDTO>();
+		
+		List<Narudzbenica> objekti= narudzbenicaService.getAktivne();
+		
+		List<Ponuda> ponude = ponudaService.findAllByDobavljacId(idDob);
+		for(Ponuda p : ponude ) {
+			if (objekti.contains(p.getNarudzbenica())){
+				objekti.remove(p.getNarudzbenica());
+			}
+		}
+		for(Narudzbenica n : objekti) {
+			NarudzbenicaPrikazDTO dto = new NarudzbenicaPrikazDTO(n);
+			lista.add(dto);
+		}
+			
+		return new ResponseEntity<List<NarudzbenicaPrikazDTO>>( lista, HttpStatus.OK);
+	}
+	
+
 	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiSveNarudzbenice(@PathVariable Integer id){
