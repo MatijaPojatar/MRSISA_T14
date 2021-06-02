@@ -59,6 +59,13 @@
     </v-btn>
     <v-btn
         class="mx-2"
+        @click="viewERecept"
+        v-if="registrovan"
+    > 
+        Proveri ERecept 
+    </v-btn>
+    <v-btn
+        class="mx-2"
         @click="pretplatiSe"
         v-if="registrovan"
     > 
@@ -88,6 +95,10 @@
 
        <v-container fluid v-if="showSavetovanja">
         <NovoSavetovanje/>
+      </v-container>
+
+      <v-container fluid v-if="showERecept">
+        <KupovinaLekova/>
       </v-container>
    
 
@@ -125,6 +136,7 @@ import TableFarmaceuti from "./TableFarmaceuti";
 import TableDermatolozi from "./TableDermatolozi";
 import NoviPregled from "./NoviPregled";
 import NovoSavetovanje from "./NovoSavetovanje";
+import KupovinaLekova from "./Pacijent/KupovinaLekova"
 import Vue from "vue";
 
 
@@ -136,6 +148,7 @@ export default{
         TableDermatolozi,
         NoviPregled,
         NovoSavetovanje,
+        KupovinaLekova,
     },
     data: () => ({
         
@@ -145,6 +158,7 @@ export default{
         showDermatolozi:false,
         showPregledi: false,
         showSavetovanja: false,
+        showERecept: false,
         message:"",
         apoteka: {
           naziv: "",
@@ -176,6 +190,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showSavetovanja = false;
+            this.showERecept = false;
         },
         viewFarmaceuti(){
             this.showLekovi = false;
@@ -183,6 +198,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showSavetovanja = false;
+            this.showERecept = false;
         },
         viewDermatolozi(){
             this.showLekovi = false;
@@ -190,6 +206,7 @@ export default{
             this.showDermatolozi = true;
             this.showPregledi = false;
             this.showSavetovanja = false;
+            this.showERecept = false;
         },
         viewPregledi(){
             this.showLekovi = false;
@@ -197,6 +214,7 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = true;
             this.showSavetovanja = false;
+            this.showERecept = false;
         },
         viewSavetovanja(){
             this.showLekovi = false;
@@ -204,6 +222,15 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = false;
             this.showSavetovanja = true;
+            this.showERecept = false;
+        },
+        viewERecept(){
+            this.showLekovi = false;
+            this.showFarmaceuti = false;
+            this.showDermatolozi = false;
+            this.showPregledi = false;
+            this.showSavetovanja = false;
+            this.showERecept = true;
         },
 
         pretplatiSe(){
