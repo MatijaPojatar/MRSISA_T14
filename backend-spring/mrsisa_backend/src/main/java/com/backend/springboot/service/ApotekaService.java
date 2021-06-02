@@ -129,5 +129,23 @@ public class ApotekaService  {
 			}
 		}
 	}
+
+
+	public double getCenaLeka(Apoteka a,Integer id) {
+		Magacin m = a.getMagacin();
+		
+		if(m == null) {
+			return 0.0;
+		}
+		List<LekUMagacinu> trenutniLekovi = m.getLekovi();
+		
+		for(LekUMagacinu lekMagacin : trenutniLekovi) {
+			if(lekMagacin.getLek().getId() == id) {
+				return lekMagacin.getCena();
+			}
+		}
+		
+		return 0.0;
+	}
 	
 }

@@ -1,5 +1,6 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Ponuda;
+import com.backend.springboot.domain.StatusPonude;
 import com.backend.springboot.dto.PonudaDTO;
 import com.backend.springboot.service.DobavljacService;
 import com.backend.springboot.service.NarudzbenicaService;
@@ -74,6 +76,20 @@ public class PonudaController {
 		}
 		
 		return new ResponseEntity<List<PonudaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/izmenaMoguca/{id}")
+	public ResponseEntity<Boolean> isIzmenaMoguca(@PathVariable Integer id){
+		Ponuda p = ponudaService.findOne(id);
+		if(p.getStatus() != StatusPonude.OBRADA) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		}
+		LocalDate rokN = p.getNarudzbenica().getRok();
+		LocalDate now  = LocalDate.now();
+		if(now.isBefore(rokN)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 	
 	
