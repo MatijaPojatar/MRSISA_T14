@@ -212,8 +212,7 @@ export default {
 
         
       }
-  try{
-    alert("ZELJA ZA REGISTRACIJOM "+ this.ime + this.prezime);        
+  try{    
     await this.signUpAction(PacDTO);
 
     this.potvrda = true;

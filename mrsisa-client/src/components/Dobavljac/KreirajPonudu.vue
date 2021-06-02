@@ -14,7 +14,7 @@
         @click="selekcija(narudzbenica)"
       >
         <v-expansion-panel-header>
-          ID: {{ narudzbenica.id }} Apoteka: {{ narudzbenica.nazivApoteke }}
+          Narudžbenica ID: {{ narudzbenica.id }} Apoteka: {{ narudzbenica.nazivApoteke }}
         </v-expansion-panel-header>
 
         <v-expansion-panel-content>
@@ -54,14 +54,13 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {
-      rokDatum: "2021-06-01",
-      rokVreme: "10:10",
-      cena: "",
-      selektovanaNarudzbenica: {},
-    };
-  },
+  data: () => ({
+    izmena: false,
+    rokDatum: "2021-06-01",
+    rokVreme: "10:10",
+    cena: "",
+    selektovanaNarudzbenica: {},
+  }),
 
   mounted() {
     this.getMoguceNarudzbeniceAction(this.user.id);
@@ -71,16 +70,37 @@ export default {
     ...mapGetters({
       narudzbenice: "narudzbenice/getMoguceNarudzbenice",
       user: "korisnici/getKorisnik",
+      ponudaMoguca: "ponude/getNarudzbenicaMoguca",
     }),
   },
 
   methods: {
     ...mapActions({
       getMoguceNarudzbeniceAction: "narudzbenice/getMoguceNarudzbeniceAction",
+      getMoguceKreiratiPonuduAction: "ponude/getMoguceKreiratiPonuduAction",
+      kreirajPonuduAction: "ponude/kreirajPonuduAction",
     }),
 
-    pokusajPoslati() {
-      alert("Ponudu sad kao saljemo");
+    async pokusajPoslati(narId) {
+      //provera da li moze
+      await this.getMoguceKreiratiPonuduAction({idDob: this.user.id, idNar: narId});
+      if(this.ponudaMoguca){
+        let dto = {
+          cena: this.cena,
+          dobavljacId: this.user.id,
+          narudzbenicaId: narId,
+          rokVreme: this.rokVreme,
+          rokDatum: this.rokDatum,
+          rokIsporuke: this.rokDatum,  //+ " " + this.rokVreme,
+          rokStr: this.rokDatum + " " + this.rokVreme,
+          status: "OBRADA",
+          // nazivDobavljaca: 
+        }
+
+        await this.kreirajPonuduAction(dto);
+      }else{
+        alert("Dobavljac nema dovoljno lekova na stanju");
+      }
     },
 
     selekcija(narudzbenica) {

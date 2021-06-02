@@ -53,7 +53,7 @@
             v-if="!izmena"
             dark
             color="blue"
-            @click="pokusajIzmenu(ponuda)"
+            @click="izmenaa()"
             >
               Izmeni
             </v-btn>
@@ -62,7 +62,7 @@
             v-if="izmena"
             dark
             color="blue"
-            @click="posaljiIzmenu(ponuda)"
+            @click="uspeh()"
             >
               Sačuvaj izmene
             </v-btn>
@@ -85,7 +85,7 @@ export default {
     cena: 0.0,
     rokDatum: "2021-06-01",
     rokVreme: "10:10",
-  //ponude: [{id : 1, narudzbenicaId: 500}, {id: 2, narudzbenicaId: 505}]
+    ponude: [{id : 5, narudzbenicaId: 3, cena: 5000, rokIsporuke: "2021-6-4 12:00"}]
   }),
   mounted () {
     this.getPonudeDobavljacaAction(this.user.id);
@@ -99,7 +99,7 @@ export default {
     }),
   },
 
-  mehods: {
+  methods: {
     ...mapActions({
       getPonudeDobavljacaAction: "ponude/getPonudeDobavljacaAction",
       izmeniPonuduAction: "ponude/izmeniPonuduAction",
@@ -110,13 +110,23 @@ export default {
       this.selektovanaPonuda = ponuda;
     },
 
+    izmenaa(){
+      this.izmena = true;
+    },
+
+    async uspeh(){
+      alert("Uspeh");
+    },
+
     async pokusajIzmenu(ponuda){
-      await this.getIzmenaMogucaAction(ponuda.id);
-      if(this.izmenaMoguca){
-        this.izmena = true;
-      }else{
-        alert("Izmena nemoguca zbog isteka roka")
-      }
+      this.izmena= true;
+      console.log(ponuda);
+      // await this.getIzmenaMogucaAction(ponuda.id);
+      // if(this.izmenaMoguca){
+      //   this.izmena = true;
+      // }else{
+      //   alert("Izmena nemoguca zbog isteka roka")
+      // }
     },
 
     async posaljiIzmenu(ponuda){
