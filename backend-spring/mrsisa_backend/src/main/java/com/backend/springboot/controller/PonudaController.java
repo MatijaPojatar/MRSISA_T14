@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,15 @@ public class PonudaController {
 	}
 	
 	//izmena
+	@PutMapping("/{id}")
+	public ResponseEntity<Ponuda> izmeniPonudu(@PathVariable Integer id, @RequestBody PonudaDTO dto){
+		//znaci samo cena i rok isporuke mogu biti izmenjeni
+		Ponuda ponuda = ponudaService.findOne(id);
+		ponuda.setCena(dto.getCena());
+		ponuda.setRokIsporuke(dto.getRokIsporuke());
+		ponuda = ponudaService.izmeniPonudu(ponuda);
+		return new ResponseEntity<Ponuda>(ponuda, HttpStatus.OK);
+	}
 	
 	//za dobavljaca
 	@GetMapping("/dobavljac/{id}")

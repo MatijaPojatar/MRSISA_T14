@@ -27,6 +27,10 @@ public class PonudaService {
 		return ponudaRep.save(p);
 	}
 	
+	public Ponuda izmeniPonudu(Ponuda p) {
+		return ponudaRep.save(p);
+	}
+	
 	public List<Ponuda> findAllByDobavljacId(Integer dobavljacId) {
 		return ponudaRep.findAllByDobavljacId(dobavljacId);
 	}
