@@ -3,11 +3,13 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     lekovi: [],
+    lekoviSifrarnik: [],
     vrste: [],
     oblici: [],
     rezimiIzdavanja: [],
     currentLek: null,
     currZamenski: [],
+    dostupnostLeka: [],
   }
 }
 
@@ -19,10 +21,33 @@ const getters = {
   getOblici: state => state.oblici,
   getRezimiIzdavanja: state => state.rezimiIzdavanja,
   getCurrentLek: state => state.currentLek,
-  getCurrZamenski: state => state.currZamenski
+  getCurrZamenski: state => state.currZamenski,
+  getDostupnostLeka: state => state.dostupnostLeka,
+  getLekoviSifrarnik: state => state.lekoviSifrarnik,
 }
 
 const actions = {
+  async getLekoviSifrarnikAction({commit}){
+    try{
+      const response = await Vue.axios.get("/lekovi/zaSifrarnik")
+      console.log(response.data);
+      commit("setLekoviSifrarnik", response.data);
+    }catch(error){
+      console.log(error);
+      alert("Greska pri dobavljanju ekova sifrarnik");
+    }
+  },
+
+  async getDostupnostLekaAction({commit}, id){
+    try{
+      const response = await Vue.axios.get("/apoteke/dostupnostLeka/"+ id)
+      console.log(response.data);
+      commit("setDostupnostLeka", response.data);
+    }catch(error){
+      console.log(error);
+      alert("Greska pri dobavljanju dostupnosi leka");
+    }
+  },
 
   async getLekoviAction({ commit }) {
     try{
@@ -124,6 +149,10 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state= initStanje();
+  },
+
+  setLekoviSifrarnik(state, lista){
+    state.lekoviSifrarnik = lista;
   },
 
   setCurrZamenske(state, lista){

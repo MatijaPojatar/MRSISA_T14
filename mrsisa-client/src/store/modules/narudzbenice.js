@@ -1,4 +1,4 @@
-// import Vue from "vue";
+import Vue from "vue";
 
 const initStanje = () => {
   return {
@@ -13,16 +13,18 @@ const getters = {
 const actions = {
   async getMoguceNarudzbeniceAction({commit}, idDobavljaca){
     console.log(idDobavljaca);
-    let n = {
-      id: 1,
-      nazivApoteke: "bla",
-      rok: new Date(),
-      lekovi: [{naziv: "Naziv leka", lekId: 3, kolicina: 3.0}]
-    }
-    commit ("setMoguceNarudzbenice", [n]);
-    // const response = await Vue.axios.get("/narudzbenice/aktivne/" + idDobavljaca);
-    // console.log(response.data);
-    // commit("setMoguceNarudzbenice", response.data);
+
+    const response = await Vue.axios.get("/narudzbenice/aktivne/" + idDobavljaca);
+    console.log(response.data);
+    commit("setMoguceNarudzbenice", response.data);
+
+        // let n = {
+    //   id: 1,
+    //   nazivApoteke: "bla",
+    //   rok: new Date(),
+    //   lekovi: [{naziv: "Naziv leka", lekId: 3, kolicina: 3.0}]
+    // }
+    // commit ("setMoguceNarudzbenice", [n]);
   }
 }
 const mutations = {
