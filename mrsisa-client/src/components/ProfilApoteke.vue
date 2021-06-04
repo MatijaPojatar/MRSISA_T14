@@ -16,6 +16,7 @@
     
     Opis: {{apoteka.opis}} <br/>
     Adresa: {{apoteka.adresa}}, {{apoteka.grad}}, {{apoteka.drzava}}<br/>
+    <Mapa/>
     <br/>
     </v-card>
     <br/>
@@ -138,6 +139,7 @@ import NoviPregled from "./NoviPregled";
 import NovoSavetovanje from "./NovoSavetovanje";
 import KupovinaLekova from "./Pacijent/KupovinaLekova"
 import Vue from "vue";
+import Mapa from "./Mapa"
 
 
 export default{
@@ -149,6 +151,7 @@ export default{
         NoviPregled,
         NovoSavetovanje,
         KupovinaLekova,
+        Mapa,
     },
     data: () => ({
         
