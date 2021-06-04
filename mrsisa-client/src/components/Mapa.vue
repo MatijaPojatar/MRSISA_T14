@@ -6,7 +6,13 @@
             style="width:640px; height:360px; margin: 32px auto;"
             ref="mapRef"
             @dragend="handleDrag"
-        ></GmapMap>
+        >
+            <GmapMarker
+                :key = 1
+                :position="marker"
+                @click="center=m"
+            ></GmapMarker>
+        </GmapMap>
     </div>
 </template>
 
@@ -20,6 +26,11 @@
                     lat: 0,
                     lng: 0
                 },
+                marker: {
+                    lat: 45.2396,
+                    lng: 19.8227
+                },
+
                 zoom: 7
             }
         },
