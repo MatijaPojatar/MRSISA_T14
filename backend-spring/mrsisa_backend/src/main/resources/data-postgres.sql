@@ -8,9 +8,9 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Pažljivo proćitati uputstvo','Brufen',0,'Alims',1,'celuloza, laktoza, ibuprofen',1);
 
 
-insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 1','Srbija','Novi Sad','Apoteka 1','Test', 4.3);
-insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 2','Srbija','Subotica','Apoteka 2','Test apoteka 2', 4.1);
-insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Adresa apoteke 3','Srbija','Novi Sad','Apoteka 3','Test apoteka 3', 3.8);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values (' Futoški put 10 ','Srbija','Novi Sad','Benu','Lepota i zdravlje.', 4.3);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Rumenačka 15','Srbija','Novi Sad','Apoteka Janković','Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove “Janković”. ', 4.1);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Bulevar oslobođenja 65','Srbija','Novi Sad','Galen','Galen Pharm Apoteka specijalizovana je za prodaju farmaceutskih proizvoda.', 3.8);
 
 insert into apoteke_lekovi (lek_id,apoteka_id) values (1,1);
 insert into apoteke_lekovi (lek_id,apoteka_id) values (2,1);
@@ -54,6 +54,7 @@ insert into pregledi (id,dermatolog_id,cena) values (2,3,3000);
 
 insert into magacini (id,apoteka_id) values (1,1);
 insert into magacini (id,apoteka_id) values (2,2);
+insert into magacini (id,apoteka_id) values (3,3);
 
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 100, 100, 1, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 200, 0, 2, 1, false);
@@ -62,6 +63,8 @@ insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obr
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 5, 1, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 200, 150, 4, 2, false);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 2, false);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 0, 3, 3, false);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 5, 3, false);
 
 
 

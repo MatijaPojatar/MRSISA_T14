@@ -4,20 +4,28 @@
     <br/>
     <v-card class="mx-2">
     <br/>
-    <v-rating
-        v-model = "apoteka.ocena"
-        half-increments
-        hover
-        readonly
-        length="5"
-        value="apoteka.ocena"
-    ></v-rating>
-    Naziv: {{apoteka.naziv}} <br/>
-    
-    Opis: {{apoteka.opis}} <br/>
-    Adresa: {{apoteka.adresa}}, {{apoteka.grad}}, {{apoteka.drzava}}<br/>
-    <Mapa/>
+    <v-row>
+    <div  >
+        <p style="width:800px; display: block;">
+            <v-rating
+                v-model = "apoteka.ocena"
+                half-increments
+                hover
+                readonly
+                length="5"
+                :value="apoteka.ocena"
+            ></v-rating>
+            Naziv: {{apoteka.naziv}} <br/>
+            
+            Opis: {{apoteka.opis}} <br/>
+            Adresa: {{apoteka.adresa}}, {{apoteka.grad}}, {{apoteka.drzava}}<br/>
+        </p>
+    </div>
+    <div padding = "200px">
+    <Mapa :apotekaLat="apotekaLat" :apotekaLng="apotekaLng"/>
     <br/>
+    </div>
+    </v-row>
     </v-card>
     <br/>
     <div>
@@ -141,7 +149,7 @@ import KupovinaLekova from "./Pacijent/KupovinaLekova"
 import Vue from "vue";
 import Mapa from "./Mapa"
 
-
+import {mapActions, mapGetters} from 'vuex'
 export default{
     name: "ProfilApoteke",
     components: {
@@ -163,27 +171,85 @@ export default{
         showSavetovanja: false,
         showERecept: false,
         message:"",
-        apoteka: {
-          naziv: "",
-          opis: "",
-          adresa: "",
-          grad: "",
-          drzava: "",
-          ocena: "",
-      },
+        // apoteka: {
+        //   naziv: "",
+        //   opis: "",
+        //   adresa: "",
+        //   grad: "",
+        //   drzava: "",
+        //   ocena: "",
+        // },
+
+        // apotekaLat: 0,
+        // apotekaLng:0,
     }),
     props :{
         user: {},
         apotekaId: Number,
         registrovan: Boolean,
     },
-    mounted(){
-        Vue.axios.get(`http://localhost:8080/apoteke/getOne/${this.apotekaId}`).then(response => {
-            this.apoteka = response.data
-        });
+    
+    // async created(){
+    //     this.getCoordinates();
+        
+       
+    // },
+//      computed: {
+//     ...mapGetters({
+//       user: "korisnici/getKorisnik",
+//     }),
+//   },
+//   methods:{
+//     ...mapActions({
+//       logout: "korisnici/logoutAction",
+//       resetStore: "resetStore"
+//     }),
+    computed: {
+        ...mapGetters({
+            apoteka: "apoteke/getApoteka",
+            apotekaLat: "apoteke/getApotekaLat",
+            apotekaLng: "apoteke/getApotekaLng",
+        })
+    },
+
+    async mounted(){
+        await this.getApotekaAction(this.apotekaId);
+        Vue.$geocoder.setDefaultMode('address');      // this is default
+                var addressObj = {
+                address_line_1: this.apoteka.adresa,
+                address_line_2: '',
+                city:           this.apoteka.grad,
+                state:          '',               // province also valid
+                zip_code:       '',            // postal_code also valid
+                country:        this.apoteka.drzava
+                }
+        await this.getApotekaCoordinatesAction(addressObj)
     },
 
     methods:{
+        ...mapActions({
+            getApotekaAction: "apoteke/getApotekaAction",
+            getApotekaCoordinatesAction: "apoteke/getApotekaCoordinatesAction"
+        }),
+        // async getCoordinates(){
+        //         Vue.$geocoder.setDefaultMode('address');      // this is default
+        //         var addressObj = {
+        //         address_line_1: 'Bulevar Mihajla Pupina',
+        //         address_line_2: '',
+        //         city:           'Novi Sad',
+        //         state:          '',               // province also valid
+        //         zip_code:       '',            // postal_code also valid
+        //         country:        'Serbia'
+        //         }
+        //     // await Vue.$geocoder.send(addressObj, response => { 
+        //     //     self.apotekaLat = response.results[0].geometry.location.lat 
+        //     //     self.apotekaLng = response.results[0].geometry.location.lng
+                
+        //     //     });
+            
+            
+        // },
+    
         endObavestenjeDialog(){
             this.obavestenjeDialog = false;
         },

@@ -1,9 +1,9 @@
 <template>
     <div>
         <GmapMap
-            :center="myCoordinates"
+            :center="StartCoordinates"
             :zoom="zoom"
-            style="width:640px; height:360px; margin: 32px auto;"
+            style="width:320px; height:180px; margin: 32px auto;"
             ref="mapRef"
             @dragend="handleDrag"
         >
@@ -22,7 +22,7 @@
         data() {
             return {
                 map: null,
-                myCoordinates: {
+                StartCoordinates: {
                     lat: 0,
                     lng: 0
                 },
@@ -34,26 +34,37 @@
                 zoom: 7
             }
         },
+        props: {
+            apotekaLat:Number,
+            apotekaLng:Number,
+        },
         created() {
+           
             // does the user have a saved center? use it instead of the default
-            if(localStorage.center) {
-                this.myCoordinates = JSON.parse(localStorage.center);
-            } else {
-                // get user's coordinates from browser request
-                this.$getLocation({})
-                    .then(coordinates => {
-                        this.myCoordinates = coordinates;
-                    })
-                    .catch(error => alert(error));
-            }
+            // if(localStorage.center) {
+            //     this.myCoordinates = JSON.parse(localStorage.center);
+            // } else {
+            //     // get user's coordinates from browser request
+            //     this.$getLocation({})
+            //         .then(coordinates => {
+            //             this.myCoordinates = coordinates;
+            //         })
+            //         .catch(error => alert(error));
+            // }
             // does the user have a saved zoom? use it instead of the default
             if(localStorage.zoom) {
                 this.zoom = parseInt(localStorage.zoom);
             }
+            this.StartCoordinates.lat = this.apotekaLat
+            this.StartCoordinates.lng = this.apotekaLng
         },
         mounted() {
             // add the map to a data object
             this.$refs.mapRef.$mapPromise.then(map => this.map = map);
+            console.log(this.apotekaLat)
+            this.marker.lat = this.apotekaLat
+            this.marker.lng = this.apotekaLng
+            
         },
         methods: {
             handleDrag() {

@@ -1,5 +1,17 @@
 package com.backend.springboot.domain;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +29,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.tomcat.util.buf.UriUtil;
+import org.springframework.web.util.UriUtils;
+
 import com.backend.springboot.dto.ApotekaDTO;
+import com.google.gson.Gson;
 
 @Entity
 @Table(name="apoteke")
@@ -65,6 +81,14 @@ public class Apoteka {
 	
 	@Column(name = "ocena", nullable = false)
 	Double ocena;
+	
+	@Column(name = "latitude", nullable = true)
+	Double latitude;
+	
+	@Column(name = "longitude", nullable = true)
+	Double longitude;
+	
+	
 	
 
 	public Apoteka(Integer id, String naziv, String adresa, String grad, String drzava, String opis,
@@ -306,6 +330,51 @@ public class Apoteka {
 	public void setPretplaceniPacijenti(List<Pacijent> pretplaceniPacijenti) {
 		this.pretplaceniPacijenti = pretplaceniPacijenti;
 	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public Double getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
+	}
+	
+	public void getGeoPointFromAddress(String locationAddress) {
+		try {
+	        URL url = new URL(
+	                "http://maps.googleapis.com/maps/api/geocode/json?address="
+	                        + UriUtils.encodeQuery((locationAddress + "&sensor=true"), Charset.defaultCharset()));
+	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+	        conn.setRequestMethod("GET");
+	        conn.setRequestProperty("Accept", "application/json");
+
+	        if (conn.getResponseCode() != 200) {
+	            throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+	        }
+	        BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+	        String output = "", full = "";
+	        while ((output = br.readLine()) != null) {
+	            System.out.println(output);
+	            full += output;
+	        }
+
+	        
+	        conn.disconnect();
+	    } catch (MalformedURLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+    }
 	
 	
 	

@@ -8,6 +8,14 @@ import axios from 'axios';
 import VueAxios from 'vue-axios'
 import store from './store/store';
 import VueGeolocation from 'vue-browser-geolocation'
+import Geocoder from "@pderas/vue2-geocoder";
+
+Vue.use(Geocoder, {
+    defaultCountryCode: null, // e.g. 'CA'
+    defaultLanguage:    null, // e.g. 'en'
+    defaultMode:        'address', // or 'lat-lng'
+    googleMapsApiKey:   'AIzaSyABqBTYCgHhadT5MpeM61rsQJTe8LMANEE'
+});
 
 Vue.config.productionTip = false
 Vue.use(VueGeolocation)

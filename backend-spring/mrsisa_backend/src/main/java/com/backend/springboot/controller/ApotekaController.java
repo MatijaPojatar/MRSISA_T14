@@ -165,6 +165,8 @@ public class ApotekaController {
 	
 	@GetMapping("/getOne/{id}")
 	public ResponseEntity<ApotekaMainInfoDTO> getOne(@PathVariable Integer id){
+		//Apoteka a = apotekaService.findOne(id);
+		//a.getGeoPointFromAddress("Bulevar Mihajla Pupina, Novi Sad, Srbija");
 		ApotekaMainInfoDTO apoteka = new ApotekaMainInfoDTO(apotekaService.findOne(id));
 		return new ResponseEntity<ApotekaMainInfoDTO>(apoteka, HttpStatus.OK);
 	}

@@ -270,7 +270,7 @@
                 <AkcijePromocije/>
             </v-container>
             <v-container fluid v-if="showApoteke" :style="{width:'180vh'}">
-                <ProfilApoteke :apotekaId=1 :registrovan="true" :user="user"/>
+                <ProfilApoteke :apotekaId=2 :registrovan="true" :user="user"/>
             </v-container>
             <v-container fluid v-if="showErecepti" :style="{width:'70vh'}">
                 <PregledERecepata/>
