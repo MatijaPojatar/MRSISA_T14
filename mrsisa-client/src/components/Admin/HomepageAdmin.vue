@@ -179,7 +179,7 @@
         <ZalbeAdmina/>
       </v-container>
 
-      <v-container fluid v-if="showOdsustva" :style="{width:'70vh'}">
+      <v-container fluid v-if="showOdsustva" :style="{width:'100vh'}">
         <TableOdsustva  :farmaceut=false />
       </v-container>
 

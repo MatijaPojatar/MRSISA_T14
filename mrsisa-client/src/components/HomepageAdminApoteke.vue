@@ -166,7 +166,7 @@
       <v-container fluid v-if="showApoteka" :style="{width:'70vh'}">
         <ApotekaForm :apotekaId="user.apotekaId" :editable="true" />
       </v-container>
-      <v-container fluid v-if="showOdsustva" :style="{width:'70vh'}">
+      <v-container fluid v-if="showOdsustva" :style="{width:'100vh'}">
         <TableOdsustva :apotekaId="user.apotekaId" :farmaceut=true />
       </v-container>
       <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">

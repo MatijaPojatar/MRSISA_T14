@@ -20,13 +20,13 @@ public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarma
 	
 	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
-	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true and ((o.pocetak <= :start and o.kraj >= :end) or (o.pocetak >= :start and o.pocetak <= :end and o.kraj >= :end) or (o.kraj >= :start and o.kraj <= :end and o.pocetak <= :start))")
+	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.status=0 and ((o.pocetak <= :start and o.kraj >= :end) or (o.pocetak >= :start and o.pocetak <= :end and o.kraj >= :end) or (o.kraj >= :start and o.kraj <= :end and o.pocetak <= :start))")
 	public List<OdsustvoFarmaceut> findExistInTime(@Param("id") Integer id,@Param("start") LocalDateTime start,@Param("end") LocalDateTime end);
 	
-	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.odobren=true")
+	@Query("select o from OdsustvoFarmaceut o where o.farmaceut.id = :id and o.status=0")
 	List<OdsustvoFarmaceut> findAllByFarmaceutId(@Param("id")Integer farmaceutId);
 	
-	@Query("select o from OdsustvoFarmaceut o where o.apoteka.id = :id and o.odobren=false and o.pocetak >= :start")
+	@Query("select o from OdsustvoFarmaceut o where o.apoteka.id = :id and o.status=2 and o.pocetak >= :start")
 	public List<OdsustvoFarmaceut> findAllNotOdobrenInFutureApoteka(@Param("id") Integer id,@Param("start") LocalDateTime start);
 
 }

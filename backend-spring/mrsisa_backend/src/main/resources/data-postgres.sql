@@ -174,9 +174,12 @@ insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) va
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (65000, '2021-05-20', 2, 11, 2);
 
 
-insert into odsustva_farmaceut(pocetak, kraj, odobren, farmaceut_id, apoteka_id) values ('2021-05-28', '2021-05-31', false, 1, 1);
-insert into odsustva_dermatolog(pocetak, kraj, odobren, dermatolog_id) values ('2021-05-28', '2021-05-31', false, 3);
-insert into odsustva_dermatolog(pocetak, kraj, odobren, dermatolog_id) values ('2021-06-15', '2021-06-21', false, 3);
+insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-05-28', '2021-05-31', 2, 1, 1);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-05-28', '2021-05-31', 2, 3);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-06-15', '2021-06-21', 2, 3);
+insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-06-28', '2021-06-30', 2, 1, 1);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-07-28', '2021-07-31', 2, 3);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-07-15', '2021-07-21', 2, 3);
 
 insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '15% popusta na sve kreme', '2021-05-18', '2021-06-18');
 insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(2, '3 + 1 gratis - Konjska mast', '2021-04-18', '2021-06-18');

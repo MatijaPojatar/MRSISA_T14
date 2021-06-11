@@ -187,6 +187,38 @@ public class EmailService {
 	}
 	
 	@Async
+	public void odbijanjeOdsustvaDermatolog(OdsustvoDermatolog odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odbijen zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getDermatolog().getIme() +"\n\nObaveštavamo Vas da je odbijen Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nRazlog odbijanja: "+ odsustvo.getRazlog() + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
+	public void odbijanjeOdsustvaFarmaceut(OdsustvoFarmaceut odsustvo) throws MailException, InterruptedException {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
+		SimpleMailMessage mail = new SimpleMailMessage();
+		//mail.setTo(rl.getPacijent().getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Odbijen zahtev za odsustvo");
+		mail.setText("Poštovani "+ odsustvo.getFarmaceut().getIme() +"\n\nObaveštavamo Vas da je odbijen Vaš zahtev za odmor u periodu: \n"+
+				"\nPočetak: " + odsustvo.getPocetak().format(dtf)+
+				"\nKraj: "+ odsustvo.getKraj().format(dtf) + 
+				"\n\nRazlog odbijanja: "+ odsustvo.getRazlog() + 
+				"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+	}
+	
+	@Async
 	public void odgovorPonuda(Integer narudzbenicaId, Integer ponudaId, String status) throws MailException, InterruptedException {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		//mail.setTo(rl.getPacijent().getMail());

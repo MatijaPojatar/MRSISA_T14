@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
+import com.backend.springboot.domain.StatusZahtevaZaOdmor;
 import com.backend.springboot.repository.OdsustvoFarmaceutRepository;
 
 @Transactional
@@ -28,7 +28,14 @@ public class OdsustvoFarmaceutService {
 	
 	public OdsustvoFarmaceut odobri(Integer id) {
 		OdsustvoFarmaceut o = rep.getOne(id);
-		o.setOdobren(true);
+		o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
+		return rep.save(o);
+	}
+	
+	public OdsustvoFarmaceut odbij(Integer id, String razlog) {
+		OdsustvoFarmaceut o = rep.getOne(id);
+		o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
+		o.setRazlog(razlog);
 		return rep.save(o);
 	}
 	

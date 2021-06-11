@@ -19,6 +19,21 @@
             >
                 Odobri
             </v-btn>
+
+           
+            </div>
+    </template>
+
+    <template v-slot:item.actionOdbij="{ item }">
+        <div>
+      
+
+            <v-btn
+                class="mx-2"
+                @click="dodajRazlog(item)"
+            >
+                Odbij
+            </v-btn>
             </div>
     </template>
 
@@ -49,6 +64,41 @@
         </v-card-actions>
       </v-card>
   </v-dialog>
+
+   <v-dialog
+      v-model="dialogRazlog"
+      persistent
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Definisanje razloga odbijanja zahteva
+        </v-card-title>
+        <v-form
+            ref="form"
+            v-model="valid"
+            lazy-validation
+        >
+            <v-textarea
+            v-model="razlog"
+            :rules="requiredRules"
+            label="Razlog odbijanja: "
+            required
+        ></v-textarea>
+
+            
+
+            <v-btn
+            class="mr-4"
+            @click="odbij"
+            >
+            Ok
+            </v-btn>
+        </v-form>
+        
+      </v-card>
+  </v-dialog>
+
   </v-container>
 </template>
 
@@ -60,6 +110,8 @@
         data: () => ({
           
           dialog: false,
+          dialogRazlog: false,
+          razlog: "",
           message: "",
             headers: [
           {
@@ -71,10 +123,15 @@
           { text: 'Zaposleni', value: 'mail' },
           { text: 'Početak', value: 'pocetakStr' },
           { text: 'Kraj', value: 'krajStr' },
-          { text: 'Upravljaj', value: 'actions', sortable: false },
+          { text: 'Prihvati', value: 'actions', sortable: false },
+          { text: 'Odbij', value: 'actionOdbij', sortable: false },
         ],
             zahtevi: [],
-            odobrenZahtev: {},
+            selektovanZahtev: {},
+            valid: true,
+            requiredRules: [
+                v => !!v || 'Obavezno polje',
+            ],
          }),
         props:{
             apotekaId: Number,
@@ -97,11 +154,11 @@
                                 farmaceutId: element.farmaceutId,
                                 pocetak: element.pocetak,
                                 kraj: element.kraj,
-                                odobren: element.odobren,
+                                status: element.status,
                                 mail: element.mail,
                                 pocetakStr: element.pocetakStr,
                                 krajStr: element.krajStr,
-                                
+                                razlog: element.razlog,
 	
                                 
                             })
@@ -118,11 +175,11 @@
                                 farmaceutId: element.farmaceutId,
                                 pocetak: element.pocetak,
                                 kraj: element.kraj,
-                                odobren: element.odobren,
+                                status: element.status,
                                 mail: element.mail,
                                 pocetakStr: element.pocetakStr,
                                 krajStr: element.krajStr,
-                                
+                                razlog: element.razlog,
 	
                                 
                             })
@@ -133,19 +190,41 @@
                 
              },
              odobri(item){
-                this.odobrenZahtev=Object.assign({}, item);
+                this.selektovanZahtev=Object.assign({}, item);
                 if (this.farmaceut){
-                    Vue.axios.put(`http://localhost:8080/odsustvo/farmaceut/zaOdobrenje/${this.odobrenZahtev.id}`)
+                    Vue.axios.put(`http://localhost:8080/odsustvo/farmaceut/zaOdobrenje/${this.selektovanZahtev.id}`)
                 }
                 else{
-                   Vue.axios.put(`http://localhost:8080/odsustvo/dermatolog/zaOdobrenje/${this.odobrenZahtev.id}`)
+                   Vue.axios.put(`http://localhost:8080/odsustvo/dermatolog/zaOdobrenje/${this.selektovanZahtev.id}`)
                 }
                 this.message = "Zahtev za odmor je odobren."
                 
                 this.dialog = true;
              },
+             dodajRazlog(item){
+                this.selektovanZahtev=Object.assign({}, item);
+                this.razlog = "";
+                this.dialogRazlog = true;
+             },
+
+             odbij(){
+               if (this.$refs.form.validate()){
+                this.selektovanZahtev.razlog = this.razlog;
+                  if (this.farmaceut){
+                      Vue.axios.put(`http://localhost:8080/odsustvo/farmaceut/zaOdbijanje/${this.selektovanZahtev.id}`,  this.selektovanZahtev)
+                  }
+                  else{
+                    Vue.axios.put(`http://localhost:8080/odsustvo/dermatolog/zaOdbijanje/${this.selektovanZahtev.id}`, this.selektovanZahtev)
+                  }
+                  this.dialogRazlog = false;
+
+                  this.message = "Zahtev za odmor je odbijen."
+                  
+                  this.dialog = true;
+               }
+             },
              endDialog(){
-                 const index=this.zahtevi.findIndex((l)=>l.id==this.odobrenZahtev.id)
+                 const index=this.zahtevi.findIndex((l)=>l.id==this.selektovanZahtev.id)
                 if(index !=-1){
                     this.zahtevi.splice(index, 1);
                 }

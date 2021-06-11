@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.OdsustvoFarmaceut;
+import com.backend.springboot.domain.StatusZahtevaZaOdmor;
 
 public class OdsustvoFarmaceutDTO {
 	
 	private Integer id,farmaceutId,apotekaId;
 	private LocalDateTime pocetak,kraj;
-	private boolean odobren;
-	private String mail, pocetakStr, krajStr;
+	private StatusZahtevaZaOdmor status;
+	private String mail, pocetakStr, krajStr, razlog;
 	
 	
 	public OdsustvoFarmaceutDTO() {
@@ -26,12 +27,25 @@ public class OdsustvoFarmaceutDTO {
 		this.apotekaId=o.getApoteka().getId();
 		this.pocetak=o.getPocetak();
 		this.kraj=o.getKraj();
-		this.odobren=o.isOdobren();
+		this.status = o.getStatus();
 		this.mail = o.getFarmaceut().getMail();
+		this.razlog = o.getRazlog();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 		this.pocetakStr= this.pocetak.format(dtf);
 		this.krajStr= this.kraj.format(dtf);
+	}
+
+
+
+	public String getRazlog() {
+		return razlog;
+	}
+
+
+
+	public void setRazlog(String razlog) {
+		this.razlog = razlog;
 	}
 
 
@@ -131,15 +145,19 @@ public class OdsustvoFarmaceutDTO {
 
 
 
-	public boolean isOdobren() {
-		return odobren;
+	public StatusZahtevaZaOdmor getStatus() {
+		return status;
 	}
 
 
 
-	public void setOdobren(boolean odobren) {
-		this.odobren = odobren;
+	public void setStatus(StatusZahtevaZaOdmor status) {
+		this.status = status;
 	}
+
+
+
+	
 	
 	
 	

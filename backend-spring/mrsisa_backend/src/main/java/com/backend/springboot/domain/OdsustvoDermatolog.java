@@ -21,19 +21,30 @@ public class OdsustvoDermatolog {
 	private LocalDateTime pocetak;
 	@Column(name = "kraj", nullable = false)
 	private LocalDateTime kraj;
-	@Column(name = "odobren", nullable = false)
-	private boolean odobren;
+	@Column(name = "status", nullable = false)
+	private StatusZahtevaZaOdmor status;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Dermatolog dermatolog;	
+	@Column(name = "razlog_odbijanja", nullable = true)
+	private String razlog;
 	
-	public OdsustvoDermatolog(Integer id, LocalDateTime pocetak, LocalDateTime kraj, boolean odobren,
+
+	public OdsustvoDermatolog(Integer id, LocalDateTime pocetak, LocalDateTime kraj, StatusZahtevaZaOdmor status,
 			Dermatolog dermatolog) {
 		super();
 		this.id = id;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
-		this.odobren = odobren;
+		this.status = status;
 		this.dermatolog = dermatolog;
+	}
+
+	public String getRazlog() {
+		return razlog;
+	}
+
+	public void setRazlog(String razlog) {
+		this.razlog = razlog;
 	}
 
 	public OdsustvoDermatolog() {
@@ -58,12 +69,15 @@ public class OdsustvoDermatolog {
 	public void setKraj(LocalDateTime kraj) {
 		this.kraj = kraj;
 	}
-	public boolean isOdobren() {
-		return odobren;
+	
+	public StatusZahtevaZaOdmor getStatus() {
+		return status;
 	}
-	public void setOdobren(boolean odobren) {
-		this.odobren = odobren;
+
+	public void setStatus(StatusZahtevaZaOdmor status) {
+		this.status = status;
 	}
+
 	public Dermatolog getDermatolog() {
 		return dermatolog;
 	}

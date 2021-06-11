@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.OdsustvoDermatolog;
+import com.backend.springboot.domain.StatusZahtevaZaOdmor;
 
 public class OdsustvoDermatologDTO {
 	
 	private Integer id,dermatologId;
 	private LocalDateTime pocetak,kraj;
-	private boolean odobren;
-	private String mail, pocetakStr, krajStr;
+	private StatusZahtevaZaOdmor status;
+	private String mail, pocetakStr, krajStr, razlog;
 	
 	public OdsustvoDermatologDTO() {
 		super();
@@ -22,12 +23,30 @@ public class OdsustvoDermatologDTO {
 		this.dermatologId=o.getDermatolog().getId();
 		this.pocetak=o.getPocetak();
 		this.kraj=o.getKraj();
-		this.odobren=o.isOdobren();
+		this.status=o.getStatus();
 		this.mail = o.getDermatolog().getMail();
+		this.razlog = o.getRazlog();
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy.");
 		this.pocetakStr= this.pocetak.format(dtf);
 		this.krajStr= this.kraj.format(dtf);
+	}
+	
+
+	public String getRazlog() {
+		return razlog;
+	}
+
+	public void setRazlog(String razlog) {
+		this.razlog = razlog;
+	}
+
+	public StatusZahtevaZaOdmor getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusZahtevaZaOdmor status) {
+		this.status = status;
 	}
 
 	public String getPocetakStr() {
@@ -86,13 +105,7 @@ public class OdsustvoDermatologDTO {
 		this.kraj = kraj;
 	}
 
-	public boolean isOdobren() {
-		return odobren;
-	}
-
-	public void setOdobren(boolean odobren) {
-		this.odobren = odobren;
-	}
+	
 	
 	
 }

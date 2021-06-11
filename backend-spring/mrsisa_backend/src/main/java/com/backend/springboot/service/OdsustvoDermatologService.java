@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
+import com.backend.springboot.domain.StatusZahtevaZaOdmor;
 import com.backend.springboot.repository.OdsustvoDermatologRepository;
 
 @Service
@@ -30,7 +31,14 @@ public class OdsustvoDermatologService {
 	
 	public OdsustvoDermatolog odobri(Integer id) {
 		OdsustvoDermatolog o = rep.getOne(id);
-		o.setOdobren(true);
+		o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
+		return rep.save(o);
+	}
+	
+	public OdsustvoDermatolog odbij(Integer id, String razlog) {
+		OdsustvoDermatolog o = rep.getOne(id);
+		o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
+		o.setRazlog(razlog);
 		return rep.save(o);
 	}
 	

@@ -23,6 +23,7 @@ import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.domain.StatusZahtevaZaOdmor;
 import com.backend.springboot.dto.OdsustvoDermatologDTO;
 import com.backend.springboot.dto.OdsustvoFarmaceutDTO;
 import com.backend.springboot.service.DermatologService;
@@ -69,7 +70,7 @@ public class OdsustvoController {
 		Farmaceut f=farmService.findOne(id);
 		of.setKraj(odsustvo.getKraj());
 		of.setPocetak(odsustvo.getPocetak());
-		of.setOdobren(odsustvo.isOdobren());
+		of.setStatus(StatusZahtevaZaOdmor.OBRADA);
 		of.setFarmaceut(f);
 		of.setApoteka(f.getApoteka());
 		
@@ -94,7 +95,7 @@ public class OdsustvoController {
 		Dermatolog d=dermService.findOne(id);
 		od.setKraj(odsustvo.getKraj());
 		od.setPocetak(odsustvo.getPocetak());
-		od.setOdobren(odsustvo.isOdobren());
+		od.setStatus(StatusZahtevaZaOdmor.OBRADA);
 		od.setDermatolog(d);
 		
 		odDermService.save(od);
@@ -162,6 +163,28 @@ public class OdsustvoController {
 		OdsustvoDermatolog odsustvo = odDermService.odobri(zahtevId);
 		try {
 			emailService.odobravanjeOdsustvaDermatolog(odsustvo);
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@PutMapping("/farmaceut/zaOdbijanje/{zahtevId}")
+	public ResponseEntity<Boolean> odbijFarmaceut(@PathVariable Integer zahtevId, @RequestBody OdsustvoFarmaceutDTO dto){
+		OdsustvoFarmaceut odsustvo = odFarmService.odbij(zahtevId, dto.getRazlog());
+		try {
+			emailService.odbijanjeOdsustvaFarmaceut(odsustvo);
+		} catch (MailException | InterruptedException e) {
+			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+		}
+		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+	}
+	
+	@PutMapping("/dermatolog/zaOdbijanje/{zahtevId}")
+	public ResponseEntity<Boolean> odbijDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
+		OdsustvoDermatolog odsustvo = odDermService.odbij(zahtevId, dto.getRazlog());
+		try {
+			emailService.odbijanjeOdsustvaDermatolog(odsustvo);
 		} catch (MailException | InterruptedException e) {
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}

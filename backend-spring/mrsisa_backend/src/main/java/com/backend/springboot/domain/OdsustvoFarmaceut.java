@@ -21,27 +21,57 @@ public class OdsustvoFarmaceut {
 	private LocalDateTime pocetak;
 	@Column(name = "kraj", nullable = false)
 	private LocalDateTime kraj;
-	@Column(name = "odobren", nullable = false)
-	private boolean odobren;
+	@Column(name = "status", nullable = false)
+	private StatusZahtevaZaOdmor status;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Farmaceut farmaceut;
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Apoteka apoteka;
+	@Column(name = "razlog_odbijanja", nullable = true)
+	private String razlog;
 	
 	public OdsustvoFarmaceut() {
 		super();
 	}
 
-	public OdsustvoFarmaceut(Integer id, LocalDateTime pocetak, LocalDateTime kraj, boolean odobren,
+	
+
+	public OdsustvoFarmaceut(Integer id, LocalDateTime pocetak, LocalDateTime kraj, StatusZahtevaZaOdmor status,
 			Farmaceut farmaceut, Apoteka apoteka) {
 		super();
 		this.id = id;
 		this.pocetak = pocetak;
 		this.kraj = kraj;
-		this.odobren = odobren;
+		this.status = status;
 		this.farmaceut = farmaceut;
 		this.apoteka = apoteka;
 	}
+
+
+
+	public String getRazlog() {
+		return razlog;
+	}
+
+
+
+	public void setRazlog(String razlog) {
+		this.razlog = razlog;
+	}
+
+
+
+	public StatusZahtevaZaOdmor getStatus() {
+		return status;
+	}
+
+
+
+	public void setStatus(StatusZahtevaZaOdmor status) {
+		this.status = status;
+	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -67,13 +97,7 @@ public class OdsustvoFarmaceut {
 		this.kraj = kraj;
 	}
 
-	public boolean isOdobren() {
-		return odobren;
-	}
-
-	public void setOdobren(boolean odobren) {
-		this.odobren = odobren;
-	}
+	
 
 	public Farmaceut getFarmaceut() {
 		return farmaceut;
