@@ -244,4 +244,8 @@ public class DermatologService {
 		return zaposlenjeRep.findOneByApotekaIdAndDermatologId(apotekaId, dermatologId);
 	}
 
+	public Dermatolog findByMail(String mail) {
+		return dermatologRep.findOneByMail(mail);
+	}
+
 }

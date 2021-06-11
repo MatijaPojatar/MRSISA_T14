@@ -12,4 +12,6 @@ public interface DobavljacRepository extends JpaRepository<Dobavljac, Integer> {
 	
 	public Dobavljac findOneById(Integer id);
 
+	public Dobavljac findOneByMail(String mail);
+
 }

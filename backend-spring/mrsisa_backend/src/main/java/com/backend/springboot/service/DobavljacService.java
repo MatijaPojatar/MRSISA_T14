@@ -26,4 +26,8 @@ public class DobavljacService {
 	public Dobavljac save(Dobavljac d) {
 		return dobavljacRep.save(d);
 	}
+
+	public Dobavljac findByMail(String mail) {
+		return dobavljacRep.findOneByMail(mail);
+	}
 }

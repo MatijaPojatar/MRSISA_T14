@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.AkcijaPromocija;
 import com.backend.springboot.domain.Dermatolog;
+import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
@@ -251,8 +252,8 @@ public class EmailService {
 	public void potvrdaKupovine(EReceptDTO dto, Pacijent pac, String nazivApoteke) {
 
 		SimpleMailMessage mail = new SimpleMailMessage();
-//		mail.setTo(pac.getMail());
-		mail.setTo("sasicnatalija4@gmail.com");
+		mail.setTo(pac.getMail());
+//		mail.setTo("sasicnatalija4@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Potvrda o izdavanju lekova preko E-Recepta");
 		mail.setText("Poštovani "+ pac.getIme() +",\n\nObaveštavamo Vas da je E-Recept sa šifrom " + dto.getId() + "uspešno obrađen u apoteci "+ nazivApoteke+
@@ -277,5 +278,18 @@ public class EmailService {
 				   + "\nRok preuzimanja: " + rl.getDatum().format(formatter)
 				   + "\n\nSrdačan pozdrav!");
 		jms.send(mail);
+	}
+
+	@Async
+	public void regByAdmin(String adresa) {
+		SimpleMailMessage mail = new SimpleMailMessage();
+		mail.setTo(adresa);
+		mail.setFrom(env.getProperty("spring.mail.username"));
+		mail.setSubject("Registracija");
+		mail.setText("Poštovani,\n\nObaveštavamo Vas da je registracija Vašeg profila na sistem za upravljanje apotekama uspešna.\n" +
+					"Username je Vaša email adresa, a Vaša trenutna šifra je: 12345678 . Prilikom prve prijave, moraćete da postavite novu šifru."+
+					"\n\nSrdačan pozdrav!");
+		jms.send(mail);
+		
 	}
 }

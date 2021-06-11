@@ -11,4 +11,6 @@ public interface AdministratorApotekeRepository extends JpaRepository<Administra
 	public List<AdministratorApoteke> findAll();
 	
 	public AdministratorApoteke findOneById(Integer id);
+
+	public AdministratorApoteke findOneByMail(String mail);
 }

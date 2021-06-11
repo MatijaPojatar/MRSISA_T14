@@ -12,6 +12,8 @@ public interface DermatologRepository extends JpaRepository<Dermatolog, Integer>
 	public List<Dermatolog> findAll();
 	
 	public Dermatolog findOneById(Integer id);
+
+	public Dermatolog findOneByMail(String mail);
 	
 
 }

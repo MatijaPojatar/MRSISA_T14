@@ -204,6 +204,7 @@ public class DermatologDTO {
 	public void setKrajRadnogVremenaStr(String krajRadnogVremenaStr) {
 		this.krajRadnogVremenaStr = krajRadnogVremenaStr;
 	}
+
 	
 	
 }

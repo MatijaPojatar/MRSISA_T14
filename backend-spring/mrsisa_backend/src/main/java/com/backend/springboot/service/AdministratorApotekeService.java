@@ -24,4 +24,8 @@ public class AdministratorApotekeService {
 	public AdministratorApoteke findOne(Integer id) {
 		return adminRep.findOneById(id);
 	}
+
+	public AdministratorApoteke findByMail(String mail) 
+		return adminRep.findOneByMail(mail);
+	}
 }

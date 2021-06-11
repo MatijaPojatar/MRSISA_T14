@@ -7,6 +7,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.AdministratorApotekeDTO;
+
 @Entity
 @Table(name="administratori_apoteke")
 public class AdministratorApoteke extends Osoba {
@@ -36,6 +38,11 @@ public class AdministratorApoteke extends Osoba {
 			String grad, String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja,
 			boolean promenjenaLozinka, boolean enabled) {
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
+	}
+
+	public AdministratorApoteke(AdministratorApotekeDTO a) {
+		super(a.getId(), a.getIme(), a.getPrezime(), a.getMail(), a.getPassword(), a.getAdresa(), a.getGrad(), a.getDrzava(), a.getBrojTelefona()
+				, a.getPol(), a.getDatumRodjenja(), a.getPromenjenaLozinka(), a.getEnabled());
 	}
 	
 	
