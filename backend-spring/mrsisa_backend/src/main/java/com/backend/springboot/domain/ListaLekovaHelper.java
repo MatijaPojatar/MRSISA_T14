@@ -5,6 +5,8 @@ import java.util.List;
 import com.backend.springboot.dto.LekEReceptaDTO;
 
 public class ListaLekovaHelper {
+	private Integer id;
+	
 	private List<LekEReceptaDTO> lekovi;
 	
 
@@ -13,9 +15,22 @@ public class ListaLekovaHelper {
 	}
 
 
-	public ListaLekovaHelper(List<LekEReceptaDTO> lekovi) {
+
+
+	public ListaLekovaHelper(Integer id, List<LekEReceptaDTO> lekovi) {
 		super();
+		this.id = id;
 		this.lekovi = lekovi;
+	}
+
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 
@@ -26,10 +41,6 @@ public class ListaLekovaHelper {
 
 	public void setLekovi(List<LekEReceptaDTO> lekovi) {
 		this.lekovi = lekovi;
-	}
-
-	
-	
-	
+	}	
 
 }

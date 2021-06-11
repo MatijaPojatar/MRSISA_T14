@@ -29,32 +29,32 @@ public class MrsisaBackendApplication{
 //		read();
 		
 	}
-	public static void read() throws Exception {
-		QRCodeReader.readQRCode();
-	}
+//	public static void read() throws Exception {
+//		QRCodeReader.readQRCode();
+//	}
 	
-	public static void gen() throws WriterException, IOException {
-		List<LekEReceptaDTO> dtos = new ArrayList<LekEReceptaDTO>();
-		
-		LekEReceptaDTO lekDTO = new LekEReceptaDTO();
-		lekDTO.setId(1);
-		lekDTO.setKolicina(2);
-		lekDTO.setNazivLeka("Bromazepam");
-		dtos.add(lekDTO);
-		
-		LekEReceptaDTO lekDTO2 = new LekEReceptaDTO();
-		lekDTO2.setId(2);
-		lekDTO2.setKolicina(3);
-		lekDTO2.setNazivLeka("Aspirin");
-		dtos.add(lekDTO2);
-		
-		ListaLekovaHelper lista = new ListaLekovaHelper(dtos);
-		
-		Gson gson = new Gson();
-		
-		String stringListe = gson.toJson(lista);
-		
-		//String text, int width, int height, String filePath
-		QRCodeGenerator.generateQRCodeImage(stringListe, 200, 200, "D:\\6semestar\\QR_test1.png");
-	}
+//	public static void gen() throws WriterException, IOException {   OVO JE STARA FUNKCIJA< NE STAVLJA ID
+//		List<LekEReceptaDTO> dtos = new ArrayList<LekEReceptaDTO>();
+//		
+//		LekEReceptaDTO lekDTO = new LekEReceptaDTO();
+//		lekDTO.setId(1);
+//		lekDTO.setKolicina(2);
+//		lekDTO.setNazivLeka("Bromazepam");
+//		dtos.add(lekDTO);
+//		
+//		LekEReceptaDTO lekDTO2 = new LekEReceptaDTO();
+//		lekDTO2.setId(2);
+//		lekDTO2.setKolicina(3);
+//		lekDTO2.setNazivLeka("Aspirin");
+//		dtos.add(lekDTO2);
+//		
+//		ListaLekovaHelper lista = new ListaLekovaHelper(dtos);
+//		
+//		Gson gson = new Gson();
+//		
+//		String stringListe = gson.toJson(lista);
+//		
+//		//String text, int width, int height, String filePath
+//		QRCodeGenerator.generateQRCodeImage(stringListe, 200, 200, "D:\\6semestar\\QR_test1.png");
+//	}
 }

@@ -53,12 +53,19 @@ public class EReceptController {
 	public ResponseEntity<EReceptDTO> uploadAndReadQR(@RequestParam MultipartFile file, @PathVariable Integer id) throws Exception{
 		
 		ListaLekovaHelper helperLista = QRCodeReader.readQRCodeFromMultipartFile(file);
+		
+		
+		if(service.qrExists(helperLista.getId())) {
+			
+			return new ResponseEntity<EReceptDTO>(HttpStatus.FORBIDDEN);
+		}
 
 		ERecept erecept = new ERecept();
 		
 		Pacijent pacijent = pacijentService.findOne(id);
 		erecept.setPacijent(pacijent);
 		erecept.setStatus(StatusErecepta.NOV);
+		erecept.setQrId(helperLista.getId());
 		
 		erecept = service.save(erecept);	
 		//sad imamo id erecepta
@@ -105,11 +112,7 @@ public class EReceptController {
 		return new ResponseEntity<String>(json, HttpStatus.OK);
 	}
 	
-	//ODABRANA APOTEKA
-	@PutMapping("/kupiLekove")//i slanje mejla, magacin apdejt i erecept obradjen
-	public ResponseEntity<String> kupiIzApoteke(){
-		return null;
-	}
+
 	
 	//FETCH APOTEKE SA OVIM LEKOVIMA I KOLICINAMA I DAJ CENU MOZDA NEGDE DRUGDE CONTROLLER
 	

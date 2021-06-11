@@ -10,7 +10,7 @@ import com.backend.springboot.domain.StatusErecepta;
 
 public class EReceptDTO {
 	
-	private Integer id, pacijentId;
+	private Integer id, pacijentId, qrId;
 	private String pacijentIP;
 	private LocalDate datumIzdavanja;
 	private StatusErecepta status;
@@ -22,6 +22,7 @@ public class EReceptDTO {
 	public EReceptDTO(ERecept e) {
 		super();
 		this.id = e.getId();
+		this.qrId = e.getQrId();
 		this.pacijentId = e.getPacijent().getId();
 		this.datumIzdavanja = e.getDatumIzdavanja();
 		this.status = e.getStatus();
@@ -34,6 +35,12 @@ public class EReceptDTO {
 
 	}
 	
+	public Integer getQrId() {
+		return qrId;
+	}
+	public void setQrId(Integer qrId) {
+		this.qrId = qrId;
+	}
 	public String getPacijentIP() {
 		return pacijentIP;
 	}

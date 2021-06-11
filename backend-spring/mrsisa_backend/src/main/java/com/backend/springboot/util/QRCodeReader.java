@@ -19,21 +19,21 @@ import com.google.zxing.common.HybridBinarizer;
 
 public class QRCodeReader {
 	
-	public static void readQRCode() throws Exception{
-		try {
-			String path = "D:\\6semestar\\Projekatt\\MRSISA_T14\\QR_kodovi\\QRcode_5.png";//ovde ubaci parametar funkcije
-			
-			BufferedImage bf = ImageIO.read(new FileInputStream(path)); //mozda ovde ubacim file koji sad dobavila preko uploada
-			
-			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(
-					new BufferedImageLuminanceSource(bf)));
-			Result result = new MultiFormatReader().decode(bitmap);
-			
-			System.out.println(result.getText());
-		}catch(Exception e) {
-			
-		}
-	}
+//	public static void readQRCode() throws Exception{
+//		try {
+//			String path = "D:\\6semestar\\Projekatt\\MRSISA_T14\\QR_kodovi\\QRcode_5.png";//ovde ubaci parametar funkcije
+//			
+//			BufferedImage bf = ImageIO.read(new FileInputStream(path)); //mozda ovde ubacim file koji sad dobavila preko uploada
+//			
+//			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(
+//					new BufferedImageLuminanceSource(bf)));
+//			Result result = new MultiFormatReader().decode(bitmap);
+//			
+//			System.out.println(result.getText());
+//		}catch(Exception e) {
+//			
+//		}
+//	}
 	
 	public static ListaLekovaHelper readQRCodeFromMultipartFile(MultipartFile file) throws Exception{
 		try {

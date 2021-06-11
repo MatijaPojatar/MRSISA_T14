@@ -13,4 +13,6 @@ public interface EReceptRepository extends JpaRepository<ERecept, Integer>{
 	public ERecept findOneById(Integer id);
 	
 	public List<ERecept> findAllByPacijentId(Integer id);
+	
+	public ERecept findOneByQrId(Integer id);
 }

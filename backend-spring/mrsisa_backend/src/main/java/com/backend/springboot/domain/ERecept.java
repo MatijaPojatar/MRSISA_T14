@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,11 +25,18 @@ public class ERecept {
 	@Column(name = "datum_izdavanja")
 	private LocalDate datumIzdavanja;
 	
+	@Column(name = "qr_id")
+	private Integer qrId;
+	
 	@Column(name = "status")
 	private StatusErecepta status;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Pacijent pacijent;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Apoteka apoteka;
+	
 	
 	@OneToMany(mappedBy = "erecept", fetch = FetchType.LAZY)
 	private List<LekERecepta> lekovi = new ArrayList<LekERecepta>();
@@ -54,6 +62,27 @@ public class ERecept {
 		this.id = id;
 		this.datumIzdavanja = datumIzdavanja;
 		this.pacijent = pacijent;
+	}
+
+
+
+	public Integer getQrId() {
+		return qrId;
+	}
+
+
+	public void setQrId(Integer qrId) {
+		this.qrId = qrId;
+	}
+
+
+	public Apoteka getApoteka() {
+		return apoteka;
+	}
+
+
+	public void setApoteka(Apoteka apoteka) {
+		this.apoteka = apoteka;
 	}
 
 

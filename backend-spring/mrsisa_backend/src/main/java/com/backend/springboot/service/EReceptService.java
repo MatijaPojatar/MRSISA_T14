@@ -66,5 +66,14 @@ public class EReceptService {
 		
 		return ereceptRep.save(erecept);
 	}
+
+	public boolean qrExists(Integer id) {
+		
+		if(ereceptRep.findOneByQrId(id) == null) {
+			return false;
+		}
+		
+		return true;
+	}
 	
 }

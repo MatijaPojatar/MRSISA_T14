@@ -70,6 +70,11 @@ public class Apoteka {
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<OdsustvoFarmaceut> odsustva=new ArrayList<OdsustvoFarmaceut>();
 	
+	@OneToMany(mappedBy= "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<ERecept> erecepti = new ArrayList<ERecept>();
+	
+	
+	
 	@ManyToMany(mappedBy = "pretplaceneApoteke")
 	private List<Pacijent> pretplaceniPacijenti = new ArrayList<Pacijent>();
 	
@@ -167,6 +172,14 @@ public class Apoteka {
 		this.magacin = dto.getMagacin();
 		this.akcije = dto.getAkcije();
 		this.administratori = dto.getAdministratori();
+	}
+
+	public List<ERecept> getErecepti() {
+		return erecepti;
+	}
+
+	public void setErecepti(List<ERecept> erecepti) {
+		this.erecepti = erecepti;
 	}
 
 	public List<ZalbaNaApoteku> getZalbe() {

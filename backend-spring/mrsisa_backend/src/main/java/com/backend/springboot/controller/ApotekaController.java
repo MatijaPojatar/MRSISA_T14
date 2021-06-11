@@ -119,6 +119,7 @@ public class ApotekaController {
 		//erecept je obradjen, update
 		ERecept erecept = ereceptService.findOne(dto.getId());
 		erecept.setStatus(StatusErecepta.OBRADJEN);
+		erecept.setApoteka(a);
 		ereceptService.save(erecept);
 		
 		Pacijent pac = pacijentService.findOne(dto.getPacijentId());
@@ -130,7 +131,7 @@ public class ApotekaController {
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
 		try {
 			System.out.println(dto.getNaziv() + "NAZIV");
-			System.out.println(dto.getAdresa() + "ADRSEA");
+			System.out.println(dto.getAdresa() + "ADRESA");
             return new ResponseEntity<>(apotekaService.addApoteka(dto), HttpStatus.CREATED);
         } catch (EmptyResultDataAccessException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
