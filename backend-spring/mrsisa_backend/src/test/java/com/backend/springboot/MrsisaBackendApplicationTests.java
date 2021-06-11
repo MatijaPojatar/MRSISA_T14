@@ -68,7 +68,7 @@ class MrsisaBackendApplicationTests {
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype());
 
-	@Test
+	/*@Test
 	public void testPessimisticLockingScenario() throws Throwable {
 
 		ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -96,7 +96,7 @@ class MrsisaBackendApplicationTests {
 
 		executor.shutdown();
 		
-	}
+	}*/
 	
 	//unit testovi
 	
@@ -142,21 +142,21 @@ class MrsisaBackendApplicationTests {
 	
 	
 	@Test
-	public void testGetAllSavetovanja() throws Exception {
+	public void testFindAllFarmaceutByApotekaId() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/savetovanje/all")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(6)));
+		this.mockMvc.perform(get( "/farmaceut/apoteka/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
 	}
 	
 	@Test
 	public void testGetAllSavetovanjaForFarmaceut() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/savetovanje/all/1")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(6)));
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(3)));
 	}
 	
 	@Test
-	public void testGetAllSavetovanjaForPacijent() throws Exception {
+	public void testZauzmiSavetovanje() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/savetovanje/zauzmi/1/2")).andExpect(status().is(405));
 	}

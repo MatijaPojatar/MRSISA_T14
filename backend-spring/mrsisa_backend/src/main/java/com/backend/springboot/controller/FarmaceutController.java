@@ -81,7 +81,7 @@ public class FarmaceutController {
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
 	}
 	
 	@PutMapping("/pass/{id}")
