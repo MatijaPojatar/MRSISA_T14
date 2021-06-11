@@ -2,14 +2,18 @@ package com.backend.springboot.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.ERecept;
 import com.backend.springboot.domain.LekERecepta;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.StatusErecepta;
 import com.backend.springboot.dto.LekEReceptaDTO;
 import com.backend.springboot.repository.EReceptRepository;
@@ -74,6 +78,21 @@ public class EReceptService {
 		}
 		
 		return true;
+	}
+
+	public Set<Apoteka> poseceneApoteke(Integer id) {
+		
+		Set<Apoteka> apoteke = new HashSet<Apoteka>();
+		List<ERecept> erecepti = ereceptRep.findAllByPacijentId(id);
+		
+		for (ERecept e : erecepti) {
+			if(e.getApoteka() != null) {
+				apoteke.add(e.getApoteka());
+			}
+			
+		}
+		return apoteke;
+
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.ERecept;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekERecepta;
@@ -27,6 +29,7 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.StatusErecepta;
 import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekEReceptaDTO;
+import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.service.EReceptService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.PacijentService;
@@ -49,6 +52,21 @@ public class EReceptController {
 	@Autowired
 	private LekService lekService;
 
+	@GetMapping("/apotekePacijenta/{id}")
+	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
+		Set<Apoteka> apoteke = service.poseceneApoteke(id);
+		//proveriti da li je prazna
+		List<MinimalApotekaDTO> minimalne = new ArrayList<MinimalApotekaDTO>();
+		for(Apoteka a : apoteke) {
+			minimalne.add(new MinimalApotekaDTO(a));
+		}
+		
+		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
+	}
+	
+
+	
+	
 	@PostMapping("/upload/{id}") 
 	public ResponseEntity<EReceptDTO> uploadAndReadQR(@RequestParam MultipartFile file, @PathVariable Integer id) throws Exception{
 		

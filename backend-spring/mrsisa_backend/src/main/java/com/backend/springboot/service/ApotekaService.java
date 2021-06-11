@@ -67,7 +67,7 @@ public class ApotekaService  {
 		}
 		
 		Apoteka apoteka = new Apoteka(dto);
-		System.out.println(apoteka.getAdresa() + "ADRSEA OD KRAJNJE");
+		System.out.println(apoteka.getAdresa() + "ADRESA OD KRAJNJE");
 		
 		return new ApotekaDTO(apotekaRep.save(apoteka));
 	}

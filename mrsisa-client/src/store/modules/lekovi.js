@@ -112,8 +112,8 @@ const actions = {
 
   async getZamenskeAction({ commit }, id) {
     try{
-      const { data : lista} = await Vue.axios.get("/lekovi/"+id);
-      commit("setCurrZamenske", lista);
+      const response = await Vue.axios.get("/lekovi/zamenski/"+id);
+      commit("setCurrZamenske", response.data);
       
       return;
     }catch(error){

@@ -78,11 +78,13 @@ const actions = {
     const response1 = await Vue.axios.get("/pregled/apotekePacijenta/" + pacijentId);
     const response2 = await Vue.axios.get("/savetovanje/apotekePacijenta/" + pacijentId);
     const response3 = await Vue.axios.get("/rezervacija/apotekePacijenta/" + pacijentId);
+    const response4 = await Vue.axios.get("/erecepti/apotekePacijenta/" + pacijentId);
 
     console.log("OVO SU MOGUCE APOTEKE")
-    console.log(response1);
-    console.log(response2);
-    console.log(response3);
+    console.log(response1.data);
+    console.log(response2.data);
+    console.log(response3.data);
+    console.log(response4.data);
 
     response1.data.forEach(item => {  
       moguceApoteke.add(item);
@@ -94,6 +96,10 @@ const actions = {
      response3.data.forEach(item => {
        moguceApoteke.add(item);
      })
+
+     response4.data.forEach(item => {
+      moguceApoteke.add(item);
+    })
 
     console.log(moguceApoteke);
 
