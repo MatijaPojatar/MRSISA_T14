@@ -43,6 +43,34 @@ const actions = {
     alert("Uspešna registracija" + response.data.mail);
 
   },
+// eslint-disable-next-line no-unused-vars
+  async dermSignUpAction({commit}, dto) {
+    const response = await Vue.axios.post("/auth/dermSignup", dto);
+    console.log(response.data);
+    alert("Poslali axios za derm");
+  },
+// eslint-disable-next-line no-unused-vars
+  async dobSignUpAction({commit}, dto) {
+    const response = await Vue.axios.post("/auth/dobSignup", dto);
+
+    console.log(response.data);
+    alert("Poslali axios za dob");
+  },
+// eslint-disable-next-line no-unused-vars
+  async aApSignUpAction({commit}, dto) {
+    const response = await Vue.axios.post("/auth/aapSignup", dto);
+
+    console.log(response.data);
+    alert("Poslali axios za aap");
+  },
+// eslint-disable-next-line no-unused-vars
+  async asSignUpAction({commit}, dto) {
+    const response = await Vue.axios.post("/auth/asSignup", dto);
+
+    console.log(response.data);
+    alert("Poslali axios za as");
+  },
+
 
   async logInAction({dispatch}, credentials) {
     

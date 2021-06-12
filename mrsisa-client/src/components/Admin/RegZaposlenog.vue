@@ -1,5 +1,5 @@
 <template>
-  <v-card >
+  <v-card v-if="nastavi">
     <v-card-title class="display-1">Registracija Zaposlenog</v-card-title>
 
     <v-card-text>
@@ -222,6 +222,11 @@
 
             </v-row>
           </v-container>
+      <v-card-actions>
+        <v-btn
+        v-on:click="goBack" 
+        class="blue white--text">Cancel</v-btn>
+      </v-card-actions>
     </v-card>
   </v-dialog>
 
@@ -242,6 +247,7 @@ export default {
     izabranaApotekaId: -1,
     odabir: true,
     uloga: {},
+    nastavi: true,
 
     uloge:[{ id: 1, naziv: "Administrator sistema"},
           { id: 2, naziv: "Administrator apoteke"},
@@ -305,21 +311,77 @@ export default {
   methods: {
     ...mapActions({
       getAllApotekeMinimalAction: "apoteke/getAllApotekeMinimalAction",
-      
+      dermSignUpAction: "korisnici/dermSignUpAction",
+      dobSignUpAction: "korisnici/dobSignUpAction",
+      aApSignUpAction: "korisnici/aApSignUpAction",
+      asSignUpAction: "korisnici/asSignUpAction"
+
     }),
 
+    goBack() {
+      this.nastavi = false
+    },
+
     async onSubmitAAP(){
-      alert("Submit admina apoteke");
-      //prover sve da je popunjeno
-      //kreiraj dto
-      //pozovi action
+      alert("Submit admina apoteke klik");
+      if(this.izabranaApotekaId === -1){
+        alert("Potrebno je odabrati apoteku gde je admin zaposlen!");
+        return;
+      }
+      const aapDTO = {
+        ime: this.ime,
+        prezime: this.prezime,
+        mail: this.mail,
+        adresa: this.adresa,
+        grad: this.grad,
+        drzava: this.drzava,
+        brojTelefona: this.brojTelefona,
+        pol: this.pol,
+        datumRodjenja: this.datum,
+        apotekaId: this.izabranaApotekaId,
+      }
+      try{
+        ///////////////////////
+        await this.aApSignUpAction(aapDTO);
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
+        console.log(aapDTO);
+      }catch(error){
+        alert("Greska pri registraciji admina apoteke")
+      }
+
     },
 
     async onSubmitAS(){
-      alert("Submit Admin sistema");
-      //prover sve da je popunjeno
-      //kreiraj dto
-      //pozovi action
+      alert("Submit Admin sistema klik");
+      if(this.potpis === ""){
+        alert("Potrebno uneti potpis administratora");
+        return;
+      }
+
+      const asDTO ={
+        ime: this.ime,
+        prezime: this.prezime,
+        mail: this.mail,
+        adresa: this.adresa,
+        grad: this.grad,
+        drzava: this.drzava,
+        brojTelefona: this.brojTelefona,
+        pol: this.pol,
+        datumRodjenja: this.datum,
+        potpis: this.potpis
+      }
+
+       try{
+        ///////////////////////
+        await this.asSignUpAction(asDTO);
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
+        console.log(asDTO);
+      }catch(error){
+        alert("Greska pri registraciji admina sistema")
+      }
+
     },
 
     odaberiUlogu(uloga){
@@ -328,41 +390,64 @@ export default {
     },
 
     async onSubmitDerm(){
-     alert("Submit derm");
+     alert("Submit derm klik");
+     if(this.pocetakRadnogVremena === "" || this.krajRadnogVremena === ""){
+       alert("Potreban unos radnog vremena");
+       return;
+     }
 
-      // const DermDTO = {
-      //   ime: this.ime,
-      //   prezime: this.prezime,
-      //   mail: this.mail,
-      //   password: this.password,
-      //   adresa: this.adresa,
-      //   grad: this.grad,
-      //   drzava: this.drzava,
-      //   brojTelefona: this.brojTelefona,
-      //   pol: this.pol,
-      //   datumRodjenja: this.datum,
-      //   pocetakRadnogVremena: this.pocetakRadnogVremena,
-      //   krajRadnogVremena: this.krajRadnogVremena
-      // }
-      // try{
-      //   ///////////////////////
-      //   alert("Uspesna registracija "+ this.ime + this.prezime);
-      //   this.cancel();
-      //   console.log(DermDTO);
-      // }catch(error){
-      //   alert("Greska pri registraciji dermatologa")
-      // }
-
+      const dermDTO = {
+        ime: this.ime,
+        prezime: this.prezime,
+        mail: this.mail,
+        adresa: this.adresa,
+        grad: this.grad,
+        drzava: this.drzava,
+        brojTelefona: this.brojTelefona,
+        pol: this.pol,
+        datumRodjenja: this.datum,
+        pocetakRadnogVremena: this.pocetakRadnogVremena,
+        krajRadnogVremena: this.krajRadnogVremena
+      }
+      try{
+        ///////////////////////
+        await this.dermSignUpAction(dermDTO);
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
+        console.log(dermDTO);
+      }catch(error){
+        alert("Greska pri registraciji dermatologa")
+      }
     },
 
     async onSubmitDob(){
-      alert("Sumbit Dobavljac")
-      // try{
-      //   alert("Uspesna registracija "+ this.ime + this.prezime);
-      //   this.cancel();
-      // }catch(error){
-      //   alert("Greska pri registraciji Dobavljaca")
-      // }
+      alert("Sumbit Dobavljac klik");
+      if(this.nazivPreduzeca === ""){
+        alert("Potreban unos naziva preduzeca!");
+        return;
+      }
+      const dobDTO = {
+        ime: this.ime,
+        prezime: this.prezime,
+        mail: this.mail,
+        adresa: this.adresa,
+        grad: this.grad,
+        drzava: this.drzava,
+        brojTelefona: this.brojTelefona,
+        pol: this.pol,
+        datumRodjenja: this.datum,
+        nazivPreduzeca: this.nazivPreduzeca,
+      }
+      try{
+        ///////////////////////
+        await this.dobSignUpAction(dobDTO);
+        alert("Uspesna registracija "+ this.ime + this.prezime);
+        this.cancel();
+        console.log(dobDTO);
+      }catch(error){
+        alert("Greska pri registraciji dobavljaca")
+      }
+      
     },
 
     cancel(){
