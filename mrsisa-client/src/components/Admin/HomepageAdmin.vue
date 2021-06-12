@@ -167,7 +167,7 @@
         <RegApoteka/>
       </v-container>
 
-      <v-container fluid v-if="showRegZaposlenog" :style="{width:'70vh'}">
+      <v-container fluid v-if="showRegZaposlenog" :style="{width:'140vh'}">
         <RegZaposlenog/>
       </v-container>
       

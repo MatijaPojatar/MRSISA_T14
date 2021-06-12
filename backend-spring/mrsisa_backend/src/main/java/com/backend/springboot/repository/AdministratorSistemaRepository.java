@@ -10,4 +10,6 @@ public interface AdministratorSistemaRepository extends JpaRepository<Administra
 	public List<AdministratorSistema> findAll();
 	
 	public AdministratorSistema findOneById(Integer id);
+
+	public AdministratorSistema findOneByMail(String mail);
 }

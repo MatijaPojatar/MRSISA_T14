@@ -7,7 +7,7 @@ import com.backend.springboot.domain.Pol;
 
 public class AdministratorSistemaDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, potpis;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona, potpis;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private Boolean promenjenaLozinka, enabled;
@@ -18,7 +18,6 @@ public class AdministratorSistemaDTO {
 		this.ime = a.getIme();
 		this.prezime = a.getPrezime();
 		this.mail = a.getMail();
-		this.password = a.getPassword();
 		this.adresa = a.getAdresa();
 		this.grad = a.getGrad();
 		this.drzava = a.getDrzava();
@@ -78,13 +77,6 @@ public class AdministratorSistemaDTO {
 		this.mail = mail;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getAdresa() {
 		return adresa;

@@ -7,7 +7,7 @@ import com.backend.springboot.domain.Pol;
 
 public class AdministratorApotekeDTO {
 	private Integer id, apotekaId;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private Boolean promenjenaLozinka, enabled;
@@ -21,7 +21,6 @@ public class AdministratorApotekeDTO {
 		this.ime=d.getIme();
 		this.prezime=d.getPrezime();
 		this.mail=d.getMail();
-		this.password=d.getPassword();
 		this.adresa=d.getAdresa();
 		this.grad=d.getGrad();
 		this.drzava=d.getDrzava();
@@ -89,13 +88,6 @@ public class AdministratorApotekeDTO {
 		this.mail = mail;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getAdresa() {
 		return adresa;

@@ -41,8 +41,19 @@ public class AdministratorApoteke extends Osoba {
 	}
 
 	public AdministratorApoteke(AdministratorApotekeDTO a) {
-		super(a.getId(), a.getIme(), a.getPrezime(), a.getMail(), a.getPassword(), a.getAdresa(), a.getGrad(), a.getDrzava(), a.getBrojTelefona()
-				, a.getPol(), a.getDatumRodjenja(), a.getPromenjenaLozinka(), a.getEnabled());
+		this.setId(a.getId());
+		this.setIme(a.getIme());
+		this.setPrezime(a.getPrezime());
+		this.setMail(a.getMail());
+		this.setAdresa(a.getAdresa());
+		this.setGrad(a.getGrad());
+		this.setDrzava(a.getDrzava());
+		this.setBrojTelefona(a.getBrojTelefona());
+		this.setPol(a.getPol());
+		this.setDatumRodjenja(a.getDatumRodjenja());
+		this.setPromenjenaLozinka(a.getPromenjenaLozinka());
+		this.setEnabled(a.getEnabled());
+		
 	}
 	
 	

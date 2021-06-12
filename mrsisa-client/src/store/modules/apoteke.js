@@ -3,6 +3,7 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     apoteke: [],
+    minimalApoteke: [],
     apoteka: {
       naziv: "",
       opis: "",
@@ -20,12 +21,20 @@ const state = initStanje();
 
 const getters = {
   getApoteke: state => state.apoteke,
+  getAllApotekeMinimal: state => state.minimalApoteke,
   getApoteka: state => state.apoteka,
   getApotekaLat: state => state.apotekaLat,
   getApotekaLng: state => state.apotekaLng,
 }
 
 const actions = {
+
+  async getAllApotekeMinimalAction({commit}){
+    const response = await Vue.axios.get("/apoteke/minimalne");
+    console.log(response.data);
+    commit("setMinimalne", response.data);
+  },
+
   async getApotekeAction({commit}){
     // const response = await Vue.axios.get("/apoteke");
     commit("setApoteke", [
@@ -75,6 +84,10 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state = initStanje();
+  },
+
+  setMinimalne(state, lista){
+    state.minimalApoteke = lista;
   },
 
   setApoteke(state, lista){

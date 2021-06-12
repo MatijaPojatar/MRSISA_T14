@@ -1,34 +1,19 @@
 <template>
-  <v-card>
-    <v-card-title class="display-1 red--text">Registracija Zaposlenog</v-card-title>
+  <v-card >
+    <v-card-title class="display-1">Registracija Zaposlenog</v-card-title>
 
     <v-card-text>
       <v-form ref="forma" v-model="valid" lazy-validation>
         <v-row>
         <v-col>
+
+          <!--FORMA ZA SVE -->
+
           <v-text-field
             v-model="email"
             :rules="[rules.required, rules.email]"
             label="Email"
             required
-          />
-
-          <v-text-field
-            v-model="lozinka"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required]"
-            :type="show1 ? 'text' : 'password'"
-            label="Lozinka"
-            @click:append="show1 = !show1"
-          />
-
-          <v-text-field
-            v-model="potvrdaLozinke"
-            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required]"
-            :type="show2 ? 'text' : 'password'"
-            label="Potvrda lozinke"
-            @click:append="show2 = !show2"
           />
 
           <v-text-field
@@ -46,16 +31,10 @@
           />
 
           <v-text-field
-          v-model="brojTelefona"
-          :rules="[rules.required, rules.telefon]"
-          label="Broj telefona"
-          required
-          />
-          <v-text-field
-          v-model="datum"
-          :rules="[rules.required, rules.counter]"
-          label="Datum rođenja (22/02/1999)"
-          required
+            v-model="brojTelefona"
+            :rules="[rules.required, rules.telefon]"
+            label="Broj telefona"
+            required
           />
 
           <v-select
@@ -65,9 +44,6 @@
           required
           ></v-select>
 
-        </v-col>
-        <v-col>
-           
           <v-text-field
           v-model="adresa"
           :rules="[rules.required]"
@@ -89,31 +65,82 @@
           required
           />
 
+        </v-col>
+        <v-col>
           <v-text-field
-          v-model="pocetakRadnogVremena"
-          :rules="[rules.required, rules.counterVreme]"
-          label="Pocetak radnog vremena (08:00)"
-          required
+            value="Datum Rođenja"
+            readonly
           />
+          <v-date-picker v-model="datum"></v-date-picker>
+           
+          
+        </v-col>
+        <v-col>
 
-          <v-text-field
-          v-model="krajRadnogVremena"
-          :rules="[rules.required, rules.counterVreme]"
-          label="Kraj radnog vremena (16:00)"
-          required
-          />
+          <!-- GOTOV-->
 
+          <!-- ADMIN SISTEMA -->
           <v-text-field
-          v-model="apotekeGdeJeZaposlenString"
-          :rules="[rules.required]"
-          label="Id Apoteke gde je zaposlen"
+          v-if="uloga === uloge[0]"
+          v-model="potpis"
+          label="Potpis"
           />
+          <!-- GOTOV -->
 
+
+          <!-- ADMIN APOTEKE-->
+          <v-autocomplete
+          v-if="uloga === uloge[1]"
+          v-model="izabranaApotekaId"
+          :items="allApoteke"
+          label="Apoteka"
+          item-text="naziv"
+          item-value="id"
+          required>
+
+        
+          <template slot="selection" slot-scope="data">
+            <!-- HTML that describe how select should render selected items -->
+            {{ data.item.naziv }} 
+          </template>
+
+          <template slot="item" slot-scope="data">
+            <!-- HTML that describe how select should render items when the select is open -->
+            {{ data.item.naziv }}
+          </template>
+        </v-autocomplete>
+          <!-- GOTOV -->
+
+
+
+          <!-- DERMATOLOG-->
+            <v-time-picker
+            v-if="uloga === uloge[2]"
+            v-model="pocetakRadnogVremena"
+            class="mt-4"
+            format="ampm"
+            scrollable
+          ></v-time-picker>
+
+           <v-time-picker
+           v-if="uloga === uloge[2]"
+            v-model="krajRadnogVremena"
+            class="mt-4"
+            format="ampm"
+            scrollable
+          ></v-time-picker>
+          <!-- GOTOV -->
+
+          <!-- DOBTAVLJAC-->
           <v-text-field
-          class="blue--text"
-          v-model="nazivPreduzeca"
-          label="Naziv preduzeća"
+          v-if="uloga === uloge[3]"
+            class="blue--text"
+            v-model="nazivPreduzeca"
+            label="Naziv preduzeća"
           />
+          <!-- GOTOV -->
+
+          
 
         </v-col>
         </v-row>
@@ -122,20 +149,106 @@
     <v-card-actions>
         <v-btn @click="cancel" class="grey white--text">Odustani</v-btn>
         <v-spacer></v-spacer>
-        <v-btn v-on:click="onSubmitDerm" :disabled="!valid" class="red white--text"> Dermatolog</v-btn>
-        <v-btn v-on:click="onSubmitDob" :disabled="!valid" class="blue white--text"> Dobavljac</v-btn>
+
+        <v-btn v-if="uloga === uloge[0]"
+        v-on:click="onSubmitAS" 
+        :disabled="!valid" 
+        class="blue white--text"> 
+        Registracija Administratora sistema</v-btn>
+
+        <v-btn v-if="uloga === uloge[1]"
+        v-on:click="onSubmitAAP" 
+        :disabled="!valid" 
+        class="blue white--text"> 
+        Registracija Administratora apoteke</v-btn>
+
+        <v-btn v-if="uloga === uloge[2]"
+        v-on:click="onSubmitDerm" 
+        :disabled="!valid" 
+        class="blue white--text"> 
+        Registracija dermatologa</v-btn>
+
+        <v-btn 
+        v-if="uloga === uloge[3]"
+        v-on:click="onSubmitDob" 
+        :disabled="!valid" 
+        class="blue white--text"> 
+        Registracija Dobavljača</v-btn>
+
     </v-card-actions>
+
+
+    <v-dialog
+      v-model="odabir"
+      persistent
+      max-width="500">
+    <v-card>
+       <v-container>
+
+            <v-row>
+              <v-list-item>
+                  <v-chip  dark  color="grey">Uloga zaposlenog</v-chip>
+                  <v-spacer></v-spacer>
+
+                  <v-chip class="ml-3 mr-3" dark color="grey">Odaberi</v-chip>
+              </v-list-item>
+            </v-row>
+            <v-row>
+              <v-virtual-scroll
+              :items="uloge"
+              :item-height="50"
+              height="300"
+              >
+                <template v-slot:default="{ item }">
+                  <v-list-item>
+
+                    <v-list-item-content>
+                      <v-list-item-title class="text-left">{{item.naziv}}</v-list-item-title>
+                    </v-list-item-content>
+
+                    <v-spacer/>
+
+                    <v-list-item-action>
+
+                      <v-btn red v-on:click="odaberiUlogu(item)">
+                        <v-icon>mdi-plus-thick</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+
+                  </v-list-item>
+                </template>
+
+              </v-virtual-scroll>
+
+            </v-row>
+          </v-container>
     </v-card>
+  </v-dialog>
+
+
+
+
+  </v-card>
 </template>
 
 <script>
-//import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 
 export default {
 
   name: "RegistracijaZaposlenog",
   data: () => ({
+    izabranaApotekaId: -1,
+    odabir: true,
+    uloga: {},
+
+    uloge:[{ id: 1, naziv: "Administrator sistema"},
+          { id: 2, naziv: "Administrator apoteke"},
+          { id: 3, naziv: "Dermatolog"},
+          { id: 4, naziv: "Dobavljač"}],
+
+
     polovi: ["MUSKI", "ZENSKI"],
 
     email: "",
@@ -155,10 +268,11 @@ export default {
     pocetakRadnogVremena: "",
     krajRadnogVremena: "",
     nazivPreduzeca: "",
+    potpis: "",
 
     apotekeGdeJeZaposlenString: "",
     apotekeGdeJeZaposlen: [],
-    valid: true,
+    valid: false,
     show1: false,
     show2: false,
     rules: {
@@ -171,6 +285,9 @@ export default {
   }),
 
   computed: {
+    ...mapGetters({
+      allApoteke: "apoteke/getAllApotekeMinimal"
+    }),
       show: {
           get() {
               return this.value;
@@ -181,47 +298,71 @@ export default {
       },
   },
 
-  methods: {
+  async mounted(){
+    await this.getAllApotekeMinimalAction();
+  },
 
+  methods: {
+    ...mapActions({
+      getAllApotekeMinimalAction: "apoteke/getAllApotekeMinimalAction",
+      
+    }),
+
+    async onSubmitAAP(){
+      alert("Submit admina apoteke");
+      //prover sve da je popunjeno
+      //kreiraj dto
+      //pozovi action
+    },
+
+    async onSubmitAS(){
+      alert("Submit Admin sistema");
+      //prover sve da je popunjeno
+      //kreiraj dto
+      //pozovi action
+    },
+
+    odaberiUlogu(uloga){
+      this.odabir = false;
+      this.uloga = uloga;
+    },
 
     async onSubmitDerm(){
-      if(this.lozinka !== this.potvrdaLozinke){
-        alert("Lozinke nisu iste!");
-        return;
-      }
+     alert("Submit derm");
 
-      const DermDTO = {
-        ime: this.ime,
-        prezime: this.prezime,
-        mail: this.mail,
-        password: this.password,
-        adresa: this.adresa,
-        grad: this.grad,
-        drzava: this.drzava,
-        brojTelefona: this.brojTelefona,
-        pol: this.pol,
-        datumRodjenja: this.datum,
-        pocetakRadnogVremena: this.pocetakRadnogVremena,
-        krajRadnogVremena: this.krajRadnogVremena
-      }
-      try{
-        ///////////////////////
-        alert("Uspesna registracija "+ this.ime + this.prezime);
-        this.cancel();
-        console.log(DermDTO);
-      }catch(error){
-        alert("Greska pri registraciji dermatologa")
-      }
+      // const DermDTO = {
+      //   ime: this.ime,
+      //   prezime: this.prezime,
+      //   mail: this.mail,
+      //   password: this.password,
+      //   adresa: this.adresa,
+      //   grad: this.grad,
+      //   drzava: this.drzava,
+      //   brojTelefona: this.brojTelefona,
+      //   pol: this.pol,
+      //   datumRodjenja: this.datum,
+      //   pocetakRadnogVremena: this.pocetakRadnogVremena,
+      //   krajRadnogVremena: this.krajRadnogVremena
+      // }
+      // try{
+      //   ///////////////////////
+      //   alert("Uspesna registracija "+ this.ime + this.prezime);
+      //   this.cancel();
+      //   console.log(DermDTO);
+      // }catch(error){
+      //   alert("Greska pri registraciji dermatologa")
+      // }
 
     },
 
     async onSubmitDob(){
-      try{
-        alert("Uspesna registracija "+ this.ime + this.prezime);
-        this.cancel();
-      }catch(error){
-        alert("Greska pri registraciji Dobavljaca")
-      }
+      alert("Sumbit Dobavljac")
+      // try{
+      //   alert("Uspesna registracija "+ this.ime + this.prezime);
+      //   this.cancel();
+      // }catch(error){
+      //   alert("Greska pri registraciji Dobavljaca")
+      // }
     },
 
     cancel(){

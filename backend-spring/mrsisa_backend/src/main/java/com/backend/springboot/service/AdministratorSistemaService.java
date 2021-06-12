@@ -26,4 +26,8 @@ public class AdministratorSistemaService {
 		return adminRep.findOneById(id);
 	}
 
+	public AdministratorSistema findByMail(String mail) {
+		return adminRep.findOneByMail(mail);
+	}
+
 }

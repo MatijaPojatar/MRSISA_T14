@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.backend.springboot.dto.AdministratorSistemaDTO;
+
 @Entity
 @Table(name="administratori_sistema")
 public class AdministratorSistema extends Osoba {
@@ -37,6 +39,22 @@ public class AdministratorSistema extends Osoba {
 		
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.potpis = potpis;
+	}
+
+	public AdministratorSistema(AdministratorSistemaDTO a) {
+		this.setId(a.getId());
+		this.setIme(a.getIme());
+		this.setPrezime(a.getPrezime());
+		this.setMail(a.getMail());
+		this.setAdresa(a.getAdresa());
+		this.setGrad(a.getGrad());
+		this.setDrzava(a.getDrzava());
+		this.setBrojTelefona(a.getBrojTelefona());
+		this.setPol(a.getPol());
+		this.setDatumRodjenja(a.getDatumRodjenja());
+		this.setPromenjenaLozinka(a.getPromenjenaLozinka());
+		this.setEnabled(a.getEnabled());
+		this.setPotpis(a.getPotpis());
 	}
 
 	public List<ZalbaNaApoteku> getZalbeNaApoteke() {

@@ -22,12 +22,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.backend.springboot.domain.AdministratorApoteke;
+import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Osoba;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Role;
 import com.backend.springboot.dto.AdministratorApotekeDTO;
+import com.backend.springboot.dto.AdministratorSistemaDTO;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
 import com.backend.springboot.dto.JwtAuthenticationRequest;
@@ -35,6 +37,7 @@ import com.backend.springboot.dto.OsobaTokenState;
 import com.backend.springboot.dto.PacijentDTO;
 import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.AdministratorApotekeService;
+import com.backend.springboot.service.AdministratorSistemaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.DobavljacService;
 import com.backend.springboot.service.EmailService;
@@ -70,6 +73,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private AdministratorApotekeService adminApotekeService;
+	
+	@Autowired
+	private AdministratorSistemaService adminSistemaService;
 	
 	
 	@PostMapping("/login")
@@ -120,6 +126,35 @@ public class AuthenticationController {
 		return new ResponseEntity<>(pacijent, HttpStatus.CREATED);
 		
 	}
+	
+	//admin sistema
+	@PostMapping("/asSignup")
+	public ResponseEntity<AdministratorSistemaDTO> registrujAdminaSistema(@RequestBody AdministratorSistemaDTO asDTO, UriComponentsBuilder ucBuilder){
+		AdministratorSistema existAdmin = this.adminSistemaService.findByMail(asDTO.getMail());
+		if(existAdmin != null) {
+			throw new ResourceConflictException(asDTO.getId(), "Email vec postoji");
+		}
+		
+		AdministratorSistema novi = new AdministratorSistema(asDTO);
+		novi.setPassword("12345678");
+		novi.setEnabled(true);
+		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_ADMIN_SISTEMA"));
+		novi.setRoles(roles);
+		novi.setPromenjenaLozinka(false);
+		AdministratorSistema admin = this.adminSistemaService.save(novi);
+		
+		try {
+			emailService.regByAdmin(admin.getMail());
+		}catch(Exception e) {
+			System.out.println("Greška prilikom slanja emaila: " +e.getMessage());
+		}
+		
+		return new ResponseEntity<AdministratorSistemaDTO>(new AdministratorSistemaDTO(admin), HttpStatus.CREATED);
+	}
+	
+	
 	//admin apoteke
 	@PostMapping("/aapSignup")
 	public ResponseEntity<AdministratorApotekeDTO> registrujAdminaApoteke(@RequestBody AdministratorApotekeDTO adminApotekeDTO, UriComponentsBuilder ucBuilder){

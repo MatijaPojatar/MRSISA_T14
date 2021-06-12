@@ -140,7 +140,7 @@ public class ApotekaController {
         }
 	}
 	
-	@GetMapping()
+	@GetMapping("/minimalne")
 	public ResponseEntity<List<MinimalApotekaDTO>> findAllMinimal(){
 		List<Apoteka> apoteke = apotekaService.findAll();
 		
