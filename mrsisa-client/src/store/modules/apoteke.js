@@ -14,6 +14,7 @@ const initStanje = () => {
     },
     apotekaLat: 0,
     apotekaLng: 0,
+    apotekaIdForAdminApoteke: "",
   }
 }
 
@@ -25,6 +26,7 @@ const getters = {
   getApoteka: state => state.apoteka,
   getApotekaLat: state => state.apotekaLat,
   getApotekaLng: state => state.apotekaLng,
+  getApotekaIdForAdminApoteke: state => state.apotekaIdForAdminApoteke,
 }
 
 const actions = {
@@ -56,6 +58,15 @@ const actions = {
     await Vue.axios.get(`http://localhost:8080/apoteke/getOne/${apotekaId}`).then(response => {
             console.log(response.data)
             commit("setApoteka", response.data)
+            
+            
+        });
+  },
+
+  async getApotekaIdForAdminApotekeAction({commit}, userId){
+    await Vue.axios.get(`http://localhost:8080/adminApoteke/${userId}`).then(response => {
+            console.log(response.data)
+            commit("setApotekaIdForAdminApoteke", response.data.apotekaId)
             
             
         });
@@ -107,6 +118,11 @@ state.apotekaLat = apotekaLat;
   setApotekaLng(state, apotekaLng){
     state.apotekaLng = apotekaLng;
   },
+  setApotekaIdForAdminApoteke(state, apotekaId){
+    state.apotekaIdForAdminApoteke = apotekaId;
+  }
+
+
 }
 
 export default { state, mutations, actions, getters, namespaced: true }
