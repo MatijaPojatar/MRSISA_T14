@@ -126,8 +126,8 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <div >Start: {{selectedEvent.start}}</div>
-              <div >End: {{selectedEvent.end}}</div>
+              <div >Start: {{selectedEvent.start | moment("dddd, MMMM Do YYYY, h:mm a")}}</div>
+              <div >End: {{selectedEvent.end | moment("dddd, MMMM Do YYYY, h:mm a")}}</div>
               <div v-if="selectedEvent.pacijent">Pacijent: {{selectedEvent.pacijent}}
                   <v-btn icon @click="viewAccount">
                     <v-icon>mdi-account</v-icon>

@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -83,7 +84,17 @@ public class DermatologController {
 	}
 	
 	@PutMapping("/save/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody DermatologDTO dto){
+		if(dto.getIme().length()>20) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
+		if(dto.getPrezime().length()>20) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
+		if(dto.getBrojTelefona().length()!=10 || !Pattern.matches("06[0-9]{8}", dto.getBrojTelefona())) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
 		Dermatolog d=service.findOne(id);
 		d.setAdresa(dto.getAdresa());
 		d.setBrojTelefona(dto.getBrojTelefona());
@@ -109,16 +120,18 @@ public class DermatologController {
 	}
 	
 	@GetMapping("/pass/check/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<Boolean> checkPass(@PathVariable Integer id,@RequestParam String pass){
 		Dermatolog d=service.findOne(id);
 		if(d.getPassword().equals(pass)) {
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
 	}
 	
 	@PutMapping("/pass/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
 		System.out.println(newPass);
 		Dermatolog d=service.findOne(id);

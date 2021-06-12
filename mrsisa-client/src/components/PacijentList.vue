@@ -50,6 +50,7 @@
 
 import Vue from "vue";
 import AccountView from "./AccountView";
+import moment from "moment";
 
 export default {
     components:{
@@ -96,7 +97,7 @@ export default {
                         grad: element.grad,
                         drzava: element.drzava,
                         pol: element.pol,
-                        datum: new Date(element.poslednjiPregled[0].toString()+"-"+element.poslednjiPregled[1].toString()+"-"+element.poslednjiPregled[2].toString()+" "+element.poslednjiPregled[3].toString()+":"+element.poslednjiPregled[4].toString()),
+                        datum: moment(new Date(element.poslednjiPregled[0].toString()+"-"+element.poslednjiPregled[1].toString()+"-"+element.poslednjiPregled[2].toString()+" "+element.poslednjiPregled[3].toString()+":"+element.poslednjiPregled[4].toString())).format("dddd, MMMM Do YYYY, h:mm a"),
                     }
                     )
                     this.pacijenti=pacijenti;

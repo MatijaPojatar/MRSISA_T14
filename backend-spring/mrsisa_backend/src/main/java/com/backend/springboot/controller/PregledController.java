@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -137,6 +138,7 @@ public class PregledController {
 	
 	
 	@PutMapping("/penal/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<String> pacijentNijeDosao(@PathVariable Integer id){
 		Pregled p=service.findOne(id);
 		p.setIzvrsen(true);
@@ -145,13 +147,14 @@ public class PregledController {
 		try {
 			service.save(p);
 		}catch(Exception e){
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@PutMapping("/izvestaj/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<String> sacuvajIzvestaj(@PathVariable Integer id,@RequestBody IzvestajDTO izvestaj){
 		Pregled p=service.findOne(id);
 		p.setIzvrsen(true);
@@ -166,13 +169,14 @@ public class PregledController {
 		try {
 			service.save(p);
 		}catch(Exception e){
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<List<PregledDTO>> getAllForDermatolog(@PathVariable Integer id) {
 
 		List<Pregled> pregledi = service.findAllByDermatologId(id);
@@ -206,7 +210,7 @@ public class PregledController {
 		try {
 			service.zauzmiPregled(id, p);
 		}catch(Exception e) {
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
@@ -249,7 +253,7 @@ public class PregledController {
 	public ResponseEntity<Boolean> zakaziPregled(@RequestBody PregledDTO pregled){		
 		List<OdsustvoDermatolog> checkOdsustva = odsustvoService.findExistInTime(pregled.getDermatologId(), pregled.getStart(), pregled.getEnd());
 		if(checkOdsustva.size() != 0) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_ACCEPTABLE);
 		}
 		
 		Pregled p = new Pregled();

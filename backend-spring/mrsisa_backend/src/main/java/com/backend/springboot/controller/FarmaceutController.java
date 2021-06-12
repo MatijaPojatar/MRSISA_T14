@@ -3,11 +3,13 @@ package com.backend.springboot.controller;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,7 +58,17 @@ public class FarmaceutController {
 
 	
 	@PutMapping("/save/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
+		if(dto.getIme().length()>20) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
+		if(dto.getPrezime().length()>20) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
+		if(dto.getBrojTelefona().length()!=10 || !Pattern.matches("06[0-9]{8}", dto.getBrojTelefona())) {
+			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
+		}
 		Farmaceut f=service.findOne(id);
 		f.setAdresa(dto.getAdresa());
 		f.setBrojTelefona(dto.getBrojTelefona());
@@ -75,6 +87,7 @@ public class FarmaceutController {
 	}
 	
 	@GetMapping("/pass/check/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<Boolean> checkPass(@PathVariable Integer id,@RequestParam String pass){
 		Farmaceut f=service.findOne(id);
 		if(f.getPassword().equals(pass)) {
@@ -85,6 +98,7 @@ public class FarmaceutController {
 	}
 	
 	@PutMapping("/pass/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> savePass(@PathVariable Integer id,@RequestBody String newPass){
 		System.out.println(newPass);
 		Farmaceut f=service.findOne(id);

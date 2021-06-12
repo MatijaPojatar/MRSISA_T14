@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -121,6 +122,7 @@ public class SavetovanjeController {
 	
 	
 	@PutMapping("/penal/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> pacijentNijeDosao(@PathVariable Integer id){
 		Savetovanje s=service.findOne(id);
 		s.setIzvrsen(true);
@@ -130,13 +132,14 @@ public class SavetovanjeController {
 		try {
 			service.save(s);
 		}catch(Exception e){
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.LOCKED);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@PutMapping("/izvestaj/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> sacuvajIzvestaj(@PathVariable Integer id,@RequestBody IzvestajDTO izvestaj){
 		Savetovanje s=service.findOne(id);
 		s.setIzvrsen(true);
@@ -152,13 +155,14 @@ public class SavetovanjeController {
 		try {
 			service.save(s);
 		}catch(Exception e){
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.LOCKED);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForFarmaceut(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(id);

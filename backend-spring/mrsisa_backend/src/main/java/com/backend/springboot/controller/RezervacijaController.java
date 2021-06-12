@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,11 +55,12 @@ public class RezervacijaController {
 	private MagacinService magacinService;
 	
 	@GetMapping("checkOne/{code}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> proveriRezervaciju(@PathVariable String code,@RequestParam Integer apotekaId){
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCodeAndApoteka(code,apotekaId);
 		if(rl==null) {
-			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.OK);
+			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.NOT_FOUND);
 		}
 		if(!rl.getDatum().isAfter(LocalDate.now())) {
 			rl.setStatus(StatusRezervacije.OTKAZANA);
@@ -74,15 +76,16 @@ public class RezervacijaController {
 			try {
 				rezService.save(rl);
 			}catch(Exception e){
-				return new ResponseEntity<String>("Greska.",HttpStatus.OK);
+				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 			}
-			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.OK);
+			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.NOT_FOUND);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@GetMapping("findOne/{code}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<RezervacijaLekaDTO> pronadjiRezervaciju(@PathVariable String code){
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCode(code);
@@ -96,13 +99,13 @@ public class RezervacijaController {
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCode(code);
 		if(rl==null) {
-			return new ResponseEntity<String>("Greska",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska",HttpStatus.BAD_REQUEST);
 		}
 		rl.setStatus(StatusRezervacije.PREUZETA);
 		try {
 			rezService.save(rl);
 		}catch(Exception e){
-			return new ResponseEntity<String>("Greska.",HttpStatus.OK);
+			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
 		
 		try {

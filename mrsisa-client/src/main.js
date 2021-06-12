@@ -19,6 +19,7 @@ Vue.use(Geocoder, {
 
 Vue.config.productionTip = false
 Vue.use(VueGeolocation)
+Vue.use(require('vue-moment'));
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 Vue.use(VueGoogleMaps, {

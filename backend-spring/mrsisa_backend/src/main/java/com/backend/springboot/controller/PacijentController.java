@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,6 +67,7 @@ public class PacijentController {
 	
 
 	@PutMapping("/penal/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT')")
 	public ResponseEntity<String> dodeliPenal(@PathVariable Integer id){
 		
 		Pacijent p=pacijentService.findOne(id);
@@ -75,7 +77,7 @@ public class PacijentController {
 			return new ResponseEntity<String>("Dodeljen penal",HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.OK);
+		return new ResponseEntity<String>("Vec postoje 3 penala",HttpStatus.NOT_ACCEPTABLE);
 		
 	}
 	

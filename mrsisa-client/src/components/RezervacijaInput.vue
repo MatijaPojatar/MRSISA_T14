@@ -79,7 +79,7 @@
             </v-expansion-panel>
             </v-expansion-panels>
             Kolicina: {{rezervacija.kolicina}}<v-divider/>
-            Datum: {{rezervacija.datum}}<v-divider/>
+            Datum: {{rezervacija.datum | moment("dddd, MMMM Do YYYY")}}<v-divider/>
         </v-card-text>
         <v-card-actions>
             <v-btn
@@ -217,6 +217,9 @@ export default{
                 if(response.data==="Uspeh"){
                     uspeh=true;
                 }
+            }).catch(err=>{
+                console.log (err)
+                uspeh=false;
             })
             if(uspeh){
                 this.dialogMessage="Lek je uspešno preuzet.";

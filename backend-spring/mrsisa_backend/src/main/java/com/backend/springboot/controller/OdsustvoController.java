@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +56,7 @@ public class OdsustvoController {
 	private EmailService emailService;
 	
 	@PutMapping("/farmaceut/dodaj/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
 		List<Savetovanje> checkList=savService.findAllInRangeForFarmaceut(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
@@ -64,7 +66,7 @@ public class OdsustvoController {
 			}
 		}
 		if(counter>0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+			return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
 		}
 		OdsustvoFarmaceut of=new OdsustvoFarmaceut();
 		Farmaceut f=farmService.findOne(id);
@@ -80,6 +82,7 @@ public class OdsustvoController {
 	}
 	
 	@PutMapping("/dermatolog/dodaj/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
 		List<Pregled> checkList=preService.findAllInRangeForDermatolog(id,odsustvo.getPocetak(),odsustvo.getKraj());
 		int counter=0;
@@ -89,7 +92,7 @@ public class OdsustvoController {
 			}
 		}
 		if(counter>0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+			return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
 		}
 		OdsustvoDermatolog od=new OdsustvoDermatolog();
 		Dermatolog d=dermService.findOne(id);

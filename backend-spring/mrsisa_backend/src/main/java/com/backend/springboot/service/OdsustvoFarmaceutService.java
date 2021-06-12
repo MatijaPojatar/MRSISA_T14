@@ -39,7 +39,7 @@ public class OdsustvoFarmaceutService {
 		return rep.save(o);
 	}
 	
-	@Transactional(readOnly=true,propagation=Propagation.MANDATORY)
+	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
 	public List<OdsustvoFarmaceut> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
 		return rep.findExistInTime(id,start, end);
 	}
