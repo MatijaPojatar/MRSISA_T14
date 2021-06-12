@@ -75,7 +75,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
 
   export default {
 
@@ -113,11 +113,11 @@
     methods: {
       async validate () {
         if(this.$refs.form.validate()){
-            await axios.get(`http://localhost:8080/osobe/novaLozinka/${this.id}`,{params:{lozinka:this.oldPass}}).then(response=>{
+            await Vue.axios.get(`http://localhost:8080/osobe/novaLozinka/${this.id}`,{params:{lozinka:this.oldPass}}).then(response=>{
               this.oldPassValid=response.data
             })
             if(this.oldPassValid){
-              axios.put(`http://localhost:8080/osobe/novaLozinka/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
+              Vue.axios.put(`http://localhost:8080/osobe/novaLozinka/${this.id}`,this.newPass,{headers: {"Content-Type": "text/plain"}})
               this.dialogTitle="Obaveštenje"
               this.dialogMessage="Vaša šifra je uspešno promenjena."
             }else{

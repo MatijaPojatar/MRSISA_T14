@@ -58,7 +58,7 @@
 
 <script>
 
-import axios from "axios";
+import Vue from "vue";
 
 export default {
     data: () => ({
@@ -118,7 +118,7 @@ export default {
                     status: "OBRADA",
                 }
             }
-            await axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
+            await Vue.axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
                     this.odgovor=response.data;
                 });
             

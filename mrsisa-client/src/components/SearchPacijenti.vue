@@ -58,7 +58,7 @@
 
 <script>
 
-import axios from "axios";
+import Vue from "vue";
 import AccountView from "./AccountView";
 
   export default {
@@ -87,7 +87,7 @@ import AccountView from "./AccountView";
     },
     methods :{
         async loadPacijenti(){
-            await axios.get(`http://localhost:8080/pacijent/all`).then(response =>
+            await Vue.axios.get(`http://localhost:8080/pacijent/all`).then(response =>
             {
                 const pacijenti=[];
                 response.data.forEach(element => {
