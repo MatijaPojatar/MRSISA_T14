@@ -12,6 +12,44 @@ public class AdministratorSistemaDTO {
 	private LocalDate datumRodjenja;
 	private Boolean promenjenaLozinka, enabled;
 	
+	public AdministratorSistemaDTO() {
+		super();
+	}
+
+	public AdministratorSistemaDTO(Integer id, String ime, String prezime, String mail, String adresa, String grad,
+			String drzava, String brojTelefona, String potpis, Pol pol, LocalDate datumRodjenja,
+			Boolean promenjenaLozinka, Boolean enabled) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+		this.potpis = potpis;
+		this.pol = pol;
+		this.datumRodjenja = datumRodjenja;
+		this.promenjenaLozinka = promenjenaLozinka;
+		this.enabled = enabled;
+	}
+	
+	public AdministratorSistemaDTO( String ime, String prezime, String mail, String adresa, String grad,
+			String drzava, String brojTelefona, String potpis, Pol pol, LocalDate datumRodjenja) {
+		super();
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+		this.potpis = potpis;
+		this.pol = pol;
+		this.datumRodjenja = datumRodjenja;
+	}
+
 	public AdministratorSistemaDTO(AdministratorSistema a) {
 		super();
 		this.id = a.getId();

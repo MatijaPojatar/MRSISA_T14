@@ -41,7 +41,6 @@ public class Dobavljac extends Osoba{
 		this.setIme(d.getIme());
 		this.setPrezime(d.getPrezime());
 		this.setMail(d.getMail());
-		this.setPassword(d.getPassword());
 		this.setAdresa(d.getAdresa());
 		this.setGrad(d.getGrad());
 		this.setDrzava(d.getDrzava());

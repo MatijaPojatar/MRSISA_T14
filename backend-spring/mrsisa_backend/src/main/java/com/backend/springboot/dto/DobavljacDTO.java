@@ -7,7 +7,7 @@ import com.backend.springboot.domain.Pol;
 
 public class DobavljacDTO {
 	private Integer id;
-	private String ime,prezime, mail,password, adresa,grad,drzava,  brojTelefona, nazivPreduzeca;
+	private String ime,prezime, mail, adresa,grad,drzava,  brojTelefona, nazivPreduzeca;
 	private Pol pol;
 	private LocalDate datumRodjenja;
 	private Boolean promenjenaLozinka, enabled;
@@ -16,13 +16,33 @@ public class DobavljacDTO {
 		super();
 	}
 	
+	
+	public DobavljacDTO(Integer id, String ime, String prezime, String mail, String adresa, String grad, String drzava,
+			String brojTelefona, String nazivPreduzeca, Pol pol, LocalDate datumRodjenja, Boolean promenjenaLozinka,
+			Boolean enabled) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+		this.nazivPreduzeca = nazivPreduzeca;
+		this.pol = pol;
+		this.datumRodjenja = datumRodjenja;
+		this.promenjenaLozinka = promenjenaLozinka;
+		this.enabled = enabled;
+	}
+
+
 	public DobavljacDTO(Dobavljac d) {
 		this.id=d.getId();
 		this.ime=d.getIme();
 		this.prezime=d.getPrezime();
 		
 		this.mail=d.getMail();
-		this.password=d.getPassword();
 		
 		this.adresa=d.getAdresa();
 		this.grad=d.getGrad();
@@ -92,14 +112,6 @@ public class DobavljacDTO {
 
 	public void setMail(String mail) {
 		this.mail = mail;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getAdresa() {

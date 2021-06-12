@@ -128,32 +128,7 @@ public class AuthenticationController {
 	}
 	
 	//admin sistema
-	@PostMapping("/asSignup")
-	public ResponseEntity<AdministratorSistemaDTO> registrujAdminaSistema(@RequestBody AdministratorSistemaDTO asDTO, UriComponentsBuilder ucBuilder){
-		AdministratorSistema existAdmin = this.adminSistemaService.findByMail(asDTO.getMail());
-		if(existAdmin != null) {
-			throw new ResourceConflictException(asDTO.getId(), "Email vec postoji");
-		}
-		
-		AdministratorSistema novi = new AdministratorSistema(asDTO);
-		novi.setPassword("12345678");
-		novi.setEnabled(true);
-		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
-		List<Role> roles = new ArrayList<Role>();
-		roles.add(roleService.findByName("ROLE_ADMIN_SISTEMA"));
-		novi.setRoles(roles);
-		novi.setPromenjenaLozinka(false);
-		AdministratorSistema admin = this.adminSistemaService.save(novi);
-		
-		try {
-			emailService.regByAdmin(admin.getMail());
-		}catch(Exception e) {
-			System.out.println("Greška prilikom slanja emaila: " +e.getMessage());
-		}
-		
-		return new ResponseEntity<AdministratorSistemaDTO>(new AdministratorSistemaDTO(admin), HttpStatus.CREATED);
-	}
-	
+
 	
 	//admin apoteke
 	@PostMapping("/aapSignup")

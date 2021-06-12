@@ -19,9 +19,35 @@ public class DermatologDTO {
 	private Double ocena;
 	
 	public DermatologDTO() {
-		
+		super();
 	}
 	
+	
+	public DermatologDTO(Integer id, String ime, String prezime, String mail, String adresa, String grad, String drzava,
+			String brojTelefona, String pocetakRadnogVremenaStr, String krajRadnogVremenaStr, Pol pol,
+			LocalDate datumRodjenja, LocalTime pocetakRadnogVremena, LocalTime krajRadnogVremena,
+			Boolean promenjenaLozinka, Boolean enabled, Double ocena) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+		this.pocetakRadnogVremenaStr = pocetakRadnogVremenaStr;
+		this.krajRadnogVremenaStr = krajRadnogVremenaStr;
+		this.pol = pol;
+		this.datumRodjenja = datumRodjenja;
+		this.pocetakRadnogVremena = pocetakRadnogVremena;
+		this.krajRadnogVremena = krajRadnogVremena;
+		this.promenjenaLozinka = promenjenaLozinka;
+		this.enabled = enabled;
+		this.ocena = ocena;
+	}
+
+
 	public DermatologDTO(Dermatolog d) {
 		this.id=d.getId();
 		this.ime=d.getIme();

@@ -235,10 +235,11 @@ public class Osoba implements UserDetails{
 		this.promenjenaLozinka = promenjenaLozinka;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
-	}
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
 
 	@Override
 	public String getUsername() {

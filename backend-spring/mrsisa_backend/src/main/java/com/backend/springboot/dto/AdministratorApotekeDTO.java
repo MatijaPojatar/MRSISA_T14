@@ -12,10 +12,34 @@ public class AdministratorApotekeDTO {
 	private LocalDate datumRodjenja;
 	private Boolean promenjenaLozinka, enabled;
 	
-	public AdministratorApotekeDTO() {
-		
-	}
+
 	
+	
+	public AdministratorApotekeDTO() {
+		super();
+	}
+
+
+	public AdministratorApotekeDTO(Integer id, Integer apotekaId, String ime, String prezime, String mail,
+			String adresa, String grad, String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja,
+			Boolean promenjenaLozinka, Boolean enabled) {
+		super();
+		this.id = id;
+		this.apotekaId = apotekaId;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.mail = mail;
+		this.adresa = adresa;
+		this.grad = grad;
+		this.drzava = drzava;
+		this.brojTelefona = brojTelefona;
+		this.pol = pol;
+		this.datumRodjenja = datumRodjenja;
+		this.promenjenaLozinka = promenjenaLozinka;
+		this.enabled = enabled;
+	}
+
+
 	public AdministratorApotekeDTO(AdministratorApoteke d) {
 		this.id=d.getId();
 		this.ime=d.getIme();
