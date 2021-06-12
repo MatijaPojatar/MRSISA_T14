@@ -149,31 +149,31 @@
         <AccountView :user="user" :editable = "true" :adminApoteke="true"/>
       </v-container>
       <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
-        <PasswordSwitch :pass="user.password"  :id="user.id" :adminApoteke="true"/>
+        <PasswordSwitch :pass="apotekaId"  :id="user.id" :adminApoteke="true"/>
       </v-container>
       <v-container fluid v-if="showLekovi" :style="{width:'180vh'}" >
-        <LekoviAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+        <LekoviAdminApoteke :apotekaId="apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showFarmaceuti" :style="{width:'180vh'}">
-        <FarmaceutiAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+        <FarmaceutiAdminApoteke :apotekaId="apotekaId" :user="user"/>
       </v-container>
        <v-container fluid v-if="showDermatolozi" :style="{width:'180vh'}">
-        <DermatoloziAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+        <DermatoloziAdminApoteke :apotekaId="apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showNarucivanje" :style="{width:'180vh'}">
-        <NarucivanjeAdminApoteke :apotekaId="user.apotekaId" :user="user"/>
+        <NarucivanjeAdminApoteke :apotekaId="apotekaId" :user="user"/>
       </v-container>
       <v-container fluid v-if="showApoteka" :style="{width:'70vh'}">
-        <ApotekaForm :apotekaId="user.apotekaId" :editable="true" />
+        <ApotekaForm :apotekaId="apotekaId" :editable="true" />
       </v-container>
       <v-container fluid v-if="showOdsustva" :style="{width:'100vh'}">
-        <TableOdsustva :apotekaId="user.apotekaId" :farmaceut=true />
+        <TableOdsustva :apotekaId="apotekaId" :farmaceut=true />
       </v-container>
       <v-container fluid v-if="showAkcije" :style="{width:'70vh'}">
-        <NovaAkcijaPromocija :apotekaId="user.apotekaId" :user="user" />
+        <NovaAkcijaPromocija :apotekaId="apotekaId" :user="user" />
       </v-container>
       <v-container fluid v-if="showIzvestaji" :style="{width:'180vh'}">
-        <IzvestajiAdminApoteke :apotekaId="user.apotekaId" />
+        <IzvestajiAdminApoteke :apotekaId="apotekaId" />
       </v-container>
     </v-main>
       </v-app>
@@ -191,8 +191,8 @@ import NarucivanjeAdminApoteke from "./NarucivanjeAdminApoteke";
 import TableOdsustva from "./TableOdsustva";
 import NovaAkcijaPromocija from "./NovaAkcijaPromocija";
 import IzvestajiAdminApoteke from "./IzvestajiAdminApoteke";
-import axios from "axios";
-import {mapActions} from 'vuex';
+
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: "HomepageAdminApoteke",
@@ -219,22 +219,25 @@ export default {
     showOdsustva: false,
     showAkcije: false,
     showIzvestaji: false,
-    user: {},
+    
   }),
-  mounted(){
+  async mounted(){
     console.log(window.location.pathname)
+    await this.getApotekaIdForAdminApotekeAction(this.user.id)
     
-    
-    axios.get("http://localhost:8080/adminApoteke/4").then(response => {
-        console.log(response.data)
-        this.user=response.data;
-    });
-    
+  },
+  computed: {
+    ...mapGetters({
+      user: "korisnici/getKorisnik",
+      apotekaId: "apoteke/getApotekaIdForAdminApoteke",
+    }),
   },
   methods:{
       ...mapActions({
         logout: "korisnici/logoutAction",
-        resetStore: "resetStore"
+        resetStore: "resetStore",
+        getApotekaIdForAdminApotekeAction: "apoteke/getApotekaIdForAdminApotekeAction",
+        
       }),
       apotekaView(){
           this.showApoteka=true;
