@@ -32,9 +32,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.repository.MagacinRepository;
+import com.backend.springboot.repository.NarudzbenicaRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.MagacinService;
+import com.backend.springboot.service.NarudzbenicaService;
 import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
 
@@ -54,11 +60,27 @@ class MrsisaBackendApplicationTests {
 	@Autowired
 	PregledService pregledService;
 	
+	
+	
 	@Mock
 	private SavetovanjeRepository savetovanjeRep;
 	
 	@InjectMocks
 	private SavetovanjeService savetovanjeServiceUnit;
+	
+	
+	@Autowired
+	private NarudzbenicaService narudzbenicaServiceUnit;
+	
+	@Mock
+	private NarudzbenicaRepository narudzbenicaRep;
+	
+	@Autowired
+	private MagacinService magacinServiceUnit;
+	
+	@Mock
+	private MagacinRepository magacinRep;
+	
 	
 	private MockMvc mockMvc;
 	
@@ -136,6 +158,50 @@ class MrsisaBackendApplicationTests {
 		assertEquals(sav, savetovanje);
 		
 		verify(savetovanjeRep).findOneById(1);
+	}
+	
+	
+	
+	//S2
+	
+	@Test
+	public void testFindOneNarudzbenica() {
+		
+		Narudzbenica n=new Narudzbenica();
+		
+		when(narudzbenicaRep.findOneById(anyInt())).thenReturn(n);
+		
+		Narudzbenica nar=narudzbenicaServiceUnit.findOne(1);
+		
+		assertEquals(n, nar);
+		
+		verify(narudzbenicaRep).findOneById(1);
+	}
+	
+	@Test
+	public void testFindAllMagacin() {
+		
+		when(magacinRep.findAll()).thenReturn(Arrays.asList(new Magacin(),new Magacin(),new Magacin()));
+		
+		java.util.List<Magacin> magacini=magacinServiceUnit.findAll();
+		
+		assertThat(magacini).hasSize(3);
+		
+		verify(magacinRep).findAll();
+	}
+	
+	@Test
+	public void testFindOneByApotekaIdMagacin() {
+		
+		Magacin m=new Magacin();
+		
+		when(magacinRep.findOneByApotekaId(anyInt())).thenReturn(m);
+		
+		Magacin mag=magacinServiceUnit.findOneByApotekaId(1);
+		
+		assertEquals(m, mag);
+		
+		verify(magacinRep).findOneByApotekaId(1);
 	}
 	
 	//integracioni testovi
