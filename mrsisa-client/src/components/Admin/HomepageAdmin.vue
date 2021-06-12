@@ -155,9 +155,9 @@
         <PasswordSwitch :pass="user.password"  :id="user.id"/>
       </v-container>
       
-      <v-containter fluid v-if="showKreirajLek" :style="{width:'70vh'}">
+      <v-container fluid v-if="showKreirajLek" :style="{width:'70vh'}">
         <KreirajLek/>
-      </v-containter>
+      </v-container>
 
       <v-container fluid v-if="showIzmeniLek" :style="{width:'70vh'}">
         <IzmenaLeka/>

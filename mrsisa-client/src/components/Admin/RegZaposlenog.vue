@@ -331,14 +331,18 @@ export default {
       const aapDTO = {
         ime: this.ime,
         prezime: this.prezime,
-        mail: this.mail,
+        mail: this.email,
         adresa: this.adresa,
         grad: this.grad,
         drzava: this.drzava,
         brojTelefona: this.brojTelefona,
         pol: this.pol,
         datumRodjenja: this.datum,
+
         apotekaId: this.izabranaApotekaId,
+
+        promenjenaLozinka: false,
+        enabled: false,
       }
       try{
         ///////////////////////
@@ -362,15 +366,21 @@ export default {
       const asDTO ={
         ime: this.ime,
         prezime: this.prezime,
-        mail: this.mail,
+        mail: this.email,
         adresa: this.adresa,
         grad: this.grad,
         drzava: this.drzava,
         brojTelefona: this.brojTelefona,
         pol: this.pol,
         datumRodjenja: this.datum,
-        potpis: this.potpis
+
+        potpis: this.potpis,
+
+        promenjenaLozinka: false,
+        enabled: false,
       }
+      console.log("OVO SI POSLALA");
+      console.log(asDTO);
 
        try{
         ///////////////////////
@@ -399,15 +409,19 @@ export default {
       const dermDTO = {
         ime: this.ime,
         prezime: this.prezime,
-        mail: this.mail,
+        mail: this.email,
         adresa: this.adresa,
         grad: this.grad,
         drzava: this.drzava,
         brojTelefona: this.brojTelefona,
         pol: this.pol,
         datumRodjenja: this.datum,
+
         pocetakRadnogVremena: this.pocetakRadnogVremena,
-        krajRadnogVremena: this.krajRadnogVremena
+        krajRadnogVremena: this.krajRadnogVremena,
+
+        promenjenaLozinka: false,
+        enabled: false,
       }
       try{
         ///////////////////////
@@ -429,14 +443,18 @@ export default {
       const dobDTO = {
         ime: this.ime,
         prezime: this.prezime,
-        mail: this.mail,
+        mail: this.email,
         adresa: this.adresa,
         grad: this.grad,
         drzava: this.drzava,
         brojTelefona: this.brojTelefona,
         pol: this.pol,
         datumRodjenja: this.datum,
+
         nazivPreduzeca: this.nazivPreduzeca,
+
+        promenjenaLozinka: false,
+        enabled: false,
       }
       try{
         ///////////////////////
