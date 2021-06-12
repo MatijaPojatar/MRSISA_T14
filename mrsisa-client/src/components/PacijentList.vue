@@ -48,7 +48,7 @@
 
 <script>
 
-import axios from "axios";
+import Vue from "vue";
 import AccountView from "./AccountView";
 
 export default {
@@ -84,7 +84,7 @@ export default {
             if(this.farmaceut){
                 path="savetovanje"
             }
-            await axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
+            await Vue.axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
             {
                 const pacijenti=[];
                 response.data.forEach(element => {

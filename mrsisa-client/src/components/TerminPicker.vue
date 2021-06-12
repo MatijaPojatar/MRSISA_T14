@@ -182,7 +182,7 @@
 
 <script>
 
-import axios from "axios";
+import Vue from "vue";
 
 export default{
     data: ()=>({
@@ -223,7 +223,7 @@ export default{
     },
     methods:{
         loadTermini(){
-            axios.get(`http://localhost:8080/pregled/all/active/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
+            Vue.axios.get(`http://localhost:8080/pregled/all/active/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
                 const termini = []
                 response.data.forEach(element => {
                 termini.push({
@@ -246,7 +246,7 @@ export default{
                 path="savetovanje"
             }
             console.log(id);
-            await axios.put(`http://localhost:8080/${path}/zauzmi/${id}/${this.pacijentId}`).then(response=>{
+            await Vue.axios.put(`http://localhost:8080/${path}/zauzmi/${id}/${this.pacijentId}`).then(response=>{
                 if(response.data==="Uspeh"){
                     this.dialog=true
                     this.dialogMessage="Termin zauzet."
@@ -264,7 +264,7 @@ export default{
             if(this.farmaceut){
                 path="farmaceut"
             }
-            axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
+            Vue.axios.get(`http://localhost:8080/${path}/radnoVreme/${this.doktorId}`,{params:{apotekaId:this.apotekaId}}).then(response => {
             console.log(response.data);
             this.pocetakRadnogVremena=response.data.pocetak[0].toString()+":"+response.data.pocetak[1].toString()
             this.krajRadnogVremena=response.data.kraj[0].toString()+":"+response.data.kraj[1].toString()
@@ -294,11 +294,11 @@ export default{
                     apotekaId: this.apotekaId,
                     izvrsen: false,
                 }
-                await axios.post(`http://localhost:8080/pacijent/proveri_termin/${this.pacijentId}`,newTermin).then(response=>{
+                await Vue.axios.post(`http://localhost:8080/pacijent/proveri_termin/${this.pacijentId}`,newTermin).then(response=>{
                     this.check=response.data
                 });
                 if(this.check){
-                    await axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
+                    await Vue.axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
                         this.check=response.data;
                     });
                     if(this.check){
