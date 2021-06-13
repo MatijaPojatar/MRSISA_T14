@@ -65,6 +65,7 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
 	}
 	
+	//@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/dermatologApoteke/{id}")
 	public ResponseEntity<DermatologDTO> getOneDermatologApoteke(@PathVariable Integer id, @RequestBody String apotekaId){
 		Dermatolog d=service.findOne(id);
@@ -112,6 +113,7 @@ public class DermatologController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/updateRadnoVreme/{apotekaId}")
 	public ResponseEntity<Boolean> updateOne(@PathVariable Integer apotekaId,@RequestBody DermatologDTO dto){
 		boolean uspeh = service.promeniRadnoVreme(dto.getId(), apotekaId, dto.getPocetakRadnogVremena(), dto.getKrajRadnogVremena());
@@ -142,6 +144,7 @@ public class DermatologController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/radnoVreme/{id}")
 	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id,@RequestParam Integer apotekaId){
 		DermatologApoteka da=service.findZaposlenje(apotekaId, id);
@@ -150,6 +153,7 @@ public class DermatologController {
 		return new ResponseEntity<RadnoVremeDTO>(rv,HttpStatus.OK);
 		
 	}
+	
 	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<DermatologDTO>> findAllByApotekaId(@PathVariable Integer id){
@@ -167,6 +171,7 @@ public class DermatologController {
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
 	}
 	
+	//ADMIN_APOTEKE
 	@PostMapping("/pretragaDermatologa/{apotekaId}")
 	public ResponseEntity<Boolean> pretrazi(@PathVariable Integer apotekaId, @RequestBody ParametriPretrageOsoba params) {
 		
@@ -191,6 +196,7 @@ public class DermatologController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/vanApoteka/{id}")
 	public ResponseEntity<Collection<DermatologDTO>> findAllNotInApoteka(@PathVariable Integer id){
 		ArrayList<Dermatolog>rezultatPretrage = (ArrayList<Dermatolog>) service.preuzmiDermatologeVanApoteke(id);
@@ -202,12 +208,14 @@ public class DermatologController {
 		return new ResponseEntity<Collection<DermatologDTO>>(dtoList, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/obrisiDermatologaApoteka/{id}")
 	public ResponseEntity<String> obrisiDermatologaApoteka(@PathVariable Integer id, @RequestBody String apotekaId) {
 		service.obrisiDermatologaIzApoteke(id, Integer.parseInt(apotekaId));
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/dodajDermatologaApoteka/{id}/{apotekaId}")
 	public ResponseEntity<Boolean> dodajDermatologaApoteka(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody RadnoVremeDTO radnoVreme ){
 		boolean uspeh = service.dodajDermatologaUApoteku(id, apotekaId, radnoVreme.getPocetak(), radnoVreme.getKraj());

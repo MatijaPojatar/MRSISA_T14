@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class IzvestajApotekaController {
 	@Autowired
 	private IzvestajApotekaService izvestajService;
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/pregledi/mesec/{apotekaId}")
 	public ResponseEntity<Collection<Integer>> getOdrzaniPregledMesec(@PathVariable("apotekaId") Integer apotekaId) {
 		
@@ -38,6 +40,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Integer>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/pregledi/kvartal/{apotekaId}")
 	public ResponseEntity<Collection<Integer>> getOdrzaniPregledKvartal(@PathVariable("apotekaId") Integer apotekaId) {
 		Calendar cal = Calendar.getInstance();
@@ -49,6 +52,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Integer>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/pregledi/godina/{apotekaId}")
 	public ResponseEntity<Collection<Integer>> getOdrzaniPregledGodina(@PathVariable("apotekaId") Integer apotekaId) {
 		LocalDateTime sada = LocalDateTime.now();
@@ -58,6 +62,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Integer>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/potrosnja/mesec/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaMesec(@PathVariable("apotekaId") Integer apotekaId) {
 		
@@ -70,6 +75,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/potrosnja/kvartal/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaKvartal(@PathVariable("apotekaId") Integer apotekaId) {
 		Calendar cal = Calendar.getInstance();
@@ -81,6 +87,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/potrosnja/godina/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPotrosnjaLekovaGodina(@PathVariable("apotekaId") Integer apotekaId) {
 		LocalDate sada = LocalDate.now();
@@ -90,6 +97,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/prihodi/mesec/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPrihodiMesec(@PathVariable("apotekaId") Integer apotekaId) {
 		
@@ -102,6 +110,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/prihodi/kvartal/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPrihodiKvartal(@PathVariable("apotekaId") Integer apotekaId) {
 		Calendar cal = Calendar.getInstance();
@@ -113,6 +122,7 @@ public class IzvestajApotekaController {
 		return new ResponseEntity<Collection<Double>>(rezultat, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/prihodi/godina/{apotekaId}")
 	public ResponseEntity<Collection<Double>> getPrihodiGodina(@PathVariable("apotekaId") Integer apotekaId) {
 		LocalDateTime sada = LocalDateTime.now();

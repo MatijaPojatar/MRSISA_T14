@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class AkcijaPromocijaController {
 		return new ResponseEntity<List<AkcijaPromocijaDTO>>(dtos, HttpStatus.OK);	
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/dodaj/{apotekaId}")
 	public ResponseEntity<Boolean> dodajAkcijuPromociju(@PathVariable Integer apotekaId, @RequestBody AkcijaPromocijaDTO apDTO){
 		AkcijaPromocija akcija = apService.dodaj(apotekaId, apDTO.getOpis(), apDTO.getKraj());

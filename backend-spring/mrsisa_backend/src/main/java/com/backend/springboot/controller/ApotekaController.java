@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -172,6 +173,7 @@ public class ApotekaController {
 		return new ResponseEntity<ApotekaMainInfoDTO>(apoteka, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/save/{id}")
 	public ResponseEntity<Boolean> saveUpdates(@PathVariable Integer id, @RequestBody ApotekaMainInfoDTO dto){
 		Apoteka a = apotekaService.findOne(id);
@@ -201,12 +203,14 @@ public class ApotekaController {
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/obrisiLek/{id}")
 	public ResponseEntity<String> obrisiLek(@PathVariable Integer id, @RequestBody String apotekaId) {
 		magacinService.obrisiLek(id, Integer.parseInt(apotekaId));
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/dodajLek/{id}/{apotekaId}")
 	public ResponseEntity<String> dodajLek(@PathVariable Integer id,@PathVariable Integer apotekaId, @RequestBody String cena ) {
 		LocalDateTime pocetakVazenja = LocalDateTime.now();
@@ -214,6 +218,7 @@ public class ApotekaController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/izmeniLek/{apotekaId}")
 	public ResponseEntity<String> izmeniLek(@PathVariable Integer apotekaId, @RequestBody LekUMagacinuDTO lek) {
 		magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
@@ -236,6 +241,7 @@ public class ApotekaController {
 		return new ResponseEntity<Boolean>(check,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/upiti/{id}")
 	public ResponseEntity<List<UpitDTO>> preuzmiUpite(@PathVariable Integer id){
 		Magacin m=magacinService.findOneByApotekaId(id);
@@ -250,6 +256,7 @@ public class ApotekaController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/upitiLekovi/{id}")
 	public ResponseEntity<List<LekDTO>> preuzmiLekoveUpita(@PathVariable Integer id){
 		Magacin m=magacinService.findOneByApotekaId(id);

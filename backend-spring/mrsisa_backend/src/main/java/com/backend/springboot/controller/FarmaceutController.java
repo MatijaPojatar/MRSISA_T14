@@ -58,7 +58,6 @@ public class FarmaceutController {
 
 	
 	@PutMapping("/save/{id}")
-	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
 		if(dto.getIme().length()>20) {
 			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
@@ -150,12 +149,14 @@ public class FarmaceutController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/obrisiFarmaceuta/{id}")
 	public ResponseEntity<String> obrisiFarmaceuta(@PathVariable Integer id) {
 		service.obrisiFarmaceuta(id);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/dodajFarmaceuta/{id}")
 	public ResponseEntity<String> dodajFarmaceuta(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
 		System.out.println("=============================================zczcdzcz=================");
