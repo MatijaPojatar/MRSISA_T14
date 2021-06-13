@@ -1,23 +1,17 @@
 package com.backend.springboot;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.hamcrest.Matchers.hasSize;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,16 +19,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.NarudzbenicaRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
@@ -64,8 +59,6 @@ class MrsisaBackendApplicationTests {
 	@Autowired
 	ApotekaService apotekaService;
 	
-	
-	
 	@Mock
 	private SavetovanjeRepository savetovanjeRep;
 	
@@ -85,6 +78,11 @@ class MrsisaBackendApplicationTests {
 	@Mock
 	private MagacinRepository magacinRep;
 	
+	@Mock
+	private ApotekaRepository apotekaRep;
+	
+	@InjectMocks
+	private ApotekaService apotekaServiceUnit;
 	
 	private MockMvc mockMvc;
 	
@@ -125,6 +123,8 @@ class MrsisaBackendApplicationTests {
 	}*/
 	
 	//unit testovi
+	
+	//S3
 	
 	@Test
 	public void testFindAllByPacijentId() {
@@ -208,8 +208,55 @@ class MrsisaBackendApplicationTests {
 		verify(magacinRep).findOneByApotekaId(1);
 	}
 	
+	//S1
+	
+	@Test
+	public void testFindAllApoteka() {
+		when(apotekaRep.findAll()).thenReturn(Arrays.asList(new Apoteka(), new Apoteka(), new Apoteka()));
+	
+		java.util.List<Apoteka> apoteke = apotekaServiceUnit.findAll();
+		
+		assertThat(apoteke).hasSize(3);
+		
+		verify(apotekaRep).findAll();
+	}
+	
+	@Test
+	public void testFindByGradApoteka() {
+		when(apotekaRep.findByGradIgnoringCase(anyString())).thenReturn(Arrays.asList(new Apoteka(), new Apoteka()));
+		
+		java.util.List<Apoteka> apoteke = apotekaServiceUnit.pretraga("", "Novi Sad");
+		
+		assertThat(apoteke).hasSize(2);
+		
+		verify(apotekaRep).findByGradIgnoringCase("Novi Sad");
+	}
+	
+	@Test
+	public void testFindByNazivAndGradApoteka() {
+		when(apotekaRep.findByNazivIgnoringCaseAndGradIgnoringCase(anyString(), anyString())).thenReturn(Arrays.asList(new Apoteka()));
+		
+		java.util.List<Apoteka> apoteke = apotekaServiceUnit.pretraga("Galen", "Novi Sad");
+		
+		assertThat(apoteke).hasSize(1);
+		
+		verify(apotekaRep).findByNazivIgnoringCaseAndGradIgnoringCase("Galen", "Novi Sad");
+	}
+	
+	@Test
+	public void testFindByPacijentIdRezervacija() {
+		when(apotekaRep.findByNazivIgnoringCaseAndGradIgnoringCase(anyString(), anyString())).thenReturn(Arrays.asList(new Apoteka()));
+		
+		java.util.List<Apoteka> apoteke = apotekaService.pretraga("Galen", "Novi Sad");
+		
+		assertThat(apoteke).hasSize(1);
+		
+		verify(apotekaRep).findByNazivIgnoringCaseAndGradIgnoringCase("Galen", "Novi Sad");
+	}
+	
 	//integracioni testovi
 	
+	//S3
 	
 	@Test
 	public void testFindAllFarmaceutByApotekaId() throws Exception {
@@ -254,4 +301,7 @@ class MrsisaBackendApplicationTests {
 		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
 	}
 
+	//S1
+	
+	//***
 }

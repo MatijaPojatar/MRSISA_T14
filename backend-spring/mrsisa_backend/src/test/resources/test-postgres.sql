@@ -8,7 +8,7 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 
 
 
-insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values (' Futoški put 10 ','Srbija','Novi Sad','Benu','Lepota i zdravlje.', 4.3);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Sentandrejski put 10 ','Srbija','Subotica','Benu','Lepota i zdravlje.', 4.3);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Rumenačka 15','Srbija','Novi Sad','Apoteka Janković','Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove “Janković”. ', 4.1);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Bulevar oslobođenja 65','Srbija','Novi Sad','Galen','Galen Pharm Apoteka specijalizovana je za prodaju farmaceutskih proizvoda.', 3.8);
 
@@ -26,7 +26,6 @@ insert into magacini (id,apoteka_id) values (2,2);
 insert into magacini (id,apoteka_id) values (3,3);
 
 insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);
-
 
 insert into role (name) values ('ROLE_PACIJENT');
 insert into role (name) values ('ROLE_ADMIN_APOTEKE');
@@ -61,3 +60,8 @@ insert into savetovanja (id,farmaceut_id) values (4,3);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,version) values ('',false,'2021-07-27 16:00','2021-07-27 17:00',1,1);
 insert into savetovanja (id,farmaceut_id) values (5,3);
+
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h22ad',0,'2021-06-27',2.0,1,2,1,1, '2021-06-02');
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h23ad',0,'2021-05-27',2.0,2,2,4,1, '2021-05-20');
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h24ad',0,'2021-06-13',2.0,1,2,1,1, '2021-06-01');
+
