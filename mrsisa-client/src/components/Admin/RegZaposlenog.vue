@@ -147,7 +147,7 @@
         </v-form>
     </v-card-text>
     <v-card-actions>
-        <v-btn @click="cancel" class="grey white--text">Odustani</v-btn>
+        <v-btn @click="goBack" class="grey white--text">Odustani</v-btn>
         <v-spacer></v-spacer>
 
         <v-btn v-if="uloga === uloge[0]"
@@ -319,7 +319,8 @@ export default {
     }),
 
     goBack() {
-      this.nastavi = false
+      this.cancel();
+      this.nastavi = false;
     },
 
     async onSubmitAAP(){
@@ -419,6 +420,7 @@ export default {
 
         pocetakRadnogVremena: this.pocetakRadnogVremena,
         krajRadnogVremena: this.krajRadnogVremena,
+        ocena: 0.0,
 
         promenjenaLozinka: false,
         enabled: false,
