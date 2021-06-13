@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -265,6 +266,7 @@ class MrsisaBackendApplicationTests {
 		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
 	}
 	
+	@WithMockUser(roles="FARMACEUT")
 	@Test
 	public void testGetAllSavetovanjaForFarmaceut() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -291,14 +293,14 @@ class MrsisaBackendApplicationTests {
 	public void testGetAllLekoviVanApoteke() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/lekovi/vanApoteke/1")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(7)));
 	}
 	
 	@Test
 	public void testfindAllLekoviByApotekaId() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/lekovi/apoteka/2")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
+		this.mockMvc.perform(get( "/lekovi/apoteka/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(0)));
 	}
 
 	//S1
