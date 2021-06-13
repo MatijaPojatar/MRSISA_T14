@@ -39,6 +39,7 @@ public class AkcijaPromocijaController {
 	private EmailService emailService;
 	
 	@GetMapping("/pacijent/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<List<AkcijaPromocijaDTO>> getAPByPacijent(@PathVariable Integer id){
 		List<AkcijaPromocija> akcijePromocije = apService.findAllByPacijent(id);
 		

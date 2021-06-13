@@ -40,8 +40,6 @@ import com.backend.springboot.service.RezervacijaService;
 @RestController
 @RequestMapping("/rezervacija")
 public class RezervacijaController {
-	
-	
 	@Autowired
 	private RezervacijaService rezService;
 	
@@ -166,6 +164,7 @@ public class RezervacijaController {
 	}
 	
 	@GetMapping("pacijent/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<List<RezLekaPacijentDTO>> aktivneRezPacijenta(@PathVariable Integer id){
 		List<RezervacijaLeka> rezervacije = rezService.rezervacijePacijenta(id, StatusRezervacije.KREIRANA);
 		List<RezLekaPacijentDTO> dtos = new ArrayList<RezLekaPacijentDTO>();
