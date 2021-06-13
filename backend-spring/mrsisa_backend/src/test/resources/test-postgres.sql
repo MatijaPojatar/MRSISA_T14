@@ -65,3 +65,11 @@ insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h23ad',0,'2021-05-27',2.0,2,2,4,1, '2021-05-20');
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h24ad',0,'2021-06-13',2.0,1,2,1,1, '2021-06-01');
 
+insert into pacijent_alergije (pacijent_id,lek_id) values (2,1);
+
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '15% popusta na sve kreme', '2021-05-18', '2021-06-18');
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(2, '3 + 1 gratis - Konjska mast', '2021-04-18', '2021-06-18');
+insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-10% na cene savetovanja', '2021-05-22', '2021-06-12');
+
+insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 1);
+insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);

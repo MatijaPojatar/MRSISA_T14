@@ -247,7 +247,7 @@ class MrsisaBackendApplicationTests {
 	public void testFindByPacijentIdRezervacija() {
 		when(apotekaRep.findByNazivIgnoringCaseAndGradIgnoringCase(anyString(), anyString())).thenReturn(Arrays.asList(new Apoteka()));
 		
-		java.util.List<Apoteka> apoteke = apotekaService.pretraga("Galen", "Novi Sad");
+		java.util.List<Apoteka> apoteke = apotekaServiceUnit.pretraga("Galen", "Novi Sad");
 		
 		assertThat(apoteke).hasSize(1);
 		
@@ -303,5 +303,24 @@ class MrsisaBackendApplicationTests {
 
 	//S1
 	
-	//***
+	@Test
+	public void testRezervacijePacijenta() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/rezervacija/pacijent/2")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(3)));
+	}
+	
+	@Test
+	public void testAlergijePacijenta() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/pacijent/alergije/2")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)));
+	}
+	
+	@Test
+	public void testAkcijePromocijePacijenta() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/akcijaPromocija/pacijent/2")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(3)));
+	}
 }
