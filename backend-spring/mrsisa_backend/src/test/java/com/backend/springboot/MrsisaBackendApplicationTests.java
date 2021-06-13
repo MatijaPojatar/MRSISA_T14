@@ -1,9 +1,14 @@
 package com.backend.springboot;
-
+import static org.hamcrest.Matchers.hasItem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -12,7 +17,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Arrays;
+import org.springframework.transaction.annotation.Transactional;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,29 +40,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.backend.springboot.domain.Apoteka;
+import com.backend.springboot.domain.ERecept;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.repository.ApotekaRepository;
+import com.backend.springboot.domain.ZalbaNaApoteku;
+import com.backend.springboot.repository.EReceptRepository;
 import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.NarudzbenicaRepository;
+import com.backend.springboot.repository.PacijentRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
 import com.backend.springboot.service.ApotekaService;
+import com.backend.springboot.repository.ZalbaNaApotekuRepository;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EReceptService;
 import com.backend.springboot.service.MagacinService;
 import com.backend.springboot.service.NarudzbenicaService;
+import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
+import com.backend.springboot.service.ZalbaNaApotekuService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 class MrsisaBackendApplicationTests {
+	
 	
 	@Autowired
 	SavetovanjeService service;
@@ -59,6 +92,31 @@ class MrsisaBackendApplicationTests {
 	
 	@Autowired
 	ApotekaService apotekaService;
+//	@Autowired 
+//	PacijentService pacijentService;
+
+	@Mock 
+	private PacijentRepository pacijentRep;
+	@Mock
+	private Pacijent pacijentMock;
+	
+	@InjectMocks
+	private PacijentService pacijentServiceUnit;
+	
+//	@Autowired
+//	private ZalbaNaApotekuService zalbaApService;
+	
+	@Mock
+	private EReceptRepository ereceptRep;
+	
+	@InjectMocks
+	private EReceptService ereceptServiceUnit;
+	
+	@Mock
+	private ZalbaNaApotekuRepository zalbaApRep;
+	
+	@InjectMocks
+	private ZalbaNaApotekuService zalbaApServiceUnit;
 	
 	@Mock
 	private SavetovanjeRepository savetovanjeRep;
@@ -89,6 +147,8 @@ class MrsisaBackendApplicationTests {
 	
 	@Autowired
 	private WebApplicationContext webApplicationContext;
+	
+	
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype());
@@ -255,6 +315,82 @@ class MrsisaBackendApplicationTests {
 		verify(apotekaRep).findByNazivIgnoringCaseAndGradIgnoringCase("Galen", "Novi Sad");
 	}
 	
+	//S4
+	
+	@Test
+	public void testFindAllByPacijent() {
+		when(zalbaApRep.findAllByPacijentId(anyInt())).thenReturn(Arrays.asList(new ZalbaNaApoteku(), new ZalbaNaApoteku()));
+		List<ZalbaNaApoteku> zalbe = zalbaApServiceUnit.findAllByPacijent(2);
+		
+		assertThat(zalbe).hasSize(2);
+		verify(zalbaApRep).findAllByPacijentId(2);
+		
+	}
+
+	
+	@Test void testFindOnePacijent() {
+		Pacijent p=new Pacijent();
+		
+		when(pacijentRep.findOneById(anyInt())).thenReturn(p);
+		
+		Pacijent pac=pacijentServiceUnit.findOne(2);
+		
+		assertEquals(p, pac);
+		
+		verify(pacijentRep).findOneById(2);
+	}
+	
+	@Test void testEreceptiByPacijent() {
+		when(ereceptRep.findAllByPacijentId(2)).thenReturn(Arrays.asList(new ERecept()));
+		List<ERecept> erecepti = ereceptServiceUnit.findByPacijent(2);
+		
+		assertThat(erecepti).hasSize(1);
+		verify(ereceptRep).findAllByPacijentId(2);
+	}
+	
+	
+	
+	//integracioni S4
+
+	@Test
+	public void testGetAllDobavljaci() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get("/dobavljaci")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$.[*].id").value(hasItem(5)))
+		.andExpect(jsonPath("$.[*].ime").value(hasItem("Mika")))
+		.andExpect(jsonPath("$.[*].prezime").value(hasItem("Mikic")));
+	}
+
+	@Test
+	public void testGetAllZalbeNaFarmaceuta() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get("/zalbe/farmaceut/neobradjene"))
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$.[*].id").value(hasItem(1)))
+		.andExpect(jsonPath("$.[*].tekst").value(hasItem("Tekst")));
+	}
+
+	public static String json(Object object) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        
+        return mapper.writeValueAsString(object);
+    }
+	
+
+
+	@Test
+	public void testGetAllPacijenti() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get("/pacijent/all")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType))
+		.andExpect(jsonPath("$", hasSize(1)))
+		.andExpect(jsonPath("$.[*].id").value(hasItem(2)))
+		.andExpect(jsonPath("$.[*].ime").value(hasItem("Marko")))
+		.andExpect(jsonPath("$.[*].prezime").value(hasItem("Markovic")));
+	}
+
 	//integracioni testovi
 	
 	//S3
