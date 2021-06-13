@@ -38,6 +38,7 @@ import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.repository.MagacinRepository;
 import com.backend.springboot.repository.NarudzbenicaRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
+import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.MagacinService;
 import com.backend.springboot.service.NarudzbenicaService;
@@ -59,6 +60,9 @@ class MrsisaBackendApplicationTests {
 	
 	@Autowired
 	PregledService pregledService;
+	
+	@Autowired
+	ApotekaService apotekaService;
 	
 	
 	
@@ -229,6 +233,25 @@ class MrsisaBackendApplicationTests {
 	
 	//S2
 	
-
+	@Test
+	public void testPreuzmiUpite() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/apoteke/upiti/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)));
+	}
+	
+	@Test
+	public void testGetAllLekoviVanApoteke() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/lekovi/vanApoteke/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
+	}
+	
+	@Test
+	public void testfindAllLekoviByApotekaId() throws Exception {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+		this.mockMvc.perform(get( "/lekovi/apoteka/2")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
+	}
 
 }

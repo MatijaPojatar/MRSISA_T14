@@ -1,6 +1,32 @@
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Čuvati van domašaja dece','Bromazepam',2,'Hemofarm',0,'kukuruzni skrob, talk, natrijum-laurilsulfat', 0);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ako simptomi traju duže od 5 dana, javite se lekaru','Fervex',0,'UPSA SAS',1,'saharoza, glukoza, etarska ulja limuna, cimeta i karanfilića',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Ne konzumirati uz alkohol','Bactrim',1,'Galenika',0,'sufametoksazola, trimetoprima, povidon, magnezijum-stearat',0);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Koristi se samo kao pomoćna terapija','Konjska mast',3,'Krauterhof',1,'divlji kesten, vinova loza, kamilica, alkohol',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Konsultovati se sa lekarom, pre upotrebe','Caffetin',2,'Alkaloid',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Pročitati uputstvo pre upotrebe','Aspirin',2,'Alims',1,'paracetamol, propifenazon, kofein, seskvihidrat',1);
+insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Pažljivo proćitati uputstvo','Brufen',0,'Alims',1,'celuloza, laktoza, ibuprofen',1);
+
+
+
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values (' Futoški put 10 ','Srbija','Novi Sad','Benu','Lepota i zdravlje.', 4.3);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Rumenačka 15','Srbija','Novi Sad','Apoteka Janković','Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove “Janković”. ', 4.1);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Bulevar oslobođenja 65','Srbija','Novi Sad','Galen','Galen Pharm Apoteka specijalizovana je za prodaju farmaceutskih proizvoda.', 3.8);
+
+insert into apoteke_lekovi (lek_id,apoteka_id) values (1,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (2,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (3,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (4,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (5,1);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (3,2);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (4,2);
+insert into apoteke_lekovi (lek_id,apoteka_id) values (4,3);
+
+insert into magacini (id,apoteka_id) values (1,1);
+insert into magacini (id,apoteka_id) values (2,2);
+insert into magacini (id,apoteka_id) values (3,3);
+
+insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);
+
 
 insert into role (name) values ('ROLE_PACIJENT');
 insert into role (name) values ('ROLE_ADMIN_APOTEKE');
