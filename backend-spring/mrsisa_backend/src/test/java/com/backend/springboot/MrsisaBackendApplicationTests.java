@@ -69,13 +69,13 @@ class MrsisaBackendApplicationTests {
 	private SavetovanjeService savetovanjeServiceUnit;
 	
 	
-	@Autowired
+	@InjectMocks
 	private NarudzbenicaService narudzbenicaServiceUnit;
 	
 	@Mock
 	private NarudzbenicaRepository narudzbenicaRep;
 	
-	@Autowired
+	@InjectMocks
 	private MagacinService magacinServiceUnit;
 	
 	@Mock
@@ -226,6 +226,9 @@ class MrsisaBackendApplicationTests {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/savetovanje/zauzmi/1/2")).andExpect(status().is(405));
 	}
+	
+	//S2
+	
 
 
 }
