@@ -51,6 +51,7 @@ public class AkcijaPromocijaController {
 		return new ResponseEntity<List<AkcijaPromocijaDTO>>(dtos, HttpStatus.OK);	
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/dodaj/{apotekaId}")
 	public ResponseEntity<Boolean> dodajAkcijuPromociju(@PathVariable Integer apotekaId, @RequestBody AkcijaPromocijaDTO apDTO){
 		AkcijaPromocija akcija = apService.dodaj(apotekaId, apDTO.getOpis(), apDTO.getKraj());

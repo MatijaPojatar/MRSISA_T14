@@ -128,6 +128,7 @@ public class OdsustvoController {
 		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/farmaceut/zaOdobrenje/{apotekaId}")
 	public ResponseEntity<List<OdsustvoFarmaceutDTO>> getAllZaOdobrenjaForFarmaceut(@PathVariable Integer apotekaId){
 		List<OdsustvoFarmaceut> odsustva=odFarmService.findAllNotOdobrenInFutureApoteka(apotekaId, LocalDateTime.now());
@@ -139,6 +140,7 @@ public class OdsustvoController {
 		return new ResponseEntity<List<OdsustvoFarmaceutDTO>>(dtos,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/dermatolog/zaOdobrenje")
 	public ResponseEntity<List<OdsustvoDermatologDTO>> getAllZaOdobrenjaForDermatolog(){
 		List<OdsustvoDermatolog> odsustva=odDermService.findAllNotOdobrenInFuture(LocalDateTime.now());
@@ -150,6 +152,7 @@ public class OdsustvoController {
 		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/farmaceut/zaOdobrenje/{zahtevId}")
 	public ResponseEntity<Boolean> odobriFarmaceut(@PathVariable Integer zahtevId){
 		OdsustvoFarmaceut odsustvo = odFarmService.odobri(zahtevId);
@@ -161,6 +164,7 @@ public class OdsustvoController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/dermatolog/zaOdobrenje/{zahtevId}")
 	public ResponseEntity<Boolean> odobriDermatolog(@PathVariable Integer zahtevId){
 		OdsustvoDermatolog odsustvo = odDermService.odobri(zahtevId);
@@ -172,6 +176,7 @@ public class OdsustvoController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/farmaceut/zaOdbijanje/{zahtevId}")
 	public ResponseEntity<Boolean> odbijFarmaceut(@PathVariable Integer zahtevId, @RequestBody OdsustvoFarmaceutDTO dto){
 		OdsustvoFarmaceut odsustvo = odFarmService.odbij(zahtevId, dto.getRazlog());
@@ -183,6 +188,7 @@ public class OdsustvoController {
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/dermatolog/zaOdbijanje/{zahtevId}")
 	public ResponseEntity<Boolean> odbijDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
 		OdsustvoDermatolog odsustvo = odDermService.odbij(zahtevId, dto.getRazlog());

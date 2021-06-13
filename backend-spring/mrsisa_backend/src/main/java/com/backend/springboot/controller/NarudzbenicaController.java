@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,7 +64,7 @@ public class NarudzbenicaController {
 	}
 	
 
-	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiSveNarudzbenice(@PathVariable Integer id){
 		Magacin m=magacinService.findOneByApotekaId(id);
@@ -78,6 +79,7 @@ public class NarudzbenicaController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/statusApoteka/{id}")
 	public ResponseEntity<List<NarudzbenicaDTO>> preuzmiNarudzbenicePoStatusu(@PathVariable Integer id, @RequestBody String status){
 		Magacin m=magacinService.findOneByApotekaId(id);
@@ -118,6 +120,7 @@ public class NarudzbenicaController {
 		return new ResponseEntity<String>(lekovi.toString(), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/prihvatiPonudu/{ponudaId}")
 	public ResponseEntity<Boolean> prihvatiPonudu(@PathVariable Integer ponudaId, @RequestBody String narId){
 		magacinService.prihvatiPonudu(Integer.parseInt(narId), ponudaId);
@@ -126,6 +129,7 @@ public class NarudzbenicaController {
 		
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/dodaj/{apotekaId}")
 	public ResponseEntity<Boolean> dodajNarudzbenicu(@PathVariable Integer apotekaId, @RequestBody NovaNarudzbenicaDTO narDTO){
 		System.out.println("\n\n--------------------------" + narDTO.getRok());

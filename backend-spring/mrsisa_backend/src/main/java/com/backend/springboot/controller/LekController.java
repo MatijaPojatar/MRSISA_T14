@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,6 +98,7 @@ public class LekController {
 	 * return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK); }
 	 */
 	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping(value = "/vanApoteke/{apotekaId}")
 	public ResponseEntity<List<LekDTO>> preuzmiLekoveVanApoteke(@PathVariable Integer apotekaId) {
 		List<Lek> lekovi = lekService.preuzmiLekoveVanApoteke(apotekaId);

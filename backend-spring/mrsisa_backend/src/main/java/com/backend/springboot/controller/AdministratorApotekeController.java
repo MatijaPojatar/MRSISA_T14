@@ -28,6 +28,7 @@ public class AdministratorApotekeController {
 	@Autowired
 	private AdministratorApotekeService service;
 	
+	//ADMIN_APOTEKE
 	@GetMapping("/{id}")
 	public ResponseEntity<AdministratorApotekeDTO> getOne(@PathVariable Integer id){
 		AdministratorApoteke a=service.findOne(id);
@@ -36,6 +37,7 @@ public class AdministratorApotekeController {
 		return new ResponseEntity<AdministratorApotekeDTO>(dto,HttpStatus.OK);
 	}
 	
+	//ADMIN_APOTEKE
 	@PutMapping("/save/{id}")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody AdministratorApotekeDTO dto){
 		AdministratorApoteke a=service.findOne(id);
