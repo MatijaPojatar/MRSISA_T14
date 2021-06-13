@@ -181,7 +181,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
  import UpdateAddLekApotekeForm from "./UpdateAddLekApotekeForm";
 
     export default{
@@ -257,7 +257,7 @@
         methods:{
              async loadLekovi(){
                  const lekovi = []
-                await axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
+                await Vue.axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
                         response.data.forEach(element => {
                             lekovi.push({
                                 naziv: element.naziv,
@@ -281,7 +281,7 @@
              ObrisiLek(lek){
                  this.selektovanLek=Object.assign({}, lek);
                  this.selektovan = this.selektovanLek.id;
-                 axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
+                 Vue.axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
                  location.reload();
              },
 
@@ -289,7 +289,7 @@
                  console.log("izmena" + this.selektovan);
                  this.selektovanLek=Object.assign({}, lek);
                  this.selektovan = this.selektovanLek.id;
-                 axios.put(`http://localhost:8080/apoteke/preuzmiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                 Vue.axios.put(`http://localhost:8080/apoteke/preuzmiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
                      console.log(response.data)
                     this.selektovanLek=response.data;
                     console.log(this.selektovanLek);
@@ -309,7 +309,7 @@
                         this.obavestenje = true;
                 }
                 else{
-                  axios.post(`http://localhost:8080/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId, datum:this.definisanRok}).then(response => {
+                  Vue.axios.post(`http://localhost:8080/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId, datum:this.definisanRok}).then(response => {
                         
                         this.message=response.data;
                     this.obavestenjeDialog = true;

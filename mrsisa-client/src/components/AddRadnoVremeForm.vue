@@ -121,7 +121,7 @@
 </template>
 
 <script>
-  import axios from "axios";
+  import Vue from "vue";
 
   export default {
     name:"AddRadnoVremeForm",
@@ -156,7 +156,7 @@
                 pocetak : this.pocetakRadnogVremena,
                 kraj : this.krajRadnogVremena
             }
-            axios.put(`http://localhost:8080/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme).then(response=>{
+            Vue.axios.put(`http://localhost:8080/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme).then(response=>{
                    
                      const uspesno = response.data
                      if (uspesno){

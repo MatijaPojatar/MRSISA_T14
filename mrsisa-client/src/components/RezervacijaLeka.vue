@@ -82,7 +82,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
+import Vue from "vue";
 
 export default {
   name: "RezervacijaLeka",
@@ -129,7 +129,7 @@ export default {
   methods: {
     async loadLekovi() {
       const lekovi = [];
-      await axios
+      await Vue.axios
         .get(`http://localhost:8080/lekovi/dostupni/`)
         .then((response) => {
           response.data.forEach((element) => {
@@ -153,7 +153,7 @@ export default {
     },
 
     rezervisi() {
-      axios
+      Vue.axios
         .post(`http://localhost:8080/rezervacija/novaRezervacija`, {
           apotekaId: this.selektovanLek.apotekaId,
           lekId: this.selektovanLek.id,

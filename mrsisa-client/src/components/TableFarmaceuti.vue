@@ -78,7 +78,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
  import  AccountView from "./AccountView";
 
     export default{
@@ -137,7 +137,7 @@
         methods:{
              loadFarmaceuti(){
                 const farmaceuti = []
-                axios.get(`http://localhost:8080/farmaceut/apoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`http://localhost:8080/farmaceut/apoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             farmaceuti.push({
@@ -162,7 +162,7 @@
              ObrisiFarmaceuta(user){
                  this.selektovanFarmaceut=Object.assign({}, user);
                  this.selektovan = this.selektovanFarmaceut.id;
-                 axios.put(`http://localhost:8080/farmaceut/obrisiFarmaceuta/${this.selektovan}`)
+                 Vue.axios.put(`http://localhost:8080/farmaceut/obrisiFarmaceuta/${this.selektovan}`)
                  location.reload();
              },
 
@@ -170,7 +170,7 @@
                  console.log("izmena" + this.selektovan);
                  this.selektovanFarmaceut=Object.assign({}, user);
                  this.selektovan = this.selektovanFarmaceut.id;
-                 axios.get(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
+                 Vue.axios.get(`http://localhost:8080/farmaceut/${this.selektovan}`).then(response => {
                      console.log(response.data)
                     this.selektovanFarmaceut=response.data;
                     console.log(this.selektovanFarmaceut);

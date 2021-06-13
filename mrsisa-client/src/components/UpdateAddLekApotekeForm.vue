@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import Vue from "vue";
 
   export default {
       name: "UpdateAddLekApotekeForm",
@@ -128,10 +128,10 @@ import axios from "axios";
         if(this.$refs.form.validate()){
           if (!this.addMode){
               this.lekUMagacinu.cena = this.newInfo.cena;
-            axios.put(`http://localhost:8080/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
+            Vue.axios.put(`http://localhost:8080/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
             this.dialog=true;
           }else{
-            axios.put(`http://localhost:8080/apoteke/dodajLek/${this.lekToAddId}/${this.apotekaId}`,this.newInfo.cena, {headers: {"Content-Type": "text/plain"}});
+            Vue.axios.put(`http://localhost:8080/apoteke/dodajLek/${this.lekToAddId}/${this.apotekaId}`,this.newInfo.cena, {headers: {"Content-Type": "text/plain"}});
             this.dialogAdd = true;
           }
            

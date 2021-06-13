@@ -214,7 +214,7 @@
 </template>
 
 <script>
-  import axios from "axios";
+  import Vue from "vue";
 
   export default {
 
@@ -290,7 +290,7 @@
               krajRadnogVremena: this.krajRadnogVremena
             }
             if(this.farmaceut){
-                axios.post(`http://localhost:8080/farmaceut/dodajFarmaceuta/${this.apotekaId}`,zaposleniDTO)
+                Vue.axios.post(`http://localhost:8080/farmaceut/dodajFarmaceuta/${this.apotekaId}`,zaposleniDTO)
             }else{
                 console.log("dodati za dermatologa")
             }

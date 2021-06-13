@@ -73,7 +73,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
  import  AddRadnoVremeForm from "./AddRadnoVremeForm";
 
     export default{
@@ -98,7 +98,7 @@
         methods:{
              loadDermatolozi(){
                 const dermatolozi = []
-                axios.get(`http://localhost:8080/dermatolog/vanApoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`http://localhost:8080/dermatolog/vanApoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             dermatolozi.push({

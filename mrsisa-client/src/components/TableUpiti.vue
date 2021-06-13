@@ -16,7 +16,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
 
     export default{
       name: "TableUpiti",
@@ -43,7 +43,7 @@
         methods:{
              loadUpiti(){
                 const upiti = []
-                axios.get(`http://localhost:8080/apoteke/upiti/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`http://localhost:8080/apoteke/upiti/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             upiti.push({

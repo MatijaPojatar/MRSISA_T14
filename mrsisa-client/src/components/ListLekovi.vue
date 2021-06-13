@@ -213,7 +213,7 @@
 </template>
 
 <script>
- import axios from "axios";
+ import Vue from "vue";
  import UpdateAddLekApotekeForm from "./UpdateAddLekApotekeForm";
 
     export default{
@@ -264,7 +264,7 @@
              async loadLekovi(){
                  const lekovi = []
                 if (!this.apotekaId){
-                    await axios.get(`http://localhost:8080/lekovi`).then(response => {
+                    await Vue.axios.get(`http://localhost:8080/lekovi`).then(response => {
                         
                         response.data.forEach(element => {
                             lekovi.push({
@@ -282,7 +282,7 @@
                     });
                 }
                 else {
-                    await axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
+                    await Vue.axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
                         response.data.forEach(element => {
                             lekovi.push({
                                 naziv: element.naziv,
@@ -305,7 +305,7 @@
              },
 
              async loadAlergije(){
-                 await axios.get(`http://localhost:8080/pacijent/alergije/${this.pacijentId}`).then(response=>{
+                 await Vue.axios.get(`http://localhost:8080/pacijent/alergije/${this.pacijentId}`).then(response=>{
                      const alergije=[]
                      response.data.forEach(element => {
                          alergije.push({
@@ -339,7 +339,7 @@
                      this.dialogMessage="Pacijent je alergičan na izabrani lek."
                      this.stanje=false
                  }else{
-                    await axios.get(`http://localhost:8080/apoteke/stanje/${lek.id}`,{params:{apotekaId:this.apotekaId,kolicina:1}}).then(response=>{
+                    await Vue.axios.get(`http://localhost:8080/apoteke/stanje/${lek.id}`,{params:{apotekaId:this.apotekaId,kolicina:1}}).then(response=>{
                         this.dialogTitle="Obaveštenje"
                         this.selektovan=lek.id
                         this.selektovanLek=lek
@@ -356,13 +356,13 @@
              },
 
              ObrisiLek(){
-                 axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
+                 Vue.axios.put(`http://localhost:8080/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
                  location.reload();
              },
 
              IzmeniLek(){
                  console.log("izmena" + this.selektovan);
-                 axios.put(`http://localhost:8080/apoteke/preuzmiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                 Vue.axios.put(`http://localhost:8080/apoteke/preuzmiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
                      console.log(response.data)
                     this.selektovanLek=response.data;
                     console.log(this.selektovanLek);
@@ -400,7 +400,7 @@
                  this.preporuceniLekovi.splice(index,1)
              },
              async zamenskiDobavi(){
-                 await axios.get(`http://localhost:8080/lekovi/zamenski/${this.selektovan}/${this.apotekaId}/${this.pacijentId}`).then(response=>{
+                 await Vue.axios.get(`http://localhost:8080/lekovi/zamenski/${this.selektovan}/${this.apotekaId}/${this.pacijentId}`).then(response=>{
                      this.obavestenjeDialog=false;
                      this.zamenski=response.data
                      if(this.zamenski.id===-1){
