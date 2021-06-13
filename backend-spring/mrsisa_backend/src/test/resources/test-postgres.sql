@@ -42,6 +42,8 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into pacijenti (id,broj_poena,penali) values (2,0,0);
 insert into osoba_role (osoba_id, role_id) values (2, 1);
 
+insert into erecepti( datum_izdavanja, pacijent_id, status) values ('2021-05-30', 2, 1);
+
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,version) values ('',true,'2021-04-27 16:00','2021-04-27 17:00',1,2,1);
 insert into savetovanja (id,farmaceut_id) values (1,1);
 
@@ -84,4 +86,10 @@ insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) 
 insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-06-28', '2021-06-30', 0, 4);
 insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-07-15', '2021-07-21', 0, 4);
 insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-07-28', '2021-07-30', 2, 1, 1);
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa dobavljaca','0651236680','1995-12-02','Srbija','Novi Sad','Mika','Mikic','imenkoprezimic94@gmaill.com','$2a$10$s1GDRA8butHfGLEqYSJxHefKDzFw2pEESzGZRU7fm2R5L3kC6zSYu',0,false, false, true); --sifra je 123
+insert into dobavljaci(id, naziv_preduzeca) values (5, 'MExpress');
+insert into osoba_role (osoba_id, role_id) values (5, 6);
+
+
+insert into zalba_farmaceut(pacijent_id,farmaceut_id, tekst, obradjena) values (2,1, 'Tekst',false);
 
