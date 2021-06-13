@@ -290,17 +290,17 @@ class MrsisaBackendApplicationTests {
 	}
 	
 	@Test
-	public void testGetAllLekoviVanApoteke() throws Exception {
+	public void testGetAllOdsustvaForFarmaceut() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/lekovi/vanApoteke/1")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(7)));
+		this.mockMvc.perform(get( "/odsustvo/farmaceut/all/1")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(1)));
 	}
 	
 	@Test
-	public void testfindAllLekoviByApotekaId() throws Exception {
+	public void testGetAllOdsustvaForDermatolog() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/lekovi/apoteka/1")).andExpect(status().isOk())
-		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(0)));
+		this.mockMvc.perform(get( "/odsustvo/dermatolog/all/4")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(2)));
 	}
 
 	//S1
