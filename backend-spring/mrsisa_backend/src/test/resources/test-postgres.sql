@@ -55,6 +55,13 @@ insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,m
 insert into farmaceuti (id,kraj_radnog_vremena,pocetak_radnog_vremena,apoteka_id, ocena) values (3,'16:00','08:00',1, 3.9);
 insert into osoba_role (osoba_id, role_id) values (3, 5);
 
+insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','$2a$10$KHKLhLY7PbDM6KM/mIZC7OBwgXBtTw7l.sB2o.SJW3H.6j8Gb8qJO',0,true, false, true); --sifra je pera
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena) values (4,'16:00','08:00', 4.3);
+insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (4,1);
+insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (4,1,'08:00','12:00', false);
+insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (4,2,'12:00','16:00', false);
+insert into osoba_role (osoba_id, role_id) values (4, 4); --role dermatolog
+
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,version) values ('',false,'2021-04-27 16:00','2021-04-27 17:00',1,2,1);
 insert into savetovanja (id,farmaceut_id) values (4,3);
 
@@ -73,3 +80,8 @@ insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-
 
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 1);
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
+insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-06-28', '2021-06-30', 0, 1, 1);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-06-28', '2021-06-30', 0, 4);
+insert into odsustva_dermatolog(pocetak, kraj, status, dermatolog_id) values ('2021-07-15', '2021-07-21', 0, 4);
+insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-07-28', '2021-07-30', 2, 1, 1);
+
