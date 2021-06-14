@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Dobavljac;
@@ -22,10 +24,14 @@ import com.backend.springboot.domain.LekIzNarudzbenice;
 import com.backend.springboot.domain.LekNaStanju;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.Role;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
+import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.DobavljacService;
+import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.NarudzbenicaService;
+import com.backend.springboot.service.RoleService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -34,6 +40,12 @@ public class DobavljacController {
 
 	@Autowired
 	private DobavljacService dobavljacService;
+	
+	@Autowired 
+	private RoleService roleService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	@Autowired
 	private NarudzbenicaService narudzbenicaService;
@@ -49,6 +61,33 @@ public class DobavljacController {
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+	
+	@PostMapping("/dobSignup")
+	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dobavljacDTO, UriComponentsBuilder ucBuilder){
+		
+		Dobavljac existDobavljac = this.dobavljacService.findByMail(dobavljacDTO.getMail());
+		if(existDobavljac != null) {
+			throw new ResourceConflictException(dobavljacDTO.getId(), "Email vec postoji");
+		}
+		
+		Dobavljac novi = new Dobavljac(dobavljacDTO);
+		novi.setPassword("12345678");
+		novi.setEnabled(true);
+		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_DOBAVLJAC"));
+		novi.setRoles(roles);
+		novi.setPromenjenaLozinka(false);
+		Dobavljac dobavljac = this.dobavljacService.save(novi);
+		
+		try {
+			emailService.regByAdmin(dobavljac.getMail());
+		}catch(Exception e) {
+			System.out.println("Greška prilikom slanja emaila: " +e.getMessage());
+		}
+		
+		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.CREATED);
+	} 
 	
 	@GetMapping("/nazivPreduzeca/{id}")
 	public ResponseEntity<String> getNazivPreduzeca(@PathVariable Integer id){

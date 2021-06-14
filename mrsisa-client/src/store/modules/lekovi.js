@@ -27,6 +27,7 @@ const getters = {
 }
 
 const actions = {
+
   async getLekoviSifrarnikAction({commit}){
     try{
       const response = await Vue.axios.get("/lekovi/zaSifrarnik")
@@ -40,7 +41,7 @@ const actions = {
 
   async getDostupnostLekaAction({commit}, id){
     try{
-      const response = await Vue.axios.get("/apoteke/dostupnostLeka/"+ id)
+      const response = await Vue.axios.get("/lekovi/dostupnostLeka/"+ id)
       console.log(response.data);
       commit("setDostupnostLeka", response.data);
     }catch(error){
@@ -149,6 +150,10 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state= initStanje();
+  },
+
+  setDostupnostLeka(state, lista){
+    state.dostupnostLeka = lista;
   },
 
   setLekoviSifrarnik(state, lista){

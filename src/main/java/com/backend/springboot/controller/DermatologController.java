@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Dermatolog;
@@ -26,11 +28,15 @@ import com.backend.springboot.domain.DermatologApoteka;
 import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.ParametriPretrageOsoba;
+import com.backend.springboot.domain.Role;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.DobavljacDTO;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.RadnoVremeDTO;
+import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.DermatologService;
+import com.backend.springboot.service.EmailService;
+import com.backend.springboot.service.RoleService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -40,7 +46,12 @@ public class DermatologController {
 	@Autowired
 	private DermatologService service;
 	
-
+	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
+	private EmailService emailService;
+	
 	private boolean pretragaDermatologaApoteke = false;
 	private ArrayList<Dermatolog> pronadjeniDermatolozi;
 	private ArrayList<DermatologDTO> pronadjeniDermatoloziDTO;
@@ -56,6 +67,33 @@ public class DermatologController {
 		
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
+	
+	@PostMapping("/dermSignup")
+	public ResponseEntity<DermatologDTO> registrujDermatologa(@RequestBody DermatologDTO dermatologDTO, UriComponentsBuilder ucBuilder){
+		
+		Dermatolog existDermatolog = this.service.findByMail(dermatologDTO.getMail());
+		if(existDermatolog != null) {
+			throw new ResourceConflictException(dermatologDTO.getId(), "Email vec postoji");
+		}
+		
+		Dermatolog novi = new Dermatolog(dermatologDTO);
+		novi.setPassword("12345678");
+		novi.setEnabled(true);
+		novi.setPassword(new BCryptPasswordEncoder().encode(novi.getPassword()));
+		List<Role> roles = new ArrayList<Role>();
+		roles.add(roleService.findByName("ROLE_DERMATOLOG"));
+		novi.setRoles(roles);
+		novi.setPromenjenaLozinka(false);
+		Dermatolog dermatolog = this.service.save(novi);
+		
+		try {
+			emailService.regByAdmin(dermatolog.getMail());
+		}catch(Exception e) {
+			System.out.println("Greška prilikom slanja emaila: " +e.getMessage());
+		}
+		
+		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.CREATED);
+	} 
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<DermatologDTO> getOne(@PathVariable Integer id){

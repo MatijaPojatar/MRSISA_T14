@@ -80,6 +80,7 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		this.setDatumRodjenja(d.getDatumRodjenja());
 		this.setPocetakRadnogVremena(d.getPocetakRadnogVremena());
 		this.setKrajRadnogVremena(d.getKrajRadnogVremena());
+		this.setOcena(d.getOcena());
 	}
 
 	public Double getOcena() {

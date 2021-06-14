@@ -183,7 +183,7 @@
         <TableOdsustva  :farmaceut=false />
       </v-container>
 
-      <v-container fluid v-if="showSviLekovi" :style="{width:'70vh'}">
+      <v-container fluid v-if="showSviLekovi" :style="{width:'140vh'}">
         <SifrarnikLekova />
       </v-container>
 

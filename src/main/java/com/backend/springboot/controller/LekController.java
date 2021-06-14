@@ -29,7 +29,9 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
+import com.backend.springboot.domain.StavkaCenovnika;
 import com.backend.springboot.domain.VrstaLeka;
+import com.backend.springboot.dto.ApotekaCenaDTO;
 import com.backend.springboot.dto.LekApotekaDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.LekPrikazDTO;
@@ -125,22 +127,6 @@ public class LekController {
 		return new ResponseEntity<LekDTO>(new LekDTO(lek), HttpStatus.OK);
 	}
 
-//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Collection<Lek>> getLekovi() {
-//		
-//		return new ResponseEntity<Collection<Lek>>(pronadjeniLekovi, HttpStatus.OK);
-//	}
-	
-//	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Collection<LekDTO>> getLekovi() {
-//		List<Lek> rezultatPretrage=(List<Lek>) lekService.findAll();
-//		ArrayList<LekDTO> dtoList=new ArrayList<LekDTO>();
-//		for(Lek l:rezultatPretrage) {
-//			dtoList.add(new LekDTO(l));
-//		}
-//		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
-//	}
-//	
 	@GetMapping("/apoteka/{id}")
 	public ResponseEntity<Collection<LekUMagacinuDTO>> findAllByApotekaId(@PathVariable Integer id){
 		if (pretragaLekovaApoteka) {
@@ -265,16 +251,6 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(test, HttpStatus.OK);
 	}
 
-//	@GetMapping("/apoteka/{id}")
-//	public ResponseEntity<Collection<LekDTO>> findAllByApotekaId(@PathVariable Integer id) {
-//		List<Lek> rezultatPretrage = lekService.findAllByApoteka(id);
-//		ArrayList<LekDTO> dtoList = new ArrayList<LekDTO>();
-//		for (Lek l : rezultatPretrage) {
-//			dtoList.add(new LekDTO(l));
-//		}
-//
-//		return new ResponseEntity<Collection<LekDTO>>(dtoList, HttpStatus.OK);
-//	}
 	
 	@GetMapping("/zamenski/{id}/{apoteka_id}/{pacijent_id}")
 	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId,@PathVariable("pacijent_id") Integer pacijentId){
@@ -313,6 +289,69 @@ public class LekController {
 		
 		return new ResponseEntity<LekUMagacinuDTO>(dto,HttpStatus.OK);
 	}
+//	@GetMapping("/dostupnostLeka/{id}")
+//	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer id){
+//		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
+//		//za svaku apoteku
+//		for (Apoteka a : apotekaService.findAll()) {
+//			double cena = apotekaService.getCenaLeka(a,id);
+//			if(cena== 0.0) {
+//				continue;
+//			}
+//			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
+//			result.add(ACdto);
+//		}
+//		
+//		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
+//		
+//	}
+	@GetMapping("/dostupnostLeka/{lekId}")
+	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer lekId) {
+		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
+//		int counter = 1;
+//		
+		List<Apoteka> apoteke = apotekaService.findAll();
+		for(Apoteka a : apoteke) {
+			if(a.getMagacin() != null) {
+				
+				Magacin m = a.getMagacin();
+				for (LekUMagacinu lekUM : m.getLekovi()) {
+					
+					if(lekUM.getLek().getId() == lekId) {
+						StavkaCenovnika sc = magacinService.preuzmiTrenutnuCenu(lekUM.getId());
+						if(sc!= null) {
+							ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), sc.getCena());
+							result.add(ACdto);
+						}
+					}
+				}
+				
+
+			}
+		}
+		
+		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
+	}
+	
+//	Magacin m = apoteka.getMagacin();
+//	for (LekUMagacinu lekUM : m.getLekovi()) {
+//		
+//		if(lekUM.getLek().getId() == lekId) {
+//			StavkaCenovnika sc = magacinService.preuzmiTrenutnuCenu(lekUM.getId());
+//			if(sc!= null) {
+//				LekApotekaDTO bingo = new LekApotekaDTO();
+//				bingo.setApotekaId(apoteka.getId());
+//				bingo.setNazivApoteke(apoteka.getNaziv());
+//				bingo.setCena(sc.getCena());
+//				bingo.setOblikLeka(lekUM.getLek().getOblikLeka());
+//				bingo.setNaziv(lekUM.getLek().getNaziv());
+//				bingo.setId(counter);
+//				counter++;
+//				result.add(bingo);
+//			}
+//		}
+//	}
+	
 	
 	@GetMapping(value = "/dostupni")
 	public ResponseEntity<List<LekApotekaDTO>> getAllAvailable() {		

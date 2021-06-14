@@ -92,19 +92,13 @@ class MrsisaBackendApplicationTests {
 	
 	@Autowired
 	ApotekaService apotekaService;
-//	@Autowired 
-//	PacijentService pacijentService;
 
 	@Mock 
 	private PacijentRepository pacijentRep;
-	@Mock
-	private Pacijent pacijentMock;
+
 	
 	@InjectMocks
 	private PacijentService pacijentServiceUnit;
-	
-//	@Autowired
-//	private ZalbaNaApotekuService zalbaApService;
 	
 	@Mock
 	private EReceptRepository ereceptRep;
@@ -328,7 +322,8 @@ class MrsisaBackendApplicationTests {
 	}
 
 	
-	@Test void testFindOnePacijent() {
+	@Test 
+	void testFindOnePacijent() {
 		Pacijent p=new Pacijent();
 		
 		when(pacijentRep.findOneById(anyInt())).thenReturn(p);
@@ -340,7 +335,8 @@ class MrsisaBackendApplicationTests {
 		verify(pacijentRep).findOneById(2);
 	}
 	
-	@Test void testEreceptiByPacijent() {
+	@Test 
+	void testEreceptiByPacijent() {
 		when(ereceptRep.findAllByPacijentId(2)).thenReturn(Arrays.asList(new ERecept()));
 		List<ERecept> erecepti = ereceptServiceUnit.findByPacijent(2);
 		
@@ -370,14 +366,6 @@ class MrsisaBackendApplicationTests {
 		.andExpect(jsonPath("$.[*].id").value(hasItem(1)))
 		.andExpect(jsonPath("$.[*].tekst").value(hasItem("Tekst")));
 	}
-
-	public static String json(Object object) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        
-        return mapper.writeValueAsString(object);
-    }
-	
 
 
 	@Test
