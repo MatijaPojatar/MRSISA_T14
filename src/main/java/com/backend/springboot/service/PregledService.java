@@ -189,9 +189,17 @@ public class PregledService {
 		}
 		
 		Pregled p=new Pregled();
-		p.setDermatolog(dermService.findOne(id));
+		try {
+			p.setDermatolog(dermService.findOne(id));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setIzvrsen(dto.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		try {
+			p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setPacijent(null);
 		p.setIzvestaj(null);
 		p.setKraj(kraj);

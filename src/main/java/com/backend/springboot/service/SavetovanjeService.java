@@ -102,7 +102,7 @@ public class SavetovanjeService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
-	public boolean dodajSavetovanje(Integer id,LocalDateTime pocetak,LocalDateTime kraj,SavetovanjeDTO dto) {
+	public boolean dodajSavetovanje(Integer id,LocalDateTime pocetak,LocalDateTime kraj,SavetovanjeDTO dto) throws InterruptedException {
 		List<Savetovanje> checkList;
 		try {
 			checkList=savetovanjeRep.findInRangeForFarmaceut(id,pocetak,kraj);
@@ -123,13 +123,26 @@ public class SavetovanjeService {
 		}
 		
 		Savetovanje s=new Savetovanje();
-		s.setFarmaceut(farmService.findOne(id));
+		try {
+			s.setFarmaceut(farmService.findOne(id));
+		}catch(Exception e) {
+			return false;
+		}
 		s.setIzvrsen(dto.isIzvrsen());
-		s.setApoteka(apotekaService.findOne(dto.getApotekaId()));
-		s.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		try {
+			s.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		}catch(Exception e) {
+			return false;
+		}
+		try {
+			s.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		}catch(Exception e) {
+			return false;
+		}
 		s.setIzvestaj(dto.getIzvestaj());
 		s.setKraj(kraj);
 		s.setPocetak(pocetak);
+		
 		
 		savetovanjeRep.save(s);
 		

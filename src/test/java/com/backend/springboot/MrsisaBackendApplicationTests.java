@@ -403,7 +403,7 @@ class MrsisaBackendApplicationTests {
 	@Test
 	public void testZauzmiSavetovanje() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/savetovanje/zauzmi/1/2")).andExpect(status().is(405));
+		this.mockMvc.perform(get( "/pregled/zauzmi/1/2")).andExpect(status().is(405));
 	}
 	
 	//S2

@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.LekUMagacinu;
@@ -31,6 +33,7 @@ public class FarmaceutService {
 		return farmaceutRep.save(f);
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Farmaceut findOne(Integer id) {
 		return farmaceutRep.findOneById(id);
 	}
