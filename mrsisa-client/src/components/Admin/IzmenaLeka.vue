@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-card>
+  <v-card v-if="nastavi">
     <v-card-title>Izmena leka: </v-card-title>
     <v-card-text>
       <v-form ref= "forma" v-model="valid" lazy-validation>
@@ -159,9 +159,10 @@
 
   </v-card>
   <v-dialog
+      v-if="nastavi"
       v-model="odabir"
       persistent
-      max-width="300">
+      max-width="400">
     <v-card>
        <v-container>
 
@@ -202,6 +203,11 @@
 
             </v-row>
           </v-container>
+        <v-card-actions>
+          <v-btn
+          @click="odustani"
+          >Cancel</v-btn>
+        </v-card-actions>
     </v-card>
   </v-dialog>
   </div>
@@ -218,6 +224,7 @@ export default {
   },
 
   data: () => ({
+    nastavi: true,
     // sifra: "",
     // naziv: "",
     // proizvodjac: "",
@@ -228,7 +235,7 @@ export default {
     // oblik: "",
     // sastav: "",
 
-    zamenskiLekovi: [],
+    // zamenskiLekovi: [],
     // napomena: "",
     lek: {},
 
@@ -264,6 +271,10 @@ export default {
       getZamenskeAction: "lekovi/getZamenskeAction"
     }),
 
+    odustani(){
+      this.nastavi = false;
+    },  
+
     async onSubmit() {
       if(this.$refs.forma.validate()){
         const lekInfo = {
@@ -279,8 +290,8 @@ export default {
 
         let zamenskiIds = [];
         let index;
-        for( index in this.zamenskiLekovi){
-          zamenskiIds.push(this.zamenskiLekovi[index].id);
+        for( index in this.currZamenski){
+          zamenskiIds.push(this.currZamenski[index].id);
         }
         
         let izmenjeniLek;
@@ -308,7 +319,7 @@ export default {
     },
 
     dodajZamenski(lek) {
-      if (this.zamenskiLekovi.includes(lek)){
+      if (this.currZamenski.includes(lek)){
         //ovde dodati obavestenje da ne moze isti, ili samo ibaciti pre listanja
         return;
       }
@@ -317,8 +328,8 @@ export default {
     },
 
     ukloniZamenski(lek){
-      const index = this.zamenskiLekovi.findIndex((l) => l.id === lek.id);
-      this.zamenskiLekovi.splice(index,1);
+      const index = this.currZamenski.findIndex((l) => l.id === lek.id);
+      this.currZamenski.splice(index,1);
     },
 
     cancel(){

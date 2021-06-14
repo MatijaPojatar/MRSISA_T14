@@ -159,7 +159,7 @@
         <KreirajLek/>
       </v-container>
 
-      <v-container fluid v-if="showIzmeniLek" :style="{width:'70vh'}">
+      <v-container fluid v-if="showIzmeniLek" :style="{width:'120vh'}">
         <IzmenaLeka/>
       </v-container>
 

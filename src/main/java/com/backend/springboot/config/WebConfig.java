@@ -13,4 +13,16 @@ public class WebConfig implements WebMvcConfigurer{
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**").allowedOrigins("http://localhost:8081");
 	}
+	
 }
+
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan
+//public class WebConfig extends WebMvcConfigurerAdapter {
+//
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/**").addResourceLocations("/");
+//        }
+//}
