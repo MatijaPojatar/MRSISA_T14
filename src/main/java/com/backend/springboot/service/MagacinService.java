@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
@@ -81,45 +83,57 @@ public class MagacinService {
 		return narudzbenicaRep.findAllByStatusAndMagacinId(status, magacinId);
 	}
 	
-	public void prihvatiPonudu(Integer narudzbenicaId, Integer ponudaId) {
-		//dodati slanje mejla
-		Narudzbenica narudzbenica = narudzbenicaRep.findOneById(narudzbenicaId);
-		narudzbenica.setStatus(StatusNarudzbenice.OBRADJENA);
-		for(Ponuda p : ponudeRep.findAllByNarudzbenicaId(narudzbenicaId)) {
-			if (p.getId() != ponudaId) {
-				p.setStatus(StatusPonude.ODBIJENA);
-				ponudeRep.save(p);
-				try {
-					email.odgovorPonuda(narudzbenicaId, p.getId(), "odbijena");
-				} catch (MailException | InterruptedException e) {
-					System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-				}
-				continue;
-			}
-			p.setStatus(StatusPonude.PRIHVACENA);
-			ponudeRep.save(p);
-			
-		}
-		for(LekIzNarudzbenice lek: narudzbenica.getLekovi()) {
-			LekUMagacinu m = lekUMagacinuRep.findOneByMagacinIdAndLekId(narudzbenica.getMagacin().getId(), lek.getLek().getId());
-			if (m != null) {
-				m.setKolicina(m.getKolicina() + lek.getKolicina());
-				lekUMagacinuRep.save(m);
-			}
-			else {
-				dodajLek(LocalDateTime.now(), 200.0, lek.getLek().getId(), narudzbenica.getMagacin().getApoteka().getId(), lek.getKolicina());
-			}
-		}
-		
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public boolean prihvatiPonudu(Integer narudzbenicaId, Integer ponudaId) {
 		try {
-			email.odgovorPonuda(narudzbenicaId, ponudaId, "prihvaćena");
-		} catch (MailException | InterruptedException e) {
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			Narudzbenica narudzbenica = narudzbenicaRep.findOneById(narudzbenicaId);
+			narudzbenica.setStatus(StatusNarudzbenice.OBRADJENA);
+			for(Ponuda p : ponudeRep.findAllByNarudzbenicaId(narudzbenicaId)) {
+				if (p.getId() != ponudaId) {
+					p.setStatus(StatusPonude.ODBIJENA);
+					ponudeRep.save(p);
+					try {
+						email.odgovorPonuda(narudzbenicaId, p.getId(), "odbijena");
+					} catch (MailException | InterruptedException e) {
+						System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+					}
+					continue;
+				}
+				p.setStatus(StatusPonude.PRIHVACENA);
+				ponudeRep.save(p);
+				
+			}
+			for(LekIzNarudzbenice lek: narudzbenica.getLekovi()) {
+				LekUMagacinu m = lekUMagacinuRep.findOneByMagacinIdAndLekId(narudzbenica.getMagacin().getId(), lek.getLek().getId());
+				if (m != null) {
+					try {
+					m.setKolicina(m.getKolicina() + lek.getKolicina());
+					Thread.sleep(10000);
+					lekUMagacinuRep.save(m);
+					}
+					catch(Exception e){
+						return false;
+					}
+				}
+				else {
+					dodajLek(LocalDateTime.now(), 200.0, lek.getLek().getId(), narudzbenica.getMagacin().getApoteka().getId(), lek.getKolicina());
+				}
+			}
+			
+			try {
+				email.odgovorPonuda(narudzbenicaId, ponudaId, "prihvaćena");
+			} catch (MailException | InterruptedException e) {
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
 		}
 		
 	}
 	
-	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
 		if(lum==null) {

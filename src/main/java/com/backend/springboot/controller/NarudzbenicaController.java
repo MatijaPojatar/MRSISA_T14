@@ -126,9 +126,11 @@ public class NarudzbenicaController {
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PostMapping("/prihvatiPonudu/{ponudaId}")
 	public ResponseEntity<Boolean> prihvatiPonudu(@PathVariable Integer ponudaId, @RequestBody String narId){
-		magacinService.prihvatiPonudu(Integer.parseInt(narId), ponudaId);
-		
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		boolean uspeh = magacinService.prihvatiPonudu(Integer.parseInt(narId), ponudaId);
+		if (uspeh) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.LOCKED);
 		
 	}
 	

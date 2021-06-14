@@ -123,10 +123,19 @@
                   this.dialog = true;
                 }
                 else{
-                   Vue.axios.post(`http://localhost:8080/narudzbenice/prihvatiPonudu/${this.odabrana.id}`, this.narudzbenica.id, {headers: {"Content-Type": "text/plain"}})
-                   this.obradjenaData=true;
-                   this.loadPonude();
-                   location.reload();
+                   Vue.axios.post(`http://localhost:8080/narudzbenice/prihvatiPonudu/${this.odabrana.id}`, this.narudzbenica.id, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                      if (response.data == false){
+                           this.message="Neuspešna akcija.";
+                            this.dialog = true;
+                            console.log("jbgica zakljucano")
+                      }
+                      else{
+                        this.obradjenaData=true;
+                        this.loadPonude();
+                        location.reload();
+                      }
+                   });
+                   
                 }
              },
              endDialog(){

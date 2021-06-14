@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -53,6 +54,9 @@ public class LekUMagacinu {
 	@Column(name = "obrisan", nullable = false)
 	private boolean obrisan;
 	
+	@Version
+	private Long version;
+	
 	public LekUMagacinu() {
 		// TODO Auto-generated constructor stub
 	}
@@ -84,6 +88,18 @@ public class LekUMagacinu {
 		this.lek = lek;
 		this.magacin = magacin;
 		this.obrisan = false;
+	}
+
+
+
+	public Long getVersion() {
+		return version;
+	}
+
+
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 

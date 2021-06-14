@@ -56,15 +56,15 @@ insert into magacini (id,apoteka_id) values (1,1);
 insert into magacini (id,apoteka_id) values (2,2);
 insert into magacini (id,apoteka_id) values (3,3);
 
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 100, 100, 1, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ('2021-04-06 14:00', 200, 0, 2, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 0, 3, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 4, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 5, 1, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 200, 150, 4, 2, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 10, 3, 2, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 300, 0, 3, 3, false);
-insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan) values ( '2021-04-06 14:00', 400, 300, 5, 3, false);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ('2021-04-06 14:00', 100, 100, 1, 1, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ('2021-04-06 14:00', 200, 0, 2, 1, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 300, 0, 3, 1, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 400, 300, 4, 1, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 300, 10, 5, 1, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 200, 150, 4, 2, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 300, 10, 3, 2, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 300, 0, 3, 3, false, 1);
+insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ( '2021-04-06 14:00', 400, 300, 5, 3, false, 1);
 
 
 
@@ -161,11 +161,11 @@ insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id
 
 insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);
 
-insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-05-15', 1, 1, 4);
+insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-05-15', 1, 0, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (10, 1, 1);
 insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-05-15', 1, 0, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (5, 7, 2);
-insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (11000, 4, 2);
+insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (11000, 1, 2);
 insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-06-15', 1, 0, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (50, 5, 3);
 
