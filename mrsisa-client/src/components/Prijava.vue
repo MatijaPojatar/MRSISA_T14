@@ -31,7 +31,7 @@
     <v-card-actions>
       <v-btn @click="pretragaApoteka">Pretraga apoteka</v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click="pretragaApoteka">Pretraga lekova</v-btn>
+      <v-btn @click="pretragaLekova">Pretraga lekova</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -125,6 +125,10 @@ export default {
 
     pretragaApoteka() {
       this.$router.push("/pretragaApoteka");
+    },
+
+    pretragaLekova() {
+      this.$router.push("/pretragaLekova");
     },
   },
 };
