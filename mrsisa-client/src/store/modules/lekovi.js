@@ -53,6 +53,7 @@ const actions = {
   async getLekoviAction({ commit }) {
     try{
       const { data : lekovi} = await Vue.axios.get("/lekovi");
+      alert(lekovi);
       commit("setLekovi", lekovi);
     } catch(error){
       alert("Greska u pribavljanju svih lekova")

@@ -228,13 +228,13 @@
                 <Calendar :pacijent="pacijent" :user="user"/>
             </v-container>
             <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
-                <AccountView :user="user" :pacijent="pacijent"/>
+                <AccountView :user="user" :pacijent="pacijent" :editable="true"/>
             </v-container>
             <v-container fluid v-if="showPassword" :style="{width:'70vh'}">
                 <PasswordSwitch :pass="user.password" :pacijent="pacijent" :id="user.id"/>
             </v-container>
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
-                <AddAllergy :id="user.id"/>
+                <AddAllergy :pacijentId="user.id"/>
             </v-container>
             <v-container fluid v-if="showRezLekovi" :style="{width:'70vh'}">
                 <RezervisaniLekovi/>

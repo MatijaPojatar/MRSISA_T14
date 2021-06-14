@@ -68,6 +68,7 @@ export default {
       dialogTitle: "",
       dialogMessage: "",
       odgovor: true,
+      errCheck: false,
     }),
     props: {
         doktorId: Number,
@@ -118,11 +119,18 @@ export default {
                     status: "OBRADA",
                 }
             }
+            this.errCheck=false;
             await Vue.axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
                     this.odgovor=response.data;
+                }).catch(err=>{
+                  console.log(err);
+                  this.errCheck=true;
                 });
-            
-            if(!this.odgovor){
+            if(this.errCheck){
+              this.dialogTitle="Greška";
+              this.dialogMessage="Došlo je do greške.";
+            }
+            else if(!this.odgovor){
                 this.dialogTitle="Greška";
                 this.dialogMessage="Postoje termini u unetom periodu.";
             }else{

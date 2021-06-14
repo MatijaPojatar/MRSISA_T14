@@ -239,20 +239,14 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart();
 		LocalDateTime kraj=pregled.getEnd();
 		
-		boolean odg;
+		boolean odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);;
 		
-		try {
-			odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);
-		}catch(Exception e) {
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
 			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
 		}
 		
-		/*
-		 * try { emailService.noviPregled(p); } catch(Exception e){
-		 * System.out.println("Greska prilikom slanja emaila: " + e.getMessage()); }
-		 */
-		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
 	}
 	
 	@PutMapping("/zakazi")

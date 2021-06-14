@@ -20,7 +20,7 @@ public interface PacijentRepository extends JpaRepository<Pacijent, Integer> {
 	
 	Pacijent save(Pacijent p);
 	
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Lock(LockModeType.PESSIMISTIC_READ)
 	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	Pacijent findOneById(Integer id);
 	

@@ -58,52 +58,28 @@ public class OdsustvoController {
 	@PutMapping("/farmaceut/dodaj/{id}")
 	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<Boolean> dodajTerminFarmaceut(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Savetovanje> checkList=savService.findAllInRangeForFarmaceut(id,odsustvo.getPocetak(),odsustvo.getKraj());
-		int counter=0;
-		for(Savetovanje s:checkList) {
-			if(!s.isIzvrsen()) {
-				counter++;
-			}
-		}
-		if(counter>0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
-		}
-		OdsustvoFarmaceut of=new OdsustvoFarmaceut();
-		Farmaceut f=farmService.findOne(id);
-		of.setKraj(odsustvo.getKraj());
-		of.setPocetak(odsustvo.getPocetak());
-		of.setStatus(StatusZahtevaZaOdmor.OBRADA);
-		of.setFarmaceut(f);
-		of.setApoteka(f.getApoteka());
+		boolean odg=odFarmService.dodajOdsustvo(id, odsustvo);
 		
-		odFarmService.save(of);
+		if(odg) {
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(true,HttpStatus.BAD_REQUEST);
+		}
 		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
 	
 	@PutMapping("/dermatolog/dodaj/{id}")
 	@PreAuthorize("hasRole('DERMATOLOG')")
-	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoFarmaceutDTO odsustvo){
-		List<Pregled> checkList=preService.findAllInRangeForDermatolog(id,odsustvo.getPocetak(),odsustvo.getKraj());
-		int counter=0;
-		for(Pregled p:checkList) {
-			if(!p.isIzvrsen()) {
-				counter++;
-			}
-		}
-		if(counter>0) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.NOT_ACCEPTABLE);
-		}
-		OdsustvoDermatolog od=new OdsustvoDermatolog();
-		Dermatolog d=dermService.findOne(id);
-		od.setKraj(odsustvo.getKraj());
-		od.setPocetak(odsustvo.getPocetak());
-		od.setStatus(StatusZahtevaZaOdmor.OBRADA);
-		od.setDermatolog(d);
+	public ResponseEntity<Boolean> dodajTerminDermatolog(@PathVariable Integer id,@RequestBody OdsustvoDermatologDTO odsustvo){
+
 		
-		odDermService.save(od);
+		boolean odg=odDermService.dodajOdsustvo(id, odsustvo);
 		
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		if(odg) {
+			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(true,HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@GetMapping("/farmaceut/all/{id}")

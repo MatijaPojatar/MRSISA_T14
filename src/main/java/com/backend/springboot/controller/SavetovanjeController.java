@@ -195,17 +195,11 @@ public class SavetovanjeController {
 	
 	@PutMapping("/dodaj/{id}")
 	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody SavetovanjeDTO savetovanje){
+	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody SavetovanjeDTO savetovanje) throws InterruptedException{
 		LocalDateTime pocetak=savetovanje.getStart();
 		LocalDateTime kraj=savetovanje.getEnd();
 		
-		boolean odg;
-		
-		try {
-			odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
-		}catch(Exception e) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
-		}
+		boolean odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
 		
 		if(odg) {
 			try {
@@ -215,7 +209,11 @@ public class SavetovanjeController {
 			}
 		}
 		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PutMapping("/zakazi")

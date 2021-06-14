@@ -15,7 +15,7 @@ import com.backend.springboot.domain.Apoteka;
 public interface ApotekaRepository extends JpaRepository<Apoteka, Integer> {
 	List<Apoteka> findAll();
 	
-	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	@Lock(LockModeType.PESSIMISTIC_READ)
 	@QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
 	Apoteka findOneById(Integer id);
 	
