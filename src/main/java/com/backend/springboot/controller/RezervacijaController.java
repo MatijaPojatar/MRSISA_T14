@@ -67,16 +67,43 @@ public class RezervacijaController {
 				p.setPenali(p.getPenali()+1);
 				pacijentService.save(p);
 			}
-			Magacin m=magacinService.findOneByApotekaId(rl.getApoteka().getId());
-			LekUMagacinu lek=magacinService.preuzmiJedanLekApoteke(rl.getLek().getId(), rl.getApoteka().getId());
-			magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina()+rl.getKolicina(), rl.getLek().getId(), rl.getApoteka().getId());
-			magacinService.save(m);
+			boolean uspeh = magacinService.vratiLekUMagacin(rl);
+			if(!uspeh) {
+				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
+			}
 			try {
 				rezService.save(rl);
 			}catch(Exception e){
 				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 			}
 			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@GetMapping("otkazi/{code}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<String> otkaziRezervaciju(@PathVariable String code,@RequestParam Integer apotekaId){
+		
+		RezervacijaLeka rl=rezService.findOneActiveByCodeAndApoteka(code,apotekaId);
+		if(rl==null) {
+			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.NOT_FOUND);
+		}
+		rl.setStatus(StatusRezervacije.OTKAZANA);
+		Pacijent p=rl.getPacijent();
+		if(p.getPenali()<3) {
+			p.setPenali(p.getPenali()+1);
+			pacijentService.save(p);
+		}
+		boolean uspeh = magacinService.vratiLekUMagacin(rl);
+		if(!uspeh) {
+			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
+		}
+		try {
+			rezService.save(rl);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
@@ -141,11 +168,10 @@ public class RezervacijaController {
 					p.setPenali(p.getPenali()+1);
 					pacijentService.save(p);
 				}
-				Magacin m=magacinService.findOneByApotekaId(rl.getApoteka().getId());
-				LekUMagacinu lek=magacinService.preuzmiJedanLekApoteke(rl.getLek().getId(), rl.getApoteka().getId());
-				magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina()+rl.getKolicina(), rl.getLek().getId(), rl.getApoteka().getId());
-				magacinService.save(m);
-				rezService.save(rl);
+				boolean uspeh = magacinService.vratiLekUMagacin(rl);
+				if(!uspeh) {
+					//nesto
+				}
 			}
 		}
 	}

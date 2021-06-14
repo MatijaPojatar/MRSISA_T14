@@ -12,6 +12,7 @@ import com.backend.springboot.domain.LekUMagacinu;
 public interface LekUMagacinuRepository extends JpaRepository<LekUMagacinu, Integer> {
 	public List<LekUMagacinu> findAllByLekId(Integer lekId);
 	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	public List<LekUMagacinu> findAllByMagacinId(Integer MagacinId);
 	
 	public LekUMagacinu findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(Integer magacinId,Integer lekId,Double kolicina);
