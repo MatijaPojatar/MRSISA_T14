@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,6 +76,7 @@ public class AdministratorApotekeController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping("/aapSignup")
 	public ResponseEntity<AdministratorApotekeDTO> registrujAdminaApoteke(@RequestBody AdministratorApotekeDTO adminApotekeDTO, UriComponentsBuilder ucBuilder){
 		

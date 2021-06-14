@@ -115,7 +115,7 @@ public class RezervacijaController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		

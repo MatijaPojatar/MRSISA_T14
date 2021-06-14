@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,6 +45,7 @@ public class PonudaController {
 	}
 	
 	//kreiranje
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@PostMapping()
 	public ResponseEntity<PonudaDTO> kreirajPonudu(@RequestBody PonudaDTO dto){
 		Ponuda kreirana = new Ponuda(dto);
@@ -55,6 +57,7 @@ public class PonudaController {
 	}
 	
 	//izmena
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@PutMapping("/{id}")
 	public ResponseEntity<Ponuda> izmeniPonudu(@PathVariable Integer id, @RequestBody PonudaDTO dto){
 		//znaci samo cena i rok isporuke mogu biti izmenjeni
@@ -66,6 +69,7 @@ public class PonudaController {
 	}
 	
 	//za dobavljaca
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@GetMapping("/dobavljac/{id}")
 	public ResponseEntity<List<PonudaDTO>> getByDobavljac(@PathVariable Integer id){
 		List<Ponuda> lista = ponudaService.findAllByDobavljacId(id);
@@ -78,6 +82,7 @@ public class PonudaController {
 		return new ResponseEntity<List<PonudaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@GetMapping("/izmenaMoguca/{id}")
 	public ResponseEntity<Boolean> isIzmenaMoguca(@PathVariable Integer id){
 		Ponuda p = ponudaService.findOne(id);

@@ -108,7 +108,7 @@ public class PregledController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		
@@ -122,6 +122,7 @@ public class PregledController {
 		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/dermatoloziPacijenta/{id}")
 	public ResponseEntity<List<DermatologDTO>> poseceniDermatolozi(@PathVariable Integer id){
 		

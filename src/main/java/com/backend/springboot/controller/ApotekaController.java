@@ -67,33 +67,7 @@ public class ApotekaController {
 	private ArrayList<LekUMagacinu> pronadjeniLekovi;
 	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviDTO;
 	
-	/*@GetMapping("/lekovi")
-	public ResponseEntity<Collection<Lek>> getLekovi() {
-		apotekaService.findAll();
-		Collection<Lek> lekovi = apotekaService.preuzmiLekoveApoteke("ap2");
-		
-		return new ResponseEntity<Collection<Lek>>(lekovi, HttpStatus.OK);
-	}*/
-	
-	
-//	@GetMapping("/dostupnostLeka/{id}")
-//	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer id){
-//		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
-//		//za svaku apoteku
-//		for (Apoteka a : apotekaService.findAll()) {
-//			double cena = apotekaService.getCenaLeka(a,id);
-//			if(cena== 0.0) {
-//				continue;
-//			}
-//			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
-//			result.add(ACdto);
-//		}
-//		
-//		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
-//		
-//	}
-	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/snabdeveneApoteke")
 	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto){
 		
@@ -111,6 +85,7 @@ public class ApotekaController {
 		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PutMapping("/kupiLekove/{idApoteke}")
 	public ResponseEntity<String> kupiLekove(@PathVariable Integer idApoteke ,@RequestBody EReceptDTO dto)
 	{
@@ -128,6 +103,7 @@ public class ApotekaController {
 		return new ResponseEntity<String>("Lekovi uspešno kupljeni!", HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping()
 	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
 		try {
@@ -141,6 +117,7 @@ public class ApotekaController {
         }
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/minimalne")
 	public ResponseEntity<List<MinimalApotekaDTO>> findAllMinimal(){
 		List<Apoteka> apoteke = apotekaService.findAll();
@@ -153,6 +130,7 @@ public class ApotekaController {
 		return new ResponseEntity<List<MinimalApotekaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	//trebace za admina sis
 	@GetMapping("/sve")
 	public ResponseEntity<List<ApotekaMainInfoDTO>> findAll(){
 		List<Apoteka> apoteke = apotekaService.findAll();

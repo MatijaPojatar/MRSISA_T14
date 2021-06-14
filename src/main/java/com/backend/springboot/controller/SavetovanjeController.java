@@ -95,6 +95,7 @@ public class SavetovanjeController {
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		
@@ -108,6 +109,7 @@ public class SavetovanjeController {
 		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/farmaceutiPacijenta/{id}")
 	public ResponseEntity<List<FarmaceutDTO>> poseceniFarmaceuti(@PathVariable Integer id){
 		Set<Farmaceut> farmaceuti = service.poseceniFarmaceuti(id);

@@ -68,6 +68,7 @@ public class DermatologController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping("/dermSignup")
 	public ResponseEntity<DermatologDTO> registrujDermatologa(@RequestBody DermatologDTO dermatologDTO, UriComponentsBuilder ucBuilder){
 		

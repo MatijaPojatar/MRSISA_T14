@@ -125,7 +125,7 @@ const actions = {
 
   async removeLekAction({ commit }, id){
     try{
-      await Vue.axios.delete("/lekovi/"+ id, id);
+      await Vue.axios.delete("/lekovi/"+ id);
       commit("deleteLek", id);
     } catch(error){
       alert("Greska pri brisanju leka")

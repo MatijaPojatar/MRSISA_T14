@@ -68,7 +68,6 @@ export default {
 
   methods: {
     ...mapActions({
-      getZalbeNaApotekeAction: "zalbe/getZalbeNaApotekeAction",
       addZalbaNaApotekuAction: "zalbe/addZalbaNaApotekuAction",
       getMoguceApotekeAction: "zalbe/getMoguceApotekeAction"
     }),
