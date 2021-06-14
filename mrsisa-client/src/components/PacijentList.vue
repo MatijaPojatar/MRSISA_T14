@@ -85,7 +85,7 @@ export default {
             if(this.farmaceut){
                 path="savetovanje"
             }
-            await Vue.axios.get(`http://localhost:8080/${path}/all/pacijenti/${this.doktorId}`).then(response =>
+            await Vue.axios.get(`/${path}/all/pacijenti/${this.doktorId}`).then(response =>
             {
                 const pacijenti=[];
                 response.data.forEach(element => {

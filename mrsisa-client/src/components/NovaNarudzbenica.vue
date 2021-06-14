@@ -279,7 +279,7 @@
         methods:{
              async loadLekovi(){
                  const lekovi = []
-                 await Vue.axios.get(`http://localhost:8080/lekovi/apoteka/${this.apotekaId}`).then(response => {
+                 await Vue.axios.get(`/lekovi/apoteka/${this.apotekaId}`).then(response => {
                         response.data.forEach(element => {
                             lekovi.push({
                                 naziv: element.naziv,
@@ -299,7 +299,7 @@
                     });
 
                     const lekovi2 = []
-                    await Vue.axios.get(`http://localhost:8080/lekovi/vanApoteke/${this.apotekaId}`).then(response => {
+                    await Vue.axios.get(`/lekovi/vanApoteke/${this.apotekaId}`).then(response => {
                         response.data.forEach(element => {
                             lekovi2.push({
                                 naziv: element.naziv,
@@ -320,7 +320,7 @@
                     });
 
                     const lekovi3 = []
-                    await Vue.axios.get(`http://localhost:8080/apoteke/upitiLekovi/${this.apotekaId}`).then(response => {
+                    await Vue.axios.get(`/apoteke/upitiLekovi/${this.apotekaId}`).then(response => {
                         response.data.forEach(element => {
                             lekovi3.push({
                                 naziv: element.naziv,
@@ -378,7 +378,7 @@
                             }
                         )
                         if (this.showLekoviOstali){
-                            Vue.axios.put(`http://localhost:8080/apoteke/dodajLek/${this.selektovan}/${this.apotekaId}`,this.definisanaCena, {headers: {"Content-Type": "text/plain"}});
+                            Vue.axios.put(`/apoteke/dodajLek/${this.selektovan}/${this.apotekaId}`,this.definisanaCena, {headers: {"Content-Type": "text/plain"}});
                             const index=this.lekoviOstali.findIndex((l)=>l.id==this.selektovanLek.id)
                             if(index !=-1){
                                 this.lekoviOstali.splice(index, 1);
@@ -440,7 +440,7 @@
                         this.message= "Lekovi nisu definisani."
                         this.obavestenje = true;
                     }else{
-                        Vue.axios.post(`http://localhost:8080/narudzbenice/dodaj/${this.apotekaId}`, {lekovi:this.naruceniLekovi, adminId:this.user.id, rok:this.definisanRok});
+                        Vue.axios.post(`/narudzbenice/dodaj/${this.apotekaId}`, {lekovi:this.naruceniLekovi, adminId:this.user.id, rok:this.definisanRok});
                         this.message= "Narudžbenica je uspešno kreirana."
                         this.reset();
                         this.obavestenje = true;

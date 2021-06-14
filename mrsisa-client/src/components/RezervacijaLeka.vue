@@ -130,7 +130,7 @@ export default {
     async loadLekovi() {
       const lekovi = [];
       await Vue.axios
-        .get(`http://localhost:8080/lekovi/dostupni/`)
+        .get(`/lekovi/dostupni/`)
         .then((response) => {
           response.data.forEach((element) => {
             lekovi.push({
@@ -154,7 +154,7 @@ export default {
 
     rezervisi() {
       Vue.axios
-        .post(`http://localhost:8080/rezervacija/novaRezervacija`, {
+        .post(`/rezervacija/novaRezervacija`, {
           apotekaId: this.selektovanLek.apotekaId,
           lekId: this.selektovanLek.id,
           kolicina: this.definisanaKolicina,

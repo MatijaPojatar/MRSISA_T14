@@ -92,7 +92,7 @@
         methods:{
              loadPonude(){
                 const ponude = []
-                Vue.axios.get(`http://localhost:8080/narudzbenice/ponude/${this.narudzbenica.id}`).then(response => {
+                Vue.axios.get(`/narudzbenice/ponude/${this.narudzbenica.id}`).then(response => {
                         
                         response.data.forEach(element => {
                             ponude.push({
@@ -123,7 +123,7 @@
                   this.dialog = true;
                 }
                 else{
-                   Vue.axios.post(`http://localhost:8080/narudzbenice/prihvatiPonudu/${this.odabrana.id}`, this.narudzbenica.id, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                   Vue.axios.post(`/narudzbenice/prihvatiPonudu/${this.odabrana.id}`, this.narudzbenica.id, {headers: {"Content-Type": "text/plain"}}).then(response => {
                       if (response.data == false){
                            this.message="Neuspešna akcija.";
                             this.dialog = true;

@@ -104,7 +104,7 @@ export default {
   methods: {
     async loadApoteke() {
       const apoteke = [];
-      await axios.get(`http://localhost:8080/apoteke/sve/`).then((response) => {
+      await axios.get(`/apoteke/sve/`).then((response) => {
         response.data.forEach((element) => {
           apoteke.push({
             naziv: element.naziv,
@@ -121,7 +121,7 @@ export default {
 
     pretrazi() {
       axios
-        .post(`http://localhost:8080/apoteke/pretraga`, this.pretragaParams)
+        .post(`/apoteke/pretraga`, this.pretragaParams)
         .then((response) => {
           this.apoteke = response.data;
           this.apoteke.forEach(element => {

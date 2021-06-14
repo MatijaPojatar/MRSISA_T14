@@ -117,7 +117,7 @@
                         this.obavestenje = true;
                     
                     }else{
-                        Vue.axios.post(`http://localhost:8080/akcijaPromocija/dodaj/${this.apotekaId}`, {opis:this.opis, kraj:this.definisanRok});
+                        Vue.axios.post(`/akcijaPromocija/dodaj/${this.apotekaId}`, {opis:this.opis, kraj:this.definisanRok});
                         this.message= "Uspešno kreiranje."
                         this.reset();
                         this.obavestenje = true;

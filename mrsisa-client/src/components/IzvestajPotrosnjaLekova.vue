@@ -145,13 +145,13 @@ import Vue from "vue";
         apotekaId: Number,
     },
     mounted(){
-        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/mesec/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/potrosnja/mesec/${this.apotekaId}`).then(response => {
             this.mesecIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/kvartal/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/potrosnja/kvartal/${this.apotekaId}`).then(response => {
             this.kvartalIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/potrosnja/godina/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/potrosnja/godina/${this.apotekaId}`).then(response => {
             this.godinaIzvestaj = response.data;
         });
     },

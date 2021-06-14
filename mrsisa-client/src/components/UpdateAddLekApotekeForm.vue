@@ -128,10 +128,10 @@ import Vue from "vue";
         if(this.$refs.form.validate()){
           if (!this.addMode){
               this.lekUMagacinu.cena = this.newInfo.cena;
-            Vue.axios.put(`http://localhost:8080/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
+            Vue.axios.put(`/apoteke/izmeniLek/${this.apotekaId}`,this.lekUMagacinu);
             this.dialog=true;
           }else{
-            Vue.axios.put(`http://localhost:8080/apoteke/dodajLek/${this.lekToAddId}/${this.apotekaId}`,this.newInfo.cena, {headers: {"Content-Type": "text/plain"}});
+            Vue.axios.put(`/apoteke/dodajLek/${this.lekToAddId}/${this.apotekaId}`,this.newInfo.cena, {headers: {"Content-Type": "text/plain"}});
             this.dialogAdd = true;
           }
            

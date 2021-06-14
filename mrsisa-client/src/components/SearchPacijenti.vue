@@ -87,7 +87,7 @@ import AccountView from "./AccountView";
     },
     methods :{
         async loadPacijenti(){
-            await Vue.axios.get(`http://localhost:8080/pacijent/all`).then(response =>
+            await Vue.axios.get(`/pacijent/all`).then(response =>
             {
                 const pacijenti=[];
                 response.data.forEach(element => {

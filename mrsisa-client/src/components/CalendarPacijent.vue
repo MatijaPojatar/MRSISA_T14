@@ -397,7 +397,7 @@
               if(this.farmaceut){
                 path="savetovanje"
               }
-              axios.get(`http://localhost:8080/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
+              axios.get(`/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
                 const lekovi=[];
                 response.data.forEach(element => {
                   lekovi.push({
@@ -425,7 +425,7 @@
             nativeEvent.stopPropagation()
         },
         async updateRangePacijentAxios(){
-          await axios.get(`http://localhost:8080/savetovanje/pacijent/${this.user.id}`).then(response => {
+          await axios.get(`/savetovanje/pacijent/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
@@ -445,7 +445,7 @@
           });
         });
 
-        await axios.get(`http://localhost:8080/pregled/pacijent/${this.user.id}`).then(response => {
+        await axios.get(`/pregled/pacijent/${this.user.id}`).then(response => {
           response.data.forEach(element => {
             this.events.push({
               name:element.name,
@@ -480,7 +480,7 @@
         setInterval(() => this.cal.updateTimes(), 60 * 1000)
       },
       async viewAccount(){
-          await axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
+          await axios.get(`/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
             this.selectedPacijent=response.data
           })
           this.componentKey+=1;
@@ -493,9 +493,9 @@
             this.dialog = true
           } else {
             if(this.selectedEvent.isPregled) {
-              await axios.delete(`http://localhost:8080/pregled/${this.selectedEvent.id}`)
+              await axios.delete(`/pregled/${this.selectedEvent.id}`)
             } else {
-              await axios.delete(`http://localhost:8080/savetovanje/${this.selectedEvent.id}`)
+              await axios.delete(`/savetovanje/${this.selectedEvent.id}`)
             }
             this.updateRangePacijentAxios()
           }
@@ -510,8 +510,8 @@
             if(this.farmaceut){
               path="savetovanje"
             }
-            await axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
-            await axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
+            await axios.put(`/${path}/penal/${this.selectedEvent.id}`);
+            await axios.put(`/pacijent/penal/${this.selectedEvent.pacijent}`);
             //Object.assign(this.$data, this.$options.data.apply(this))
             this.selectedOpen=false
             this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
@@ -554,7 +554,7 @@
             lekId: element.lek.id
           })
         });
-        await axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        await axios.put(`/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
         this.componentKey+=1;
         this.terminDialog=true
         this.selectedOpen=false

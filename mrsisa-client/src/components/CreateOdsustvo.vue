@@ -120,7 +120,7 @@ export default {
                 }
             }
             this.errCheck=false;
-            await Vue.axios.put(`http://localhost:8080/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
+            await Vue.axios.put(`/odsustvo/${path}/dodaj/${this.doktorId}`,odsustvo).then(response => {
                     this.odgovor=response.data;
                 }).catch(err=>{
                   console.log(err);

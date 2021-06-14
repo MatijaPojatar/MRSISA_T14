@@ -149,13 +149,13 @@ export default{
     },
     methods: {
         async dobaviApotekaId(){
-            await Vue.axios.get(`http://localhost:8080/farmaceut/${this.id}`).then(response=>{
+            await Vue.axios.get(`/farmaceut/${this.id}`).then(response=>{
                 console.log(response.data);
                 this.apotekaId=response.data.apotekaId
             })
         },
         async dobaviRezervaciju(f){
-            await Vue.axios.get(`http://localhost:8080/rezervacija/findOne/${this.code}`).then(response=>{
+            await Vue.axios.get(`/rezervacija/findOne/${this.code}`).then(response=>{
                 if(response.data){
                    this.rezervacija={
                     lekId:response.data.lekId,
@@ -169,7 +169,7 @@ export default{
 
             })
             if(f){
-                await Vue.axios.get(`http://localhost:8080/lekovi/findOneInApoteka/${this.rezervacija.lekId}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
+                await Vue.axios.get(`/lekovi/findOneInApoteka/${this.rezervacija.lekId}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
                     this.lek={
                         naziv: response.data.naziv,
                         id: response.data.id,
@@ -189,7 +189,7 @@ export default{
         async pronadjiRezervaciju(){
             let f=false;
             let g=false;
-            await Vue.axios.get(`http://localhost:8080/rezervacija/checkOne/${this.code}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
+            await Vue.axios.get(`/rezervacija/checkOne/${this.code}`,{params:{apotekaId:this.apotekaId}}).then(response=>{
                 this.message=response.data
                 if(response.data==="Uspeh"){
                     f=true
@@ -213,7 +213,7 @@ export default{
         },
         async preuzmiLek(){
             let uspeh=false;
-            await Vue.axios.put(`http://localhost:8080/rezervacija/preuzmi/${this.code}`).then(response=>{
+            await Vue.axios.put(`/rezervacija/preuzmi/${this.code}`).then(response=>{
                 if(response.data==="Uspeh"){
                     uspeh=true;
                 }

@@ -163,13 +163,13 @@ import Vue from "vue";
         apotekaId: Number,
     },
     mounted(){
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/mesec/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/pregledi/mesec/${this.apotekaId}`).then(response => {
             this.mesecIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/kvartal/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/pregledi/kvartal/${this.apotekaId}`).then(response => {
             this.kvartalIzvestaj = response.data;
         });
-        Vue.axios.get(`http://localhost:8080/izvestaj/pregledi/godina/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/izvestaj/pregledi/godina/${this.apotekaId}`).then(response => {
             this.godinaIzvestaj = response.data;
         });
     },

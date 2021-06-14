@@ -156,7 +156,7 @@
                 pocetak : this.pocetakRadnogVremena,
                 kraj : this.krajRadnogVremena
             }
-            Vue.axios.put(`http://localhost:8080/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme).then(response=>{
+            Vue.axios.put(`/dermatolog/dodajDermatologaApoteka/${this.userId}/${this.apotekaId}`, radnoVreme).then(response=>{
                    
                      const uspesno = response.data
                      if (uspesno){

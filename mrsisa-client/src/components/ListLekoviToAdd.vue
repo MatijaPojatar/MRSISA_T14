@@ -112,7 +112,7 @@
         methods:{
              loadLekovi(){
                 const lekovi = []
-                Vue.axios.get(`http://localhost:8080/lekovi/vanApoteke/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/lekovi/vanApoteke/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             lekovi.push({

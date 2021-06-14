@@ -40,7 +40,7 @@ export default {
   methods: {
     async loadData() {
       const lekovi = [];
-      await axios.get(`http://localhost:8080/lekovi/all`).then((response) => {
+      await axios.get(`/lekovi/all`).then((response) => {
         response.data.forEach((element) => {
           lekovi.push({
             id: element.id,
@@ -51,7 +51,7 @@ export default {
         });
       });
 
-      await axios.get(`http://localhost:8080/pacijent/alergije/${this.pacijentId}`).then((response) => {
+      await axios.get(`/pacijent/alergije/${this.pacijentId}`).then((response) => {
         response.data.forEach((element) => {
           this.lekovi.find(x => x.id === element.id).alergican = true;
         });
