@@ -211,8 +211,8 @@ public class PregledController {
 	@PutMapping("/dodaj/{id}")
 	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
-		LocalDateTime pocetak=pregled.getStart().plusHours(2);
-		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		LocalDateTime pocetak=pregled.getStart();
+		LocalDateTime kraj=pregled.getEnd();
 		
 		boolean odg;
 		
@@ -237,8 +237,8 @@ public class PregledController {
 	@PutMapping("/dodajSlobodan/{id}")
 	@PreAuthorize("hasAnyRole('DERMATOLOG','ADMIN_APOTEKE')")
 	public ResponseEntity<Boolean> dodajSlobodanTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
-		LocalDateTime pocetak=pregled.getStart().plusHours(2);
-		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		LocalDateTime pocetak=pregled.getStart();
+		LocalDateTime kraj=pregled.getEnd();
 		
 		boolean odg;
 		

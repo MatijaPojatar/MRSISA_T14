@@ -196,8 +196,8 @@ public class SavetovanjeController {
 	@PutMapping("/dodaj/{id}")
 	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody SavetovanjeDTO savetovanje){
-		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
-		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
+		LocalDateTime pocetak=savetovanje.getStart();
+		LocalDateTime kraj=savetovanje.getEnd();
 		
 		boolean odg;
 		

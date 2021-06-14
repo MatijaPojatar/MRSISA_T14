@@ -257,7 +257,7 @@ export default{
                     this.dialogMessage="Došlo je do greške pri zauzimanju termina."
                     this.dialogTitle="Greška"
                 }
-            }).err(e=>{
+            }).catch(e=>{
                         console.log(e)
                         this.dialog=true
                         this.dialogMessage="Došlo je do greške pri zauzimanju termina."
@@ -278,8 +278,8 @@ export default{
         });
         },
         async kreirajTermin(){
-            let pocetak=new Date(this.picker+" "+this.start)
-            let kraj = new Date(this.picker+" "+this.end)
+            let pocetak=this.convertUTCDateToLocalDate(new Date(this.picker+" "+this.start))
+            let kraj = this.convertUTCDateToLocalDate(new Date(this.picker+" "+this.end))
             console.log(pocetak);
             if(kraj-pocetak>7200000 || kraj-pocetak<1800000){
                 this.dialog=true
@@ -305,7 +305,7 @@ export default{
                 if(this.check){
                     await Vue.axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
                         this.check=response.data;
-                    }).err(e=>{
+                    }).catch(e=>{
                         console.log(e)
                         this.check=false
                     });
@@ -327,6 +327,18 @@ export default{
         endDialog(){
         this.dialog=false;
         this.dialogAdd=false;
+        },
+        convertUTCDateToLocalDate(date) {
+            var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+            var offset = date.getTimezoneOffset() / 60;
+            var hours = date.getHours();
+
+            
+
+            newDate.setHours(hours - offset);
+
+            return newDate;
         },
     },
 
