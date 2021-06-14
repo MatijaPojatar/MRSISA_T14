@@ -106,7 +106,7 @@ insert into osoba_role (osoba_id, role_id) values (9, 3); --ima ulogu admin sist
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,version) values ('',false,'2021-04-28 12:50','2021-04-28 14:00',1,2,1);
 insert into savetovanja (id,farmaceut_id) values (3,6);
 
-insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,version) values ('',false,'2021-05-16 15:00','2021-05-16 16:00',2,1);
+insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,version) values ('',false,'2021-07-16 15:00','2021-07-16 16:00',2,1);
 insert into pregledi (id,dermatolog_id,cena) values (4,3,3000);
 
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,version) values ('',true,'2021-04-29 11:00','2021-04-29 12:00',1,8,1);
@@ -189,7 +189,7 @@ insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
 
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,pacijent_id,version) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1,2,1);
 insert into pregledi(id, dermatolog_id, cena) values (13, 3, 2500);
-insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-27 13:10', '2021-05-27 14:30', 1,1);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-07-27 13:10', '2021-07-27 14:30', 1,1);
 insert into pregledi(id, dermatolog_id, cena) values (14, 3, 3000);
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-19 10:45', '2021-05-19 11:30', 2,1);
 insert into pregledi(id, dermatolog_id, cena) values (15, 10, 4000);

@@ -302,8 +302,7 @@ import AkcijePromocije from "./AkcijePromocije";
 import ProfilApoteke from "./ProfilApoteke";
 import PregledERecepata from "./Pacijent/PregledERecepata";
 import KupovinaLekova from "./Pacijent/KupovinaLekova"
-import axios from "axios";
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
     name: "HomepageDF",
@@ -346,14 +345,11 @@ export default {
     showApoteke: false,
     showErecepti: false,
     showKupovina: false,
-    user: {},
   }),
-  mounted(){
-    console.log(window.location.pathname)
-    axios.get("http://localhost:8080/pacijent/2").then(response => {
-      console.log(response.data)
-      this.user=response.data;
-    });
+  computed: {
+    ...mapGetters({
+      user: "korisnici/getKorisnik",
+    }),
   },
   methods:{
       ...mapActions({
