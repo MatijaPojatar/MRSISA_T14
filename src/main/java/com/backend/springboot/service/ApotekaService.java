@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
@@ -31,7 +33,7 @@ public class ApotekaService  {
 		return apotekaRep.findAll();
 	}
 
-	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Apoteka findOne(Integer sifra) {
 		return apotekaRep.findOneById(sifra);
 	}
