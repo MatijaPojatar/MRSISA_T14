@@ -57,6 +57,17 @@ public class PacijentController {
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
 	}
 	
+	@GetMapping("/all")
+	public ResponseEntity<List<PacijentDTO>> getAll(){
+		List<Pacijent> pacijenti=pacijentService.findAll();
+		List<PacijentDTO> dtos=new ArrayList<PacijentDTO>();
+		for(Pacijent p:pacijenti) {
+			dtos.add(new PacijentDTO(p));
+		}
+		
+		return new ResponseEntity<List<PacijentDTO>>(dtos, HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/mail/{mail}")
 	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG')") 
