@@ -143,6 +143,16 @@ public class NarudzbenicaController {
 	}
 	
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PutMapping("/izmeni/{id}")
+	public ResponseEntity<Boolean> izmeniNarudzbenicu(@PathVariable Integer id, @RequestBody NovaNarudzbenicaDTO narDTO){
+		
+		List<LekIzNarudzbenice> lekovi = new ArrayList<LekIzNarudzbenice>();
+		narudzbenicaService.izmeniNarudzbenicu(id, narDTO.getRok());
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
+	}
+	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/obrisi/{id}")
 	public ResponseEntity<String> obrisiNarudzbenicu(@PathVariable Integer id) {
 		narudzbenicaService.obrisiNarudzbenicu(id);

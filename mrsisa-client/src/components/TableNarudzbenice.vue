@@ -169,6 +169,63 @@
       </v-card>
   </v-dialog>
 
+  <v-dialog
+      v-model="izmenaDialog"
+      persistent
+      max-width="400"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Izmena roka
+        </v-card-title>
+        <v-form
+            ref="form"
+            lazy-validation
+        >
+
+        <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+    >
+        <template v-slot:activator="{ on, attrs }">
+        
+        <v-text-field
+            v-model="definisanRok"
+            label="Rok za ponude:"
+            prepend-icon="mdi-calendar"
+            readonly
+            required
+            v-bind="attrs"
+            v-on="on"
+        ></v-text-field>
+        
+        </template>
+        <v-date-picker
+        ref="picker"
+        v-model="definisanRok"
+        
+        :min="new Date().toISOString().substr(0, 10)"
+        @change="$refs.menu.save(definisanRok)"
+        ></v-date-picker>
+        
+    </v-menu>
+            
+
+            <v-btn
+            class="mr-4"
+            @click="izmenaRoka"
+            >
+            Ok
+            </v-btn>
+        </v-form>
+        
+      </v-card>
+  </v-dialog>
+
   </v-container>
 </template>
 
@@ -203,6 +260,9 @@ import Vue from "vue";
         ],
             narudzbenice: [],
             message: {},
+            menu: false,
+            definisanRok: null,
+            izmenaDialog: false,
          }),
         props:{
             apotekaId: Number,
@@ -281,11 +341,31 @@ import Vue from "vue";
              },
 
               IzmeniNarudzbenicu(item){
-                 console.log(item);
-                 Vue.axios.get(`http://localhost:8080/narudzbenice/lekovi/${item.id}`).then(response => {
-                    this.lekoviStr=response.data;
-                    this.dialog = true
-                 });
+                console.log(item);
+                this.selektovanaNarudzbenica=Object.assign({}, item);
+                if (this.userId != this.selektovanaNarudzbenica.adminId){
+                this.message="Nije moguće menjati narudžbenicu kreiranu od strane drugog administratora apoteke.";
+                this.obavestenje = true;
+                }
+                else if (!this.selektovanaNarudzbenica.bezPonuda){
+                  this.message="Nije moguće menjati narudzbenicu koja ima ponude.";
+                  this.obavestenje = true;
+                }else{
+                  this.izmenaDialog = true;
+                }
+                
+             },
+             izmenaRoka(){
+               if(this.definisanRok == null){
+                this.message="Potrebno je definisati rok.";
+                this.obavestenje = true;
+               }else{
+                this.selektovanaNarudzbenica.rok = this.definisanRok;
+                Vue.axios.put(`http://localhost:8080/narudzbenice/izmeni/${this.selektovanaNarudzbenica.id}`, this.selektovanaNarudzbenica);
+                location.reload();
+                this.izmenaDialog = false;
+               }
+                
              },
              endDialog(){
                  this.dialog = false;
