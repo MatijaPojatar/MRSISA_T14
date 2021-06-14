@@ -98,6 +98,11 @@ public class NarudzbenicaService {
 		 
 		return narudzbenicaRep.save(narudzbenica);
 	}
+	
+	public void obrisiNarudzbenicu (Integer id) {
+		Narudzbenica n = narudzbenicaRep.getOne(id);
+		narudzbenicaRep.delete(n);
+	}
 
 	public List<Narudzbenica> getAktivne() {
 		

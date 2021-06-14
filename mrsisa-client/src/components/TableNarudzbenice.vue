@@ -62,6 +62,36 @@
             </v-btn>
             </div>
     </template>
+
+    <template v-slot:item.narudzbenicaActions="{ item }">
+        <div>
+      <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="pink"
+                @click="ObrisiNarudzbenicu(item)"
+            >
+                <v-icon>
+                    mdi-delete
+                </v-icon>
+            </v-btn>
+
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="cyan"
+                @click="IzmeniNarudzbenicu(item)"
+            >
+                <v-icon>
+                    mdi-pencil
+                </v-icon>
+            </v-btn>
+            </div>
+    </template>
     
   </v-data-table>
 
@@ -116,7 +146,28 @@
       </v-card>
   </v-dialog>
 
-  
+  <v-dialog
+      v-model="obavestenje"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>{{message}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endObavestenje"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
 
   </v-container>
 </template>
@@ -133,6 +184,7 @@ import Vue from "vue";
             componentKey: 0,
             ponudeDialog: false,
             dialog: false,
+            obavestenje: false,
             selektovanaNarudzbenica: {},
             selektovana: "",
             radio: "SVE",
@@ -147,8 +199,10 @@ import Vue from "vue";
           { text: 'Status', value: 'statusStr' },
           { text: 'Lekovi', value: 'lekoviActions', sortable: false },
           { text: 'Ponude', value: 'ponudeActions', sortable: false },
+          { text: 'Upravljaj', value: 'narudzbenicaActions', sortable: false },
         ],
             narudzbenice: [],
+            message: {},
          }),
         props:{
             apotekaId: Number,
@@ -176,6 +230,7 @@ import Vue from "vue";
                                 statusStr: element.statusStr,
                                 adminId:element.adminId,
                                 adminMail:element.adminMail,
+                                bezPonuda: element.bezPonuda,
                                 
                             })
                             this.narudzbenice = narudzbenice
@@ -202,8 +257,41 @@ import Vue from "vue";
                  
                  
              },
+
+             ObrisiNarudzbenicu(item){
+                 console.log(item);
+                 this.selektovanaNarudzbenica=Object.assign({}, item);
+                 if (this.userId != this.selektovanaNarudzbenica.adminId){
+                  this.message="Nije moguće obrisati narudzbenicu kreiranu od strane drugog administratora apoteke.";
+                  this.obavestenje = true;
+                }
+                else if (!this.selektovanaNarudzbenica.bezPonuda){
+                  this.message="Nije moguće obrisati narudzbenicu koja ima ponude.";
+                  this.obavestenje = true;
+                }
+                else
+                {
+                  Vue.axios.put(`http://localhost:8080/narudzbenice/obrisi/${item.id}`);
+                  const index=this.narudzbenice.findIndex((l)=>l.id==this.selektovanaNarudzbenica.id)
+                  if(index !=-1){
+                      this.narudzbenice.splice(index, 1);
+                  }
+                }
+                 
+             },
+
+              IzmeniNarudzbenicu(item){
+                 console.log(item);
+                 Vue.axios.get(`http://localhost:8080/narudzbenice/lekovi/${item.id}`).then(response => {
+                    this.lekoviStr=response.data;
+                    this.dialog = true
+                 });
+             },
              endDialog(){
                  this.dialog = false;
+             },
+             endObavestenje(){
+                 this.obavestenje = false;
              },
              endPonudeDialog(){
                  this.ponudeDialog = false;

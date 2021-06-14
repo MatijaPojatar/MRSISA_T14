@@ -138,5 +138,12 @@ public class NarudzbenicaController {
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
 	}
+	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PutMapping("/obrisi/{id}")
+	public ResponseEntity<String> obrisiNarudzbenicu(@PathVariable Integer id) {
+		narudzbenicaService.obrisiNarudzbenicu(id);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
 
 }
