@@ -29,9 +29,22 @@
   <v-dialog
       v-model="showLekovi"
       persistent
-      max-width="290"
+      max-width="400"
     >
-     
+     <v-card>
+       <v-card-title>Lekovi poručeni E-receptom</v-card-title>
+
+       <v-data-table
+        :headers="headersLekovi"
+        :items="this.currErecept.lekoviErecepta">
+       </v-data-table>
+
+       <v-card-actions>
+         <v-btn
+         @click="closeLekovi"
+         >OK</v-btn>
+       </v-card-actions>
+     </v-card>
   </v-dialog>
 </div>
 </template>
@@ -41,6 +54,12 @@ import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data: () => ({
+    showLekovi: false,
+    currErecept: {},
+    headersLekovi: [
+      { text: 'Naziv leka', value: 'nazivLeka'},
+      { text: 'Količina', value: 'kolicina'}
+    ],
     headers: [
       { text: 'ID', value: 'id'},
       { text: 'Datum Izdavanja', value: 'datumIzdavanja'}, //ovde prepraviti?
@@ -54,8 +73,16 @@ export default {
       getEreceptiPacijentaAction: "erecepti/getEreceptiPacijentaAction"
     }),
 
+    prikazErecepta(erecept){
+      console.log("ODABRANI ERECEPT")
+      console.log(erecept);
+      this.currErecept = erecept;
+      this.showLekovi = true;
+    },
 
-
+    closeLekovi(){
+      this.showLekovi = false;
+    }
 
   },
   computed: {
