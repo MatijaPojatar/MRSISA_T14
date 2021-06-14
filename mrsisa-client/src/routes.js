@@ -86,6 +86,11 @@ const router = new Router({
       name: "PretragaApoteka",
       component: () => import("./components/PretragaApoteka")
     },
+    {
+      path: "/pretragaLekova",
+      name: "PretragaLekova",
+      component: () => import("./components/PretragaLekova")
+    },
   ]
 });
 
