@@ -257,7 +257,12 @@ export default{
                     this.dialogMessage="Došlo je do greške pri zauzimanju termina."
                     this.dialogTitle="Greška"
                 }
-            })
+            }).err(e=>{
+                        console.log(e)
+                        this.dialog=true
+                        this.dialogMessage="Došlo je do greške pri zauzimanju termina."
+                        this.dialogTitle="Greška"
+                    });
         },
         loadRadnoVreme(){
             let path="dermatolog"
@@ -300,6 +305,9 @@ export default{
                 if(this.check){
                     await Vue.axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
                         this.check=response.data;
+                    }).err(e=>{
+                        console.log(e)
+                        this.check=false
                     });
                     if(this.check){
                         this.$emit('termin-end')

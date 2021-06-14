@@ -214,7 +214,14 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		boolean odg;
+		
+		try {
+			odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		}catch(Exception e) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
+		
 		
 		if(odg) {
 			try {
@@ -233,7 +240,13 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		boolean odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);
+		boolean odg;
+		
+		try {
+			odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);
+		}catch(Exception e) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
 		
 		/*
 		 * try { emailService.noviPregled(p); } catch(Exception e){

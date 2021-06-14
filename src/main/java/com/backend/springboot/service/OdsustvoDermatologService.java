@@ -42,7 +42,7 @@ public class OdsustvoDermatologService {
 		return rep.save(o);
 	}
 	
-	@Transactional(readOnly=true,propagation=Propagation.SUPPORTS)
+	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
 	public List<OdsustvoDermatolog> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){
 		return rep.findExistInTime(id,start, end);
 	}

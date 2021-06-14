@@ -199,7 +199,13 @@ public class SavetovanjeController {
 		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
 		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
 		
-		boolean odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
+		boolean odg;
+		
+		try {
+			odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
+		}catch(Exception e) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
 		
 		if(odg) {
 			try {
