@@ -109,7 +109,7 @@ public class PregledService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
-	public void zauzmiPregled(Integer id,Pacijent p) {
+	public void zauzmiPregled(Integer id,Pacijent p) throws InterruptedException {
 		Pregled preg=findOne(id);
 		if(preg!=null) {
 			preg.setPacijent(p);
