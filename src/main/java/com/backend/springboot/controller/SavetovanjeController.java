@@ -69,6 +69,7 @@ public class SavetovanjeController {
 	private EmailService emailService;
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<Object> deleteSavetovanje(@PathVariable("id") int id) {
 		try {
 			service.deleteSavetovanje(id);
@@ -80,21 +81,8 @@ public class SavetovanjeController {
 		}
 	}
 	
-	@GetMapping(value = "/all")
-	public ResponseEntity<List<SavetovanjeDTO>> getAll() {		
-
-		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(1);
-		
-		System.out.println(savetovanja.size());
-
-		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
-		for (Savetovanje s : savetovanja) {
-			savetovanjaDTO.add(new SavetovanjeDTO(s));
-		}
-
-		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
-	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		
@@ -108,6 +96,7 @@ public class SavetovanjeController {
 		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/farmaceutiPacijenta/{id}")
 	public ResponseEntity<List<FarmaceutDTO>> poseceniFarmaceuti(@PathVariable Integer id){
 		Set<Farmaceut> farmaceuti = service.poseceniFarmaceuti(id);
@@ -162,7 +151,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/all/{id}")
-	@PreAuthorize("hasRole('FARMACEUT')")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForFarmaceut(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByFarmaceutId(id);
@@ -178,6 +167,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/pacijent/{id}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
@@ -192,24 +182,8 @@ public class SavetovanjeController {
 
 		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
 	}
-//	
-//	@GetMapping(value = "/all/active/{id}")
-//	public ResponseEntity<List<SavetovanjeDTO>> getAllActiveForFarmaceut(@PathVariable Integer id,@RequestParam Integer apotekaId) {		
-//
-//		LocalDateTime pocetak=LocalDateTime.now();
-//		List<Savetovanje> savetovanja = service.findAllActive(id, apotekaId, pocetak);
-//		
-//		System.out.println(savetovanja.size());
-//
-//		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
-//		for (Savetovanje s : savetovanja) {
-//			savetovanjaDTO.add(new SavetovanjeDTO(s));
-//		}
-//
-//		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
-//	}
 	
-	@PutMapping("/zauzmi/{id}/{pacijentId}")
+	/*@PutMapping("/zauzmi/{id}/{pacijentId}")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
 		Savetovanje s=service.findOne(id);
 		Pacijent p=pacijentService.findOne(pacijentId);
@@ -217,12 +191,13 @@ public class SavetovanjeController {
 		service.save(s);
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
-	}
+	}*/
 	
 	@PutMapping("/dodaj/{id}")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody SavetovanjeDTO savetovanje){
-		LocalDateTime pocetak=savetovanje.getStart().plusHours(2);
-		LocalDateTime kraj=savetovanje.getEnd().plusHours(2);
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody SavetovanjeDTO savetovanje) throws InterruptedException{
+		LocalDateTime pocetak=savetovanje.getStart();
+		LocalDateTime kraj=savetovanje.getEnd();
 		
 		boolean odg=service.dodajSavetovanje(id, pocetak, kraj, savetovanje);
 		
@@ -234,7 +209,11 @@ public class SavetovanjeController {
 			}
 		}
 		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@PutMapping("/zakazi")
@@ -259,6 +238,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<List<PacijentTerminDTO>> getAllPacijentiForFarmaceut(@PathVariable Integer id) {	
 		
 		System.out.println("==================================================");
@@ -293,6 +273,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping("/preporuceni_lekovi/{id}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<LekUIzvestajuDTO>> getPreporuceni(@PathVariable Integer id){
 		List<LekUIzvestaju> lekovi=izvestajService.findAllByTerminId(id);
 		ArrayList<LekUIzvestajuDTO> dtos=new ArrayList<LekUIzvestajuDTO>();

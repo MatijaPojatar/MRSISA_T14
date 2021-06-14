@@ -68,6 +68,7 @@ public class LekController {
 		return new ResponseEntity<List<LekPrikazDTO>>(new ArrayList<LekPrikazDTO>(), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/zaSifrarnik")
 	public ResponseEntity<List<LekPrikazDTO>> getAllZASifrarnik(){
 		List<Lek> lekovi = lekService.findAll();
@@ -113,6 +114,7 @@ public class LekController {
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping()
 	public ResponseEntity<LekDTO> dodajLek(@RequestBody Lek lekInfo) { //da bude dto?
 		Lek lek = lekService.addLek(lekInfo);
@@ -120,6 +122,7 @@ public class LekController {
 		return new ResponseEntity<LekDTO>(new LekDTO(lek), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping()
 	public ResponseEntity<LekDTO> izmeniLek(@RequestBody LekDTO lekInfo){
 		Lek lek = lekService.updateLek(new Lek(lekInfo));
@@ -169,7 +172,6 @@ public class LekController {
 	}
 	
 	
-	
 	@GetMapping()
 	public ResponseEntity<Collection<LekDTO>> getLekovi() {
 		Collection<Lek> allLekovi = lekService.findAll();
@@ -182,6 +184,7 @@ public class LekController {
 		return new ResponseEntity<Collection<LekDTO>>(lekoviDTO, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/rezimi")
 	public ResponseEntity<Collection<String>> getRezimi() {
 		List<String> rezimi = Stream.of(RezimIzdavanja.values()).map(RezimIzdavanja::name).collect(Collectors.toList());
@@ -189,6 +192,7 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(rezimi, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')") 
 	@GetMapping("/vrste")
 	public ResponseEntity<Collection<String>> getVrste() {
 		List<String> vrste = Stream.of(VrstaLeka.values()).map(VrstaLeka::name).collect(Collectors.toList());
@@ -196,6 +200,7 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(vrste, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')") 
 	@GetMapping("/oblici")
 	public ResponseEntity<Collection<String>> getOblici() {
 		List<String> oblici = Stream.of(OblikLeka.values()).map(OblikLeka::name).collect(Collectors.toList());
@@ -203,6 +208,7 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(oblici, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','DERMATOLOG','FARMACEUT')")
 	@GetMapping("/zamenski/{id}")
 	public ResponseEntity<List<LekDTO>> getZamenskeZaLek(@PathVariable Integer id){
 		try {
@@ -220,6 +226,7 @@ public class LekController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/zamenski/{id}")
 	public ResponseEntity<Object> dodajZamenskeZaLek(@RequestBody List<Integer> zamenskiIds, @PathVariable int id){
 		try {
@@ -230,6 +237,7 @@ public class LekController {
 		}
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteLek(@PathVariable("id") int id) {
 		try {
@@ -241,17 +249,8 @@ public class LekController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@GetMapping("/test")
-	public ResponseEntity<Collection<String>> getTest() {
-		List<String> test = new ArrayList<String>();
-		test.add("jen");
-		test.add("dva");
 
-		return new ResponseEntity<Collection<String>>(test, HttpStatus.OK);
-	}
-
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT')")
 	@GetMapping("/zamenski/{id}/{apoteka_id}/{pacijent_id}")
 	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId,@PathVariable("pacijent_id") Integer pacijentId){
 		List<Lek> zamenski=lekService.findZamenski(id);
@@ -289,27 +288,12 @@ public class LekController {
 		
 		return new ResponseEntity<LekUMagacinuDTO>(dto,HttpStatus.OK);
 	}
-//	@GetMapping("/dostupnostLeka/{id}")
-//	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer id){
-//		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
-//		//za svaku apoteku
-//		for (Apoteka a : apotekaService.findAll()) {
-//			double cena = apotekaService.getCenaLeka(a,id);
-//			if(cena== 0.0) {
-//				continue;
-//			}
-//			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
-//			result.add(ACdto);
-//		}
-//		
-//		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
-//		
-//	}
+
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/dostupnostLeka/{lekId}")
 	public ResponseEntity<List<ApotekaCenaDTO>> getApotekeICeneZaLek(@PathVariable Integer lekId) {
 		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
-//		int counter = 1;
-//		
+
 		List<Apoteka> apoteke = apotekaService.findAll();
 		for(Apoteka a : apoteke) {
 			if(a.getMagacin() != null) {
@@ -333,24 +317,6 @@ public class LekController {
 		return new ResponseEntity<List<ApotekaCenaDTO>>(result, HttpStatus.OK);
 	}
 	
-//	Magacin m = apoteka.getMagacin();
-//	for (LekUMagacinu lekUM : m.getLekovi()) {
-//		
-//		if(lekUM.getLek().getId() == lekId) {
-//			StavkaCenovnika sc = magacinService.preuzmiTrenutnuCenu(lekUM.getId());
-//			if(sc!= null) {
-//				LekApotekaDTO bingo = new LekApotekaDTO();
-//				bingo.setApotekaId(apoteka.getId());
-//				bingo.setNazivApoteke(apoteka.getNaziv());
-//				bingo.setCena(sc.getCena());
-//				bingo.setOblikLeka(lekUM.getLek().getOblikLeka());
-//				bingo.setNaziv(lekUM.getLek().getNaziv());
-//				bingo.setId(counter);
-//				counter++;
-//				result.add(bingo);
-//			}
-//		}
-//	}
 	
 	
 	@GetMapping(value = "/dostupni")

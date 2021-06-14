@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
@@ -19,7 +21,7 @@ public class PacijentService {
 	@Autowired
 	ApotekaRepository apotekaRep;
 	
-	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Pacijent findOne(Integer id) {
 		return pacijentRep.findOneById(id);
 	}

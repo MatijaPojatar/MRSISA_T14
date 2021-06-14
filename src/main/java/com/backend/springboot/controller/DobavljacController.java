@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class DobavljacController {
 		return new ResponseEntity<>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping("/dobSignup")
 	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dobavljacDTO, UriComponentsBuilder ucBuilder){
 		
@@ -89,12 +91,14 @@ public class DobavljacController {
 		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.CREATED);
 	} 
 	
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@GetMapping("/nazivPreduzeca/{id}")
 	public ResponseEntity<String> getNazivPreduzeca(@PathVariable Integer id){
 		Dobavljac d = dobavljacService.findOne(id);
 		return new ResponseEntity<String>(d.getNazivPreduzeca(), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@GetMapping("/{id}/mogucaNarudzbenica/{idNar}")
 	public ResponseEntity<Boolean> isMogucaNarudzbenica(@PathVariable Integer id, @PathVariable Integer idNar){
 		
@@ -120,6 +124,7 @@ public class DobavljacController {
 	
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	public ResponseEntity<DobavljacDTO> getOne(@PathVariable Integer id){
 		Dobavljac d = dobavljacService.findOne(id);
 		DobavljacDTO dto = new DobavljacDTO(d);
@@ -128,14 +133,8 @@ public class DobavljacController {
 	}
 	
 
-	@PostMapping()
-	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dto){
-		Dobavljac dobavljac = dobavljacService.save(new Dobavljac(dto));
-		
-		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.OK);
-	}
-
 	@PutMapping("/save/{id}")
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody DobavljacDTO dto){
 		Dobavljac d = dobavljacService.findOne(id);
 		d.setAdresa(dto.getAdresa());

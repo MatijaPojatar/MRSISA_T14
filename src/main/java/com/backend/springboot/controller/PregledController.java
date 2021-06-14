@@ -67,6 +67,7 @@ public class PregledController {
 	private EmailService emailService;
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<Object> deletePregled(@PathVariable("id") int id) {
 		try {
 			service.deletePregled(id);
@@ -78,20 +79,8 @@ public class PregledController {
 		}
 	}
 	
-	@GetMapping(value = "/all")
-	public ResponseEntity<List<PregledDTO>> getAll() {
-
-		List<Pregled> pregledi = service.findAllByDermatologId(3);
-
-		List<PregledDTO> preglediDTO = new ArrayList<>();
-		for (Pregled p : pregledi) {
-			preglediDTO.add(new PregledDTO(p));
-		}
-
-		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
-	}
-	
 	@GetMapping(value = "/pacijent/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getAllForPacijent(@PathVariable Integer id) {		
 
 		List<Pregled> pregledi = service.findAllByPacijentId(id);
@@ -108,7 +97,7 @@ public class PregledController {
 	}
 	
 	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		
@@ -122,6 +111,7 @@ public class PregledController {
 		return new ResponseEntity<List<MinimalApotekaDTO>>(minimalne, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/dermatoloziPacijenta/{id}")
 	public ResponseEntity<List<DermatologDTO>> poseceniDermatolozi(@PathVariable Integer id){
 		
@@ -176,7 +166,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/all/{id}")
-	@PreAuthorize("hasRole('DERMATOLOG')")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getAllForDermatolog(@PathVariable Integer id) {
 
 		List<Pregled> pregledi = service.findAllByDermatologId(id);
@@ -190,6 +180,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/all/active/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getAllActiveForDermatolog(@PathVariable Integer id,@RequestParam Integer apotekaId) {		
 
 		LocalDateTime pocetak=LocalDateTime.now();
@@ -205,6 +196,7 @@ public class PregledController {
 	}
 	
 	@PutMapping("/zauzmi/{id}/{pacijentId}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
 		Pacijent p=pacijentService.findOne(pacijentId);
 		try {
@@ -217,11 +209,13 @@ public class PregledController {
 	}
 	
 	@PutMapping("/dodaj/{id}")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
-		LocalDateTime pocetak=pregled.getStart().plusHours(2);
-		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled) throws InterruptedException{
+		LocalDateTime pocetak=pregled.getStart();
+		LocalDateTime kraj=pregled.getEnd();
 		
 		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		
 		
 		if(odg) {
 			try {
@@ -231,22 +225,28 @@ public class PregledController {
 			}
 		}
 		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@PutMapping("/dodajSlobodan/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','ADMIN_APOTEKE')")
 	public ResponseEntity<Boolean> dodajSlobodanTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
-		LocalDateTime pocetak=pregled.getStart().plusHours(2);
-		LocalDateTime kraj=pregled.getEnd().plusHours(2);
+		LocalDateTime pocetak=pregled.getStart();
+		LocalDateTime kraj=pregled.getEnd();
 		
-		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		boolean odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);;
 		
-		/*
-		 * try { emailService.noviPregled(p); } catch(Exception e){
-		 * System.out.println("Greska prilikom slanja emaila: " + e.getMessage()); }
-		 */
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
 		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
 	}
 	
 	@PutMapping("/zakazi")
@@ -277,6 +277,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<List<PacijentTerminDTO>> getAllPacijentiForDermatolog(@PathVariable Integer id) {	
 		
 		System.out.println("==================================================");
@@ -311,6 +312,7 @@ public class PregledController {
 	}
 	
 	@GetMapping("/preporuceni_lekovi/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<LekUIzvestajuDTO>> getPreporuceni(@PathVariable Integer id){
 		List<LekUIzvestaju> lekovi=izvestajService.findAllByTerminId(id);
 		ArrayList<LekUIzvestajuDTO> dtos=new ArrayList<LekUIzvestajuDTO>();
@@ -322,6 +324,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/slobodni")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getSlobodni() {		
 		LocalDateTime pocetak = LocalDateTime.now();
 		List<Pregled> pregledi = service.findAllActive(pocetak);

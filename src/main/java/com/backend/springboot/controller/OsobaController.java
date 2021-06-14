@@ -50,6 +50,7 @@ public class OsobaController {
 	}
 	
 	@PutMapping("/lozinka/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG','DOBAVLJAC')") 
 	public ResponseEntity<String> promeniLozinkuPrviPut(@PathVariable Integer id, @RequestBody String lozinka){
 		Osoba osoba = osobaService.findOne(id);
 		
@@ -65,6 +66,7 @@ public class OsobaController {
 	}
 	
 	@PutMapping("/novaLozinka/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG','DOBAVLJAC','PACIJENT')")
 	public ResponseEntity<String> promeniLozinku(@PathVariable Integer id, @RequestBody String lozinka){
 		Osoba osoba = osobaService.findOne(id);
 		osoba.setPassword(new BCryptPasswordEncoder().encode( lozinka));
@@ -74,13 +76,14 @@ public class OsobaController {
 	}
 	
 	@GetMapping("/novaLozinka/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG','DOBAVLJAC','PACIJENT')")
 	public ResponseEntity<Boolean> proveriStaruLozinku(@PathVariable Integer id,@RequestParam String lozinka){
 		Osoba osoba = osobaService.findOne(id);
 		if(new BCryptPasswordEncoder().matches(lozinka, osoba.getPassword())) {
 			return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 		}
 		
-		return new ResponseEntity<Boolean>(false,HttpStatus.OK);
+		return new ResponseEntity<Boolean>(false,HttpStatus.NOT_MODIFIED);
 	}
 	
 }

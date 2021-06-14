@@ -11,6 +11,7 @@ public class NarudzbenicaDTO {
 	private LocalDate rok; 
 	private StatusNarudzbenice status;
 	private String statusStr, rokStr, adminMail;
+	private Boolean bezPonuda;
 	
 	public NarudzbenicaDTO(Narudzbenica n) {
 		this.id = n.getId();
@@ -30,8 +31,17 @@ public class NarudzbenicaDTO {
 		
 		this.adminId = n.getAdmin().getId();
 		this.adminMail = n.getAdmin().getMail();
+		this.bezPonuda= n.getPonude().isEmpty();
 	}
 	
+	public Boolean getBezPonuda() {
+		return bezPonuda;
+	}
+
+	public void setBezPonuda(Boolean bezPonuda) {
+		this.bezPonuda = bezPonuda;
+	}
+
 	public Integer getAdminId() {
 		return adminId;
 	}

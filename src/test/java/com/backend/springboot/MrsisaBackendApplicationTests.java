@@ -38,6 +38,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
@@ -358,6 +359,7 @@ class MrsisaBackendApplicationTests {
 		.andExpect(jsonPath("$.[*].prezime").value(hasItem("Mikic")));
 	}
 
+	@WithMockUser(roles="ADMIN_SISTEMA")
 	@Test
 	public void testGetAllZalbeNaFarmaceuta() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -401,12 +403,13 @@ class MrsisaBackendApplicationTests {
 	@Test
 	public void testZauzmiSavetovanje() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		this.mockMvc.perform(get( "/savetovanje/zauzmi/1/2")).andExpect(status().is(405));
+		this.mockMvc.perform(get( "/pregled/zauzmi/1/2")).andExpect(status().is(405));
 	}
 	
 	//S2
 	
 	@Test
+	@WithMockUser(roles="ADMIN_APOTEKE")
 	public void testPreuzmiUpite() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/apoteke/upiti/1")).andExpect(status().isOk())
@@ -414,6 +417,7 @@ class MrsisaBackendApplicationTests {
 	}
 	
 	@Test
+	@WithMockUser(roles="ADMIN_APOTEKE")
 	public void testGetAllOdsustvaForFarmaceut() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/odsustvo/farmaceut/all/1")).andExpect(status().isOk())
@@ -421,6 +425,7 @@ class MrsisaBackendApplicationTests {
 	}
 	
 	@Test
+	@WithMockUser(roles="ADMIN_SISTEMA")
 	public void testGetAllOdsustvaForDermatolog() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/odsustvo/dermatolog/all/4")).andExpect(status().isOk())
@@ -429,6 +434,7 @@ class MrsisaBackendApplicationTests {
 
 	//S1
 	
+	@WithMockUser(roles="PACIJENT")
 	@Test
 	public void testRezervacijePacijenta() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -437,6 +443,7 @@ class MrsisaBackendApplicationTests {
 	}
 	
 	@Test
+	@WithMockUser(roles="PACIJENT")
 	public void testAlergijePacijenta() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/pacijent/alergije/2")).andExpect(status().isOk())
@@ -444,6 +451,7 @@ class MrsisaBackendApplicationTests {
 	}
 	
 	@Test
+	@WithMockUser(roles="PACIJENT")
 	public void testAkcijePromocijePacijenta() throws Exception {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		this.mockMvc.perform(get( "/akcijaPromocija/pacijent/2")).andExpect(status().isOk())

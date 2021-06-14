@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,8 @@ public class EReceptController {
 	@Autowired
 	private LekService lekService;
 
+	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		Set<Apoteka> apoteke = service.poseceneApoteke(id);
@@ -66,7 +69,7 @@ public class EReceptController {
 	
 
 	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/upload/{id}") 
 	public ResponseEntity<EReceptDTO> uploadAndReadQR(@RequestParam MultipartFile file, @PathVariable Integer id) throws Exception{
 		
@@ -134,7 +137,7 @@ public class EReceptController {
 	
 	//FETCH APOTEKE SA OVIM LEKOVIMA I KOLICINAMA I DAJ CENU MOZDA NEGDE DRUGDE CONTROLLER
 	
-	@GetMapping()
+	/*@GetMapping()
 	public ResponseEntity<List<EReceptDTO>> findAll(){
 		List<ERecept> erecepti = service.findAll();
 		
@@ -152,8 +155,9 @@ public class EReceptController {
 		ERecept rec = service.findOne(id);
 		
 		return new ResponseEntity<EReceptDTO>(new EReceptDTO(rec), HttpStatus.OK);
-	}
+	}*/
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/pacijent/{id}")
 	public ResponseEntity<List<EReceptDTO>> findByPacijent(@PathVariable Integer id){
 		List<ERecept> recepti = service.findByPacijent(id);

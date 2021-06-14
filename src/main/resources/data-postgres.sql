@@ -187,13 +187,13 @@ insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-
 
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
 
-insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1,1);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,pacijent_id,version) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1,2,1);
 insert into pregledi(id, dermatolog_id, cena) values (13, 3, 2500);
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-27 13:10', '2021-05-27 14:30', 1,1);
 insert into pregledi(id, dermatolog_id, cena) values (14, 3, 3000);
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-19 10:45', '2021-05-19 11:30', 2,1);
 insert into pregledi(id, dermatolog_id, cena) values (15, 10, 4000);
-insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-05-21 09:00', '2021-05-21 09:45', 1,1);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version,pacijent_id) values ('', false, '2021-05-21 09:00', '2021-05-21 09:45', 1,1,2);
 insert into savetovanja(id, farmaceut_id) values (16, 1);
 
 insert into erecepti( datum_izdavanja, pacijent_id, status) values ('2021-05-30', 2, 1);

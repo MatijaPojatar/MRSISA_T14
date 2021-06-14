@@ -8,6 +8,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
@@ -41,6 +43,7 @@ public class DermatologService {
 		return dermatologRep.save(d);
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Dermatolog findOne(Integer id) {
 		return dermatologRep.findOneById(id);
 	}

@@ -43,6 +43,7 @@ public class NarudzbenicaController {
 	@Autowired 
 	private MagacinService magacinService;
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/aktivne/{idDob}") //sve koje cekaju ponude i rok je posle danas
 	public ResponseEntity<List<NarudzbenicaPrikazDTO>> getAllAktivne(@PathVariable Integer idDob){
 		List<NarudzbenicaPrikazDTO> lista = new ArrayList<NarudzbenicaPrikazDTO>();
@@ -95,6 +96,7 @@ public class NarudzbenicaController {
 	}
 	
 	@GetMapping("/ponude/{id}")
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	public ResponseEntity<List<PonudaDTO>> preuzmiPonude(@PathVariable Integer id){
 		List<Ponuda> lista = narudzbenicaService.preuzmiPonude(id);
 		
@@ -108,6 +110,7 @@ public class NarudzbenicaController {
 	
 	
 	@GetMapping("/lekovi/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DOBAVLJAC')")
 	public ResponseEntity<String> preuzmiLekove(@PathVariable Integer id){
 		List<LekIzNarudzbenice> lista = narudzbenicaService.preuzmiLekove(id);
 		
@@ -137,6 +140,23 @@ public class NarudzbenicaController {
 		narudzbenicaService.dodajNarudzbenicu(apotekaId, narDTO.getRok(), narDTO.getLekovi(), narDTO.getAdminId());
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		
+	}
+	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PutMapping("/izmeni/{id}")
+	public ResponseEntity<Boolean> izmeniNarudzbenicu(@PathVariable Integer id, @RequestBody NovaNarudzbenicaDTO narDTO){
+		
+		List<LekIzNarudzbenice> lekovi = new ArrayList<LekIzNarudzbenice>();
+		narudzbenicaService.izmeniNarudzbenicu(id, narDTO.getRok());
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		
+	}
+	
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PutMapping("/obrisi/{id}")
+	public ResponseEntity<String> obrisiNarudzbenicu(@PathVariable Integer id) {
+		narudzbenicaService.obrisiNarudzbenicu(id);
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 
 }

@@ -93,6 +93,7 @@ public class RezervacijaController {
 	}
 	
 	@PutMapping("preuzmi/{code}")
+	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> preuzmiLek(@PathVariable String code){
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCode(code);
@@ -115,7 +116,7 @@ public class RezervacijaController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
 	public ResponseEntity<List<MinimalApotekaDTO>> poseceneApoteke(@PathVariable Integer id){
 		
@@ -150,6 +151,7 @@ public class RezervacijaController {
 	}
 	
 	@PostMapping("novaRezervacija")
+	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<String> novaRezervacija(@RequestBody RezervacijaLekaDTO dto ) throws MailException, InterruptedException{
 		Magacin m = magacinService.findOneByApotekaId(dto.getApotekaId());
 		Boolean naStanju = magacinService.proveriStanje(m.getId(), dto.getLekId(), dto.getKolicina());

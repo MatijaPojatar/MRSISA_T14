@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,6 +66,7 @@ public class ZalbaController {
 	
 
 	@GetMapping("/apoteka/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaApotekuDTO> getZNAById(@PathVariable Integer id){
 		ZalbaNaApoteku zalba = servisZaApoteke.findOne(id);
 		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
@@ -72,6 +74,7 @@ public class ZalbaController {
 	
 	
 	@GetMapping("/apoteka")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNA() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAll();
 
@@ -83,6 +86,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/apoteka/neobradjene")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNANeobradjene() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllNeobradjene();
@@ -95,6 +99,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/apoteka/obradjene/{id}")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAObradjeneByAdmin(@PathVariable Integer id) {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllObradjeneByAdmin(id);
@@ -107,6 +112,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apoteka/pacijent/{id}")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNAByPacijent(@PathVariable Integer id) {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAllByPacijent(id);
@@ -119,7 +125,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaApotekuDTO>>(dtos, HttpStatus.OK);
 	}
 
-
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/apoteka")
 	public ResponseEntity<ZalbaNaApotekuDTO> kreirajZalbuNaApoteku(@RequestBody ZalbaNaApotekuDTO dto) {
 		ZalbaNaApoteku kreirana = new ZalbaNaApoteku(dto);
@@ -130,6 +136,7 @@ public class ZalbaController {
 		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/apoteka/{id}")
 	public ResponseEntity<ZalbaNaApotekuDTO> odgovoriNaZalbuNaApoteku(@PathVariable Integer id, @RequestBody ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaApoteku odabrana = servisZaApoteke.findOne(id);
@@ -146,6 +153,7 @@ public class ZalbaController {
 	}
 
 	@GetMapping("/farmaceut")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNF() {
 		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAll();
 
@@ -158,11 +166,13 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/farmaceut/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> getZNFById(@PathVariable Integer id){
 		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.findOne(id);
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/farmaceut/neobradjene")
 	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNFNeobradjene() {
 		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAllNeobradjene();
@@ -175,6 +185,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/farmaceut/obradjene/{id}")
 	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNFObradjeneByAdmin(@PathVariable Integer id) {
 		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAllObradjeneByAdmin(id);
@@ -187,6 +198,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/farmaceut/pacijent/{id}")
 	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNFByPacijent(@PathVariable Integer id) {
 		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAllByPacijent(id);
@@ -199,6 +211,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaFarmaceutaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/farmaceut")
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> kreirajZalbuNaFarmaceuta(@RequestBody ZalbaNaFarmaceutaDTO dto) {
 		ZalbaNaFarmaceuta kreirana = new ZalbaNaFarmaceuta(dto);
@@ -209,6 +222,7 @@ public class ZalbaController {
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/farmaceut/{id}")
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> odgovoriNaZalbuNaFarmaceuta(@PathVariable Integer id, @RequestBody ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaFarmaceuta odabrana = servisZaFarmaceute.findOne(id);
@@ -225,6 +239,7 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/dermatolog")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZND() {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAll();
 
@@ -237,11 +252,13 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/dermatolog/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaDermatologaDTO> getZNDById(@PathVariable Integer id){
 		ZalbaNaDermatologa zalba = servisZaDermatologe.findOne(id);
 		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/dermatolog/neobradjene")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZNDNeobradjene() {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAllNeobradjene();
@@ -254,6 +271,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping("/dermatolog/obradjene/{id}")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZNDObradjeneByAdmin(@PathVariable Integer id) {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAllObradjeneByAdmin(id);
@@ -266,6 +284,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/dermatolog/pacijent/{id}")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZNDByPacijent(@PathVariable Integer id) {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAllByPacijent(id);
@@ -278,6 +297,7 @@ public class ZalbaController {
 		return new ResponseEntity<List<ZalbaNaDermatologaDTO>>(dtos, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/dermatolog")
 	public ResponseEntity<ZalbaNaDermatologaDTO> kreirajZalbuNaDermatologa(@RequestBody ZalbaNaDermatologaDTO dto) {
 		ZalbaNaDermatologa kreirana = new ZalbaNaDermatologa(dto);
@@ -288,6 +308,7 @@ public class ZalbaController {
 		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PutMapping("/dermatolog/{id}")
 	public ResponseEntity<ZalbaNaDermatologaDTO> odgovoriNaZalbuNaDermatologa(@PathVariable Integer id, @RequestBody  ZalbaNaApotekuDTO apdejtovana) {
 		ZalbaNaDermatologa odabrana = servisZaDermatologe.findOne(id);

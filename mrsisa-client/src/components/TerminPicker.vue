@@ -199,6 +199,7 @@ export default{
         dialog: false,
         dialogAdd: false,
         check: false,
+        errCheck: false,
         dialogTitle: "",
         dialogMessage: "",
     }),
@@ -257,7 +258,12 @@ export default{
                     this.dialogMessage="Došlo je do greške pri zauzimanju termina."
                     this.dialogTitle="Greška"
                 }
-            })
+            }).catch(e=>{
+                        console.log(e)
+                        this.dialog=true
+                        this.dialogMessage="Došlo je do greške pri zauzimanju termina."
+                        this.dialogTitle="Greška"
+                    });
         },
         loadRadnoVreme(){
             let path="dermatolog"
@@ -273,8 +279,8 @@ export default{
         });
         },
         async kreirajTermin(){
-            let pocetak=new Date(this.picker+" "+this.start)
-            let kraj = new Date(this.picker+" "+this.end)
+            let pocetak=this.convertUTCDateToLocalDate(new Date(this.picker+" "+this.start))
+            let kraj = this.convertUTCDateToLocalDate(new Date(this.picker+" "+this.end))
             console.log(pocetak);
             if(kraj-pocetak>7200000 || kraj-pocetak<1800000){
                 this.dialog=true
@@ -298,14 +304,23 @@ export default{
                     this.check=response.data
                 });
                 if(this.check){
+                    this.errCheck=false;
+                    this.check=false;
                     await Vue.axios.put(`http://localhost:8080/${path}/dodaj/${this.doktorId}`,newTermin).then(response => {
                         this.check=response.data;
+                    }).catch(e=>{
+                        console.log(e)
+                        this.errCheck=true;
                     });
                     if(this.check){
                         this.$emit('termin-end')
-                    }else{
+                    }else if(this.errCheck==false){
                         this.dialog=true
                         this.dialogMessage="Termin je već zauzet."
+                        this.dialogTitle="Greška"
+                    }else{
+                        this.dialog=true
+                        this.dialogMessage="Došlo je do greške."
                         this.dialogTitle="Greška"
                     }
                 }
@@ -319,6 +334,18 @@ export default{
         endDialog(){
         this.dialog=false;
         this.dialogAdd=false;
+        },
+        convertUTCDateToLocalDate(date) {
+            var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
+
+            var offset = date.getTimezoneOffset() / 60;
+            var hours = date.getHours();
+
+            
+
+            newDate.setHours(hours - offset);
+
+            return newDate;
         },
     },
 

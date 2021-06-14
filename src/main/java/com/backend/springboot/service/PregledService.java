@@ -98,7 +98,7 @@ public class PregledService {
 		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
 	}
 	
-	@Transactional(readOnly=false,propagation=Propagation.NESTED)
+	@Transactional(readOnly=false)
 	public List<Pregled> findAllInRangeForDermatolog(Integer id,LocalDateTime start,LocalDateTime end){
 		return pregledRep.findInRangeForDermatolog(id,start, end);
 	}
@@ -118,10 +118,11 @@ public class PregledService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
-	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
+	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) throws InterruptedException {
 		List<Pregled> checkList;
+		
 		try {
-			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+			checkList=pregledRep.findInRangeForDermatolog(id,pocetak,kraj);
 		}catch(Exception e) {
 			return false;
 		}
@@ -139,14 +140,27 @@ public class PregledService {
 		}
 		
 		Pregled p=new Pregled();
-		p.setDermatolog(dermService.findOne(id));
+		try {
+			p.setDermatolog(dermService.findOne(id));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setIzvrsen(dto.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
-		p.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		try {
+			p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		}catch(Exception e) {
+			return false;
+		}
+		try {
+			p.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setIzvestaj(dto.getIzvestaj());
 		p.setKraj(kraj);
 		p.setPocetak(pocetak);
 		p.setCena(dto.getCena());
+		
 		
 		pregledRep.save(p);
 		
@@ -157,7 +171,7 @@ public class PregledService {
 	public boolean dodajSlobodanPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
 		List<Pregled> checkList;
 		try {
-			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+			checkList=pregledRep.findInRangeForDermatolog(id,pocetak,kraj);
 		}catch(Exception e) {
 			return false;
 		}
@@ -175,9 +189,17 @@ public class PregledService {
 		}
 		
 		Pregled p=new Pregled();
-		p.setDermatolog(dermService.findOne(id));
+		try {
+			p.setDermatolog(dermService.findOne(id));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setIzvrsen(dto.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		try {
+			p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		}catch(Exception e) {
+			return false;
+		}
 		p.setPacijent(null);
 		p.setIzvestaj(null);
 		p.setKraj(kraj);
