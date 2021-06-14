@@ -8,6 +8,7 @@ public class RezLekaPacijentDTO {
 	private String code, apotekaNaziv, lekNaziv;
 	private LocalDate datum;
 	private Double kolicina;
+	private Integer apotekaId;
 	
 	public RezLekaPacijentDTO() {
 		
@@ -19,6 +20,15 @@ public class RezLekaPacijentDTO {
 		this.lekNaziv = rl.getLek().getNaziv();
 		this.datum = rl.getDatum();
 		this.kolicina = rl.getKolicina();
+		this.apotekaId = rl.getApoteka().getId();
+	}
+
+	public Integer getApotekaId() {
+		return apotekaId;
+	}
+
+	public void setApotekaId(Integer apotekaId) {
+		this.apotekaId = apotekaId;
 	}
 
 	public String getCode() {

@@ -19,6 +19,7 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.OblikLeka;
 import com.backend.springboot.domain.Ponuda;
+import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.RezimIzdavanja;
 import com.backend.springboot.domain.StatusNarudzbenice;
 import com.backend.springboot.domain.StatusPonude;
@@ -134,6 +135,20 @@ public class MagacinService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public boolean vratiLekUMagacin(RezervacijaLeka rl) {
+		try {
+			Magacin m=magacinRep.findOneByApotekaId(rl.getApoteka().getId());
+			LekUMagacinu lek=preuzmiJedanLekApoteke(rl.getLek().getId(), rl.getApoteka().getId());
+			izmeniLekUMagacinu(lek.getCena(), lek.getKolicina()+rl.getKolicina(), rl.getLek().getId(), rl.getApoteka().getId());
+			Thread.sleep(10000);
+			magacinRep.save(m);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
+	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public boolean proveriStanje(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
 		if(lum==null) {
@@ -153,6 +168,8 @@ public class MagacinService {
 		}
 		return true;
 	};
+	
+	
 	
 	public boolean smanjiKolicinuLeka(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
@@ -196,6 +213,7 @@ public class MagacinService {
 		return null;
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
 	public LekUMagacinu izmeniLekUMagacinu(Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
 		Magacin m = magacinRep.findOneByApotekaId(apotekaId);
 		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
@@ -257,6 +275,7 @@ public class MagacinService {
 		
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
 	public LekUMagacinu preuzmiJedanLekApoteke(Integer lekId, Integer apotekaId) {
 		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
 		for(LekUMagacinu l: lekovi){

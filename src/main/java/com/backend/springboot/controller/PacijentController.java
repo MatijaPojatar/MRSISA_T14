@@ -49,7 +49,7 @@ public class PacijentController {
 	
 	
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG')") 
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG', 'PACIJENT')") 
 	public ResponseEntity<PacijentDTO> getOne(@PathVariable Integer id){
 		Pacijent p = pacijentService.findOne(id);
 		PacijentDTO dto = new PacijentDTO(p);
