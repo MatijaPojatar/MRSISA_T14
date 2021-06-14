@@ -91,6 +91,7 @@ public class DobavljacController {
 		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.CREATED);
 	} 
 	
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	@GetMapping("/nazivPreduzeca/{id}")
 	public ResponseEntity<String> getNazivPreduzeca(@PathVariable Integer id){
 		Dobavljac d = dobavljacService.findOne(id);
@@ -123,6 +124,7 @@ public class DobavljacController {
 	
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	public ResponseEntity<DobavljacDTO> getOne(@PathVariable Integer id){
 		Dobavljac d = dobavljacService.findOne(id);
 		DobavljacDTO dto = new DobavljacDTO(d);
@@ -131,14 +133,8 @@ public class DobavljacController {
 	}
 	
 
-	@PostMapping()
-	public ResponseEntity<DobavljacDTO> registrujDobavljaca(@RequestBody DobavljacDTO dto){
-		Dobavljac dobavljac = dobavljacService.save(new Dobavljac(dto));
-		
-		return new ResponseEntity<DobavljacDTO>(new DobavljacDTO(dobavljac), HttpStatus.OK);
-	}
-
 	@PutMapping("/save/{id}")
+	@PreAuthorize("hasRole('DOBAVLJAC')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody DobavljacDTO dto){
 		Dobavljac d = dobavljacService.findOne(id);
 		d.setAdresa(dto.getAdresa());

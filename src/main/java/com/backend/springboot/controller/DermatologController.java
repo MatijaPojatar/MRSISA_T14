@@ -57,6 +57,7 @@ public class DermatologController {
 	private ArrayList<DermatologDTO> pronadjeniDermatoloziDTO;
 	
 	@GetMapping()
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','DERMATOLOG')")
 	public ResponseEntity<List<DermatologDTO>> findAll(){
 		List<Dermatolog> dermatolozi = service.findAll();
 		
@@ -96,6 +97,7 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.CREATED);
 	} 
 	
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','DERMATOLOG')")
 	@GetMapping("/{id}")
 	public ResponseEntity<DermatologDTO> getOne(@PathVariable Integer id){
 		Dermatolog d=service.findOne(id);
@@ -104,23 +106,13 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
 	}
 	
-	//@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DERMATOLOG')")
 	@PostMapping("/dermatologApoteke/{id}")
 	public ResponseEntity<DermatologDTO> getOneDermatologApoteke(@PathVariable Integer id, @RequestBody String apotekaId){
 		Dermatolog d=service.findOne(id);
 		DermatologDTO dto=new DermatologDTO(d, Integer.parseInt(apotekaId));
 		
 		return new ResponseEntity<DermatologDTO>(dto,HttpStatus.OK);
-	}
-	
-
-	
-	@PostMapping()
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<DermatologDTO> registrujDermatologa(@RequestBody DermatologDTO dto){
-		Dermatolog dermatolog = service.registrujDermatologa(new Dermatolog(dto));
-		
-		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.OK);
 	}
 	
 	@PutMapping("/save/{id}")
@@ -183,7 +175,7 @@ public class DermatologController {
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DERMATOLOG')")
 	@GetMapping("/radnoVreme/{id}")
 	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id,@RequestParam Integer apotekaId){
 		DermatologApoteka da=service.findZaposlenje(apotekaId, id);

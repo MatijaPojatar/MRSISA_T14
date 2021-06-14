@@ -68,7 +68,7 @@ public class SavetovanjeService {
 		return savetovanjeRep.findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(farmaceutId, null, apotekaId, pocetak);
 	}
 	
-	@Transactional(readOnly=true)
+	@Transactional(readOnly=false)
 	public List<Savetovanje> findAllInRangeForFarmaceut(Integer id,LocalDateTime start,LocalDateTime end){
 		return savetovanjeRep.findInRangeForFarmaceut(id,start, end);
 	}

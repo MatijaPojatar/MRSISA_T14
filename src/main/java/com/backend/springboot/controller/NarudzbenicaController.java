@@ -96,6 +96,7 @@ public class NarudzbenicaController {
 	}
 	
 	@GetMapping("/ponude/{id}")
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	public ResponseEntity<List<PonudaDTO>> preuzmiPonude(@PathVariable Integer id){
 		List<Ponuda> lista = narudzbenicaService.preuzmiPonude(id);
 		
@@ -109,6 +110,7 @@ public class NarudzbenicaController {
 	
 	
 	@GetMapping("/lekovi/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DOBAVLJAC')")
 	public ResponseEntity<String> preuzmiLekove(@PathVariable Integer id){
 		List<LekIzNarudzbenice> lista = narudzbenicaService.preuzmiLekove(id);
 		

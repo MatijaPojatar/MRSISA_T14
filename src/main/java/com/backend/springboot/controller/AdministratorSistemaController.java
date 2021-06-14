@@ -42,6 +42,7 @@ public class AdministratorSistemaController {
 	private EmailService emailService;
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<AdministratorSistemaDTO> getOne(@PathVariable Integer id) {
 		AdministratorSistema a = service.findOne(id);
 		AdministratorSistemaDTO dto = new AdministratorSistemaDTO(a);

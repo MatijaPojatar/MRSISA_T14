@@ -50,6 +50,7 @@ public class AdministratorApotekeController {
 	private EmailService emailService;
 	
 	//ADMIN_APOTEKE
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@GetMapping("/{id}")
 	public ResponseEntity<AdministratorApotekeDTO> getOne(@PathVariable Integer id){
 		AdministratorApoteke a=service.findOne(id);
@@ -59,6 +60,7 @@ public class AdministratorApotekeController {
 	}
 	
 	//ADMIN_APOTEKE
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/save/{id}")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody AdministratorApotekeDTO dto){
 		AdministratorApoteke a=service.findOne(id);

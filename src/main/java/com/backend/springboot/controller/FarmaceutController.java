@@ -48,6 +48,7 @@ public class FarmaceutController {
 	private ArrayList<FarmaceutDTO> pronadjeniFarmaceutiDTO;
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','FARMACEUT')")
 	public ResponseEntity<FarmaceutDTO> getOne(@PathVariable Integer id){
 		Farmaceut d=service.findOne(id);
 		FarmaceutDTO dto=new FarmaceutDTO(d);
@@ -58,6 +59,7 @@ public class FarmaceutController {
 
 	
 	@PutMapping("/save/{id}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','ADMIN_APOTEKE')")
 	public ResponseEntity<String> saveOne(@PathVariable Integer id,@RequestBody FarmaceutDTO dto){
 		if(dto.getIme().length()>20) {
 			return new ResponseEntity<String>("Greska",HttpStatus.NO_CONTENT);
@@ -183,6 +185,7 @@ public class FarmaceutController {
 	}
 	
 	@GetMapping("/radnoVreme/{id}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','ADMIN_APOTEKE','PACIJENT')")
 	public ResponseEntity<RadnoVremeDTO> getRadnoVreme(@PathVariable Integer id){
 		System.out.println("==============================================================");
 		Farmaceut f=service.findOne(id);

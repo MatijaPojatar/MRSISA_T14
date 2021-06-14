@@ -49,6 +49,7 @@ public class PacijentController {
 	
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG')") 
 	public ResponseEntity<PacijentDTO> getOne(@PathVariable Integer id){
 		Pacijent p = pacijentService.findOne(id);
 		PacijentDTO dto = new PacijentDTO(p);
@@ -58,6 +59,7 @@ public class PacijentController {
 	
 	
 	@GetMapping("/mail/{mail}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','ADMIN_SISTEMA','FARMACEUT','DERMATOLOG')") 
 	public ResponseEntity<PacijentDTO> getOne(@PathVariable String mail){
 		Pacijent p = pacijentService.findByMail(mail);
 		PacijentDTO dto = new PacijentDTO(p);
@@ -94,7 +96,7 @@ public class PacijentController {
 		return new ResponseEntity<String>("Profil korisnika "+ p.getIme() + " " + p.getPrezime() + " je već aktiviran.", HttpStatus.OK);
 	}
 	
-	@GetMapping("/all")
+	/*@GetMapping("/all")
 	public ResponseEntity<List<PacijentDTO>> getAll(){
 		List<Pacijent> pacijenti=pacijentService.findAll();
 		ArrayList<PacijentDTO> dtos=new ArrayList<PacijentDTO>();
@@ -103,9 +105,10 @@ public class PacijentController {
 		}
 		
 		return new ResponseEntity<List<PacijentDTO>>(dtos,HttpStatus.OK);
-	}
+	}*/
 	
 	@GetMapping("/alergije/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<LekDTO>> getAlergije(@PathVariable Integer id){
 		List<Lek> lekovi=pacijentService.findAllAlergijeById(id);
 		ArrayList<LekDTO> dtos=new ArrayList<LekDTO>();
@@ -118,6 +121,7 @@ public class PacijentController {
 	}
 	
 	@PostMapping("/proveri_termin/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT','PACIJENT')")
 	public ResponseEntity<Boolean> proveriTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);

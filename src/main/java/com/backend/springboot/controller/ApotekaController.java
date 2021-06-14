@@ -176,10 +176,10 @@ public class ApotekaController {
 		return new ResponseEntity<List<ApotekaMainInfoDTO>>(dtos, HttpStatus.OK);
 	}
 	
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	/*@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Collection<Apoteka>> getApoteke() {
 		return new ResponseEntity<Collection<Apoteka>>(pronadjeneApoteke, HttpStatus.OK);
-	}
+	}*/
 	
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/obrisiLek/{id}")
@@ -204,6 +204,7 @@ public class ApotekaController {
 	}
 	
 	@PutMapping("/preuzmiLek/{id}")
+	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	public ResponseEntity<LekUMagacinuDTO> preuzmiLek(@PathVariable Integer id, @RequestBody String apotekaId) {
 		LekUMagacinu lek = magacinService.preuzmiJedanLekApoteke(id, Integer.parseInt(apotekaId));
 		LekUMagacinuDTO lekdto= new LekUMagacinuDTO(lek);
@@ -211,6 +212,7 @@ public class ApotekaController {
 	}
 	
 	@GetMapping("/stanje/{lekId}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','DERMATOLOG','ADMIN_APOTEKE','PACIJENT')")
 	public ResponseEntity<Boolean> proveriStanje(@PathVariable Integer lekId,@RequestParam Integer apotekaId,@RequestParam Double kolicina){
 		System.out.println("========================="+lekId+" "+apotekaId+" "+kolicina+"==============================");
 		Magacin m=magacinService.findOneByApotekaId(apotekaId);

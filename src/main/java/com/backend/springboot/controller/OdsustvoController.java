@@ -107,6 +107,7 @@ public class OdsustvoController {
 	}
 	
 	@GetMapping("/farmaceut/all/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','FARMACEUT')")
 	public ResponseEntity<List<OdsustvoFarmaceutDTO>> getAllForFarmaceut(@PathVariable Integer id){
 		List<OdsustvoFarmaceut> odsustva=odFarmService.findAllByFarmaceutId(id);
 		ArrayList<OdsustvoFarmaceutDTO> dtos=new ArrayList<OdsustvoFarmaceutDTO>();
@@ -118,6 +119,7 @@ public class OdsustvoController {
 	}
 	
 	@GetMapping("/dermatolog/all/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','DERMATOLOG')")
 	public ResponseEntity<List<OdsustvoDermatologDTO>> getAllForDermatolog(@PathVariable Integer id){
 		List<OdsustvoDermatolog> odsustva=odDermService.findAllByDermatologId(id);
 		ArrayList<OdsustvoDermatologDTO> dtos=new ArrayList<OdsustvoDermatologDTO>();

@@ -66,6 +66,7 @@ public class ZalbaController {
 	
 
 	@GetMapping("/apoteka/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaApotekuDTO> getZNAById(@PathVariable Integer id){
 		ZalbaNaApoteku zalba = servisZaApoteke.findOne(id);
 		return new ResponseEntity<ZalbaNaApotekuDTO>(new ZalbaNaApotekuDTO(zalba), HttpStatus.OK);
@@ -73,6 +74,7 @@ public class ZalbaController {
 	
 	
 	@GetMapping("/apoteka")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaApotekuDTO>> getAllZNA() {
 		List<ZalbaNaApoteku> zalbe = servisZaApoteke.findAll();
 
@@ -151,6 +153,7 @@ public class ZalbaController {
 	}
 
 	@GetMapping("/farmaceut")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaFarmaceutaDTO>> getAllZNF() {
 		List<ZalbaNaFarmaceuta> zalbe = servisZaFarmaceute.findAll();
 
@@ -163,6 +166,7 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/farmaceut/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaFarmaceutaDTO> getZNFById(@PathVariable Integer id){
 		ZalbaNaFarmaceuta zalba = servisZaFarmaceute.findOne(id);
 		return new ResponseEntity<ZalbaNaFarmaceutaDTO>(new ZalbaNaFarmaceutaDTO(zalba), HttpStatus.OK);
@@ -235,6 +239,7 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/dermatolog")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<List<ZalbaNaDermatologaDTO>> getAllZND() {
 		List<ZalbaNaDermatologa> zalbe = servisZaDermatologe.findAll();
 
@@ -247,6 +252,7 @@ public class ZalbaController {
 	}
 	
 	@GetMapping("/dermatolog/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<ZalbaNaDermatologaDTO> getZNDById(@PathVariable Integer id){
 		ZalbaNaDermatologa zalba = servisZaDermatologe.findOne(id);
 		return new ResponseEntity<ZalbaNaDermatologaDTO>(new ZalbaNaDermatologaDTO(zalba), HttpStatus.OK);

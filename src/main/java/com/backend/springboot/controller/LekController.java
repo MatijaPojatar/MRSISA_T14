@@ -172,7 +172,6 @@ public class LekController {
 	}
 	
 	
-	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@GetMapping()
 	public ResponseEntity<Collection<LekDTO>> getLekovi() {
 		Collection<Lek> allLekovi = lekService.findAll();
@@ -209,7 +208,7 @@ public class LekController {
 		return new ResponseEntity<Collection<String>>(oblici, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','DERMATOLOG','FARMACEUT')")
 	@GetMapping("/zamenski/{id}")
 	public ResponseEntity<List<LekDTO>> getZamenskeZaLek(@PathVariable Integer id){
 		try {
@@ -250,17 +249,8 @@ public class LekController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@GetMapping("/test")
-	public ResponseEntity<Collection<String>> getTest() {
-		List<String> test = new ArrayList<String>();
-		test.add("jen");
-		test.add("dva");
 
-		return new ResponseEntity<Collection<String>>(test, HttpStatus.OK);
-	}
-
-	
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT')")
 	@GetMapping("/zamenski/{id}/{apoteka_id}/{pacijent_id}")
 	public ResponseEntity<LekDTO> getZamenskiLek(@PathVariable("id") Integer id,@PathVariable("apoteka_id") Integer apotekaId,@PathVariable("pacijent_id") Integer pacijentId){
 		List<Lek> zamenski=lekService.findZamenski(id);

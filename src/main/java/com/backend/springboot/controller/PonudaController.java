@@ -39,6 +39,7 @@ public class PonudaController {
 	private NarudzbenicaService narudzbenicaService;
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DOBAVLJAC')")
 	public ResponseEntity<PonudaDTO> getById(@PathVariable Integer id){
 		Ponuda ponuda = ponudaService.findOne(id);
 		return new ResponseEntity<PonudaDTO>(new PonudaDTO(ponuda), HttpStatus.OK);
@@ -100,6 +101,7 @@ public class PonudaController {
 	
 	//za narudzbenicu
 	@GetMapping("/narudzbenica/{id}")
+	@PreAuthorize("hasAnyRole('ADMIN_APOTEKE','DOBAVLJAC')")
 	public ResponseEntity<List<PonudaDTO>> getByNarudzbenica(@PathVariable Integer id){
 		List<Ponuda> lista = ponudaService.findAllByNarudzbenicaId(id);
 		

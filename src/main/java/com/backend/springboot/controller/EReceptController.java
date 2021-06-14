@@ -137,7 +137,7 @@ public class EReceptController {
 	
 	//FETCH APOTEKE SA OVIM LEKOVIMA I KOLICINAMA I DAJ CENU MOZDA NEGDE DRUGDE CONTROLLER
 	
-	@GetMapping()
+	/*@GetMapping()
 	public ResponseEntity<List<EReceptDTO>> findAll(){
 		List<ERecept> erecepti = service.findAll();
 		
@@ -155,7 +155,7 @@ public class EReceptController {
 		ERecept rec = service.findOne(id);
 		
 		return new ResponseEntity<EReceptDTO>(new EReceptDTO(rec), HttpStatus.OK);
-	}
+	}*/
 	
 	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/pacijent/{id}")
