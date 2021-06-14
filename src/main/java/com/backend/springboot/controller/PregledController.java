@@ -240,7 +240,7 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart().plusHours(2);
 		LocalDateTime kraj=pregled.getEnd().plusHours(2);
 		
-		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
+		boolean odg=service.dodajSlobodanPregled(id, pocetak, kraj, pregled);
 		
 		/*
 		 * try { emailService.noviPregled(p); } catch(Exception e){

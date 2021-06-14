@@ -68,7 +68,7 @@ public class SavetovanjeService {
 		return savetovanjeRep.findAllByFarmaceutIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(farmaceutId, null, apotekaId, pocetak);
 	}
 	
-	@Transactional(readOnly=false,propagation=Propagation.NESTED)
+	@Transactional(readOnly=true)
 	public List<Savetovanje> findAllInRangeForFarmaceut(Integer id,LocalDateTime start,LocalDateTime end){
 		return savetovanjeRep.findInRangeForFarmaceut(id,start, end);
 	}
@@ -105,7 +105,7 @@ public class SavetovanjeService {
 	public boolean dodajSavetovanje(Integer id,LocalDateTime pocetak,LocalDateTime kraj,SavetovanjeDTO dto) {
 		List<Savetovanje> checkList;
 		try {
-			checkList=findAllInRangeForFarmaceut(id,pocetak,kraj);
+			checkList=savetovanjeRep.findInRangeForFarmaceut(id,pocetak,kraj);
 		}catch(Exception e) {
 			return false;
 		}

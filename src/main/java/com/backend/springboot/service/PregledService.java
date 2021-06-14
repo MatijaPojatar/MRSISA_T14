@@ -98,7 +98,7 @@ public class PregledService {
 		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
 	}
 	
-	@Transactional(readOnly=false,propagation=Propagation.NESTED)
+	@Transactional(readOnly=true)
 	public List<Pregled> findAllInRangeForDermatolog(Integer id,LocalDateTime start,LocalDateTime end){
 		return pregledRep.findInRangeForDermatolog(id,start, end);
 	}
@@ -121,7 +121,7 @@ public class PregledService {
 	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
 		List<Pregled> checkList;
 		try {
-			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+			checkList=pregledRep.findInRangeForDermatolog(id,pocetak,kraj);
 		}catch(Exception e) {
 			return false;
 		}
@@ -157,7 +157,7 @@ public class PregledService {
 	public boolean dodajSlobodanPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) {
 		List<Pregled> checkList;
 		try {
-			checkList=findAllInRangeForDermatolog(id,pocetak,kraj);
+			checkList=pregledRep.findInRangeForDermatolog(id,pocetak,kraj);
 		}catch(Exception e) {
 			return false;
 		}
