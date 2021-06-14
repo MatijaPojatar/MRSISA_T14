@@ -210,17 +210,11 @@ public class PregledController {
 	
 	@PutMapping("/dodaj/{id}")
 	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled){
+	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled) throws InterruptedException{
 		LocalDateTime pocetak=pregled.getStart();
 		LocalDateTime kraj=pregled.getEnd();
 		
-		boolean odg;
-		
-		try {
-			odg=service.dodajPregled(id, pocetak, kraj, pregled);
-		}catch(Exception e) {
-			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
-		}
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
 		
 		
 		if(odg) {
@@ -231,7 +225,12 @@ public class PregledController {
 			}
 		}
 		
-		return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		if(odg) {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	@PutMapping("/dodajSlobodan/{id}")
