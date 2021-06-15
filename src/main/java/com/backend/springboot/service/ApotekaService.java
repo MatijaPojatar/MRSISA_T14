@@ -115,7 +115,7 @@ public class ApotekaService  {
 		return ukupnaCena;
 	}
 
-
+	@Transactional
 	public void kupiLekove(List<LekEReceptaDTO> lekoviErecepta, Integer idApoteke) {
 		
 		Apoteka a = apotekaRep.findOneById(idApoteke);
@@ -131,6 +131,7 @@ public class ApotekaService  {
 			}
 		}
 	}
+	
 
 
 	public double getCenaLeka(Apoteka a,Integer id) {

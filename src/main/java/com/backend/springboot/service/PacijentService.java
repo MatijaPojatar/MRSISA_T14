@@ -29,6 +29,7 @@ public class PacijentService {
 	@Autowired
 	LekRepository lekRep;
 	
+	@Transactional
 	public void dodajBodove(Integer idPac, TipStavkeBodovanja tip, Integer idLeka) {
 		Pacijent pac = pacijentRep.findOneById(idPac);
 		

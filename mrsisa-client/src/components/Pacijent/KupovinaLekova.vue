@@ -132,7 +132,7 @@ export default {
         alert("Greska pri upload-u fajla");
       }
       try {
-        await this.getSnabdeveneApotekeAction(this.erecept);
+        await this.getSnabdeveneApotekeAction({erecept: this.erecept, idPac: this.user.id});
       } catch (error) {
         console.log(error);
         alert("Greska pri dobavljanju snabdevenih apoteka");

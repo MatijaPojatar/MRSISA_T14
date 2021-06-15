@@ -88,9 +88,11 @@ public class ApotekaController {
 			Pacijent pac = pacijentService.findOne(id);
 			Kategorija kat = katService.getByBrojPoena(pac.getBrojPoena());
 			
-			Double procenat = kat.getProcenat();
-			
-			cena = cena - procenat/100 * cena;
+			if(kat != null) {
+				Double procenat = kat.getProcenat();
+				
+				cena = cena - procenat/100 * cena;
+			}
 			
 			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
 			
