@@ -39,6 +39,29 @@
       >Sačuvaj</v-btn>
     </v-form>
   </v-card>
+
+  <v-dialog
+      v-model="potvrda"
+      persistent
+      max-width="300"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Uspešno ste promenili lozinku.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPotvrda"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
 </div>
 </template>
 
@@ -56,7 +79,7 @@ export default {
   data: () => ({
     lozinka: "",
     potvrdaLozinke: "",
-
+    potvrda: false,
 
     valid: true,
     show1: false,
@@ -69,10 +92,15 @@ export default {
 
   methods: {
   ...mapActions({
-    prvaPromenaSifreAction: "korisnici/prvaPromenaSifreAction"
-
+    prvaPromenaSifreAction: "korisnici/prvaPromenaSifreAction",
+    logoutAction: "korisnici/logoutAction"
   }),
 
+  endPotvrda(){
+    this.potvrda = false;
+    this.logoutAction();
+      this.$router.push("/");
+  },
   async validateAndSend(){
     if(this.lozinka.localeCompare(this.potvrdaLozinke)){
       alert("Lozinke nisu iste!");
@@ -80,23 +108,27 @@ export default {
     }
     try{
       await this.prvaPromenaSifreAction({id: this.korisnik.id, sifra: this.lozinka})
-      switch (this.role) {
-        case "ROLE_DERMATOLOG":
-          this.$router.push("/dermatolog");
-          break;
-        case "ROLE_FARMACEUT":
-          this.$router.push("/farmaceut");
-          break;
-        case "ROLE_ADMIN_SISTEMA":
-          this.$router.push("/admin");
-          break;
-        case "ROLE_ADMIN_APOTEKE":
-          this.$router.push("/adminApoteke");
-          break;
-        case "ROLE_DOBAVLJAC":
-          this.$router.push("/dobavljac");
-          break;
-      }
+      this.potvrda = true;
+      
+
+
+      // switch (this.role) {
+      //   case "ROLE_DERMATOLOG":
+      //     this.$router.push("/dermatolog");
+      //     break;
+      //   case "ROLE_FARMACEUT":
+      //     this.$router.push("/farmaceut");
+      //     break;
+      //   case "ROLE_ADMIN_SISTEMA":
+      //     this.$router.push("/admin");
+      //     break;
+      //   case "ROLE_ADMIN_APOTEKE":
+      //     this.$router.push("/adminApoteke");
+      //     break;
+      //   case "ROLE_DOBAVLJAC":
+      //     this.$router.push("/dobavljac");
+      //     break;
+      // }
     }catch(error){
       alert("Greska prilikom promene sifre")
     }
