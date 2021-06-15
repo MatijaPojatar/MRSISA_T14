@@ -68,6 +68,19 @@ public class PregledController {
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/istorija/pacijent/{id}")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	public ResponseEntity<List<PregledDTO>> getAllIstorijaForPacijent(@PathVariable Integer id) {		
+		List<Pregled> pregledi = service.findAllByPacijentId(id);
+
+		List<PregledDTO> preglediDTO = new ArrayList<>();
+		for (Pregled p : pregledi) {
+			if (LocalDateTime.now().compareTo(p.getPocetak()) > 0)
+				preglediDTO.add(new PregledDTO(p));
+		}
+
+		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
+	}
 	
 	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")

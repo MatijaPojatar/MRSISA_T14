@@ -248,10 +248,10 @@
             <v-container fluid v-if="showRezervacijaLeka" :style="{width:'70vh'}">
                 <RezervacijaLeka/>
             </v-container>
-            <v-container fluid v-if="showIstorijaPregleda" :style="{width:'70vh'}">
+            <v-container fluid v-if="showIstorijaPregleda" :style="{width:'100vh'}">
                 <IstorijaPregleda/>
             </v-container>
-            <v-container fluid v-if="showIstorijaSavetovanja" :style="{width:'70vh'}">
+            <v-container fluid v-if="showIstorijaSavetovanja" :style="{width:'100vh'}">
                 <IstorijaSavetovanja/>
             </v-container>
              <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
