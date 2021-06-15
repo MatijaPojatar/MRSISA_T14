@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,7 +25,6 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
-import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.dto.DermatologDTO;
@@ -35,6 +33,7 @@ import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.dto.PregledDermatologDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.EmailService;
@@ -180,7 +179,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/all/active/{id}")
-	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<List<PregledDTO>> getAllActiveForDermatolog(@PathVariable Integer id,@RequestParam Integer apotekaId) {		
 
 		LocalDateTime pocetak=LocalDateTime.now();
@@ -195,8 +194,22 @@ public class PregledController {
 		return new ResponseEntity<>(preglediDTO, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/all/slobodni/{apotekaId}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<List<PregledDermatologDTO>> slobodniPregledi(@PathVariable Integer apotekaId) {		
+		LocalDateTime pocetak = LocalDateTime.now();
+		List<Pregled> pregledi = service.findAllSlobodni(apotekaId, pocetak);
+
+		List<PregledDermatologDTO> preglediDTO = new ArrayList<>();
+		for (Pregled p : pregledi) {
+			preglediDTO.add(new PregledDermatologDTO(p));
+		}
+
+		return new ResponseEntity<List<PregledDermatologDTO>>(preglediDTO, HttpStatus.OK);
+	}
+	
 	@PutMapping("/zauzmi/{id}/{pacijentId}")
-	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	@PreAuthorize("hasAnyRole('DERMATOLOG', 'PACIJENT')")
 	public ResponseEntity<String> zauzmiTermin(@PathVariable Integer id,@PathVariable Integer pacijentId){
 		Pacijent p=pacijentService.findOne(pacijentId);
 		try {
@@ -209,13 +222,12 @@ public class PregledController {
 	}
 	
 	@PutMapping("/dodaj/{id}")
-	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
-	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id,@RequestBody PregledDTO pregled) throws InterruptedException{
+	@PreAuthorize("hasRole('DERMATOLOG')")
+	public ResponseEntity<Boolean> dodajTermin(@PathVariable Integer id, @RequestBody PregledDTO pregled) throws InterruptedException{
 		LocalDateTime pocetak=pregled.getStart();
 		LocalDateTime kraj=pregled.getEnd();
-		
-		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
-		
+
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled, true);
 		
 		if(odg) {
 			try {
@@ -227,8 +239,39 @@ public class PregledController {
 		
 		if(odg) {
 			return new ResponseEntity<Boolean>(odg,HttpStatus.OK);
-		}else {
+		} else {
 			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@PutMapping("/zakazi/{pacijentId}/{pregledId}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<String> zakaziPregled(@PathVariable Integer pacijentId, @PathVariable Integer pregledId) throws InterruptedException{
+		try {
+			zauzmiTermin(pregledId, pacijentId);
+		}catch(Exception e) {
+			return new ResponseEntity<String>("Greska", HttpStatus.BAD_REQUEST);
+		}
+		
+		PregledDTO pregled = new PregledDTO(service.findOne(pregledId));
+		
+		LocalDateTime pocetak = pregled.getStart();
+		LocalDateTime kraj = pregled.getEnd();
+
+		boolean odg=service.dodajPregled(pregled.getDermatologId(), pocetak, kraj, pregled, false);
+		
+		if(odg) {
+			try {
+				emailService.noviPregled(pregled);
+			} catch(Exception e){
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
+		}
+		
+		if(odg) {
+			return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
+		} else {
+			return new ResponseEntity<String>("Greska", HttpStatus.OK);
 		}
 		
 	}
@@ -247,33 +290,6 @@ public class PregledController {
 			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
 		}
 		
-	}
-	
-	@PutMapping("/zakazi")
-	public ResponseEntity<Boolean> zakaziPregled(@RequestBody PregledDTO pregled){		
-		List<OdsustvoDermatolog> checkOdsustva = odsustvoService.findExistInTime(pregled.getDermatologId(), pregled.getStart(), pregled.getEnd());
-		if(checkOdsustva.size() != 0) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.NOT_ACCEPTABLE);
-		}
-		
-		Pregled p = new Pregled();
-		p.setDermatolog(derService.findOne(pregled.getDermatologId()));
-		p.setIzvrsen(pregled.isIzvrsen());
-		p.setApoteka(apotekaService.findOne(pregled.getApotekaId()));
-		p.setPacijent(pacijentService.findOne(pregled.getPacijentId()));
-		p.setIzvestaj(pregled.getIzvestaj());
-		p.setKraj(pregled.getEnd());
-		p.setPocetak(pregled.getStart());
-		
-		service.save(p);
-		
-		try {
-			emailService.noviPregled(pregled);
-		} catch(MailException | InterruptedException e){
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")
@@ -324,7 +340,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/slobodni")
-	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<List<PregledDTO>> getSlobodni() {		
 		LocalDateTime pocetak = LocalDateTime.now();
 		List<Pregled> pregledi = service.findAllActive(pocetak);

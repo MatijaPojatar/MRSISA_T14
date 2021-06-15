@@ -1,31 +1,12 @@
 <template>
   <v-card min-width="700px">
-    <v-card-text v-if="!fromProfilApoteke">
-      <v-autocomplete
-        v-model="izabranaApotekaId"
-        :items="apoteke"
-        label="Apoteka"
-        item-text="naziv"
-        item-value="id"
-        required
-        @change="updateTable()"
-      >
-        <template slot="selection" slot-scope="data">
-          {{ data.item.naziv }}
-        </template>
-        <template slot="item" slot-scope="data">
-          {{ data.item.naziv }}
-        </template>
-      </v-autocomplete>
-    </v-card-text>
     <v-card>
       <v-data-table :headers="headeri" :items="pregledi">
         <template v-slot:item="red">
           <tr>
             <td>{{ red.item.name }}</td>
-            <td>{{ red.item.datum }}</td>
-            <td>{{ red.item.pocetak }}</td>
-            <td>{{ red.item.kraj }}</td>
+            <td>{{ red.item.start }}</td>
+            <td>{{ red.item.end }}</td>
             <td>{{ red.item.dermatolog }}</td>
             <td>{{ red.item.ocena }}</td>
             <td>{{ red.item.cena }}</td>
@@ -58,14 +39,12 @@ export default {
   components: {},
 
   data: () => ({
-    izabranaApotekaId: 0,
     headeri: [
       { text: "Naziv", value: "name", sortable: false },
-      { text: "Datum", value: "datum", sortable: false },
-      { text: "Početak", value: "pocetak", sortable: false },
-      { text: "Kraj", value: "kraj", sortable: false },
+      { text: "Početak", value: "start", sortable: false },
+      { text: "Kraj", value: "end", sortable: false },
       { text: "Dermatolog", value: "dermatolog", sortable: false },
-      { text: "Ocena", value: "ocena", sortable: false },
+      { text: "Ocena", value: "ocena", sortable: true },
       { text: "Cena", value: "cena", sortable: true },
       { text: "Zakaži" },
     ],
@@ -76,118 +55,47 @@ export default {
   computed: {
     ...mapGetters({
       korisnik: "korisnici/getKorisnik",
-      apoteke: "apoteke/getApoteke",
     }),
   },
-  props:{
-    apotekaId: Number,
-    fromProfilApoteke: Boolean,
-  },
-  mounted(){
-    if (this.fromProfilApoteke){
-      this.izabranaApotekaId = this.apotekaId;
-    }
-    this.updateTable();
-  },
 
-  async beforeMount() {
-    await this.getApotekeAction();
+  props:{
+    apotekaId: Number
+  },
+  
+  mounted(){
+    this.loadPregledi();
   },
 
   methods: {
     ...mapActions({
-      getApotekeAction: "apoteke/getApotekeAction",
     }),
 
-    updateTable() {
-      if (this.izabranaApotekaId == 1) {
-        this.pregledi = [
-          {
-            name: "Pregled 13",
-            datum: "2021-5-20",
-            pocetak: "12:00",
-            kraj: "12:45",
-            ocena: 5,
-            apotekaId: 1,
-            id: 13,
-            dermatolog: "Petar Petrovic",
-            dermatologId: 3,
-            izvrsen: false,
-            cena: 2500.0,
-          },
-          {
-            name: "Pregled 14",
-            datum: "2021-05-21",
-            pocetak: "13:10",
-            kraj: "14:30",
-            ocena: 5,
-            apotekaId: 1,
-            id: 14,
-            dermatolog: "Petar Petrovic",
-            dermatologId: 3,
-            izvrsen: false,
-            cena: 3000.0,
-          },
-        ];
-      } else if (this.izabranaApotekaId == 2) {
-        this.pregledi = [
-          {
-            name: "Pregled 15",
-            datum: "2021-5-19",
-            pocetak: "10:45",
-            kraj: "11:30",
-            ocena: 5,
-            apotekaId: 2,
-            id: 15,
-            dermatolog: "Luka Lukic",
-            dermatologId: 10,
-            izvrsen: false,
-            cena: 4000.0,
-          },
-        ];
-      } else {
-        this.pregledi = [];
-      }
+    loadPregledi() {
+      axios.get(`/pregled/all/slobodni/${this.apotekaId}`).then(response => {
+        const pregledi = []
+        response.data.forEach(element => {
+        pregledi.push({
+          id: element.id,
+          name: element.name,
+          pacijent: element.pacijentId,
+          start: element.start[0].toString()+"-"+element.start[1].toString()+"-"+element.start[2].toString()+" "+element.start[3].toString()+":"+element.start[4].toString(),
+          end: element.end[0].toString()+"-"+element.end[1].toString()+"-"+element.end[2].toString()+" "+element.end[3].toString()+":"+element.end[4].toString(),
+          izvrsen: element.izvrsen,
+          izvestaj: element.izvestaj,
+          dermatologId: element.dermatologId,
+          dermatolog: element.dermatolog,
+          ocena: element.ocena,
+          cena: element.cena,
+        })
+        this.pregledi = pregledi
+        });
+      });
     },
 
-    zakazi(item) {
-      this.pregledi = [{
-            name: "Pregled 14",
-            datum: "2021-05-21",
-            pocetak: "13:10",
-            kraj: "14:30",
-            ocena: 5,
-            apotekaId: 1,
-            id: 14,
-            dermatolog: "Petar Petrovic",
-            dermatologId: 3,
-            izvrsen: false,
-            cena: 3000.0,
-          }]
-      let pregled = {
-        name: item.name,
-        izvestaj: '',
-        start: [
-            2021,
-            5,
-            20,
-            12,
-            0
-        ],
-        end: [
-            2021,
-            5,
-            20,
-            12,
-            45
-        ],
-        pacijentId: this.korisnik.id,
-        dermatologId: item.dermatologId,
-        apotekaId: item.apotekaId,
-        izvrsen: false
-      };
-      axios.put(`/pregled/zakazi`, pregled);
-    },
+    zakazi(pregled) {
+      axios.put(`/pregled/zakazi/${this.korisnik.id}/${pregled.id}`);
+      location.reload();
+    }
   },
 };
 </script>
