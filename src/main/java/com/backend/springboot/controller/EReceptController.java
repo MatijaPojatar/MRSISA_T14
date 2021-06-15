@@ -137,29 +137,6 @@ public class EReceptController {
 	}
 	
 
-	
-	//FETCH APOTEKE SA OVIM LEKOVIMA I KOLICINAMA I DAJ CENU MOZDA NEGDE DRUGDE CONTROLLER
-	
-	/*@GetMapping()
-	public ResponseEntity<List<EReceptDTO>> findAll(){
-		List<ERecept> erecepti = service.findAll();
-		
-		List<EReceptDTO> dtos = new ArrayList<EReceptDTO>();
-		for (ERecept e: erecepti) {
-			dtos.add(new EReceptDTO(e));
-		}
-		
-		return new ResponseEntity<List<EReceptDTO>>(dtos, HttpStatus.OK);
-	}
-	
-	@GetMapping("/{id}")
-	public ResponseEntity<EReceptDTO> findOne(@PathVariable Integer id)
-	{
-		ERecept rec = service.findOne(id);
-		
-		return new ResponseEntity<EReceptDTO>(new EReceptDTO(rec), HttpStatus.OK);
-	}*/
-	
 	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/pacijent/{id}")
 	public ResponseEntity<List<EReceptDTO>> findByPacijent(@PathVariable Integer id){

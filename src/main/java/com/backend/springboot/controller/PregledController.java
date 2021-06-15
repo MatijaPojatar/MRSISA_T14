@@ -25,6 +25,7 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.dto.DermatologDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
@@ -132,6 +133,11 @@ public class PregledController {
 	@PreAuthorize("hasRole('DERMATOLOG')")
 	public ResponseEntity<String> sacuvajIzvestaj(@PathVariable Integer id,@RequestBody IzvestajDTO izvestaj){
 		Pregled p=service.findOne(id);
+		
+		if(p.getPacijent() != null) {
+			pacijentService.dodajBodove(p.getPacijent().getId(), TipStavkeBodovanja.PREGLED, null);
+		}
+		
 		p.setIzvrsen(true);
 		p.setIzvestaj(izvestaj.getText());
 		for(LekUIzvestajuDTO lekDto: izvestaj.getLekovi()) {
