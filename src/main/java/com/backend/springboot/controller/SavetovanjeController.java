@@ -159,7 +159,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/pacijent/{id}")
-	//@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
