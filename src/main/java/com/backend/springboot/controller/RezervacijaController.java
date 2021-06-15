@@ -132,12 +132,14 @@ public class RezervacijaController {
 		try {
 			rezService.save(rl);
 		}catch(Exception e){
+			Thread.currentThread().interrupt();
 			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
 		
 		try {
 			emailService.preuzimanjeRezervacije(rl);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
@@ -192,12 +194,14 @@ public class RezervacijaController {
 			try {
 				emailService.rezervacijaLeka(rl);
 			} catch (MailException | InterruptedException e) {
+				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 			
 			
 			return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);
 		}catch(Exception e){
+			Thread.currentThread().interrupt();
 			return new ResponseEntity<String>("Kreiranje rezervacije neuspešno.",HttpStatus.OK);
 		}
 		

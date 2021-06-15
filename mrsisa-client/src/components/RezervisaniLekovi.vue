@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-expansion-panels style="width: 600px">
-      <v-expansion-panel v-for="r in rezervacije" :key="r.code" @click = "PanelSelected(r)">>
+      <v-expansion-panel v-for="r in rezervacije" :key="r.code" @click="PanelSelected(r)">
         <v-expansion-panel-header>
           Rezervacija - {{ r.code }}
         </v-expansion-panel-header>

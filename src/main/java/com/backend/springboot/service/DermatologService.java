@@ -57,7 +57,7 @@ public class DermatologService {
 		ArrayList<Dermatolog> pronadjeni = new ArrayList<Dermatolog>();
 		for (Dermatolog d: svi) {
 			for (Apoteka a: d.getApotekeV2()) {
-				if (a.getId() == id) {
+				if (a.getId().equals(id) ) {
 					pronadjeni.add(d);
 				}
 			}
@@ -86,7 +86,7 @@ public class DermatologService {
 			Set<Dermatolog> dermatolozi =a.getDermatoloziV2();
 			DermatologApoteka pronadjen = new DermatologApoteka();
 			for (DermatologApoteka z: zaposlenja) {
-				if (z.getApoteka().getId() == apotekaId) {
+				if (z.getApoteka().getId().equals(apotekaId)) {
 					pronadjen = z;
 					break;
 					
@@ -113,7 +113,7 @@ public class DermatologService {
 		Apoteka a = apotekaRep.findOneById(apotekaId);
 		boolean dozvoljenoDodavanje = true;
 		for (DermatologApoteka z : d.getZaposlenja()) {
-			if (z.getApoteka().getId() != apotekaId && preklapaSe(z.getPocetakRadnogVremena(), z.getKrajRadnogVremena(), pocetak, kraj)) {
+			if (!z.getApoteka().getId().equals(apotekaId) && preklapaSe(z.getPocetakRadnogVremena(), z.getKrajRadnogVremena(), pocetak, kraj)) {
 				dozvoljenoDodavanje = false;
 			}
 		}
@@ -121,7 +121,7 @@ public class DermatologService {
 		if (dozvoljenoDodavanje) {
 			DermatologApoteka pronadjen = new DermatologApoteka();
 			for (DermatologApoteka z : d.getZaposlenja()) {
-				if (z.getApoteka().getId() == apotekaId) {
+				if (z.getApoteka().getId().equals(apotekaId)) {
 					pronadjen = z;
 					break;
 				}

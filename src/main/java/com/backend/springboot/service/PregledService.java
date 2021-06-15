@@ -120,7 +120,7 @@ public class PregledService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
-	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto, Boolean dermatolog) throws InterruptedException {
+	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) throws InterruptedException {
 		List<Pregled> checkList;
 		
 		try {
@@ -128,8 +128,7 @@ public class PregledService {
 		}catch(Exception e) {
 			return false;
 		}
-		if(checkList.size()!=0 && dermatolog) {
-			System.out.println("OVED");
+		if(checkList.size()!=0) {
 			return false;
 		}
 		List<OdsustvoDermatolog> checkOdsustva;
@@ -162,6 +161,39 @@ public class PregledService {
 		p.setIzvestaj(dto.getIzvestaj());
 		p.setKraj(kraj);
 		p.setPocetak(pocetak);
+		p.setCena(dto.getCena());
+		
+		pregledRep.save(p);
+		
+		return true;
+	}
+	
+	public boolean izmeniPregled(PregledDTO dto) throws InterruptedException {
+		Pregled p = findOne(dto.getId());
+		
+		try {
+			p.setDermatolog(dermService.findOne(dto.getDermatologId()));
+		}catch(Exception e) {
+			return false;
+		}
+		
+		p.setIzvrsen(dto.isIzvrsen());
+		
+		try {
+			p.setApoteka(apotekaService.findOne(dto.getApotekaId()));
+		}catch(Exception e) {
+			return false;
+		}
+		
+		try {
+			p.setPacijent(pacijentService.findOne(dto.getPacijentId()));
+		}catch(Exception e) {
+			return false;
+		}
+		
+		p.setIzvestaj(dto.getIzvestaj());
+		p.setKraj(dto.getEnd());
+		p.setPocetak(dto.getStart());
 		p.setCena(dto.getCena());
 		
 		pregledRep.save(p);
@@ -212,5 +244,4 @@ public class PregledService {
 		
 		return true;
 	}
-
 }

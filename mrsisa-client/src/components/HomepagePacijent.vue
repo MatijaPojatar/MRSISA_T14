@@ -82,6 +82,16 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="zakazanePoseteView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-calendar</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Zakazane posete
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="rezLekoviView">
                     <v-list-item-icon>
                         <v-icon>mdi-medical-bag</v-icon>
@@ -99,16 +109,6 @@
                     <v-list-item-title>
                         <div class="wh">
                             Rezervacija leka
-                        </div>
-                    </v-list-item-title>
-                </v-list-item>
-                <v-list-item link @click="calendarView">
-                    <v-list-item-icon>
-                        <v-icon>mdi-calendar</v-icon>
-                    </v-list-item-icon>
-                    <v-list-item-title>
-                        <div class="wh">
-                            Zakazane posete
                         </div>
                     </v-list-item-title>
                 </v-list-item>
@@ -214,9 +214,6 @@
             </template>
         </v-navigation-drawer>
         <v-main>
-            <v-container fluid fill-height v-if="showCalendar">
-                <Calendar :pacijent="pacijent" :user="user"/>
-            </v-container>
             <v-container fluid v-if="showAccount" :style="{width:'70vh'}">
                 <AccountView :user="user" :pacijent="pacijent" :editable="true"/>
             </v-container>
@@ -228,6 +225,9 @@
             </v-container>
             <v-container fluid v-if="showLoyalty" :style="{width:'70vh'}">
                 <LoyaltyPacijent/>
+            </v-container>
+            <v-container fluid v-if="showZakazanePosete" :style="{width:'70vh'}">
+                <ZakazanePosete/>
             </v-container>
             <v-container fluid v-if="showRezLekovi" :style="{width:'70vh'}">
                 <RezervisaniLekovi/>
@@ -271,7 +271,7 @@
 
 <script>
 
-import Calendar from "./CalendarPacijent";
+import ZakazanePosete from "./ZakazanePosete";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
@@ -293,7 +293,7 @@ import {mapActions, mapGetters} from 'vuex';
 export default {
     name: "HomepageDF",
     components:{
-        Calendar,
+        ZakazanePosete,
         AccountView,
         PasswordSwitch,
         AddAllergy,
@@ -312,7 +312,7 @@ export default {
         KupovinaLekova
     },
     data: () => ({
-    showCalendar: false,
+    showZakazanePosete: false,
     showAccount: false,
     showPassword: false,
     showAllergy: false,
@@ -341,8 +341,8 @@ export default {
         resetStore: "resetStore"
         }),
 
-      calendarView(){
-          this.showCalendar = true;
+      zakazanePoseteView(){
+          this.showZakazanePosete = true;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -361,7 +361,7 @@ export default {
           this.showKupovina = false;
       },
       accountView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = true;
           this.showPassword = false;
           this.showAllergy = false;
@@ -380,7 +380,7 @@ export default {
           this.showKupovina = false;
       },
       changePassword(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = true;
           this.showAllergy = false;
@@ -399,7 +399,7 @@ export default {
           this.showKupovina = false;
       },
       allergyView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = true;
@@ -416,7 +416,7 @@ export default {
           this.showApoteke = false;
       },
       loyaltyView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -433,7 +433,7 @@ export default {
           this.showApoteke = false;
       },
       rezLekoviView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -452,7 +452,7 @@ export default {
           this.showKupovina = false;
       },
       rezervacijaLekaView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -471,7 +471,7 @@ export default {
           this.showKupovina = false;
       },
       istorijaPregledaView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -489,7 +489,7 @@ export default {
           this.showKupovina = false;
       },
       istorijaSavetovanjaView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -508,7 +508,7 @@ export default {
           this.showKupovina = false;
       },
       zalbaApotekaView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -527,7 +527,7 @@ export default {
           this.showKupovina = false;
       },
       zalbaDermatologView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -546,7 +546,7 @@ export default {
           this.showKupovina = false;
       },
       zalbaFarmaceutView() {
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -565,7 +565,7 @@ export default {
           this.showKupovina = false;
       },
       zalbePacijentaView() {
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -584,7 +584,7 @@ export default {
           this.showKupovina = false;
       },
       akcijeView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -603,7 +603,7 @@ export default {
           this.showKupovina = false;
       },
       apotekeView(){
-          this.showCalendar = false;
+          this.showZakazanePosete = false;
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
@@ -620,7 +620,7 @@ export default {
           this.showKupovina = false;
       },
       ereceptiView(){
-          this.showCalendar=false;
+          this.showZakazanePosete=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
@@ -635,7 +635,7 @@ export default {
           this.showKupovina = false;
       },
       kupovinaView(){
-          this.showCalendar=false;
+          this.showZakazanePosete=false;
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;

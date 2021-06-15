@@ -83,7 +83,7 @@ public class DermatologDTO {
 		this.datumRodjenja=d.getDatumRodjenja();
 		this.ocena = d.getOcena();
 		for (DermatologApoteka z : d.getZaposlenja()) {
-			if (z.getApoteka().getId() == apotekaId) {
+			if (z.getApoteka().getId().equals(apotekaId)) {
 				this.pocetakRadnogVremena = z.getPocetakRadnogVremena();
 				this.krajRadnogVremena = z.getKrajRadnogVremena();
 			}
