@@ -111,9 +111,9 @@
         <PregledPonuda />
       </v-container>
 
-      <v-container fluid v-if="showLekoviNaStanju" :style="{ width: '70vh' }">
+      <!-- <v-container fluid v-if="showLekoviNaStanju" :style="{ width: '70vh' }">
         <LekoviNaStanju />
-      </v-container>
+      </v-container> -->
     </v-main>
   </v-app>
 </template>
@@ -122,7 +122,7 @@
 import AccountView from "../AccountView";
 import PasswordSwitch from "../PasswordSwitch";
 import KreirajPonudu from "./KreirajPonudu";
-import LekoviNaStanju from "./LekoviNaStanju";
+// import LekoviNaStanju from "./LekoviNaStanju";
 import PregledPonuda from "./PregledPonuda";
 
 import { mapActions, mapGetters } from "vuex";
@@ -133,7 +133,7 @@ export default {
     AccountView,
     PasswordSwitch,
     KreirajPonudu,
-    LekoviNaStanju,
+    // LekoviNaStanju,
     PregledPonuda,
   },
   data: () => ({

@@ -62,6 +62,13 @@
             <div> Status ponude:  {{ponuda.status}}</div>
             <br/>
               <v-btn
+              color="blue"
+              @click="prikaziNar(ponuda.narudzbenicaId)"
+              >
+                Pogledaj narudžbenicu
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn
               v-if="!izmena"
               dark
               color="blue"
@@ -151,6 +158,10 @@ export default {
 
     async uspeh(){
       alert("Uspeh");
+    },
+
+    async prikaziNar(id){
+      alert("Pozoviii"+id)
     },
 
     async pokusajIzmenu(ponuda){
