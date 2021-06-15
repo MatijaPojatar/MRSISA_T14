@@ -303,7 +303,7 @@ export default{
         },
 
         pretplatiSe(){
-            Vue.axios.put(`http://localhost:8080/pacijent/pretplata/${this.user.id}/${this.apotekaId}`);
+            Vue.axios.put(`/pacijent/pretplata/${this.user.id}/${this.apotekaId}`);
             this.message = "Uspešno ste se pretplatili na dobijanje obaveštenja o akcijama i promocijama apoteke."
             this.obavestenjeDialog=true;
         },

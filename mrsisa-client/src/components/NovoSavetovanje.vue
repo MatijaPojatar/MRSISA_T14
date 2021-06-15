@@ -134,7 +134,7 @@ export default {
           apotekaId: 1,
           izvrsen: false,
         };
-        axios.put(`http://localhost:8080/savetovanje/zakazi`, savetovanje);
+        axios.put(`/savetovanje/zakazi`, savetovanje);
       }
     },
   },

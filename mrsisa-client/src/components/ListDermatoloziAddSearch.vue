@@ -98,7 +98,7 @@
         methods:{
              loadDermatolozi(){
                 const dermatolozi = []
-                Vue.axios.get(`http://localhost:8080/dermatolog/vanApoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/dermatolog/vanApoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             dermatolozi.push({

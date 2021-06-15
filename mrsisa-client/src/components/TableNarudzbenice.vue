@@ -278,7 +278,7 @@ import Vue from "vue";
         methods:{
              loadNarudzbenice(){
                 const narudzbenice = []
-                Vue.axios.get(`http://localhost:8080/narudzbenice/apoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/narudzbenice/apoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             narudzbenice.push({
@@ -299,7 +299,7 @@ import Vue from "vue";
              },
              prikaziLekove(item){
                  console.log(item);
-                 Vue.axios.get(`http://localhost:8080/narudzbenice/lekovi/${item.id}`).then(response => {
+                 Vue.axios.get(`/narudzbenice/lekovi/${item.id}`).then(response => {
                     this.lekoviStr=response.data;
                     this.dialog = true
                  });
@@ -331,7 +331,7 @@ import Vue from "vue";
                 }
                 else
                 {
-                  Vue.axios.put(`http://localhost:8080/narudzbenice/obrisi/${item.id}`);
+                  Vue.axios.put(`/narudzbenice/obrisi/${item.id}`);
                   const index=this.narudzbenice.findIndex((l)=>l.id==this.selektovanaNarudzbenica.id)
                   if(index !=-1){
                       this.narudzbenice.splice(index, 1);
@@ -361,7 +361,7 @@ import Vue from "vue";
                 this.obavestenje = true;
                }else{
                 this.selektovanaNarudzbenica.rok = this.definisanRok;
-                Vue.axios.put(`http://localhost:8080/narudzbenice/izmeni/${this.selektovanaNarudzbenica.id}`, this.selektovanaNarudzbenica);
+                Vue.axios.put(`/narudzbenice/izmeni/${this.selektovanaNarudzbenica.id}`, this.selektovanaNarudzbenica);
                 location.reload();
                 this.izmenaDialog = false;
                }
@@ -387,7 +387,7 @@ import Vue from "vue";
              },
              prikaziPoStatusu(){
                 const narudzbenice = []
-                Vue.axios.post(`http://localhost:8080/narudzbenice/statusApoteka/${this.apotekaId}`, this.radio, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                Vue.axios.post(`/narudzbenice/statusApoteka/${this.apotekaId}`, this.radio, {headers: {"Content-Type": "text/plain"}}).then(response => {
                         
                         response.data.forEach(element => {
                             narudzbenice.push({

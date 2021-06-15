@@ -145,7 +145,7 @@
              loadZahtevi(){
                 const zahtevi = []
                 if (this.farmaceut){
-                    Vue.axios.get(`http://localhost:8080/odsustvo/farmaceut/zaOdobrenje/${this.apotekaId}`).then(response => {
+                    Vue.axios.get(`/odsustvo/farmaceut/zaOdobrenje/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             zahtevi.push({
@@ -166,7 +166,7 @@
                         })
                     });
                 }else{
-                    Vue.axios.get(`http://localhost:8080/odsustvo/dermatolog/zaOdobrenje`).then(response => {
+                    Vue.axios.get(`/odsustvo/dermatolog/zaOdobrenje`).then(response => {
                         
                         response.data.forEach(element => {
                             zahtevi.push({
@@ -192,10 +192,10 @@
              odobri(item){
                 this.selektovanZahtev=Object.assign({}, item);
                 if (this.farmaceut){
-                    Vue.axios.put(`http://localhost:8080/odsustvo/farmaceut/zaOdobrenje/${this.selektovanZahtev.id}`)
+                    Vue.axios.put(`/odsustvo/farmaceut/zaOdobrenje/${this.selektovanZahtev.id}`)
                 }
                 else{
-                   Vue.axios.put(`http://localhost:8080/odsustvo/dermatolog/zaOdobrenje/${this.selektovanZahtev.id}`)
+                   Vue.axios.put(`/odsustvo/dermatolog/zaOdobrenje/${this.selektovanZahtev.id}`)
                 }
                 this.message = "Zahtev za odmor je odobren."
                 
@@ -211,10 +211,10 @@
                if (this.$refs.form.validate()){
                 this.selektovanZahtev.razlog = this.razlog;
                   if (this.farmaceut){
-                      Vue.axios.put(`http://localhost:8080/odsustvo/farmaceut/zaOdbijanje/${this.selektovanZahtev.id}`,  this.selektovanZahtev)
+                      Vue.axios.put(`/odsustvo/farmaceut/zaOdbijanje/${this.selektovanZahtev.id}`,  this.selektovanZahtev)
                   }
                   else{
-                    Vue.axios.put(`http://localhost:8080/odsustvo/dermatolog/zaOdbijanje/${this.selektovanZahtev.id}`, this.selektovanZahtev)
+                    Vue.axios.put(`/odsustvo/dermatolog/zaOdbijanje/${this.selektovanZahtev.id}`, this.selektovanZahtev)
                   }
                   this.dialogRazlog = false;
 

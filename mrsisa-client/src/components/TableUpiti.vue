@@ -43,7 +43,7 @@
         methods:{
              loadUpiti(){
                 const upiti = []
-                Vue.axios.get(`http://localhost:8080/apoteke/upiti/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/apoteke/upiti/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             upiti.push({

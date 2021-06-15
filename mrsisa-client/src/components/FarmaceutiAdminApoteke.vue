@@ -184,7 +184,7 @@ export default{
           }
         },
         pretrazi(){
-          Vue.axios.post(`http://localhost:8080/farmaceut/pretragaFarmaceuta/${this.apotekaId}`, this.pretragaParams).then(response=>{
+          Vue.axios.post(`/farmaceut/pretragaFarmaceuta/${this.apotekaId}`, this.pretragaParams).then(response=>{
                    
                      const uspesno = response.data
                      if (uspesno){

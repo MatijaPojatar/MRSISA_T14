@@ -144,14 +144,14 @@ import Vue from "vue";
     methods: {
       validate () {
         if(this.$refs.form.validate()){
-            Vue.axios.put(`http://localhost:8080/apoteke/save/${this.apotekaId}`, this.newInfo)
+            Vue.axios.put(`/apoteke/save/${this.apotekaId}`, this.newInfo)
             this.dialog = true;
         }
         
       },
       reset () {
         console.log(this.user);
-        Vue.axios.get(`http://localhost:8080/apoteke/getOne/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/apoteke/getOne/${this.apotekaId}`).then(response => {
             this.newInfo = response.data
             console.log(this.newInfo)
         });

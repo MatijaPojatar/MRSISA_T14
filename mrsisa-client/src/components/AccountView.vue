@@ -280,7 +280,7 @@ import Vue from "vue";
     async mounted(){
       this.reset()
       if(this.dobavljac){
-        let resp = await Vue.axios.get("http://localhost:8080/dobavljaci/nazivPreduzeca/"+this.user.id);
+        let resp = await Vue.axios.get("/dobavljaci/nazivPreduzeca/"+this.user.id);
         this.newInfo.nazivPreduzeca = resp.data;
         this.user.nazivPreduzeca = resp.data;
       }
@@ -329,7 +329,7 @@ import Vue from "vue";
             this.user.pol=this.newInfo.pol==="M" ? "MUSKI" : "ZENSKI"
 
             if(this.adminApoteke){
-                Vue.axios.put(`http://localhost:8080/adminApoteke/save/${this.user.id}`,this.user)
+                Vue.axios.put(`/adminApoteke/save/${this.user.id}`,this.user)
                 this.dialog=true;
             }else if(this.dobavljac){
                 console.log("EVO SALJEM")
@@ -349,7 +349,7 @@ import Vue from "vue";
                 };
 	
                 try{
-                  await Vue.axios.put(`http://localhost:8080/dobavljaci/save/${this.user.id}`, dto)
+                  await Vue.axios.put(`/dobavljaci/save/${this.user.id}`, dto)
                   this.dialog = true;
                 }catch(error){
                   console.log(error)
@@ -362,7 +362,7 @@ import Vue from "vue";
               this.user.krajRadnogVremena=this.newInfo.krajRadnogVremena
 
               if(this.farmaceut){
-                  Vue.axios.put(`http://localhost:8080/farmaceut/save/${this.user.id}`,this.user)
+                  Vue.axios.put(`/farmaceut/save/${this.user.id}`,this.user)
                   this.dialog=true;
               }else if(this.dobavljac){
                 this.user.nazivPreduzeca = this.newInfo.nazivPreduzeca
@@ -370,7 +370,7 @@ import Vue from "vue";
                 this.dialog=true;
               }else{
                   if (this.adminView){
-                      Vue.axios.put(`http://localhost:8080/dermatolog/updateRadnoVreme/${this.apotekaId}`,this.user).then(response=>{
+                      Vue.axios.put(`/dermatolog/updateRadnoVreme/${this.apotekaId}`,this.user).then(response=>{
                    
                             const uspesno = response.data
                             if (!uspesno){
@@ -382,7 +382,7 @@ import Vue from "vue";
                       })
                   }
                   else{
-                      Vue.axios.put(`http://localhost:8080/dermatolog/save/${this.user.id}`,this.user)
+                      Vue.axios.put(`/dermatolog/save/${this.user.id}`,this.user)
                       this.dialog=true;
                   }
                   

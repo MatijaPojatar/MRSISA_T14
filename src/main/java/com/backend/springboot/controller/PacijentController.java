@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Lek;
@@ -55,6 +54,17 @@ public class PacijentController {
 		PacijentDTO dto = new PacijentDTO(p);
 		
 		return new ResponseEntity<PacijentDTO>(dto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/all")
+	public ResponseEntity<List<PacijentDTO>> getAll(){
+		List<Pacijent> pacijenti=pacijentService.findAll();
+		List<PacijentDTO> dtos=new ArrayList<PacijentDTO>();
+		for(Pacijent p:pacijenti) {
+			dtos.add(new PacijentDTO(p));
+		}
+		
+		return new ResponseEntity<List<PacijentDTO>>(dtos, HttpStatus.OK);
 	}
 	
 	
@@ -118,6 +128,14 @@ public class PacijentController {
 		}
 		
 		return new ResponseEntity<List<LekDTO>>(dtos,HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('PACIJENT')")
+	@PutMapping("/dodaj/alergije/{id}")
+	public ResponseEntity<Boolean> dodajAlergije(@PathVariable Integer id, @RequestBody List<Lek> alergije){
+		pacijentService.setAlergije(id, alergije);
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@PostMapping("/proveri_termin/{id}")

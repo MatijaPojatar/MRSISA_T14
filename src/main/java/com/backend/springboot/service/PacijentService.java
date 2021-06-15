@@ -11,6 +11,7 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.repository.ApotekaRepository;
+import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.PacijentRepository;
 
 @Service
@@ -20,6 +21,8 @@ public class PacijentService {
 	PacijentRepository pacijentRep;
 	@Autowired
 	ApotekaRepository apotekaRep;
+	@Autowired
+	LekRepository lekRep;
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Pacijent findOne(Integer id) {
@@ -50,5 +53,10 @@ public class PacijentService {
 		pacijentRep.save(p);
 	}
 	
-	
+	public void setAlergije(Integer id, List<Lek> alergije) {
+		Pacijent p = pacijentRep.getOne(id);
+		
+		p.setAlergije(alergije);
+		pacijentRep.save(p);		
+	}
 }

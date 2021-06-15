@@ -234,7 +234,7 @@ import Vue from "vue";
                 this.dialog=true;
             }else{
                 
-                Vue.axios.put(`http://localhost:8080/pregled/dodajSlobodan/${this.user.id}`,{start:pocetak, end:kraj, apotekaId:this.apotekaId, izvrsen:false, cena:this.cena}).then(response=>{
+                Vue.axios.put(`/pregled/dodajSlobodan/${this.user.id}`,{start:pocetak, end:kraj, apotekaId:this.apotekaId, izvrsen:false, cena:this.cena}).then(response=>{
                    
                             const uspesno = response.data
                             if (uspesno){

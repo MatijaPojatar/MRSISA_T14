@@ -290,7 +290,7 @@
               krajRadnogVremena: this.krajRadnogVremena
             }
             if(this.farmaceut){
-                Vue.axios.post(`http://localhost:8080/farmaceut/dodajFarmaceuta/${this.apotekaId}`,zaposleniDTO)
+                Vue.axios.post(`/farmaceut/dodajFarmaceuta/${this.apotekaId}`,zaposleniDTO)
             }else{
                 console.log("dodati za dermatologa")
             }

@@ -60,7 +60,7 @@ export default {
     },
 
     otkazi(){
-      Vue.axios.get(`http://localhost:8080/rezervacija/otkazi/${this.selektovan}`, {params:{apotekaId:this.apotekaId}}).then(response => {
+      Vue.axios.get(`/rezervacija/otkazi/${this.selektovan}`, {params:{apotekaId:this.apotekaId}}).then(response => {
                       console.log(response.data);
                       location.reload();
                       

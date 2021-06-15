@@ -70,7 +70,7 @@ export default{
         apotekaId: Number,
     },
     mounted(){
-        Vue.axios.get(`http://localhost:8080/apoteke/getOne/${this.apotekaId}`).then(response => {
+        Vue.axios.get(`/apoteke/getOne/${this.apotekaId}`).then(response => {
             this.apoteka = response.data
         });
     },

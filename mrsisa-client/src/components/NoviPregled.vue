@@ -186,7 +186,7 @@ export default {
         apotekaId: item.apotekaId,
         izvrsen: false
       };
-      axios.put(`http://localhost:8080/pregled/zakazi`, pregled);
+      axios.put(`/pregled/zakazi`, pregled);
     },
   },
 };

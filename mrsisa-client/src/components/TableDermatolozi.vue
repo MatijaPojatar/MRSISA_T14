@@ -176,7 +176,7 @@
         methods:{
              loadDermatolozi(){
                 const dermatolozi = []
-                Vue.axios.get(`http://localhost:8080/dermatolog/apoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/dermatolog/apoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             dermatolozi.push({
@@ -203,14 +203,14 @@
              ObrisiDermatologa(user){
                  this.selektovanDermatolog=Object.assign({}, user);
                  this.selektovan = this.selektovanDermatolog.id;
-                 Vue.axios.put(`http://localhost:8080/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
+                 Vue.axios.put(`/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
                  location.reload()
              },
 
              IzmeniDermatologa(user){
                  this.selektovanDermatolog=Object.assign({}, user);
                  this.selektovan = this.selektovanDermatolog.id;
-                 Vue.axios.post(`http://localhost:8080/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                 Vue.axios.post(`/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
                      console.log(response.data)
                     this.selektovanDermatolog=response.data;
                     console.log(this.selektovanDermatolog);
@@ -221,7 +221,7 @@
              DodajPregled(user){
                   this.selektovanDermatolog=Object.assign({}, user);
                  this.selektovan = this.selektovanDermatolog.id;
-                 Vue.axios.post(`http://localhost:8080/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
+                 Vue.axios.post(`/dermatolog/dermatologApoteke/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}}).then(response => {
                      
                     this.selektovanDermatolog=response.data;
                  this.dodajPregledDialog = true;

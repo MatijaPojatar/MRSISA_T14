@@ -119,7 +119,7 @@
         methods:{
              loadDermatolozi(){
                 const dermatolozi = []
-                Vue.axios.get(`http://localhost:8080/dermatolog/apoteka/${this.apotekaId}`).then(response => {
+                Vue.axios.get(`/dermatolog/apoteka/${this.apotekaId}`).then(response => {
                         
                         response.data.forEach(element => {
                             dermatolozi.push({
@@ -148,13 +148,13 @@
              },
 
              ObrisiDermatologa(){
-                 Vue.axios.put(`http://localhost:8080/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
+                 Vue.axios.put(`/dermatolog/obrisiDermatologaApoteka/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}});
                  location.reload();
              },
 
              IzmeniDermatologa(){
                  console.log("izmena" + this.selektovan);
-                 Vue.axios.get(`http://localhost:8080/dermatolog/${this.selektovan}`).then(response => {
+                 Vue.axios.get(`/dermatolog/${this.selektovan}`).then(response => {
                      console.log(response.data)
                     this.selektovanDermatolog=response.data;
                     console.log(this.selektovanDermatolog);

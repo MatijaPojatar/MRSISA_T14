@@ -397,7 +397,7 @@
               if(this.farmaceut){
                 path="savetovanje"
               }
-              Vue.axios.get(`http://localhost:8080/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
+              Vue.axios.get(`/${path}/preporuceni_lekovi/${this.selectedEvent.id}`).then(response=>{
                 const lekovi=[];
                 response.data.forEach(element => {
                   lekovi.push({
@@ -425,7 +425,7 @@
             nativeEvent.stopPropagation()
         },
         async updateRangeDermatologAxios(){
-          await Vue.axios.get(`http://localhost:8080/pregled/all/${this.user.id}`).then(response => {
+          await Vue.axios.get(`/pregled/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
@@ -443,7 +443,7 @@
             this.events = events
           });
         });
-        await Vue.axios.get(`http://localhost:8080/odsustvo/dermatolog/all/${this.user.id}`).then(response=>{
+        await Vue.axios.get(`/odsustvo/dermatolog/all/${this.user.id}`).then(response=>{
           response.data.forEach(element => {
             this.events.push({
               name: "Odsustvo",
@@ -456,7 +456,7 @@
         })
         },
       async updateRangeFarmaceutAxios (){
-        await Vue.axios.get(`http://localhost:8080/savetovanje/all/${this.user.id}`).then(response => {
+        await Vue.axios.get(`/savetovanje/all/${this.user.id}`).then(response => {
            const events = []
           response.data.forEach(element => {
             events.push({
@@ -474,7 +474,7 @@
             this.events = events
           });
         });
-        await Vue.axios.get(`http://localhost:8080/odsustvo/farmaceut/all/${this.user.id}`).then(response=>{
+        await Vue.axios.get(`/odsustvo/farmaceut/all/${this.user.id}`).then(response=>{
           response.data.forEach(element => {
             this.events.push({
               name: "Odsustvo",
@@ -503,7 +503,7 @@
         setInterval(() => this.cal.updateTimes(), 60 * 1000)
       },
       async viewAccount(){
-          await Vue.axios.get(`http://localhost:8080/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
+          await Vue.axios.get(`/pacijent/${this.selectedEvent.pacijent}`).then(response=>{
             this.selectedPacijent=response.data
           })
           this.componentKey+=1;
@@ -522,8 +522,8 @@
             if(this.farmaceut){
               path="savetovanje"
             }
-            await Vue.axios.put(`http://localhost:8080/${path}/penal/${this.selectedEvent.id}`);
-            await Vue.axios.put(`http://localhost:8080/pacijent/penal/${this.selectedEvent.pacijent}`);
+            await Vue.axios.put(`/${path}/penal/${this.selectedEvent.id}`);
+            await Vue.axios.put(`/pacijent/penal/${this.selectedEvent.pacijent}`);
             //Object.assign(this.$data, this.$options.data.apply(this))
             this.selectedOpen=false
             this.farmaceut ?  this.updateRangeFarmaceutAxios():  this.updateRangeDermatologAxios()
@@ -566,7 +566,7 @@
             lekId: element.lek.id
           })
         });
-        await Vue.axios.put(`http://localhost:8080/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
+        await Vue.axios.put(`/${path}/izvestaj/${this.selectedEvent.id}`,{text:this.selectedEvent.izvestaj,lekovi:returnLekovi});
         this.componentKey+=1;
         this.terminDialog=true
         this.selectedOpen=false
