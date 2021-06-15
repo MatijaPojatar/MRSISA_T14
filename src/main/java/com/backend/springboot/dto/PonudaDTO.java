@@ -3,6 +3,7 @@ package com.backend.springboot.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.Ponuda;
@@ -17,21 +18,39 @@ public class PonudaDTO {
 	private String rokStr, nazivDobavljaca;
 	
 	
-
 	public PonudaDTO(Integer id, Integer cena, Integer dobavljacId, Integer narudzbenicaId, LocalTime rokVreme,
-			LocalDate rokDatum, StatusPonude status, String rokStr, String nazivDobavljaca) {
+			LocalDate rokDatum, StatusPonude status, String rokStr, LocalDateTime rokIsporuke, String nazivDobavljaca) {
 		super();
 		this.id = id;
 		this.cena = cena;
 		this.dobavljacId = dobavljacId;
 		this.narudzbenicaId = narudzbenicaId;
-		this.rokVreme = rokVreme;
-		this.rokDatum = rokDatum;
-		this.rokIsporuke = LocalDateTime.of(rokDatum, rokVreme);
+		this.rokVreme = rokIsporuke.toLocalTime();
+		this.rokDatum = rokIsporuke.toLocalDate();;
+		this.rokIsporuke = rokIsporuke;
 		this.status = status;
 		this.rokStr = rokStr;
 		this.nazivDobavljaca = nazivDobavljaca;
 	}
+
+	
+	
+
+//	public PonudaDTO(Integer id, Integer cena, Integer dobavljacId, Integer narudzbenicaId, LocalTime rokVreme,
+//			LocalDate rokDatum, StatusPonude status, String rokStr, LocalDateTime rokIsporuke, String nazivDobavljaca) {
+//		super();
+//		this.id = id;
+//		this.cena = cena;
+//		this.dobavljacId = dobavljacId;
+//		this.narudzbenicaId = narudzbenicaId;
+//		this.rokVreme = rokVreme;
+//		this.rokDatum = rokDatum;
+//		this.rokIsporuke = rokIsporuke;
+////		this.rokIsporuke = LocalDateTime.of(rokDatum, rokVreme);
+//		this.status = status;
+//		this.rokStr = rokStr;
+//		this.nazivDobavljaca = nazivDobavljaca;
+//	}
 
 	public PonudaDTO() {
 		super();

@@ -29,15 +29,6 @@
 
         <v-expansion-panel-content>
 
-          <!-- <v-text-field
-            v-if="izmena"
-            outlined
-            v-model="cena"
-            label="Cena">
-            </v-text-field> 
-
-            v-else-->
-
             <v-text-field
             type="number"
             :readonly="!izmena"
@@ -48,6 +39,7 @@
 
             <div v-if="izmena">
               <v-date-picker 
+              :min="new Date().toISOString().substr(0, 10)"
               :readonly="!izmena"
               v-model="rokDatum"></v-date-picker>
 
@@ -89,7 +81,7 @@
               v-if="izmena"
               dark
               color="blue"
-              @click="uspeh()"
+              @click="posaljiIzmenu(ponuda)"
               >
                 Sačuvaj izmene
               </v-btn>
@@ -124,7 +116,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import moment from 'moment'
+import moment from 'moment';
 
 export default {
   data: () => ({
@@ -182,21 +174,12 @@ export default {
     selekcija(ponuda){
       this.selektovanaPonuda = ponuda;
     },
-
-// const format1 = "YYYY-MM-DD HH:mm:ss"
-// const format2 = "YYYY-MM-DD"
-// var date1 = new Date("2020-06-24 22:57:36");
-// var date2 = new Date();
-
-// dateTime1 = moment(date1).format(format1);
     async izmenaa(ponuda){
       await this.getIzmenaMogucaAction(ponuda.id);
       if(this.izmenaMoguca){
         
         const format = "YYYY-MM-DD";
-        const formatV = "HH:mm"
-        // this.rokDatum = ponuda.rokDatum | moment(format);
-        // this.rokVreme = ponuda.rokVreme | moment(formatV);
+        const formatV = "HH:mm";
         this.rokDatum = moment(ponuda.rokDatum).format(format);
         this.rokVreme = moment(ponuda.rokVreme).format(formatV);
 
@@ -206,51 +189,35 @@ export default {
       }
     },
 
-    async uspeh(){
-      // ovde saljes axios
-      alert("Uspeh");
-    },
-
     async prikaziNar(id){
       await this.getCurrNarudzbenicaAction(id);
       this.prikaziNarDialog = true;
     },
 
-    async pokusajIzmenu(ponuda){
-      this.izmena= true;
-      console.log(ponuda);
-      // await this.getIzmenaMogucaAction(ponuda.id);
-      // if(this.izmenaMoguca){
-      //   this.izmena = true;
-      // }else{
-      //   alert("Izmena nemoguca zbog isteka roka")
-      // }
-    },
-
     async posaljiIzmenu(ponuda){
+
+      let hmm = new Date(this.rokDatum + " " + this.rokVreme);
+      console.log(hmm);
+
       let dto = {
         id: ponuda.id,
         dobavljacId: ponuda.dobavljacId,
         narudzbenicaId: ponuda.narudzbenicaId,
         status: ponuda.status,
         nazivDobavljaca: ponuda.nazivDobavljaca,
-
-        cena: this.cena,
-        rokIsporuke: this.rokDatum + " " + this.rokVreme, //UKOMBINOVATI DATUM I VREME
-        rokStr: this.rokDatum,  //dd.MM.yyyy.
+        rokIsporuke: hmm,
+        cena: ponuda.cena,
+        rokDatum: ponuda.rokDatum,
+        rokVreme: ponuda.rokVreme,
       }
-
+      console.log(dto);
       try {
-        await this.izmeniPonuduAction({id: ponuda.id, dto});
+        await this.izmeniPonuduAction(dto);
         this.izmena = false;
       }catch(error){
         console.log(error);
       }
-    
-      
     }
-
-
   }
 
 

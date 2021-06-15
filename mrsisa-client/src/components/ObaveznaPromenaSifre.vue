@@ -34,6 +34,8 @@
       />
 
       <v-btn
+      dark
+      color="blue"
       :disabled="!valid"
       @click="validateAndSend"
       >Sačuvaj</v-btn>
@@ -109,26 +111,7 @@ export default {
     try{
       await this.prvaPromenaSifreAction({id: this.korisnik.id, sifra: this.lozinka})
       this.potvrda = true;
-      
-
-
-      // switch (this.role) {
-      //   case "ROLE_DERMATOLOG":
-      //     this.$router.push("/dermatolog");
-      //     break;
-      //   case "ROLE_FARMACEUT":
-      //     this.$router.push("/farmaceut");
-      //     break;
-      //   case "ROLE_ADMIN_SISTEMA":
-      //     this.$router.push("/admin");
-      //     break;
-      //   case "ROLE_ADMIN_APOTEKE":
-      //     this.$router.push("/adminApoteke");
-      //     break;
-      //   case "ROLE_DOBAVLJAC":
-      //     this.$router.push("/dobavljac");
-      //     break;
-      // }
+ 
     }catch(error){
       alert("Greska prilikom promene sifre")
     }
