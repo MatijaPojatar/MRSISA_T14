@@ -7,6 +7,8 @@ const initStanje = () => {
     kategorije: [],
     bodPregled: 0,
     bodSavetovanja: 0,
+    pacijentBodovi: 0,
+    pacijentKategorija: {}
   }
 }
 const state = initStanje();
@@ -14,9 +16,24 @@ const state = initStanje();
 const getters = {
   getAllKat: state => state.kategorije,
   getBodPregled: state => state.bodPregled,
-  getBodSavetovanja: state => state.bodSavetovanja
+  getBodSavetovanja: state => state.bodSavetovanja,
+  getPacijentBodovi: state => state.pacijentBodovi,
+  getPacijentKategorija: state => state.pacijentKategorija
 }
 const actions = {
+  async getPacijentBodoviAction({commit}, id){
+    const response = await Vue.axios.get("/pacijent/poeni/"+ id);
+    console.log(response.data);
+    commit("setPacBodovi", response.data);
+  },
+
+  async getPacijentKategorijaAction({commit}, id){
+    const response = await Vue.axios.get("/pacijent/kategorija/"+id);
+    console.log(response.data);
+    commit("setPacKat", response.data);
+  
+  },
+
   async getBodPregledAction({commit}){
     let tip = "PREGLED"
 
@@ -64,6 +81,14 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state= initStanje();
+  },
+
+  setPacBodovi(state, br){
+    state.pacijentBodovi = br;
+  },
+
+  setPacKat(state, kat){
+    state.pacijentKategorija = kat;
   },
 
   setKats(state, lista){

@@ -1,10 +1,10 @@
 <template>
   <v-card>
     <v-card-title>Loyalty program:</v-card-title>
-    <v-card-text> Poeni: 500 </v-card-text>
-    <v-card-text> Kategorija: SILVER </v-card-text>
+    <v-card-text> Poeni: {{bodovi}} </v-card-text>
+    <v-card-text> Kategorija: {{kategorija.naziv}} </v-card-text>
     <v-card-text>
-      Pogodnosti: -15% na lekove, savetovanja i preglede
+      Pogodnosti: -{{kategorija.procenat}}% na lekove, savetovanja i preglede
     </v-card-text>
     <br />
     <v-divider />
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -23,19 +23,30 @@ export default {
 
   data: () => ({
     penali: 0,
+    
   }),
 
   computed: {
     ...mapGetters({
       user: "korisnici/getKorisnik",
+      kategorija: "loyalty/getPacijentKategorija",
+      bodovi: "loyalty/getPacijentBodovi"
     }),
   },
 
   mounted() {
     this.setPenali();
+    this.getPacijentKategorijaAction(this.user.id);
+    this.getPacijentBodoviAction(this.user.id);
   },
 
   methods: {
+    ...mapActions({
+      getPacijentKategorijaAction: "loyalty/getPacijentKategorijaAction",
+      getPacijentBodoviAction: "loyalty/getPacijentBodoviAction"
+    }),
+
+
     setPenali() {
       axios.get(`/pacijent/penali/${this.user.id}`).then((response) => {
         this.penali = response.data;

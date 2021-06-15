@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.springboot.domain.Kategorija;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.dto.KategorijaDTO;
 import com.backend.springboot.dto.LekDTO;
 import com.backend.springboot.dto.PacijentDTO;
 import com.backend.springboot.dto.PregledDTO;
+import com.backend.springboot.service.KategorijaService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.PregledService;
 import com.backend.springboot.service.SavetovanjeService;
@@ -38,6 +41,9 @@ public class PacijentController {
 	private PacijentService pacijentService;
 	
 	@Autowired
+	private KategorijaService kategorijaService;
+	
+	@Autowired
 	private SavetovanjeService savetovanjeService;
 	
 	@Autowired
@@ -45,6 +51,32 @@ public class PacijentController {
 	
 //	int id, String ime, String prezime, String mail, String password, String adresa, String grad,
 //	String drzava, String brojTelefona, Pol pol, LocalDate datumRodjenja, boolean promenjenaLozinka, int brojPoena, int penali
+	
+	
+	@GetMapping("/poeni/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<Integer> getPoeni(@PathVariable Integer id){
+		Pacijent pacijent = pacijentService.findOne(id);
+		Integer br = pacijent.getBrojPoena();
+		if(br == null) {
+			br = 0;
+		}
+		return new ResponseEntity<Integer>(br, HttpStatus.OK);
+	}
+	
+	@GetMapping("/kategorija/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<KategorijaDTO> getKat(@PathVariable Integer id){
+		Pacijent pacijent = pacijentService.findOne(id);
+		Integer br = pacijent.getBrojPoena();
+		if(br == null) {
+			br = 0;
+		}
+		Kategorija k = kategorijaService.getByBrojPoena(br);
+		
+		return new ResponseEntity<KategorijaDTO>(new KategorijaDTO(k), HttpStatus.OK);
+	}
+	
 	
 	
 	@GetMapping("/{id}")
