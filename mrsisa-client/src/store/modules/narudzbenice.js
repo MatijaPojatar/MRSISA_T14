@@ -3,14 +3,23 @@ import Vue from "vue";
 const initStanje = () => {
   return {
     moguceNarudzbenice : [],
+    currNarudzbenica: {},
   }
 }
 const state = initStanje();
 
 const getters = {
   getMoguceNarudzbenice: state => state.moguceNarudzbenice,
+  getCurrNarudzbenica: state => state.currNarudzbenica,
 }
 const actions = {
+
+  getCurrNarudzbenicaAction({commit}, id){
+    alert("Get narr");
+    console.log(commit, id)
+    //await Vue.axios.get
+  },
+
   async getMoguceNarudzbeniceAction({commit}, idDobavljaca){
     console.log(idDobavljaca);
 

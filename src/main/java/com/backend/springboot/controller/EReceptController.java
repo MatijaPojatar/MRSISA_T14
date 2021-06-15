@@ -107,9 +107,12 @@ public class EReceptController {
 		
 		List<Lek> alergije = pacijentService.findAllAlergijeById(id);
 	    for (Lek l : alergije) {
-	    	if(lekoviERecepta.contains(l)) {
-	    		erecept.setStatus(StatusErecepta.ODBIJEN);
+	    	for(LekERecepta lekER : lekoviERecepta) {
+	    		if(lekER.getLek().getId() == l.getId()) {
+		    		erecept.setStatus(StatusErecepta.ODBIJEN);
+		    	}
 	    	}
+	    	
 	    }
 	    
 	    if(lekoviERecepta.size() == 0) {
