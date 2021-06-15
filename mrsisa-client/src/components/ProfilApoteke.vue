@@ -1,5 +1,5 @@
 <template>
-    <div justify="space-around" align="center">
+    <div justify="space-around" align="center" padding-left="500px">
     <br/>
     <br/>
     <v-card class="mt-16 mx-auto" width="85%">
@@ -87,7 +87,7 @@
     
     
     <v-container fluid v-if="showLekovi">
-        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="user.id"/>
+        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="userData.id"/>
       </v-container>
 
     <v-container fluid v-if="showFarmaceuti">
@@ -171,6 +171,9 @@ export default{
         showSavetovanja: false,
         showERecept: false,
         message:"",
+        userData:{
+            id:"",
+        }
     }),
     props :{
         user: {},
@@ -187,6 +190,7 @@ export default{
     },
 
     async mounted(){
+        this.userData.id = this.user.id
         await this.getApotekaAction(this.apotekaId);
         Vue.$geocoder.setDefaultMode('address');      // this is default
                 var addressObj = {
@@ -259,7 +263,7 @@ export default{
         },
 
         pretplatiSe(){
-            Vue.axios.put(`/pacijent/pretplata/${this.user.id}/${this.apotekaId}`);
+            Vue.axios.put(`/pacijent/pretplata/${this.userData.id}/${this.apotekaId}`);
             this.message = "Uspešno ste se pretplatili na dobijanje obaveštenja o akcijama i promocijama apoteke."
             this.obavestenjeDialog=true;
         },
