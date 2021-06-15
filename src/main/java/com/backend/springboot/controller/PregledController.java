@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,12 +32,9 @@ import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.PregledDermatologDTO;
-import com.backend.springboot.service.ApotekaService;
-import com.backend.springboot.service.DermatologService;
 import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
-import com.backend.springboot.service.OdsustvoDermatologService;
 import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.PregledService;
 
@@ -57,34 +52,12 @@ public class PregledController {
 	@Autowired
 	private PacijentService pacijentService;
 	@Autowired
-	private ApotekaService apotekaService;
-	@Autowired
-	private DermatologService derService;
-	@Autowired
-	private OdsustvoDermatologService odsustvoService;
-	@Autowired
 	private EmailService emailService;
-	
-	@DeleteMapping("/{id}")
-	@PreAuthorize("hasRole('PACIJENT')")
-	public ResponseEntity<Object> deletePregled(@PathVariable("id") int id) {
-		try {
-			service.deletePregled(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}catch(EmptyResultDataAccessException e) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}catch(Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
 	
 	@GetMapping(value = "/pacijent/{id}")
 	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getAllForPacijent(@PathVariable Integer id) {		
-
 		List<Pregled> pregledi = service.findAllByPacijentId(id);
-		
-		System.out.println(pregledi.size());
 
 		List<PregledDTO> preglediDTO = new ArrayList<>();
 		for (Pregled p : pregledi) {
@@ -354,5 +327,24 @@ public class PregledController {
 		}
 
 		return new ResponseEntity<List<PregledDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@PutMapping("otkazi/{id}")
+	@PreAuthorize("hasRole('PACIJENT')")
+	public ResponseEntity<String> otkaziPregled(@PathVariable Integer id){
+		Pregled p = service.findOne(id);
+		
+		if(p == null) {
+			return new ResponseEntity<String>("Zakazani pregled ne postoji", HttpStatus.NOT_FOUND);
+		}
+		
+		p.setPacijent(null);
+		try {
+			service.save(p);
+		} catch(Exception e){
+			return new ResponseEntity<String>("Greska", HttpStatus.LOCKED);
+		}
+		
+		return new ResponseEntity<String>("Uspeh", HttpStatus.OK);
 	}
 }
