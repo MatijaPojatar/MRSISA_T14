@@ -90,12 +90,13 @@ public class MagacinService {
 			Narudzbenica narudzbenica = narudzbenicaRep.findOneById(narudzbenicaId);
 			narudzbenica.setStatus(StatusNarudzbenice.OBRADJENA);
 			for(Ponuda p : ponudeRep.findAllByNarudzbenicaId(narudzbenicaId)) {
-				if (p.getId() != ponudaId) {
+				if (!p.getId().equals(ponudaId)) {
 					p.setStatus(StatusPonude.ODBIJENA);
 					ponudeRep.save(p);
 					try {
 						email.odgovorPonuda(narudzbenicaId, p.getId(), "odbijena");
 					} catch (MailException | InterruptedException e) {
+						Thread.currentThread().interrupt();
 						System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 					}
 					continue;
@@ -113,10 +114,12 @@ public class MagacinService {
 					lekUMagacinuRep.save(m);
 					}
 					catch(Exception e){
+						Thread.currentThread().interrupt();
 						return false;
 					}
 				}
 				else {
+					//transakcije
 					dodajLek(LocalDateTime.now(), 200.0, lek.getLek().getId(), narudzbenica.getMagacin().getApoteka().getId(), lek.getKolicina());
 				}
 			}
@@ -124,11 +127,13 @@ public class MagacinService {
 			try {
 				email.odgovorPonuda(narudzbenicaId, ponudaId, "prihvaćena");
 			} catch (MailException | InterruptedException e) {
+				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 			return true;
 		}
 		catch(Exception e) {
+			Thread.currentThread().interrupt();
 			return false;
 		}
 		
@@ -144,6 +149,7 @@ public class MagacinService {
 			magacinRep.save(m);
 			return true;
 		}catch(Exception e) {
+			Thread.currentThread().interrupt();
 			return false;
 		}
 	}
@@ -219,7 +225,7 @@ public class MagacinService {
 		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
 		LocalDateTime sada = LocalDateTime.now();
 		for (LekUMagacinu l : lekovi) {
-			if (l.getId() == lekId) {
+			if (l.getId().equals(lekId)) {
 				double trenutnaCena = l.getCena();
 				
 				if (trenutnaCena != cena) {
@@ -262,7 +268,7 @@ public class MagacinService {
 		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
 		LocalDateTime sada = LocalDateTime.now();
 		for (LekUMagacinu l : lekovi) {
-			if (l.getId() == lekId) {
+			if (l.getId().equals(lekId)) {
 				double trenutnaCena = l.getCena();
 				
 				if (trenutnaCena != cena) {
@@ -322,7 +328,7 @@ public class MagacinService {
 	public LekUMagacinu preuzmiJedanLekApoteke(Integer lekId, Integer apotekaId) {
 		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
 		for(LekUMagacinu l: lekovi){
-			if (l.getId() == lekId)
+			if (l.getId().equals(lekId))
 				return l;
 		}
 		return null;
@@ -332,7 +338,7 @@ public class MagacinService {
 	public LekUMagacinu preuzmiJedanLekApotekeNEW(Integer lekId, Integer apotekaId) {
 		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
 		for(LekUMagacinu l: lekovi){
-			if (l.getId() == lekId)
+			if (l.getId().equals(lekId))
 				return l;
 		}
 		return null;
@@ -352,7 +358,7 @@ public class MagacinService {
 			
 		}else {
 			for(LekUMagacinu l: svi) {
-				if ( l.getLek().getId() == sifraLeka) {
+				if ( l.getLek().getId().equals(sifraLeka)) {
 					ret.add(l);
 				}
 			}

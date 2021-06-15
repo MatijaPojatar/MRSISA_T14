@@ -280,7 +280,7 @@ public class LekController {
 		Magacin m=magacinService.findOneByApotekaId(apotekaId);
 		LekUMagacinuDTO dto=new LekUMagacinuDTO();
 		for(LekUMagacinu l:m.getLekovi()) {
-			if(l.getLek().getId()==id) {
+			if(l.getLek().getId().equals(id)) {
 				dto=new LekUMagacinuDTO(l);
 				break;
 			}
@@ -301,7 +301,7 @@ public class LekController {
 				Magacin m = a.getMagacin();
 				for (LekUMagacinu lekUM : m.getLekovi()) {
 					
-					if(lekUM.getLek().getId() == lekId) {
+					if(lekUM.getLek().getId().equals(lekId)) {
 						StavkaCenovnika sc = magacinService.preuzmiTrenutnuCenu(lekUM.getId());
 						if(sc!= null) {
 							ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), sc.getCena());

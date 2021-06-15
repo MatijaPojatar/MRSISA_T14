@@ -118,8 +118,10 @@ public class AuthenticationController {
 		Pacijent pacijent = this.pacijentService.save(novi);
 		
 		try {
+			//emailService.aktivacija(pacijent, "https://mrsisa-t14-deployment.herokuapp.com/"+pacijent.getId());
 			emailService.aktivacija(pacijent, "http://localhost:8081/pacijent/aktiviraj/"+pacijent.getId());
 		} catch(Exception e){
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		

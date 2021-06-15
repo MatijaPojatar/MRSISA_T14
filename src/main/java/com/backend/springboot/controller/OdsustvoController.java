@@ -137,6 +137,7 @@ public class OdsustvoController {
 		try {
 			emailService.odobravanjeOdsustvaFarmaceut(odsustvo);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
@@ -149,6 +150,7 @@ public class OdsustvoController {
 		try {
 			emailService.odobravanjeOdsustvaDermatolog(odsustvo);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
@@ -161,6 +163,7 @@ public class OdsustvoController {
 		try {
 			emailService.odbijanjeOdsustvaFarmaceut(odsustvo);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
@@ -173,6 +176,7 @@ public class OdsustvoController {
 		try {
 			emailService.odbijanjeOdsustvaDermatolog(odsustvo);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);

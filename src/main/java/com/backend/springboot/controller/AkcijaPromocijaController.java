@@ -61,8 +61,10 @@ public class AkcijaPromocijaController {
 			try {
 			emailService.novaAkcija(apoteka.getNaziv(), akcija, pacijent);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
+			
 			});
 		
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);

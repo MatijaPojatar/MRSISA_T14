@@ -90,7 +90,7 @@ public class ApotekaService  {
 		for (LekEReceptaDTO item : items) {
 			Boolean pronadjen = false;
 			for(LekUMagacinu lekMagacina : magacinItems) {
-				if(lekMagacina.getLek().getId() == item.getLekId() 
+				if(lekMagacina.getLek().getId().equals(item.getLekId() )
 						&& lekMagacina.isObrisan() == false
 						&& lekMagacina.getKolicina() >= item.getKolicina()
 					) { 
@@ -127,7 +127,7 @@ public class ApotekaService  {
 		for(LekEReceptaDTO dto : lekoviErecepta) {
 			
 			for(LekUMagacinu lekMagacin : trenutniLekovi) {
-				if(lekMagacin.getLek().getId() == dto.getLekId()) {
+				if(lekMagacin.getLek().getId().equals(dto.getLekId())) {
 					lekMagacin.setKolicina(lekMagacin.getKolicina() - dto.getKolicina());
 				}
 			}
@@ -144,7 +144,7 @@ public class ApotekaService  {
 		List<LekUMagacinu> trenutniLekovi = m.getLekovi();
 		
 		for(LekUMagacinu lekMagacin : trenutniLekovi) {
-			if(lekMagacin.getLek().getId() == id) {
+			if(lekMagacin.getLek().getId().equals(id)) {
 				return lekMagacin.getCena();
 			}
 		}

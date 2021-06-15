@@ -108,7 +108,7 @@ public class DobavljacController {
 		for(LekIzNarudzbenice lekNar : n.getLekovi()) {
 			Boolean pronadjen = false;
 			for(LekNaStanju lekStanje : d.getLekoviNaStanju()) {
-				if(lekNar.getLek().getId() == lekStanje.getLek().getId()
+				if(lekNar.getLek().getId().equals(lekStanje.getLek().getId()) 
 						&& lekStanje.getKolicina() >= lekNar.getKolicina()) {
 					pronadjen = true;
 					break;

@@ -205,6 +205,7 @@ public class SavetovanjeController {
 			try {
 				emailService.novoSavetovanje(savetovanje);
 			} catch(Exception e){
+				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 		}

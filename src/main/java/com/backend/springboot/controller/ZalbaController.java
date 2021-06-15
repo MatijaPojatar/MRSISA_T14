@@ -146,6 +146,7 @@ public class ZalbaController {
 		try {
 			emailService.noviOdgovorNaZalbuNaApoteku(zalba);
 		} catch(Exception e){
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
@@ -232,6 +233,7 @@ public class ZalbaController {
 		try {
 			emailService.noviOdgovorNaZalbuNaFarmaceuta(zalba);
 		} catch(Exception e){
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
@@ -318,6 +320,7 @@ public class ZalbaController {
 		try {
 			emailService.noviOdgovorNaZalbuNaDermatologa(zalba);
 		} catch(Exception e){
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		

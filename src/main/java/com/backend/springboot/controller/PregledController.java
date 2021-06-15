@@ -215,6 +215,7 @@ public class PregledController {
 		try {
 			service.zauzmiPregled(id, p);
 		}catch(Exception e) {
+			Thread.currentThread().interrupt();
 			return new ResponseEntity<String>("Greska",HttpStatus.BAD_REQUEST);
 		}
 		
@@ -233,6 +234,7 @@ public class PregledController {
 			try {
 				emailService.noviPregled(pregled);
 			} catch(Exception e){
+				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 		}
@@ -264,6 +266,7 @@ public class PregledController {
 			try {
 				emailService.noviPregled(pregled);
 			} catch(Exception e){
+				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 		}

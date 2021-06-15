@@ -87,6 +87,8 @@ public class RezervacijaService {
 			lekUMagacinuRep.save(lum);
 			return true;
 		}catch(Exception e) {
+
+			Thread.currentThread().interrupt();
 			return false;
 		}
 	};
@@ -136,12 +138,13 @@ public class RezervacijaService {
 			return null;
 		}
 	}
+	Random random = new Random();
 	
 	public String generateCode() {
 	    int leftLimit = 48; // '0'
 	    int rightLimit = 122; //  'z'
 	    int targetStringLength = 5;
-	    Random random = new Random();
+	    
 
 	    String generatedString = random.ints(leftLimit, rightLimit + 1)
 	      .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
