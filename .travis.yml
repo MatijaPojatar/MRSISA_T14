@@ -21,7 +21,5 @@ dist: trusty
 
 deploy:
   provider: heroku
-  #api_key: $HEROKU_API_KEY
-  username: pojatar.matija1337@gmail.com
-  password: Pro121345
+  api_key: $HEROKU_API_KEY
   app: mrsisa-t14-deployment
