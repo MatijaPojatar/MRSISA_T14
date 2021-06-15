@@ -143,13 +143,6 @@
         ></v-date-picker>
         
     </v-menu>
-
-            <v-btn
-            class="mr-4"
-            @click="rezervisi"
-            >
-            Ok
-            </v-btn>
         </v-form>
         
       </v-card>
@@ -303,21 +296,6 @@
                 this.dialogKolicina = true;
              },
 
-             rezervisi(){
-               if(!this.definisanRok){
-                        this.message= "Rok preuzimanja definisan."
-                        this.obavestenje = true;
-                }
-                else{
-                  Vue.axios.post(`/rezervacija/novaRezervacija`, {apotekaId:this.apotekaId, lekId:this.selektovanLek.lekId, kolicina:this.definisanaKolicina, pacijentId:this.userId, datum:this.definisanRok}).then(response => {
-                        
-                        this.message=response.data;
-                    this.obavestenjeDialog = true;
-                    });
-                    
-                  this.dialogKolicina = false;
-                }
-             },
              endDialog(){
                 this.lekUpdateDialog = false;
              },

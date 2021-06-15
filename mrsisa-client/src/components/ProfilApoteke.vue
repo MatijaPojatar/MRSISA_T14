@@ -61,13 +61,6 @@
     </v-btn>
     <v-btn
         class="mx-2"
-        @click="viewSavetovanja"
-        v-if="registrovan"
-    > 
-        Zakaži savetovanje 
-    </v-btn>
-    <v-btn
-        class="mx-2"
         @click="viewERecept"
         v-if="registrovan"
     > 
@@ -239,14 +232,6 @@ export default{
             this.showDermatolozi = false;
             this.showPregledi = true;
             this.showSavetovanja = false;
-            this.showERecept = false;
-        },
-        viewSavetovanja(){
-            this.showLekovi = false;
-            this.showFarmaceuti = false;
-            this.showDermatolozi = false;
-            this.showPregledi = false;
-            this.showSavetovanja = true;
             this.showERecept = false;
         },
         viewERecept(){

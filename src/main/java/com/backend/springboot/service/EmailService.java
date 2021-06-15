@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.backend.springboot.domain.AkcijaPromocija;
 import com.backend.springboot.domain.Dermatolog;
-import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
@@ -65,8 +64,10 @@ public class EmailService {
 	public void novoSavetovanje(SavetovanjeDTO savetovanje) throws MailException, InterruptedException {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		Pacijent p=pacijentService.findOne(savetovanje.getPacijentId());
+		System.out.println(savetovanje.getFarmaceutId());
 		Farmaceut f=farmService.findOne(savetovanje.getFarmaceutId());
-		mail.setTo(p.getMail());
+		//mail.setTo(p.getMail());
+		mail.setTo("imenkoprezimic94@gmail.com");
 		mail.setFrom(env.getProperty("spring.mail.username"));
 		mail.setSubject("Zakazan novi termin savetovanja");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");

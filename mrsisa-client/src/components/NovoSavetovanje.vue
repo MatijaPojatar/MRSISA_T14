@@ -1,33 +1,41 @@
 <template>
   <v-card min-width="700px">
-    <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      label="2001-01-01"
-      single-line
-      hide-details
-    ></v-text-field>
+    <v-row no-gutters justify="space-around">
+      <v-col md="3">
+        <v-text-field
+          v-model="pretragaParams.datum"
+          label="Datum (1999-02-02)"
+        />
+      </v-col>
+      <v-col md="3">
+        <v-text-field
+          v-model="pretragaParams.vreme1"
+          label="Vreme početka (12:00)"
+        />
+      </v-col>
+      <v-col md="3">
+        <v-text-field
+          v-model="pretragaParams.vreme2"
+          label="Vreme kraja (12:00)"
+        />
+      </v-col>
+      <v-card-actions class="justify-center">
+        <v-btn @click="pretrazi" :disabled=isDisabled>Pretraži</v-btn>
+      </v-card-actions>
+    </v-row>
     <v-card>
-      <v-data-table :headers="headeri" :items="apoteke">
-        <template v-slot:item="red">
-          <tr>
-            <td>{{ red.item.naziv }}</td>
-            <td>{{ red.item.mesto }}</td>
-            <td>5</td>
-            <td>2500</td>
-            <td>
-              <v-btn
-                class="mx-2"
-                fab
-                dark
-                small
-                color="blue"
-                @click="odaberi()"
-              >
-                <v-icon dark>mdi-check</v-icon>
-              </v-btn>
-            </td>
-          </tr>
+      <v-data-table :headers="headeri" :items="podaci">
+        <template v-slot:item.odaberi="{ item }">
+          <v-btn
+            class="mx-2"
+            fab
+            dark
+            small
+            color="blue"
+            @click="odabrano(item)"
+          >
+            <v-icon dark>mdi-check</v-icon>
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -44,24 +52,23 @@ export default {
   components: {},
 
   data: () => ({
-    odabrano: true,
     headeri: [
-      { text: "Naziv", value: "name", sortable: false },
-      { text: "Mesto", value: "mesto", sortable: false },
+      { text: "Naziv", value: "naziv", sortable: false },
+      { text: "Mesto", value: "grad", sortable: false },
       { text: "Ocena", value: "ocena", sortable: true },
-      { text: "Cena", value: "cena", sortable: true },
-      { text: "Odaberi" },
+      { text: "Odaberi", value: "odaberi", sortable: false },
     ],
-    apoteke: [
-      {
-        id: 1,
-        naziv: "Apoteka 1",
-        adresa: "Adresa apoteke 1",
-        mesto: "Novi Sad",
-        drzava: "Srbija",
-        opis: "Test",
-      },
-    ],
+    pretragaParams: {
+      datum: "",
+      vreme1: "",
+      vreme2: "",
+    },
+    podaci: [],
+    apotekaId: "",
+    farmaceutId: "",
+    korak1: true,
+    korak2: false,
+    isDisabled: false,
   }),
 
   computed: {
@@ -71,70 +78,45 @@ export default {
   },
 
   methods: {
-    odaberi() {
-      if (this.odabrano) {
+    pretrazi() {
+      axios.post(`/apoteke/slobodne`, this.pretragaParams).then((response) => {
+        this.podaci = response.data;
+      });
+      this.isDisabled = true;
+    },
+
+    odabrano(item) {
+      if (this.korak1) {
         (this.headeri = [
           { text: "Ime", value: "ime", sortable: false },
           { text: "Prezime", value: "prezime", sortable: false },
           { text: "Ocena", value: "ocena", sortable: true },
-          { text: "Cena", value: "cena", sortable: true },
-          { text: "Odaberi" },
+          { text: "Odaberi", value: "odaberi", sortable: false },
         ]),
-          (this.apoteke = [
-            {
-              id: 1,
-              apotekaId: 1,
-              naziv: "Pera",
-              mesto: "Peric",
-              mail: "perap@gmail.com",
-              adresa: "Adresa 1",
-              grad: "Novi Sad",
-              drzava: "Srbija",
-              brojTelefona: "0651234567",
-              pocetakRadnogVremenaStr: "08:00",
-              krajRadnogVremenaStr: "16:00",
-              pol: "MUSKI",
-              datumRodjenja: [1990, 1, 1],
-              pocetakRadnogVremena: [8, 0],
-              krajRadnogVremena: [16, 0],
-              promenjenaLozinka: true,
-              enabled: true,
-            },
-            {
-              id: 6,
-              apotekaId: 1,
-              naziv: "Maja",
-              mesto: "Majic",
-              mail: "maja93@gmail.com",
-              adresa: "Adresa 2",
-              grad: "Novi Sad",
-              drzava: "Srbija",
-              brojTelefona: "0651234567",
-              pocetakRadnogVremenaStr: "08:00",
-              krajRadnogVremenaStr: "16:00",
-              pol: "ZENSKI",
-              datumRodjenja: [1993, 1, 1],
-              pocetakRadnogVremena: [8, 0],
-              krajRadnogVremena: [16, 0],
-              promenjenaLozinka: true,
-              enabled: true,
-            },
-          ]);
-          this.odabrano = false;
-      } else {
-        alert(213)
-        let savetovanje = {
-          name: "Savetovanje 16",
+          (this.apotekaId = item.id);
+
+        axios.get(`/farmaceut/apoteka/${this.apotekaId}`).then((response) => {
+          this.podaci = response.data;
+        });
+
+        this.korak1 = false;
+        this.korak2 = true;
+      } else if (this.korak2) {
+        this.farmaceutId = item.id;
+
+        let termin = {
+          name: "Savetovanje",
           izvestaj: "",
-          start: [2021, 5, 21, 9, 0],
-          end: [2021, 5, 21, 9, 45],
+          start: new Date(this.pretragaParams.datum + " " + this.pretragaParams.vreme1),
+          end: new Date(this.pretragaParams.datum + " " + this.pretragaParams.vreme2),
           pacijentId: this.korisnik.id,
-          farmaceutId: 1,
-          id: 16,
-          apotekaId: 1,
+          apotekaId: this.apotekaId,
           izvrsen: false,
+          farmaceutId: this.farmaceutId
         };
-        axios.put(`/savetovanje/zakazi`, savetovanje);
+        
+        axios.put(`/savetovanje/dodaj/${this.farmaceutId}`, termin);
+        location.reload();
       }
     },
   },

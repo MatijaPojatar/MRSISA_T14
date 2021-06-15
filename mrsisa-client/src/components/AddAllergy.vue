@@ -4,7 +4,6 @@
     <v-card-text>
       <v-form
         ref="forma"
-        v-model="valid"
         lazy-validation
         v-for="(lek, index) in lekovi"
         :key="index"
@@ -13,7 +12,7 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn :disabled="!valid" class="mr-4" @click=dodaj>Sačuvaj izmene</v-btn>
+      <v-btn class="mr-4" @click=dodaj>Sačuvaj izmene</v-btn>
     </v-card-actions>
     <v-dialog
       v-model="dialog"
