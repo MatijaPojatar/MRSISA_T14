@@ -32,6 +32,7 @@ import javax.persistence.Table;
 import org.apache.tomcat.util.buf.UriUtil;
 import org.springframework.web.util.UriUtils;
 
+import com.backend.springboot.dto.ApotekaCreateDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.google.gson.Gson;
 
@@ -59,7 +60,7 @@ public class Apoteka {
 	private Set<Dermatolog> dermatolozi = new HashSet<Dermatolog>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
-	@OneToOne(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "apoteka", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Magacin magacin;
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();
@@ -155,7 +156,21 @@ public class Apoteka {
 		this.akcije = akcije;
 	}
 	
-	
+	public Apoteka(ApotekaCreateDTO a) {
+		this.id = a.getId();
+		this.naziv = a.getNaziv();
+		this.adresa = a.getAdresa();
+		this.grad = a.getGrad();
+		this.drzava = a.getDrzava();
+		this.opis = a.getOpis();
+		this.ocena = 0.0;
+		this.lekovi = new ArrayList<Lek>();
+		this.farmaceuti = new HashSet<Farmaceut>();
+		this.dermatolozi =new HashSet<Dermatolog>();
+		this.termini = new ArrayList<Termin>();
+		this.akcije = new ArrayList<AkcijaPromocija>();
+		this.administratori =new HashSet<AdministratorApoteke>();
+	}
 
 	public Apoteka(ApotekaDTO dto) {
 		super();

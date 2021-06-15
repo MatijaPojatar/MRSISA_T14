@@ -25,11 +25,13 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.ERecept;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.ParametriPretrageApoteke;
 import com.backend.springboot.domain.StatusErecepta;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.ApotekaCenaDTO;
+import com.backend.springboot.dto.ApotekaCreateDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
 import com.backend.springboot.dto.EReceptDTO;
@@ -105,15 +107,26 @@ public class ApotekaController {
 	
 	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	@PostMapping()
-	public ResponseEntity<ApotekaDTO> addApoteka(@RequestBody ApotekaDTO dto){
+	public ResponseEntity<ApotekaMainInfoDTO> addApoteka(@RequestBody ApotekaCreateDTO dto) throws Exception{
 		try {
 			System.out.println(dto.getNaziv() + "NAZIV");
 			System.out.println(dto.getAdresa() + "ADRESA");
-            return new ResponseEntity<>(apotekaService.addApoteka(dto), HttpStatus.CREATED);
+			Apoteka a = apotekaService.addApoteka(dto);
+			
+			Magacin m = new Magacin();
+			m.setApoteka(a);
+			
+			m.setLekovi( new ArrayList<LekUMagacinu>());
+			m.setNarudzbenice(new ArrayList<Narudzbenica>());
+			m.setUpiti(new ArrayList<Upit>());
+			
+			a.setMagacin(m);
+			apotekaService.save(a);
+            return new ResponseEntity<ApotekaMainInfoDTO>(new ApotekaMainInfoDTO(a), HttpStatus.CREATED);
+            
+            
         } catch (EmptyResultDataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-        	return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<ApotekaMainInfoDTO>(HttpStatus.NOT_FOUND);
         }
 	}
 	
@@ -199,14 +212,14 @@ public class ApotekaController {
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/izmeniLek/{apotekaId}")
 	public ResponseEntity<String> izmeniLek(@PathVariable Integer apotekaId, @RequestBody LekUMagacinuDTO lek) {
-		magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
+		magacinService.izmeniLekUMagacinuNEW(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@PutMapping("/preuzmiLek/{id}")
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	public ResponseEntity<LekUMagacinuDTO> preuzmiLek(@PathVariable Integer id, @RequestBody String apotekaId) {
-		LekUMagacinu lek = magacinService.preuzmiJedanLekApoteke(id, Integer.parseInt(apotekaId));
+		LekUMagacinu lek = magacinService.preuzmiJedanLekApotekeNEW(id, Integer.parseInt(apotekaId));
 		LekUMagacinuDTO lekdto= new LekUMagacinuDTO(lek);
 		return new ResponseEntity<LekUMagacinuDTO>(lekdto,HttpStatus.OK);
 	}

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
@@ -68,6 +70,7 @@ public class LekService {
 		lekRep.save(lek);
 	}
 	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public List<Lek> preuzmiLekoveVanApoteke(Integer apotekaId){
 		ArrayList<Lek> lekovi = (ArrayList<Lek>) lekRep.findAll();
 		ArrayList<LekUMagacinu> lekoviApoteke = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(magacinRep.findOneByApotekaId(apotekaId).getId());

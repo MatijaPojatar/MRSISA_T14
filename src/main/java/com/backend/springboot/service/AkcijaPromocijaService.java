@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.AkcijaPromocija;
 import com.backend.springboot.domain.Apoteka;
@@ -30,6 +32,7 @@ public class AkcijaPromocijaService {
 		return akcijePromocije;
 	}
 	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public AkcijaPromocija dodaj(Integer apotekaId, String opis, LocalDate kraj ) {
 		AkcijaPromocija nova = new AkcijaPromocija();
 		nova.setApoteka(apotekaRep.findOneById(apotekaId));

@@ -21,7 +21,7 @@ public interface ApotekaRepository extends JpaRepository<Apoteka, Integer> {
 	
 	List<Apoteka> findByNazivIgnoringCaseAndGradIgnoringCase(String naziv, String grad);
 	
-	List<Apoteka> findByNazivIgnoringCase(String naziv);
+	List<Apoteka> findAllByNazivIgnoringCase(String naziv);
 	
 	List<Apoteka> findByGradIgnoringCase(String grad);
 }
