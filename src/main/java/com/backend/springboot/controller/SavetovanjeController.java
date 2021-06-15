@@ -148,14 +148,25 @@ public class SavetovanjeController {
 	@GetMapping(value = "/pacijent/{id}")
 	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
-
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
-		
-		System.out.println(savetovanja.size());
 
 		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
 		for (Savetovanje s : savetovanja) {
 			if (LocalDateTime.now().compareTo(s.getPocetak()) <= 0)
+				savetovanjaDTO.add(new SavetovanjeDTO(s));
+		}
+
+		return new ResponseEntity<>(savetovanjaDTO, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/istorija/pacijent/{id}")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	public ResponseEntity<List<SavetovanjeDTO>> getAllIstorijaForPacijent(@PathVariable Integer id) {		
+		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
+
+		List<SavetovanjeDTO> savetovanjaDTO = new ArrayList<>();
+		for (Savetovanje s : savetovanja) {
+			if (LocalDateTime.now().compareTo(s.getPocetak()) > 0)
 				savetovanjaDTO.add(new SavetovanjeDTO(s));
 		}
 

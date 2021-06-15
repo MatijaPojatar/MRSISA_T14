@@ -1,5 +1,5 @@
 <template>
-    <div justify="space-around" align="center">
+    <div justify="space-around" align="center" padding-left="500px">
     <br/>
     <br/>
     <v-card class="mt-16 mx-auto" width="85%">
@@ -55,7 +55,7 @@
     <v-btn
         class="mx-2"
         @click="viewPregledi"
-        v-if="registrovan"
+        v-if="registrovan && brojPenala"
     > 
         Zakaži pregled 
     </v-btn>
@@ -77,10 +77,8 @@
     <br/>
     <br/>
 
-    
-    
     <v-container fluid v-if="showLekovi">
-        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="user.id"/>
+        <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="userData.id"/>
       </v-container>
 
     <v-container fluid v-if="showFarmaceuti">
@@ -164,13 +162,17 @@ export default{
         showSavetovanja: false,
         showERecept: false,
         message:"",
+        brojPenala: true,
+        userData:{
+            id:"",
+        }
     }),
     props :{
         user: {},
         apotekaId: Number,
         registrovan: Boolean,
     },
-    
+
     computed: {
         ...mapGetters({
             apoteka: "apoteke/getApoteka",
@@ -180,6 +182,7 @@ export default{
     },
 
     async mounted(){
+        this.userData.id = this.user.id
         await this.getApotekaAction(this.apotekaId);
         Vue.$geocoder.setDefaultMode('address');      // this is default
                 var addressObj = {
@@ -190,7 +193,13 @@ export default{
                 zip_code:       '',            // postal_code also valid
                 country:        this.apoteka.drzava
                 }
-        await this.getApotekaCoordinatesAction(addressObj)
+        await this.getApotekaCoordinatesAction(addressObj);
+        Vue.axios.get(`/pacijent/penali/${this.user.id}`).then(response => {
+        const penali = response.data
+        if (penali >= 3){
+            this.brojPenala = false;
+        }
+    });
     },
 
     methods:{
@@ -244,7 +253,7 @@ export default{
         },
 
         pretplatiSe(){
-            Vue.axios.put(`/pacijent/pretplata/${this.user.id}/${this.apotekaId}`);
+            Vue.axios.put(`/pacijent/pretplata/${this.userData.id}/${this.apotekaId}`);
             this.message = "Uspešno ste se pretplatili na dobijanje obaveštenja o akcijama i promocijama apoteke."
             this.obavestenjeDialog=true;
         },

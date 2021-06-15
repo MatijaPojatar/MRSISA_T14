@@ -52,20 +52,6 @@
     class="elevation-1"
     v-if="!adminView"
   >
-    <template v-slot:item.actions="{ item }">
-        <div>
-      <v-btn
-                class="mx-2"
-                color="light-green"
-                @click="definisiKolicinu(item)"
-                v-if="registrovanView"
-            >
-                Rezerviši
-            </v-btn>
-
-            
-            </div>
-    </template>
   </v-data-table>
 
     <v-dialog
@@ -210,7 +196,6 @@
           { text: 'Oblik', value: 'oblik'},
           { text: 'Vrsta', value: 'vrsta'},
           { text: 'Cena', value: 'cena'},
-          { text: 'Rezerviši', value: 'actions', sortable: false },
         ],
 
             lekovi: [],

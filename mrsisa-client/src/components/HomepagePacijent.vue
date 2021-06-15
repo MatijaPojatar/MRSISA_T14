@@ -78,11 +78,11 @@
                     </v-list-item-icon>
                     <v-list-item-title>
                         <div class="wh">
-                            Loyalty program
+                            Loyalty i penali
                         </div>
                     </v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="novoSavetovanjeView">
+                <v-list-item link @click="novoSavetovanjeView" v-if="brojPenala">
                     <v-list-item-icon>
                         <v-icon>mdi-account-voice</v-icon>
                     </v-list-item-icon>
@@ -102,7 +102,7 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="rezervacijaLekaView">
+                <v-list-item link @click="rezervacijaLekaView" v-if="brojPenala">
                     <v-list-item-icon>
                         <v-icon>mdi-pill</v-icon>
                     </v-list-item-icon>
@@ -152,7 +152,7 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
-                <v-list-item link @click="ereceptiView">
+                <v-list-item link @click="ereceptiView" v-if="brojPenala">
                     <v-list-item-icon>
                         <v-icon>mdi-note-text-outline</v-icon>
                     </v-list-item-icon>
@@ -234,7 +234,7 @@
                 <AddAllergy :pacijentId="user.id"/>
             </v-container>
             <v-container fluid v-if="showLoyalty" :style="{width:'70vh'}">
-                <LoyaltyPacijent/>
+                <LoyaltyPenalty/>
             </v-container>
             <v-container fluid v-if="showZakazanePosete" :style="{width:'70vh'}">
                 <ZakazanePosete/>
@@ -248,10 +248,10 @@
             <v-container fluid v-if="showRezervacijaLeka" :style="{width:'70vh'}">
                 <RezervacijaLeka/>
             </v-container>
-            <v-container fluid v-if="showIstorijaPregleda" :style="{width:'70vh'}">
+            <v-container fluid v-if="showIstorijaPregleda" :style="{width:'100vh'}">
                 <IstorijaPregleda/>
             </v-container>
-            <v-container fluid v-if="showIstorijaSavetovanja" :style="{width:'70vh'}">
+            <v-container fluid v-if="showIstorijaSavetovanja" :style="{width:'100vh'}">
                 <IstorijaSavetovanja/>
             </v-container>
              <v-container fluid v-if="showZalbaApoteka" :style="{width:'70vh'}">
@@ -288,7 +288,7 @@ import ZakazanePosete from "./ZakazanePosete";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
-import LoyaltyPacijent from "./LoyaltyPacijent";
+import LoyaltyPenalty from "./LoyaltyPenalty";
 import RezervisaniLekovi from "./RezervisaniLekovi"
 import RezervacijaLeka from "./RezervacijaLeka";
 import IstorijaPregleda from "./IstorijaPregleda";
@@ -303,6 +303,7 @@ import ProfilApoteke from "./ProfilApoteke";
 import PregledERecepata from "./Pacijent/PregledERecepata";
 import KupovinaLekova from "./Pacijent/KupovinaLekova"
 import {mapActions, mapGetters} from 'vuex';
+import axios from "axios"
 
 export default {
     name: "HomepageDF",
@@ -311,7 +312,7 @@ export default {
         AccountView,
         PasswordSwitch,
         AddAllergy,
-        LoyaltyPacijent,
+        LoyaltyPenalty,
         RezervisaniLekovi,
         RezervacijaLeka,
         NovoSavetovanje,
@@ -345,12 +346,23 @@ export default {
     showApoteke: false,
     showErecepti: false,
     showKupovina: false,
+    brojPenala: true,
   }),
   computed: {
     ...mapGetters({
       user: "korisnici/getKorisnik",
     }),
   },
+
+  mounted(){
+    axios.get(`/pacijent/penali/${this.user.id}`).then(response => {
+        const penali = response.data
+        if (penali >= 3){
+            this.brojPenala = false;
+        }
+    });
+  },
+
   methods:{
       ...mapActions({
         logout: "korisnici/logoutAction",
