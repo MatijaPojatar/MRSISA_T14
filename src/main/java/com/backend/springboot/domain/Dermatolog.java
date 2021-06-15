@@ -3,7 +3,6 @@ package com.backend.springboot.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -22,7 +21,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.backend.springboot.dto.DermatologDTO;
-import com.backend.springboot.dto.DobavljacDTO;
 
 @Entity
 @Table(name="dermatolozi")
@@ -52,6 +50,12 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 	@OneToMany(mappedBy = "dermatolog")
 	private List<DermatologApoteka> zaposlenja=new ArrayList<DermatologApoteka>();
 	
+	@Column(name = "broj_ocena", nullable = false)
+	Integer brojOcena;
+	
+	@Column(name = "zbir_ocena", nullable = false)
+	Integer zbirOcena;
+	
 	@Column(name = "ocena", nullable = false)
 	Double ocena;
 
@@ -60,8 +64,10 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		super(id, ime, prezime, mail, password, adresa, grad, drzava, brojTelefona, pol, datumRodjenja, promenjenaLozinka, enabled);
 		this.pocetakRadnogVremena = pocetakRadnogVremena;
 		this.krajRadnogVremena = krajRadnogVremena;
+		this.brojOcena = 0;
+		this.zbirOcena = 0;
+		this.ocena = 0.0;
 	}
-
 
 	public Dermatolog() {
 		super();
@@ -81,6 +87,8 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		this.setPocetakRadnogVremena(d.getPocetakRadnogVremena());
 		this.setKrajRadnogVremena(d.getKrajRadnogVremena());
 		this.setOcena(d.getOcena());
+		this.setZbirOcena(d.getZbirOcena());
+		this.setBrojOcena(d.getBrojOcena());
 	}
 
 	public Double getOcena() {
@@ -161,12 +169,24 @@ public class Dermatolog extends Osoba implements IFarmaceutDermatolog{
 		}
 		return apoteke;
 	}
-	
-	
-	
-	
-	
-	
 
 
+	public Integer getBrojOcena() {
+		return brojOcena;
+	}
+
+
+	public void setBrojOcena(Integer brojOcena) {
+		this.brojOcena = brojOcena;
+	}
+
+
+	public Integer getZbirOcena() {
+		return zbirOcena;
+	}
+
+
+	public void setZbirOcena(Integer zbirOcena) {
+		this.zbirOcena = zbirOcena;
+	}
 }

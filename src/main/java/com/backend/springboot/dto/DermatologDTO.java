@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.DermatologApoteka;
-import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Pol;
 
 public class DermatologDTO {
@@ -17,6 +16,7 @@ public class DermatologDTO {
 	private LocalTime pocetakRadnogVremena, krajRadnogVremena;
 	private Boolean promenjenaLozinka, enabled;
 	private Double ocena;
+	private Integer zbirOcena, brojOcena;
 	
 	public DermatologDTO() {
 		super();
@@ -98,6 +98,26 @@ public class DermatologDTO {
 	public Double getOcena() {
 		return ocena;
 	}
+
+	public Integer getZbirOcena() {
+		return zbirOcena;
+	}
+
+
+	public void setZbirOcena(Integer zbirOcena) {
+		this.zbirOcena = zbirOcena;
+	}
+
+
+	public Integer getBrojOcena() {
+		return brojOcena;
+	}
+
+
+	public void setBrojOcena(Integer brojOcena) {
+		this.brojOcena = brojOcena;
+	}
+
 
 	public void setOcena(Double ocena) {
 		this.ocena = ocena;

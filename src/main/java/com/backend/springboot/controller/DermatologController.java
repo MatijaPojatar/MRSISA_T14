@@ -1,6 +1,5 @@
 package com.backend.springboot.controller;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,16 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.DermatologApoteka;
-import com.backend.springboot.domain.Dobavljac;
-import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.ParametriPretrageOsoba;
 import com.backend.springboot.domain.Role;
 import com.backend.springboot.dto.DermatologDTO;
-import com.backend.springboot.dto.DobavljacDTO;
-import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.DermatologService;
@@ -95,6 +89,23 @@ public class DermatologController {
 		}
 		
 		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.CREATED);
+	} 
+	
+	@PreAuthorize("hasRole('PACIJENT')")
+	@PostMapping("/oceni/{id}")
+	public ResponseEntity<Boolean> oceniDermatologa(@PathVariable Integer id, @RequestBody Integer ocena){
+		Dermatolog d = service.findOne(id);
+		d.setBrojOcena(d.getBrojOcena()+1);
+		d.setZbirOcena(d.getZbirOcena() + ocena);
+		d.setOcena((double) (d.getZbirOcena()/d.getBrojOcena()));
+		
+		try {
+			service.save(d);
+		} catch (Exception e) {
+			return new ResponseEntity<Boolean>(false, HttpStatus.CREATED);
+		}
+		
+		return new ResponseEntity<Boolean>(true, HttpStatus.CREATED);
 	} 
 	
 	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','DERMATOLOG', 'PACIJENT')")

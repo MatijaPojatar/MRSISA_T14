@@ -8,7 +8,7 @@ insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav
 insert into lekovi (napomena,naziv,oblik_leka,proizvodjac,rezim_izdavanja,sastav,vrsta_leka) values ('Pažljivo proćitati uputstvo','Brufen',0,'Alims',1,'celuloza, laktoza, ibuprofen',1);
 
 
-insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values (' Futoški put 10 ','Srbija','Novi Sad','Benu','Lepota i zdravlje.', 4.3);
+insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Futoški put 10 ','Srbija','Novi Sad','Benu','Lepota i zdravlje.', 4.3);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Rumenačka 15','Srbija','Novi Sad','Apoteka Janković','Poverenje, sigurnost i dostupnost su, već skoro 30 godina, glavna obeležja Apotekarske ustanove “Janković”. ', 4.1);
 insert into apoteke (adresa,drzava,grad,naziv,opis, ocena) values ('Bulevar oslobođenja 65','Srbija','Novi Sad','Galen','Galen Pharm Apoteka specijalizovana je za prodaju farmaceutskih proizvoda.', 3.8);
 
@@ -43,7 +43,7 @@ insert into savetovanja (id,farmaceut_id) values (1,1);
 
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 3','0651234569','1990-02-02','Srbija','Novi Sad','Petar','Petrovic','petar@gmail.com','$2a$10$KHKLhLY7PbDM6KM/mIZC7OBwgXBtTw7l.sB2o.SJW3H.6j8Gb8qJO',0,true, false, true); --sifra je pera
-insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena) values (3,'16:00','08:00', 4.3);
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena, broj_ocena, zbir_ocena) values (3,'16:00','08:00', 0.0, 0, 0);
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (3,1);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,1,'08:00','12:00', false);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (3,2,'12:00','16:00', false);
@@ -128,7 +128,7 @@ insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,versio
 insert into pregledi (id,dermatolog_id,cena) values (10,3,3000);
 
 insert into osobe (adresa,broj_telefona,datum_rodjenja,drzava,grad,ime,prezime,mail,password,pol,promenjena_lozinka, obrisan, enabled) values ('Adresa 9','0651234580','1996-12-02','Srbija','Novi Sad','Luka','Lukic','luka@gmail.com','$2a$10$UnO./eDTpKBzdcDio.khoO5/Egozb0LUrLR.ANtjFJQN7pVcEdGEy',0,true, false, true); --sifra je luka
-insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena) values (10,'16:00','08:00', 4.0);
+insert into dermatolozi (id,kraj_radnog_vremena,pocetak_radnog_vremena, ocena, broj_ocena, zbir_ocena) values (10,'16:00','08:00', 0.0, 0, 0);
 insert into zaposlenje_dermatolog (dermatolog_id,apoteka_id) values (10,2);
 insert into zaposlenja (dermatolog_id,apoteka_id,pocetak_radnog_vremena,kraj_radnog_vremena, obrisan) values (10,2,'08:00','12:00', false);
 insert into osoba_role (osoba_id, role_id) values (10, 4);

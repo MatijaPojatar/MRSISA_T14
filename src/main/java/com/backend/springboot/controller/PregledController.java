@@ -99,7 +99,6 @@ public class PregledController {
 	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/dermatoloziPacijenta/{id}")
 	public ResponseEntity<List<DermatologDTO>> poseceniDermatolozi(@PathVariable Integer id){
-		
 		Set<Dermatolog> dermatolozi = service.poseceniDermatolozi(id);
 		
 		List<DermatologDTO> dtos = new ArrayList<DermatologDTO>();
@@ -107,8 +106,16 @@ public class PregledController {
 		for (Dermatolog f : dermatolozi) {
 			dtos.add(new DermatologDTO(f));
 		}
+
+		List<DermatologDTO> dtoBezDuplikata = new ArrayList<DermatologDTO>();
 		
-		return new ResponseEntity<List<DermatologDTO>>(dtos, HttpStatus.OK);
+		for (DermatologDTO dto : dtos) {
+            if (!dtoBezDuplikata.contains(dto)) {
+            	dtoBezDuplikata.add(dto);
+            }
+        }
+
+		return new ResponseEntity<List<DermatologDTO>>(dtoBezDuplikata, HttpStatus.OK);
 	}
 	
 	

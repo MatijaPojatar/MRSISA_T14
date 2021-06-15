@@ -86,8 +86,16 @@ public class SavetovanjeController {
 		for (Farmaceut f : farmaceuti) {
 			dtos.add(new FarmaceutDTO(f));
 		}
+
+		List<FarmaceutDTO> dtoBezDuplikata = new ArrayList<FarmaceutDTO>();
 		
-		return new ResponseEntity<List<FarmaceutDTO>>(dtos, HttpStatus.OK);
+		for (FarmaceutDTO dto : dtos) {
+            if (!dtoBezDuplikata.contains(dto)) {
+            	dtoBezDuplikata.add(dto);
+            }
+        }
+
+		return new ResponseEntity<List<FarmaceutDTO>>(dtoBezDuplikata, HttpStatus.OK);
 	}
 	
 	@PutMapping("/penal/{id}")
