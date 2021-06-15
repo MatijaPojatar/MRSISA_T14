@@ -1,6 +1,6 @@
 <template>
-  <v-card>
-  <v-card class="mt-16 mx-auto" min-width="40%">
+  <div class="justify-center" widt>
+  <v-card class="mt-16 mx-auto" >
     <v-row align="center" justify="space-around">
       <v-col align="center"> Ocena: </v-col>
       <v-col>
@@ -74,8 +74,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  
-</v-card>
+</div>
 </template>
 <script>
 import axios from "axios";

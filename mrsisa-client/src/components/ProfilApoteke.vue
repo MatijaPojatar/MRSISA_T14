@@ -164,7 +164,7 @@ export default{
         message:"",
         brojPenala: true,
         userData:{
-            id:"",
+            id: -1,
         }
     }),
     props :{
@@ -182,7 +182,9 @@ export default{
     },
 
     async mounted(){
-        this.userData.id = this.user.id
+        if(this.user) {
+            this.userData.id = this.user.id
+        }
         await this.getApotekaAction(this.apotekaId);
         Vue.$geocoder.setDefaultMode('address');      // this is default
                 var addressObj = {
