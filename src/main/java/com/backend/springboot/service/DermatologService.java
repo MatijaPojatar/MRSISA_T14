@@ -65,7 +65,7 @@ public class DermatologService {
 		}
 		return pronadjeni;
 	}
-	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public void obrisiDermatologaIzApoteke (Integer id, Integer apotekaId) {
 		Dermatolog d = dermatologRep.findOneById(id);
 		Apoteka a = apotekaRep.findOneById(apotekaId);
@@ -107,6 +107,7 @@ public class DermatologService {
 		
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public boolean promeniRadnoVreme (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
 		Dermatolog d = dermatologRep.findOneById(id);
 		Apoteka a = apotekaRep.findOneById(apotekaId);
@@ -141,7 +142,7 @@ public class DermatologService {
 		
 		return false;
 	}
-	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
 	public boolean dodajDermatologaUApoteku (Integer id, Integer apotekaId, LocalTime pocetak, LocalTime kraj) {
 		Dermatolog d = dermatologRep.findOneById(id);
 		Apoteka a = apotekaRep.findOneById(apotekaId);

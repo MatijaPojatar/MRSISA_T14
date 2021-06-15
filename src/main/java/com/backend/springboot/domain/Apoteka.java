@@ -59,7 +59,7 @@ public class Apoteka {
 	private Set<Dermatolog> dermatolozi = new HashSet<Dermatolog>();
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
-	@OneToOne(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "apoteka", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Magacin magacin;
 	@OneToMany(mappedBy = "apoteka", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<AkcijaPromocija> akcije = new ArrayList<AkcijaPromocija>();

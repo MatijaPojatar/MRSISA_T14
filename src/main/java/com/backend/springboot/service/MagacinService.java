@@ -170,7 +170,7 @@ public class MagacinService {
 	};
 	
 	
-	
+	@Transactional(readOnly=false, propagation=Propagation.SUPPORTS)
 	public boolean smanjiKolicinuLeka(Integer magacinId,Integer lekId,Double kolicina) {
 		LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
 		if(lum==null) {
@@ -181,7 +181,7 @@ public class MagacinService {
 		lekUMagacinuRep.save(lum);
 		return true;
 	};
-	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public LekUMagacinu dodajLek(LocalDateTime pocetakVazenja, Double cena,  Integer lekId, Integer apotekaId, Double kolicina) {
 		LekUMagacinu l = new LekUMagacinu();
 		l.setPocetakVazenja(pocetakVazenja);
@@ -197,12 +197,12 @@ public class MagacinService {
 		l.getSveCene().add(s);
 		return lekUMagacinuRep.save(l);
 	}
-	
+	@Transactional(readOnly=false, propagation=Propagation.SUPPORTS)
 	public LekUMagacinu dodajLek(LekUMagacinu l) {
 		
 		return lekUMagacinuRep.save(l);
 	}
-	
+	@Transactional(readOnly=false, propagation=Propagation.SUPPORTS)
 	public StavkaCenovnika preuzmiTrenutnuCenu(Integer lekId) {
 		List<StavkaCenovnika> stavke = cenovnikRep.findAllByLekUMagacinuId(lekId);
 		for (StavkaCenovnika s: stavke) {
@@ -256,20 +256,63 @@ public class MagacinService {
 		
 	}
 	
-	
-	
-	
-	
-	public void obrisiLek(Integer lekId, Integer apotekaId) {
-		LekUMagacinu pronadjen = lekUMagacinuRep.getOne(lekId);
-		lekUMagacinuRep.delete(pronadjen);
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public LekUMagacinu izmeniLekUMagacinuNEW(Double cena, Double kolicina, Integer lekId, Integer apotekaId) {
+		Magacin m = magacinRep.findOneByApotekaId(apotekaId);
+		ArrayList<LekUMagacinu> lekovi = (ArrayList<LekUMagacinu>) lekUMagacinuRep.findAllByMagacinId(m.getId());
+		LocalDateTime sada = LocalDateTime.now();
+		for (LekUMagacinu l : lekovi) {
+			if (l.getId() == lekId) {
+				double trenutnaCena = l.getCena();
+				
+				if (trenutnaCena != cena) {
+					StavkaCenovnika staraStavka = this.preuzmiTrenutnuCenu(lekId);
+					
+					StavkaCenovnika novaStavka = new StavkaCenovnika();
+					novaStavka.setCena(cena);
+					novaStavka.setPocetakVazenja(sada);
+					novaStavka.setLekUMagacinu(l);
+					
+					cenovnikRep.save(novaStavka);
+					
+					staraStavka.setKrajVazenja(sada);
+					cenovnikRep.save(staraStavka);
+					
+					l.setPocetakVazenja(sada);
+					l.setKolicina(kolicina);
+					l.setCena(cena);
+					l.getSveCene().add(novaStavka);
+					
+					
+					
+					return lekUMagacinuRep.save(l);
+					
+				}
+				else {
+					l.setKolicina(kolicina);
+					return lekUMagacinuRep.save(l);
+				}
+		
+			}
+		}
+		return null;
 		
 	}
 	
+	
+	
+	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	public void obrisiLek(Integer lekId, Integer apotekaId) {
+		//LekUMagacinu pronadjen = lekUMagacinuRep.getOne(lekId);
+		lekUMagacinuRep.deleteById(lekId);
+		
+	}
+	@Transactional(readOnly=false, propagation=Propagation.SUPPORTS)
 	public void obrisiLek(LekUMagacinu l) {
 			lekUMagacinuRep.delete(l);
 		}
-	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRED)
 	public List<LekUMagacinu> preuzmiAktivneLekove(Integer magacinId) {
 		return lekUMagacinuRep.findAllByMagacinId(magacinId);
 		
@@ -285,6 +328,16 @@ public class MagacinService {
 		return null;
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public LekUMagacinu preuzmiJedanLekApotekeNEW(Integer lekId, Integer apotekaId) {
+		List<LekUMagacinu> lekovi = lekUMagacinuRep.findAllByMagacinId(apotekaRep.getOne(apotekaId).getMagacin().getId());
+		for(LekUMagacinu l: lekovi){
+			if (l.getId() == lekId)
+				return l;
+		}
+		return null;
+	}
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public List<LekUMagacinu> pretraziLekoveMagacina(Integer sifraLeka, String naziv, OblikLeka oblik, VrstaLeka vrsta,
 			RezimIzdavanja rezim, Integer apotekaId, String proizvodjac) {
 		

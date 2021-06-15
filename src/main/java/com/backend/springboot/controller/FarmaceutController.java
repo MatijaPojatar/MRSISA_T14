@@ -178,6 +178,7 @@ public class FarmaceutController {
 		f.setPromenjenaLozinka(false);
 		f.setObrisan(false);
 		f.setPassword("defaultPassword");
+		f.setOcena(4.0);
 		
 		service.save(f);
 		

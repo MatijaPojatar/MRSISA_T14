@@ -13,6 +13,8 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
@@ -45,6 +47,7 @@ public class IzvestajApotekaService {
 	@Autowired
 	private StavkaCenovnikaRepository cenovnikRep;
 	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public Collection<Integer> odrzaniPreglediUIntervalu(LocalDateTime pocetak, LocalDateTime kraj, Integer apotekaId){
 		
 		ArrayList<Pregled> pregledi = (ArrayList<Pregled>) pregledRep.findInRangeIzvrseniApoteka(pocetak, kraj, apotekaId);
@@ -75,7 +78,8 @@ public class IzvestajApotekaService {
 		return rezultat;
 	}
 	
-public Collection<Double> prihodiUIntervalu(LocalDateTime pocetak, LocalDateTime kraj, Integer apotekaId){
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	public Collection<Double> prihodiUIntervalu(LocalDateTime pocetak, LocalDateTime kraj, Integer apotekaId){
 		
 		ArrayList<Pregled> pregledi = (ArrayList<Pregled>) pregledRep.findInRangeIzvrseniApoteka(pocetak, kraj, apotekaId);
 		ArrayList<RezervacijaLeka> rezervacije = (ArrayList<RezervacijaLeka>) rezRep.findInRangeByApoteka(pocetak.toLocalDate(), kraj.toLocalDate(), apotekaId);
@@ -125,37 +129,37 @@ public Collection<Double> prihodiUIntervalu(LocalDateTime pocetak, LocalDateTime
 		return rezultat;
 	}
 
-
-public Collection<Double> potroseniLekoviUIntervalu(LocalDate pocetak, LocalDate kraj, Integer apotekaId){
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
+	public Collection<Double> potroseniLekoviUIntervalu(LocalDate pocetak, LocalDate kraj, Integer apotekaId){
 	
-	ArrayList<RezervacijaLeka> rezervacije = (ArrayList<RezervacijaLeka>) rezRep.findInRangeByApoteka(pocetak, kraj, apotekaId);
-	ArrayList<Double> rezultat = new ArrayList<Double>();
-	
-	Map<LocalDate, Double> kolicineMap = new HashMap<LocalDate, Double>();
-	
-	LocalDate datumPocetak = pocetak;
-	LocalDate datumKraj = kraj;
-	
-	while(datumPocetak.isBefore(datumKraj)) {
-		kolicineMap.put(datumPocetak, 0.0);
-		datumPocetak = datumPocetak.plusDays(1);
+		ArrayList<RezervacijaLeka> rezervacije = (ArrayList<RezervacijaLeka>) rezRep.findInRangeByApoteka(pocetak, kraj, apotekaId);
+		ArrayList<Double> rezultat = new ArrayList<Double>();
 		
-	}
-	
-	for (RezervacijaLeka r: rezervacije) {
-		LocalDate key = r.getKreiranje();
-		Double kolicina = kolicineMap.get(key);
+		Map<LocalDate, Double> kolicineMap = new HashMap<LocalDate, Double>();
 		
-		kolicineMap.put(key, kolicina + r.getKolicina());
+		LocalDate datumPocetak = pocetak;
+		LocalDate datumKraj = kraj;
+		
+		while(datumPocetak.isBefore(datumKraj)) {
+			kolicineMap.put(datumPocetak, 0.0);
+			datumPocetak = datumPocetak.plusDays(1);
+			
+		}
+		
+		for (RezervacijaLeka r: rezervacije) {
+			LocalDate key = r.getKreiranje();
+			Double kolicina = kolicineMap.get(key);
+			
+			kolicineMap.put(key, kolicina + r.getKolicina());
+		}
+		
+		SortedSet<LocalDate> keys = new TreeSet<>(kolicineMap.keySet());
+		for (LocalDate key : keys) { 
+		   Double value = kolicineMap.get(key);
+		   rezultat.add(value);
+		}
+		return rezultat;
 	}
-	
-	SortedSet<LocalDate> keys = new TreeSet<>(kolicineMap.keySet());
-	for (LocalDate key : keys) { 
-	   Double value = kolicineMap.get(key);
-	   rezultat.add(value);
-	}
-	return rezultat;
-}
 	
 	
 }
