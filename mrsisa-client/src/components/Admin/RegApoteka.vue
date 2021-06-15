@@ -5,7 +5,7 @@
     </v-card-title>
 
     <v-card-text>
-      <v-form ref="forma" v-model="valid" lazy-alidation>
+      <v-form ref="forma" v-model="valid" lazy-validation>
         <v-text-field
         v-model="naziv"
         label="Naziv"
@@ -40,9 +40,9 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn @click="cancel">Odustani</v-btn>
+      <v-btn class="red white--text" @click="cancel">Odustani</v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click="onSubmit" :disabled="!valid">Registruj</v-btn>
+      <v-btn class="green white--text" @click="onSubmit" :disabled="!valid">Registruj</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -68,7 +68,6 @@ export default {
   methods:
   {
     ...mapActions({
-      getApotekeAction: "apoteke/getApotekeAction", 
       addApotekaAction: "apoteke/addApotekaAction",
 
     }),

@@ -13,12 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Dermatolog;
 import com.backend.springboot.domain.OdsustvoDermatolog;
-import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Pregled;
-import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.PregledDTO;
-import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.repository.PregledRepository;
 
 @Transactional
@@ -98,6 +95,11 @@ public class PregledService {
 		return pregledRep.findAllByDermatologIdAndPacijentIdAndApotekaIdAndPocetakGreaterThanEqual(dermatologId, null, apotekaId, pocetak);
 	}
 	
+	@Transactional(readOnly=true)
+	public List<Pregled> findAllSlobodni(Integer apotekaId, LocalDateTime pocetak){
+		return pregledRep.findAllByApotekaIdAndPocetakGreaterThanEqualAndPacijentId(apotekaId, pocetak, null);
+	}
+	
 	@Transactional(readOnly=false)
 	public List<Pregled> findAllInRangeForDermatolog(Integer id,LocalDateTime start,LocalDateTime end){
 		return pregledRep.findInRangeForDermatolog(id,start, end);
@@ -118,7 +120,7 @@ public class PregledService {
 	}
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
-	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto) throws InterruptedException {
+	public boolean dodajPregled(Integer id,LocalDateTime pocetak,LocalDateTime kraj,PregledDTO dto, Boolean dermatolog) throws InterruptedException {
 		List<Pregled> checkList;
 		
 		try {
@@ -126,7 +128,8 @@ public class PregledService {
 		}catch(Exception e) {
 			return false;
 		}
-		if(checkList.size()!=0) {
+		if(checkList.size()!=0 && dermatolog) {
+			System.out.println("OVED");
 			return false;
 		}
 		List<OdsustvoDermatolog> checkOdsustva;
@@ -160,7 +163,6 @@ public class PregledService {
 		p.setKraj(kraj);
 		p.setPocetak(pocetak);
 		p.setCena(dto.getCena());
-		
 		
 		pregledRep.save(p);
 		

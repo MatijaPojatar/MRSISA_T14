@@ -14,6 +14,7 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
+import com.backend.springboot.dto.ApotekaCreateDTO;
 import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekEReceptaDTO;
@@ -42,7 +43,7 @@ public class ApotekaService  {
 		if (!naziv.equals("") && !grad.equals("")) {
 			return apotekaRep.findByNazivIgnoringCaseAndGradIgnoringCase(naziv, grad);
 		} else if (!naziv.equals("") && grad.equals("")) {
-			return apotekaRep.findByNazivIgnoringCase(naziv);
+			return apotekaRep.findAllByNazivIgnoringCase(naziv);
 		} else if (naziv.equals("") && !grad.equals("")) {
 			return apotekaRep.findByGradIgnoringCase(grad);
 		} else {
@@ -61,8 +62,9 @@ public class ApotekaService  {
 		
 	}
 	
-	public ApotekaDTO addApoteka(ApotekaDTO dto) throws Exception {
-		List<Apoteka> check = apotekaRep.findByNazivIgnoringCase(dto.getNaziv());
+	public Apoteka addApoteka(ApotekaCreateDTO dto) throws Exception {
+		List<Apoteka> check = apotekaRep.findAllByNazivIgnoringCase(dto.getNaziv());
+		
 		System.out.println(dto.getAdresa() + "ADRSEA U SERVISU");
 		if(!check.isEmpty()) {
 			throw new Exception();
@@ -71,7 +73,7 @@ public class ApotekaService  {
 		Apoteka apoteka = new Apoteka(dto);
 		System.out.println(apoteka.getAdresa() + "ADRESA OD KRAJNJE");
 		
-		return new ApotekaDTO(apotekaRep.save(apoteka));
+		return apotekaRep.save(apoteka);
 	}
 
 

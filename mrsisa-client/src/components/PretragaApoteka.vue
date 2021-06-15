@@ -26,7 +26,13 @@
       </v-col>
     </v-row>
     <v-divider />
-    <v-data-table :headers="headeri" :items="filtriraneApoteke" />
+    <v-data-table :headers="headeri" :items="filtriraneApoteke">
+      <template v-slot:item.profil="{ item }">
+        <v-btn class="mx-2" dark color="blue" @click="profilApoteke(item)">
+          Otvori
+        </v-btn>
+      </template>
+    </v-data-table>
     <v-divider />
     <v-row no-gutters justify="space-around">
       <v-col md="4">
@@ -61,6 +67,7 @@ export default {
       { text: "Država", value: "drzava", sortable: false },
       { text: "Ocena", value: "ocena", sortable: false },
       { text: "Udaljenost", value: "udaljenost", sortable: false },
+      { text: "Profil apoteke", value: "profil", sortable: false },
     ],
     apoteke: [],
     pretragaParams: {
@@ -107,6 +114,7 @@ export default {
       await axios.get(`/apoteke/sve/`).then((response) => {
         response.data.forEach((element) => {
           apoteke.push({
+            id: element.id,
             naziv: element.naziv,
             adresa: element.adresa,
             grad: element.grad,
@@ -130,6 +138,10 @@ export default {
           });
         });
     },
+
+    profilApoteke(apoteka){
+      this.$router.push("/profilApoteke/" + apoteka.id);
+    }
   },
 };
 </script>

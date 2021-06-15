@@ -43,7 +43,8 @@ public class NarudzbenicaController {
 	@Autowired 
 	private MagacinService magacinService;
 	
-	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','DOBAVLJAC')")
 	@GetMapping("/aktivne/{idDob}") //sve koje cekaju ponude i rok je posle danas
 	public ResponseEntity<List<NarudzbenicaPrikazDTO>> getAllAktivne(@PathVariable Integer idDob){
 		List<NarudzbenicaPrikazDTO> lista = new ArrayList<NarudzbenicaPrikazDTO>();
