@@ -2,10 +2,10 @@
     <div justify="space-around" align="center">
     <br/>
     <br/>
-    <v-card class="mx-2">
+    <v-card class="mt-16 mx-auto" width="85%">
     <br/>
     <v-row>
-    <div  >
+    <div>
         <p style="width:800px; display: block;">
             <v-rating
                 v-model = "apoteka.ocena"
@@ -162,7 +162,7 @@ export default{
         Mapa,
     },
     data: () => ({
-        
+        apotekaId: '',
         obavestenjeDialog: false,
         showLekovi:false,
         showFarmaceuti:false,
@@ -171,17 +171,6 @@ export default{
         showSavetovanja: false,
         showERecept: false,
         message:"",
-        // apoteka: {
-        //   naziv: "",
-        //   opis: "",
-        //   adresa: "",
-        //   grad: "",
-        //   drzava: "",
-        //   ocena: "",
-        // },
-
-        // apotekaLat: 0,
-        // apotekaLng:0,
     }),
     props :{
         user: {},
@@ -189,21 +178,6 @@ export default{
         registrovan: Boolean,
     },
     
-    // async created(){
-    //     this.getCoordinates();
-        
-       
-    // },
-//      computed: {
-//     ...mapGetters({
-//       user: "korisnici/getKorisnik",
-//     }),
-//   },
-//   methods:{
-//     ...mapActions({
-//       logout: "korisnici/logoutAction",
-//       resetStore: "resetStore"
-//     }),
     computed: {
         ...mapGetters({
             apoteka: "apoteke/getApoteka",
@@ -231,24 +205,6 @@ export default{
             getApotekaAction: "apoteke/getApotekaAction",
             getApotekaCoordinatesAction: "apoteke/getApotekaCoordinatesAction"
         }),
-        // async getCoordinates(){
-        //         Vue.$geocoder.setDefaultMode('address');      // this is default
-        //         var addressObj = {
-        //         address_line_1: 'Bulevar Mihajla Pupina',
-        //         address_line_2: '',
-        //         city:           'Novi Sad',
-        //         state:          '',               // province also valid
-        //         zip_code:       '',            // postal_code also valid
-        //         country:        'Serbia'
-        //         }
-        //     // await Vue.$geocoder.send(addressObj, response => { 
-        //     //     self.apotekaLat = response.results[0].geometry.location.lat 
-        //     //     self.apotekaLng = response.results[0].geometry.location.lng
-                
-        //     //     });
-            
-            
-        // },
     
         endObavestenjeDialog(){
             this.obavestenjeDialog = false;

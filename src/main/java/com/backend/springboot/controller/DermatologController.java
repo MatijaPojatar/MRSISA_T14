@@ -97,7 +97,7 @@ public class DermatologController {
 		return new ResponseEntity<DermatologDTO>(new DermatologDTO(dermatolog), HttpStatus.CREATED);
 	} 
 	
-	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','DERMATOLOG')")
+	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','ADMIN_APOTEKE','DERMATOLOG', 'PACIJENT')")
 	@GetMapping("/{id}")
 	public ResponseEntity<DermatologDTO> getOne(@PathVariable Integer id){
 		Dermatolog d=service.findOne(id);

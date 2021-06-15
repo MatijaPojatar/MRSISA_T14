@@ -91,6 +91,11 @@ const router = new Router({
       name: "PretragaLekova",
       component: () => import("./components/PretragaLekova")
     },
+    {
+      path: "/profilApoteke/:id",
+      name: "ProfilApoteke",
+      component: () => import("./components/ProfilApoteke"),
+    },
   ]
 });
 
