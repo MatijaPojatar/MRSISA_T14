@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.Pacijent;
+import com.backend.springboot.domain.StavkaBodovanja;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
 import com.backend.springboot.repository.PacijentRepository;
@@ -18,11 +20,28 @@ import com.backend.springboot.repository.PacijentRepository;
 public class PacijentService {
 	
 	@Autowired
+	StavkaBodovanjaService SBservice;
+	
+	@Autowired
 	PacijentRepository pacijentRep;
 	@Autowired
 	ApotekaRepository apotekaRep;
 	@Autowired
 	LekRepository lekRep;
+	
+	@Transactional
+	public void dodajBodove(Integer idPac, TipStavkeBodovanja tip, Integer idLeka) {
+		Pacijent pac = pacijentRep.findOneById(idPac);
+		
+		StavkaBodovanja s = SBservice.find(tip, idLeka);
+		if(s ==null) {
+			return;
+		}
+		pac.setBrojPoena(pac.getBrojPoena() + s.getBrojPoena());
+		pacijentRep.save(pac);
+		return;
+	}
+	
 	
 	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public Pacijent findOne(Integer id) {

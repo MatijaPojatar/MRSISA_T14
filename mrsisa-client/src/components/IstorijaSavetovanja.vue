@@ -62,7 +62,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
+import Vue from "vue";
 
 export default {
   components: {},
@@ -78,6 +78,10 @@ export default {
     selectedPreporuceni: [],
     dialog: false,
   }),
+  props :{
+    pacijentId: Number,
+    fromDok: Boolean,
+  },
 
   computed: {
     ...mapGetters({
@@ -86,18 +90,33 @@ export default {
   },
 
   mounted() {
-    this.loadSavetovanja();
+    if(this.fromDok){
+      this.loadSavetovanjaDok();
+    }else{
+      this.loadSavetovanja();
+    }
   },
 
   methods: {
     loadSavetovanja() {
-      axios.get(`/savetovanje/istorija/pacijent/${this.korisnik.id}`).then((response) => {
+      Vue.axios.get(`/savetovanje/istorija/pacijent/${this.korisnik.id}`).then((response) => {
         this.savetovanja = response.data;
       });
     },
+    loadSavetovanjaDok() {
+      console.log("+============================");
+      Vue.axios
+        .get(`/savetovanje/istorija/pacijent/${this.pacijentId}`)
+        .then((response) => {
+          this.savetovanja = response.data;
+        });
+    },
+
 
     showIzvestaj(item) {
-      axios.get(`/savetovanje/preporuceni_lekovi/${item.id}`).then((response) => {
+      console.log(item);
+      this.selectedPreporuceni=[]
+      Vue.axios.get(`/savetovanje/preporuceni_lekovi/${item.id}`).then((response) => {
         const lekovi = [];
         response.data.forEach((element) => {
           lekovi.push({

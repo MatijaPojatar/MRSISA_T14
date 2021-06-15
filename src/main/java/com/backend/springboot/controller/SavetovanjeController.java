@@ -26,6 +26,7 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
@@ -35,6 +36,7 @@ import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
+import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.SavetovanjeService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -43,6 +45,10 @@ import com.backend.springboot.service.SavetovanjeService;
 public class SavetovanjeController {
 	@Autowired
 	private SavetovanjeService service;
+	
+	@Autowired
+	private PacijentService pacService;
+	
 	@Autowired
 	private LekService lekService;
 	@Autowired
@@ -118,6 +124,12 @@ public class SavetovanjeController {
 	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> sacuvajIzvestaj(@PathVariable Integer id,@RequestBody IzvestajDTO izvestaj){
 		Savetovanje s=service.findOne(id);
+		
+		if(s.getPacijent() != null) {
+			pacService.dodajBodove(s.getPacijent().getId(), TipStavkeBodovanja.SAVETOVANJE, null);
+		}
+		
+		
 		s.setIzvrsen(true);
 		s.setIzvestaj(izvestaj.getText());
 		for(LekUIzvestajuDTO lekDto: izvestaj.getLekovi()) {
@@ -168,7 +180,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/istorija/pacijent/{id}")
-	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	@PreAuthorize("hasAnyRole('FARMACEUT','DERMATOLOG','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllIstorijaForPacijent(@PathVariable Integer id) {		
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
 

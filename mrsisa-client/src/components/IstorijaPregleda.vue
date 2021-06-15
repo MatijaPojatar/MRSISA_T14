@@ -66,7 +66,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import axios from "axios";
+import Vue from "vue";
 
 export default {
   components: {},
@@ -83,6 +83,10 @@ export default {
     selectedPreporuceni: [],
     dialog: false,
   }),
+  props :{
+    pacijentId: Number,
+    fromDok: Boolean,
+  },
 
   computed: {
     ...mapGetters({
@@ -91,20 +95,34 @@ export default {
   },
 
   mounted() {
-    this.loadPregledi();
+    if(this.fromDok){
+      this.loadPreglediDok();
+    }else{
+      this.loadPregledi();
+    }
   },
 
   methods: {
     loadPregledi() {
-      axios
+      Vue.axios
         .get(`/pregled/istorija/pacijent/${this.korisnik.id}`)
+        .then((response) => {
+          this.pregledi = response.data;
+        });
+    },
+    loadPreglediDok() {
+      console.log("+============================");
+      Vue.axios
+        .get(`/pregled/istorija/pacijent/${this.pacijentId}`)
         .then((response) => {
           this.pregledi = response.data;
         });
     },
 
     showIzvestaj(item) {
-      axios.get(`/pregled/preporuceni_lekovi/${item.id}`).then((response) => {
+      console.log(item);
+      this.selectedPreporuceni=[]
+      Vue.axios.get(`/pregled/preporuceni_lekovi/${item.id}`).then((response) => {
         const lekovi = [];
         response.data.forEach((element) => {
           lekovi.push({

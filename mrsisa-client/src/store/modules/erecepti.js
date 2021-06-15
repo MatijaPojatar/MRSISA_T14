@@ -44,8 +44,8 @@ const actions = {
     commit("setCurrentErecept",erecept); 
   },
 
-  async getSnabdeveneApotekeAction({commit}, erecept){
-    const response = await Vue.axios.post("/apoteke/snabdeveneApoteke", erecept);
+  async getSnabdeveneApotekeAction({commit}, {erecept, idPac}){
+    const response = await Vue.axios.post("/apoteke/snabdeveneApoteke/"+ idPac, erecept);
     console.log(response.data);
     commit("setSnabdeveneApoteke", response.data);
   },

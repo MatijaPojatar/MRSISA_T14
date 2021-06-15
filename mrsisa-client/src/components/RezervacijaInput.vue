@@ -197,10 +197,13 @@ export default{
                 else if(response.data==="Greska"){
                     g=true;
                 }
+            }).catch(err=>{
+                console.log(err);
+                g=true;
             })
             if(g){
                 this.dialog=true;
-                this.message="Došlo je do greške!"
+                this.dialogMessage="Došlo je do greške!"
             }else{
               if(f){
                 f=await this.dobaviRezervaciju(f);

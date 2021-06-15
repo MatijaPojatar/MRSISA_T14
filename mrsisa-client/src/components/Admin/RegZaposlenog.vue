@@ -324,7 +324,6 @@ export default {
     },
 
     async onSubmitAAP(){
-      alert("Submit admina apoteke klik");
       if(this.izabranaApotekaId === -1){
         alert("Potrebno je odabrati apoteku gde je admin zaposlen!");
         return;
@@ -348,7 +347,6 @@ export default {
       try{
         ///////////////////////
         await this.aApSignUpAction(aapDTO);
-        alert("Uspesna registracija "+ this.ime + this.prezime);
         this.cancel();
         console.log(aapDTO);
       }catch(error){
@@ -386,7 +384,6 @@ export default {
        try{
         ///////////////////////
         await this.asSignUpAction(asDTO);
-        alert("Uspesna registracija "+ this.ime + this.prezime);
         this.cancel();
         console.log(asDTO);
       }catch(error){
@@ -401,7 +398,6 @@ export default {
     },
 
     async onSubmitDerm(){
-     alert("Submit derm klik");
      if(this.pocetakRadnogVremena === "" || this.krajRadnogVremena === ""){
        alert("Potreban unos radnog vremena");
        return;
@@ -428,7 +424,6 @@ export default {
       try{
         ///////////////////////
         await this.dermSignUpAction(dermDTO);
-        alert("Uspesna registracija "+ this.ime + this.prezime);
         this.cancel();
         console.log(dermDTO);
       }catch(error){
@@ -437,7 +432,6 @@ export default {
     },
 
     async onSubmitDob(){
-      alert("Sumbit Dobavljac klik");
       if(this.nazivPreduzeca === ""){
         alert("Potreban unos naziva preduzeca!");
         return;
@@ -461,7 +455,6 @@ export default {
       try{
         ///////////////////////
         await this.dobSignUpAction(dobDTO);
-        alert("Uspesna registracija "+ this.ime + this.prezime);
         this.cancel();
         console.log(dobDTO);
       }catch(error){

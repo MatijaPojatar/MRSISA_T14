@@ -27,6 +27,7 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.RezLekaPacijentDTO;
 import com.backend.springboot.dto.RezervacijaLekaDTO;
@@ -57,7 +58,7 @@ public class RezervacijaController {
 		
 		RezervacijaLeka rl=rezService.findOneActiveByCodeAndApoteka(code,apotekaId);
 		if(rl==null) {
-			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.OK);
 		}
 		if(!rl.getDatum().isAfter(LocalDate.now())) {
 			boolean uspeh = magacinService.vratiLekUMagacin(rl);
@@ -70,7 +71,7 @@ public class RezervacijaController {
 			}catch(Exception e){
 				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 			}
-			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Rezervacija je istekla.",HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
@@ -124,6 +125,11 @@ public class RezervacijaController {
 			Thread.currentThread().interrupt();
 			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
+		
+		if(rl.getPacijent() != null) {
+			pacijentService.dodajBodove(rl.getPacijent().getId(), TipStavkeBodovanja.LEK,rl.getLek().getId() );
+		}
+		
 		
 		try {
 			emailService.preuzimanjeRezervacije(rl);

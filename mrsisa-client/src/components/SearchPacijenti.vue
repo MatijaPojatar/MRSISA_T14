@@ -39,7 +39,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedUser" :farmaceut="false" :editable="false" :adminView="false" :key="componentKey"/>
+        <AccountView :user="selectedUser" :farmaceut="false" :editable="false" :adminView="false" :pacijentView="true" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -93,6 +93,7 @@ import AccountView from "./AccountView";
                 response.data.forEach(element => {
                     pacijenti.push({
                         ime: element.ime,
+                        id: element.id,
                         prezime: element.prezime,
                         brojTelefona: element.brojTelefona,
                         adresa: element.adresa,
@@ -110,6 +111,7 @@ import AccountView from "./AccountView";
             //let index=this.pacijenti.indexOf(user)
             this.selectedUser=Object.assign({}, this.selectedUser,{
                 ime:user.ime,
+                id: user.id,
                 prezime:user.prezime,
                 brojTelefona: user.brojTelefona,
                 adresa: user.adresa,

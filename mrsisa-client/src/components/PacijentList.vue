@@ -29,7 +29,7 @@
           Nalog pacijenta
         </v-card-title>
         <v-card-text>
-        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false" :adminView="false" :key="componentKey"/>
+        <AccountView :user="selectedUser" :farmaceut="farmaceut" :editable="false" :adminView="false" :pacijentView="true" :key="componentKey"/>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -91,6 +91,7 @@ export default {
                 response.data.forEach(element => {
                     pacijenti.push({
                         ime: element.ime,
+                        id: element.id,
                         prezime: element.prezime,
                         brojTelefona: element.brojTelefona,
                         adresa: element.adresa,
@@ -108,7 +109,16 @@ export default {
         showAccount(user){
             console.log(user);
             //let index=this.pacijenti.indexOf(user)
-            this.selectedUser=Object.assign({}, user);
+            this.selectedUser=Object.assign({}, this.selectedUser,{
+                ime:user.ime,
+                id: user.id,
+                prezime:user.prezime,
+                brojTelefona: user.brojTelefona,
+                adresa: user.adresa,
+                grad: user.grad,
+                drzava: user.drzava,
+                pol: user.pol,
+                });
             console.log(this.selectedUser);
             this.componentKey+=1;
             this.dialog=true;
