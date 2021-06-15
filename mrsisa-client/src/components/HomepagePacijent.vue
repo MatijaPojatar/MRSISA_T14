@@ -72,6 +72,16 @@
                         </div>
                     </v-list-item-title>
                 </v-list-item>
+                <v-list-item link @click="loyaltyView">
+                    <v-list-item-icon>
+                        <v-icon>mdi-shield-star-outline</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>
+                        <div class="wh">
+                            Loyalty program
+                        </div>
+                    </v-list-item-title>
+                </v-list-item>
                 <v-list-item link @click="rezLekoviView">
                     <v-list-item-icon>
                         <v-icon>mdi-medical-bag</v-icon>
@@ -236,6 +246,9 @@
             <v-container fluid v-if="showAllergy" :style="{width:'70vh'}">
                 <AddAllergy :pacijentId="user.id"/>
             </v-container>
+            <v-container fluid v-if="showLoyalty" :style="{width:'70vh'}">
+                <LoyaltyPacijent/>
+            </v-container>
             <v-container fluid v-if="showRezLekovi" :style="{width:'70vh'}">
                 <RezervisaniLekovi/>
             </v-container>
@@ -288,6 +301,7 @@ import Calendar from "./CalendarPacijent";
 import AccountView from "./AccountView";
 import PasswordSwitch from "./PasswordSwitch";
 import AddAllergy from "./AddAllergy";
+import LoyaltyPacijent from "./LoyaltyPacijent";
 import RezervisaniLekovi from "./RezervisaniLekovi"
 import RezervacijaLeka from "./RezervacijaLeka";
 import NoviPregled from "./NoviPregled";
@@ -311,6 +325,7 @@ export default {
         AccountView,
         PasswordSwitch,
         AddAllergy,
+        LoyaltyPacijent,
         RezervisaniLekovi,
         RezervacijaLeka,
         NoviPregled,
@@ -331,6 +346,7 @@ export default {
     showAccount: false,
     showPassword: false,
     showAllergy: false,
+    showLoyalty: false,
     showRezLekovi: false,
     showRezervacijaLeka: false,
     showNoviPregled: false,
@@ -362,6 +378,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -382,6 +399,7 @@ export default {
           this.showAccount = true;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -402,6 +420,7 @@ export default {
           this.showAccount = false;
           this.showPassword = true;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -422,6 +441,26 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = true;
+          this.showLoyalty = false;
+          this.showRezLekovi = false;
+          this.showRezervacijaLeka = false;
+          this.showNoviPregled = false;
+          this.showNovoSavetovanje = false;
+          this.showIstorijaPregleda = false;
+          this.showIstorijaSavetovanja = false;
+          this.showZalbaApoteka = false;
+          this.showZalbaFarmaceut = false;
+          this.showZalbaDermatolog = false;
+          this.showZalbePacijenta = false;
+          this.showAkcije = false;
+          this.showApoteke = false;
+      },
+      loyaltyView(){
+          this.showCalendar = false;
+          this.showAccount = false;
+          this.showPassword = false;
+          this.showAllergy = false;
+          this.showLoyalty = true;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -440,6 +479,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = true;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -460,6 +500,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = true;
           this.showNoviPregled = false;
@@ -480,6 +521,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = true;
@@ -500,6 +542,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -519,6 +562,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -538,6 +582,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -558,6 +603,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -578,6 +624,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -598,6 +645,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -618,6 +666,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -638,6 +687,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -658,6 +708,7 @@ export default {
           this.showAccount = false;
           this.showPassword = false;
           this.showAllergy = false;
+          this.showLoyalty = false;
           this.showRezLekovi = false;
           this.showRezervacijaLeka = false;
           this.showNoviPregled = false;
@@ -676,6 +727,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showLoyalty = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
@@ -692,6 +744,7 @@ export default {
           this.showAccount=false;
           this.showPassword=false;
           this.showAllergy=false;
+          this.showLoyalty = false;
           this.showNoviPregled = false;
           this.showNovoSavetovanje = false;
           this.showZalbaApoteka = false;
