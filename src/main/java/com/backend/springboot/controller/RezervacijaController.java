@@ -139,6 +139,7 @@ public class RezervacijaController {
 		try {
 			emailService.preuzimanjeRezervacije(rl);
 		} catch (MailException | InterruptedException e) {
+			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		
