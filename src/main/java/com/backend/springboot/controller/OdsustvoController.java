@@ -177,5 +177,17 @@ public class OdsustvoController {
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
+	
+//	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+//	@PutMapping("/dermatolog/zaOdbijanje/{zahtevId}")
+//	public ResponseEntity<Boolean> statusOdmorDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
+//		OdsustvoDermatolog odsustvo = odDermService.odbij(zahtevId, dto.getRazlog());
+//		try {
+//			emailService.odbijanjeOdsustvaDermatolog(odsustvo);
+//		} catch (MailException | InterruptedException e) {
+//			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+//		}
+//		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+//	}
 
 }

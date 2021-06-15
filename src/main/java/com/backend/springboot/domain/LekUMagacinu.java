@@ -29,7 +29,8 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql
 	    = "UPDATE lek_magacin "
 	    + "SET obrisan = true "
-	    + "WHERE id = ?")
+	    + "WHERE id = ? "
+	    + "AND version=?")
 @Where(clause = "obrisan = false")
 public class LekUMagacinu {
 	@Id
