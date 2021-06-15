@@ -20,17 +20,29 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.AdministratorSistema;
+import com.backend.springboot.domain.Kategorija;
 import com.backend.springboot.service.EmailService;
+import com.backend.springboot.service.KategorijaService;
 import com.backend.springboot.domain.Role;
+import com.backend.springboot.domain.StavkaBodovanja;
 import com.backend.springboot.dto.AdministratorSistemaDTO;
+import com.backend.springboot.dto.KategorijaDTO;
+import com.backend.springboot.dto.StavkaBodovanjaDTO;
 import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.AdministratorSistemaService;
 import com.backend.springboot.service.RoleService;
+import com.backend.springboot.service.StavkaBodovanjaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
 @RequestMapping("/adminSistema")
 public class AdministratorSistemaController {
+	
+	@Autowired
+	private KategorijaService kategorijaService;
+	
+	@Autowired
+	private StavkaBodovanjaService stavkeService;
 	
 	@Autowired
 	private AdministratorSistemaService service;
@@ -40,6 +52,52 @@ public class AdministratorSistemaController {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	
+	@GetMapping("/kategorija")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<List<KategorijaDTO>> getKat(){
+
+		List<Kategorija> sve = kategorijaService.findAll();
+		List<KategorijaDTO> dtos = new ArrayList<KategorijaDTO>();
+		for(Kategorija k : sve) {
+			dtos.add(new KategorijaDTO(k));
+		}
+		
+		return new ResponseEntity<List<KategorijaDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@PostMapping("/kategorija")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<KategorijaDTO> createKat(@RequestBody KategorijaDTO dto){
+		
+		Kategorija kat = new Kategorija(dto);
+	    kat = kategorijaService.save(kat);
+		
+		return new ResponseEntity<KategorijaDTO>(new KategorijaDTO(kat), HttpStatus.OK);
+	}
+	
+	@PostMapping("/stavkaBodovanja")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<StavkaBodovanjaDTO> createStavka(@RequestBody StavkaBodovanjaDTO dto){
+		StavkaBodovanja s = stavkeService.save(new StavkaBodovanja(dto));
+		
+		return new ResponseEntity<StavkaBodovanjaDTO>(new StavkaBodovanjaDTO(s), HttpStatus.OK);
+	}
+	
+	@PutMapping("/stavkaBodovanja")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<StavkaBodovanjaDTO> updateStavka(@RequestBody StavkaBodovanjaDTO dto){
+		StavkaBodovanja s = stavkeService.save(new StavkaBodovanja(dto));
+		
+		return new ResponseEntity<StavkaBodovanjaDTO>(new StavkaBodovanjaDTO(s), HttpStatus.OK);
+	}
+	
+	@GetMapping("/poeni/{tip}/{id}")
+	public ResponseEntity<Integer> getPopust(@PathVariable String tip, @PathVariable Integer id){
+		StavkaBodovanja s = stavkeService.find(tip.toUpperCase(), id);
+		return new ResponseEntity<Integer>(s.getBrojPoena(), HttpStatus.OK);
+	}
 	
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('ADMIN_SISTEMA')")

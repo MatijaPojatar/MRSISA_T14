@@ -39,9 +39,10 @@
 
             <div v-if="izmena">
               <v-date-picker 
-              :min="new Date().toISOString().substr(0, 10)"
               :readonly="!izmena"
-              v-model="rokDatum"></v-date-picker>
+              v-model="rokDatum"
+              :min="new Date().toISOString().substr(0, 10)"
+              ></v-date-picker>
 
             
               <v-time-picker

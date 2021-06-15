@@ -12,6 +12,7 @@ import termini from './modules/termini'
 import akcijePromocije from './modules/akcijePromocije'
 import rezervacije from './modules/rezervacije'
 import erecepti from './modules/erecepti'
+import loyalty from './modules/loyalty'
 
 
 Vue.use(Vuex)
@@ -31,7 +32,8 @@ const modules ={
   termini,
   akcijePromocije,
   rezervacije,
-  erecepti
+  erecepti,
+  loyalty
 }
 
 export default new Vuex.Store({

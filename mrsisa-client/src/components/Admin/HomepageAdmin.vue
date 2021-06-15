@@ -130,6 +130,15 @@
                 </div></v-list-item-title>
           </v-list-item>
 
+           <v-list-item link @click="kategorije">
+            <v-list-item-icon>
+              <v-icon>mdi-seal</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title><div class="wh">
+                    Kategorije
+                </div></v-list-item-title>
+          </v-list-item>
+
 
         </v-list>
 
@@ -187,6 +196,10 @@
         <SifrarnikLekova />
       </v-container>
 
+      <v-container fluid v-if="showKreirajKategoriju" :style="{width:'70vh'}">
+        <KreirajKategoriju />
+      </v-container>
+
     </v-main>
       </v-app>
 </template>
@@ -202,7 +215,8 @@ import ZalbeOdgovor from "./ZalbeOdgovor";
 import ZalbeAdmina from "./ZalbeAdmina";
 import TableOdsustva from "../TableOdsustva";
 import IzmenaLeka from "./IzmenaLeka";
-import SifrarnikLekova from "./SifrarnikLekova"
+import SifrarnikLekova from "./SifrarnikLekova";
+import KreirajKategoriju from "./KreirajKategoriju";
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -218,7 +232,8 @@ export default {
       ZalbeAdmina,
       TableOdsustva,
       IzmenaLeka,
-      SifrarnikLekova
+      SifrarnikLekova,
+      KreirajKategoriju
     },
     data: () => ({
     showAccount: false,
@@ -231,7 +246,7 @@ export default {
     showOdsustva: false,
     showIzmeniLek: false,
     showSviLekovi : false,
-    
+    showKreirajKategoriju: false,
   }),
   mounted(){
     console.log(window.location.pathname) //?
@@ -249,6 +264,20 @@ export default {
       resetStore: "resetStore"
     }),
 
+    kategorije(){
+      this.showAccount=false;
+      this.showPassword=false;
+      this.showKreirajLek = false;
+      this.showRegApoteku = false;
+      this.showRegZaposlenog = false;
+      this.showZalbeOdgovor = false;
+      this.showMojeZalbe = false;
+      this.showOdsustva = false;
+      this.showIzmeniLek = false;
+      this.showSviLekovi = false;
+      this.showKreirajKategoriju = true;
+    },
+
     accountView(){
       this.showAccount=true;
       this.showPassword=false;
@@ -260,6 +289,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     changePassword(){
@@ -273,6 +303,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     kreirajLek() {
@@ -286,6 +317,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     izmeniLek(){
@@ -299,6 +331,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = true;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     registrujApoteku(){
@@ -312,6 +345,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     registrujZaposlenog(){
@@ -325,6 +359,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     odgovoriNaZalbe(){
@@ -338,6 +373,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     mojeZalbe(){
@@ -351,6 +387,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     odsustvaView(){
@@ -364,6 +401,7 @@ export default {
       this.showOdsustva = true;
       this.showIzmeniLek = false;
       this.showSviLekovi = false;
+      this.showKreirajKategoriju = false;
     },
 
     sviLekovi(){
@@ -377,6 +415,7 @@ export default {
       this.showOdsustva = false;
       this.showIzmeniLek = false;
       this.showSviLekovi = true;
+      this.showKreirajKategoriju = false;
     },
 
     onLogout(){

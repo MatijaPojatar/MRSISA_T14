@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,6 +28,10 @@ public class Pacijent extends Osoba {
 	private Integer penali;
 	@OneToMany(mappedBy = "pacijent", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Termin> termini=new ArrayList<Termin>();
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Kategorija kategorija;
+	
 	
 	@ManyToMany
 	@JoinTable(name = "pacijent_akcije", joinColumns = @JoinColumn(name = "pacijent_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "apoteka_id", referencedColumnName = "id"))
@@ -79,6 +84,14 @@ public class Pacijent extends Osoba {
 		this.setPenali(p.getPenali());
 		this.setPromenjenaLozinka(p.getPromenjenaLozinka());
 		this.setEnabled(p.getEnabled());
+	}
+
+	public Kategorija getKategorija() {
+		return kategorija;
+	}
+
+	public void setKategorija(Kategorija kategorija) {
+		this.kategorija = kategorija;
 	}
 
 	public List<ERecept> getErecepti() {
