@@ -171,7 +171,6 @@ insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (50, 5, 3
 
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (50000, '2021-05-25', 0, 11, 1);
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (58900, '2021-05-25', 2, 11, 2);
-insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (65000, '2021-05-20', 2, 11, 2);
 
 
 insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-05-28', '2021-05-31', 2, 1, 1);
@@ -187,7 +186,7 @@ insert into akcije(apoteka_id, opis, pocetak_vazenja, kraj_vazenja) values(1, '-
 
 insert into pacijent_akcije(pacijent_id, apoteka_id) values(2, 2);
 
-insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,pacijent_id,version) values ('', false, '2021-05-20 12:00', '2021-05-20 12:45', 1,2,1);
+insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,pacijent_id,version) values ('', false, '2021-06-20 12:00', '2021-06-20 12:45', 1,2,1);
 insert into pregledi(id, dermatolog_id, cena) values (13, 3, 2500);
 insert into termini(izvestaj, izvrsen, pocetak, kraj, apoteka_id,version) values ('', false, '2021-07-27 13:10', '2021-07-27 14:30', 1,1);
 insert into pregledi(id, dermatolog_id, cena) values (14, 3, 3000);

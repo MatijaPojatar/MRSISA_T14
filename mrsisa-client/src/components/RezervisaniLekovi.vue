@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-expansion-panels style="width: 600px">
-      <v-expansion-panel v-for="r in rezervacije" :key="r.code" @click = "PanelSelected(r)">>
+      <v-expansion-panel v-for="r in rezervacije" :key="r.code" @click="PanelSelected(r)">
         <v-expansion-panel-header>
           Rezervacija - {{ r.code }}
         </v-expansion-panel-header>
@@ -20,12 +20,34 @@
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+    <v-dialog
+      v-model="dialog"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Greška
+        </v-card-title>
+        <v-card-text>Nemoguće je otkazati rezervaciju leka čiji rok preuzimanja je za manje od 24h.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialog"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import Vue from "vue";
+import axios from "axios";
 
 export default {
   name: "RezervisaniLekovi",
@@ -33,9 +55,10 @@ export default {
   components: {},
 
   data: () => ({
-        selektovan: "",
-        apotekaId: "",
-    }),
+    selektovan: {},
+    apotekaId: "",
+    dialog: false
+  }),
 
   computed: {
     ...mapGetters({
@@ -54,19 +77,23 @@ export default {
     }),
 
     PanelSelected(r){
-      this.selektovan= r.code;
-      this.apotekaId=r.apotekaId;
-      console.log(this.apotekaId);
+      this.selektovan = r;
+      this.apotekaId = r.apotekaId;
     },
 
     otkazi(){
-      Vue.axios.get(`/rezervacija/otkazi/${this.selektovan}`, {params:{apotekaId:this.apotekaId}}).then(response => {
-                      console.log(response.data);
-                      location.reload();
-                      
-                   });
-      location.reload();
-    }
+      var oneDay = new Date().getTime() + (24 * 60 * 60 * 1000)
+      if (oneDay > Date.parse(this.selektovan.datum)) {
+        this.dialog = true
+      } else {
+        axios.get(`/rezervacija/otkazi/${this.selektovan.code}`, {params:{apotekaId:this.apotekaId}});
+        location.reload();
+      }
+    },
+
+    endDialog(){
+      this.dialog = false;
+    },
   },
 };
 </script>
