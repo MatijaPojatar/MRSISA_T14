@@ -16,6 +16,11 @@ public class KategorijaService {
 	@Autowired
 	private KategorijaRepository katRepo;
 	
+	public void deleteById(Integer id) {
+		katRepo.deleteById(id);
+		return;
+	}
+	
 	public Kategorija findById(Integer id) {
 		return katRepo.findOneById(id);
 	}

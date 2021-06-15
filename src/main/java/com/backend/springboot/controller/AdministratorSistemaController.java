@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,10 +22,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.backend.springboot.domain.AdministratorApoteke;
 import com.backend.springboot.domain.AdministratorSistema;
 import com.backend.springboot.domain.Kategorija;
+import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.service.EmailService;
 import com.backend.springboot.service.KategorijaService;
 import com.backend.springboot.domain.Role;
 import com.backend.springboot.domain.StavkaBodovanja;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.dto.AdministratorSistemaDTO;
 import com.backend.springboot.dto.KategorijaDTO;
 import com.backend.springboot.dto.StavkaBodovanjaDTO;
@@ -32,6 +35,7 @@ import com.backend.springboot.exception.ResourceConflictException;
 import com.backend.springboot.service.AdministratorSistemaService;
 import com.backend.springboot.service.RoleService;
 import com.backend.springboot.service.StavkaBodovanjaService;
+import com.backend.springboot.service.PacijentService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -48,10 +52,38 @@ public class AdministratorSistemaController {
 	private AdministratorSistemaService service;
 	
 	@Autowired
+	private PacijentService pacijentService;
+	
+	@Autowired
 	private RoleService roleService;
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@GetMapping("/bodovanje/{tip}/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<StavkaBodovanjaDTO> getBodovanje(@PathVariable String tip, @PathVariable Integer id){
+
+		
+		TipStavkeBodovanja tipp = TipStavkeBodovanja.SAVETOVANJE;
+		if(tip.toLowerCase().equals("pregled")) {
+			tipp = TipStavkeBodovanja.PREGLED;
+		}else if(tip.toLowerCase().equals("lek")) {
+			tipp = TipStavkeBodovanja.LEK;
+		}
+		
+		
+		StavkaBodovanja s = stavkeService.find(tipp, id);
+		
+		if(s == null) {
+			s = new StavkaBodovanja();
+			s.setBrojPoena(0);
+			s.setIdLeka(0);
+			s.setTip(tipp);
+		}
+		
+		return new ResponseEntity<StavkaBodovanjaDTO>(new StavkaBodovanjaDTO(s), HttpStatus.OK);
+	}
 	
 	
 	@GetMapping("/kategorija")
@@ -67,6 +99,27 @@ public class AdministratorSistemaController {
 		return new ResponseEntity<List<KategorijaDTO>>(dtos, HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/kategorija/{id}")
+	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
+	public ResponseEntity<String> delKat(@PathVariable Integer id){
+
+		kategorijaService.deleteById(id);
+		
+		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('PACIJENT')")
+	@GetMapping("/kategorija/pacijent/{id}")
+	public ResponseEntity<KategorijaDTO> getKat(@PathVariable Integer id){
+
+		Pacijent pac = pacijentService.findOne(id);
+		
+		Kategorija kat = kategorijaService.getByBrojPoena(pac.getBrojPoena());
+		
+		return new ResponseEntity<KategorijaDTO>(new KategorijaDTO(kat),HttpStatus.OK);
+	}
+	
+	
 	@PostMapping("/kategorija")
 	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<KategorijaDTO> createKat(@RequestBody KategorijaDTO dto){
@@ -80,6 +133,12 @@ public class AdministratorSistemaController {
 	@PostMapping("/stavkaBodovanja")
 	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
 	public ResponseEntity<StavkaBodovanjaDTO> createStavka(@RequestBody StavkaBodovanjaDTO dto){
+		
+		if(!dto.getTip().equals(TipStavkeBodovanja.LEK)) {
+			stavkeService.deleteByType(dto.getTip());
+		}
+		
+		
 		StavkaBodovanja s = stavkeService.save(new StavkaBodovanja(dto));
 		
 		return new ResponseEntity<StavkaBodovanjaDTO>(new StavkaBodovanjaDTO(s), HttpStatus.OK);
@@ -95,7 +154,7 @@ public class AdministratorSistemaController {
 	
 	@GetMapping("/poeni/{tip}/{id}")
 	public ResponseEntity<Integer> getPopust(@PathVariable String tip, @PathVariable Integer id){
-		StavkaBodovanja s = stavkeService.find(tip.toUpperCase(), id);
+		StavkaBodovanja s = stavkeService.find(TipStavkeBodovanja.valueOf(tip.toUpperCase()), id);
 		return new ResponseEntity<Integer>(s.getBrojPoena(), HttpStatus.OK);
 	}
 	

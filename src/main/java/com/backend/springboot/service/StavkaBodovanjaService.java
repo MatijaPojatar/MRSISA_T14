@@ -20,9 +20,9 @@ public class StavkaBodovanjaService {
 		return repo.save(s);
 	}
 
-	public StavkaBodovanja find(String tip, Integer id) {
+	public StavkaBodovanja find(TipStavkeBodovanja tipStavkeBodovanja, Integer id) {
 		for(StavkaBodovanja s : repo.findAll()){
-			if(s.getTip().equals(tip)) {
+			if(s.getTip().equals(tipStavkeBodovanja)) {
 				if(s.getTip().equals(TipStavkeBodovanja.LEK)) {
 					if(s.getIdLeka().equals(id)) {
 						return s;
@@ -33,5 +33,15 @@ public class StavkaBodovanjaService {
 			}
 		}
 		return null;
+	}
+
+	public void deleteByType(TipStavkeBodovanja tip) {
+		for(StavkaBodovanja s : repo.findAll()) {
+			if(s.getTip().equals(tip)) {
+				repo.deleteById(s.getId());
+				return;
+			}
+		}
+		return;
 	}
 }

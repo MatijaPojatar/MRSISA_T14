@@ -16,4 +16,5 @@ public interface KategorijaRepository extends JpaRepository<Kategorija, Integer>
 	
 	Kategorija save(Kategorija kat);
 	
+	
 	}

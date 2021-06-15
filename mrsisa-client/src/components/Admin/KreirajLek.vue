@@ -99,6 +99,13 @@
             label="Napomena"
           ></v-textarea>
 
+          <v-text-field
+          required
+          v-model="brPoena"
+          label="Broj poena"
+          type="number"
+          />
+
           <v-container>
             <v-row>
               <h4>Odabrani zamenski lekovi</h4>
@@ -150,9 +157,10 @@
     </v-card-text>
 
     <v-card-actions>
+      
+      <v-btn color="red" dark @click="cancel">Odustani</v-btn>
       <v-spacer></v-spacer>
-      <v-btn @click="cancel">Odustani</v-btn>
-      <v-btn @click="onSubmit" :disabled="!valid">Kreiraj</v-btn>
+      <v-btn color="green" dark @click="onSubmit" :disabled="!valid">Kreiraj</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -173,6 +181,8 @@ export default {
     proizvodjac: "",
 
     rezimIzdavanja: "",
+
+    brPoena: 0,
 
     vrsta: "",
     oblik: "",
@@ -206,7 +216,8 @@ export default {
       getRezimiIzdavanjaAction: "lekovi/getRezimiIzdavanjaAction",
       getLekoviAction: "lekovi/getLekoviAction",
       removeLekAction: "lekovi/removeLekAction",
-      addZamenskeLekoveAction: "lekovi/addZamenskeLekoveAction"
+      addZamenskeLekoveAction: "lekovi/addZamenskeLekoveAction",
+      addStavkaAction: "loyalty/addStavkaAction",
     }),
 
     async onSubmit() {
@@ -226,13 +237,22 @@ export default {
         for( index in this.zamenskiLekovi){
           zamenskiIds.push(this.zamenskiLekovi[index].id);
         }
+
+        
         
         let kreiraniLek;
         try{
           await this.addLekAction(lekInfo);
           kreiraniLek = this.currentLek;
-          this.addZamenskeLekoveAction({ id: kreiraniLek.id, zamenski: zamenskiIds} );
+          await this.addZamenskeLekoveAction({ id: kreiraniLek.id, zamenski: zamenskiIds} );
        
+          let stavka= {
+            brojPoena: this.brPoena,
+            idLeka: kreiraniLek.id,
+            tip: 0
+          }
+
+          await this.addStavkaAction(stavka);
         }catch(e){
           alert("Greska pri kreiranju leka ilidodavanjem zamenskih");
           this.removeLekAction(kreiraniLek.id);  //istestirati brisanje

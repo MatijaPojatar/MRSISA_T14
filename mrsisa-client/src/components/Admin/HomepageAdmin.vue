@@ -135,7 +135,7 @@
               <v-icon>mdi-seal</v-icon>
             </v-list-item-icon>
             <v-list-item-title><div class="wh">
-                    Kategorije
+                    Loyalty
                 </div></v-list-item-title>
           </v-list-item>
 
