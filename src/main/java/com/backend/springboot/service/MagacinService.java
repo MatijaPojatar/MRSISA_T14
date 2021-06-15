@@ -110,7 +110,7 @@ public class MagacinService {
 				if (m != null) {
 					try {
 					m.setKolicina(m.getKolicina() + lek.getKolicina());
-					Thread.sleep(10000);
+					//Thread.sleep(10000);
 					lekUMagacinuRep.save(m);
 					}
 					catch(Exception e){
@@ -145,7 +145,7 @@ public class MagacinService {
 			Magacin m=magacinRep.findOneByApotekaId(rl.getApoteka().getId());
 			LekUMagacinu lek=preuzmiJedanLekApoteke(rl.getLek().getId(), rl.getApoteka().getId());
 			izmeniLekUMagacinu(lek.getCena(), lek.getKolicina()+rl.getKolicina(), rl.getLek().getId(), rl.getApoteka().getId());
-			Thread.sleep(10000);
+			//Thread.sleep(10000);
 			magacinRep.save(m);
 			return true;
 		}catch(Exception e) {

@@ -130,25 +130,22 @@ public class OdsustvoController {
 		return new ResponseEntity<List<OdsustvoDermatologDTO>>(dtos,HttpStatus.OK);
 	}
 	
-	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
-	@PutMapping("/farmaceut/zaOdobrenje/{zahtevId}")
-	public ResponseEntity<Boolean> odobriFarmaceut(@PathVariable Integer zahtevId){
-		OdsustvoFarmaceut odsustvo = odFarmService.odobri(zahtevId);
-		try {
-			emailService.odobravanjeOdsustvaFarmaceut(odsustvo);
-		} catch (MailException | InterruptedException e) {
-			Thread.currentThread().interrupt();
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
-	}
+
 	
 	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
-	@PutMapping("/dermatolog/zaOdobrenje/{zahtevId}")
-	public ResponseEntity<Boolean> odobriDermatolog(@PathVariable Integer zahtevId){
-		OdsustvoDermatolog odsustvo = odDermService.odobri(zahtevId);
+	@PutMapping("/dermatolog/promeniStatusOdmora/{zahtevId}")
+	public ResponseEntity<Boolean> statusOdmorDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
+		OdsustvoDermatolog odsustvo = odDermService.promeniStatus(zahtevId, dto);
+		if(odsustvo == null) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
 		try {
-			emailService.odobravanjeOdsustvaDermatolog(odsustvo);
+			if(odsustvo.getStatus() == StatusZahtevaZaOdmor.ODBIJEN) {
+				emailService.odbijanjeOdsustvaDermatolog(odsustvo);
+			}else if(odsustvo.getStatus() == StatusZahtevaZaOdmor.PRIHVACEN){
+				emailService.odobravanjeOdsustvaDermatolog(odsustvo);
+			}
+			
 		} catch (MailException | InterruptedException e) {
 			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
@@ -157,41 +154,24 @@ public class OdsustvoController {
 	}
 	
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
-	@PutMapping("/farmaceut/zaOdbijanje/{zahtevId}")
-	public ResponseEntity<Boolean> odbijFarmaceut(@PathVariable Integer zahtevId, @RequestBody OdsustvoFarmaceutDTO dto){
-		OdsustvoFarmaceut odsustvo = odFarmService.odbij(zahtevId, dto.getRazlog());
+	@PutMapping("/farmaceut/promeniStatusOdmora/{zahtevId}")
+	public ResponseEntity<Boolean> statusOdmorFarmaceut(@PathVariable Integer zahtevId, @RequestBody OdsustvoFarmaceutDTO dto){
+		OdsustvoFarmaceut odsustvo = odFarmService.promeniStatus(zahtevId, dto);
+		if(odsustvo == null) {
+			return new ResponseEntity<Boolean>(false,HttpStatus.BAD_REQUEST);
+		}
 		try {
-			emailService.odbijanjeOdsustvaFarmaceut(odsustvo);
+			if(odsustvo.getStatus() == StatusZahtevaZaOdmor.ODBIJEN) {
+				emailService.odbijanjeOdsustvaFarmaceut(odsustvo);
+			}else if(odsustvo.getStatus() == StatusZahtevaZaOdmor.PRIHVACEN){
+				emailService.odobravanjeOdsustvaFarmaceut(odsustvo);
+			}
+			
 		} catch (MailException | InterruptedException e) {
 			Thread.currentThread().interrupt();
 			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 		}
 		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
 	}
-	
-	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
-	@PutMapping("/dermatolog/zaOdbijanje/{zahtevId}")
-	public ResponseEntity<Boolean> odbijDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
-		OdsustvoDermatolog odsustvo = odDermService.odbij(zahtevId, dto.getRazlog());
-		try {
-			emailService.odbijanjeOdsustvaDermatolog(odsustvo);
-		} catch (MailException | InterruptedException e) {
-			Thread.currentThread().interrupt();
-			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-		}
-		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
-	}
-	
-//	@PreAuthorize("hasRole('ADMIN_SISTEMA')")
-//	@PutMapping("/dermatolog/zaOdbijanje/{zahtevId}")
-//	public ResponseEntity<Boolean> statusOdmorDermatolog(@PathVariable Integer zahtevId, @RequestBody OdsustvoDermatologDTO dto){
-//		OdsustvoDermatolog odsustvo = odDermService.odbij(zahtevId, dto.getRazlog());
-//		try {
-//			emailService.odbijanjeOdsustvaDermatolog(odsustvo);
-//		} catch (MailException | InterruptedException e) {
-//			System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
-//		}
-//		return new ResponseEntity<Boolean>(true,HttpStatus.OK);
-//	}
 
 }

@@ -42,17 +42,69 @@ public class OdsustvoDermatologService {
 		return rep.getOne(id);
 	}
 	
-	public OdsustvoDermatolog odobri(Integer id) {
-		OdsustvoDermatolog o = rep.getOne(id);
-		o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
-		return rep.save(o);
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
+	public OdsustvoDermatolog odobri(Integer id, OdsustvoDermatologDTO odsustvo) {
+		try {
+			List<Pregled> checkList;
+			try {
+				checkList=preRep.findInRangeForDermatolog(id,odsustvo.getPocetak(),odsustvo.getKraj());
+			}catch(Exception e) {
+				return null;
+			}
+			int counter=0;
+			for(Pregled p:checkList) {
+				if(!p.isIzvrsen()) {
+					counter++;
+				}
+			}
+			if(counter!=0) {
+				return null;
+			}
+			
+			OdsustvoDermatolog o = rep.findOneById(id);
+			if( o.getStatus() != StatusZahtevaZaOdmor.OBRADA) {
+				
+				return null;
+			}
+			o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
+			
+			rep.save(o);
+			return o;
+		}
+		catch(Exception e) {
+			return null;
+		}
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
 	public OdsustvoDermatolog odbij(Integer id, String razlog) {
-		OdsustvoDermatolog o = rep.getOne(id);
-		o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
-		o.setRazlog(razlog);
-		return rep.save(o);
+		try {
+			OdsustvoDermatolog o = rep.findOneById(id);
+			if( o.getStatus() != StatusZahtevaZaOdmor.OBRADA) {
+				
+				return null;
+			}
+			o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
+			o.setRazlog(razlog);
+			
+			rep.save(o);
+			return o;
+		}catch(Exception e) {
+			return null;
+		}
+		
+	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public OdsustvoDermatolog promeniStatus(Integer id,OdsustvoDermatologDTO odsustvo) {
+		if(odsustvo.getStatus() == StatusZahtevaZaOdmor.ODBIJEN) {
+			return odbij(id, odsustvo.getRazlog());
+		}else if(odsustvo.getStatus() == StatusZahtevaZaOdmor.PRIHVACEN){
+			return odobri(id, odsustvo);
+		}
+		return null;
+		
+		
 	}
 	
 	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
@@ -101,4 +153,7 @@ public class OdsustvoDermatologService {
 		return true;
 		
 	}
+	
+	
+	
 }
