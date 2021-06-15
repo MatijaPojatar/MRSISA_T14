@@ -12,9 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
-import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
-import com.backend.springboot.domain.Savetovanje;
 
 public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarmaceut, Integer> {
 	
@@ -29,4 +27,6 @@ public interface OdsustvoFarmaceutRepository extends JpaRepository<OdsustvoFarma
 	@Query("select o from OdsustvoFarmaceut o where o.apoteka.id = :id and o.status=2 and o.pocetak >= :start")
 	public List<OdsustvoFarmaceut> findAllNotOdobrenInFutureApoteka(@Param("id") Integer id,@Param("start") LocalDateTime start);
 
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	public OdsustvoFarmaceut findOneById(Integer id);
 }
