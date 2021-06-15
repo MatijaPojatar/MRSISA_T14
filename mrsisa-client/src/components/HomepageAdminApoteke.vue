@@ -33,14 +33,7 @@
           nav
           dense
         >
-          <v-list-item link >
-            <v-list-item-icon>
-              <v-icon>mdi-view-dashboard</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title><div class="wh">
-                    Dashboard
-                </div></v-list-item-title>
-          </v-list-item>
+          
 
           <v-list-item link  @click="accountView">
             <v-list-item-icon>
