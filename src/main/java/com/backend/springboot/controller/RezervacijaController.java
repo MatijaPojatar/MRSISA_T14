@@ -27,6 +27,7 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.RezLekaPacijentDTO;
 import com.backend.springboot.dto.RezervacijaLekaDTO;
@@ -124,6 +125,11 @@ public class RezervacijaController {
 			Thread.currentThread().interrupt();
 			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
+		
+		if(rl.getPacijent() != null) {
+			pacijentService.dodajBodove(rl.getPacijent().getId(), TipStavkeBodovanja.LEK,rl.getLek().getId() );
+		}
+		
 		
 		try {
 			emailService.preuzimanjeRezervacije(rl);

@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.ERecept;
+import com.backend.springboot.domain.Kategorija;
+import com.backend.springboot.domain.LekERecepta;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
@@ -30,6 +32,7 @@ import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.ParametriPretrageApoteke;
 import com.backend.springboot.domain.ParametriPretrageFarmaceuta;
 import com.backend.springboot.domain.StatusErecepta;
+import com.backend.springboot.domain.TipStavkeBodovanja;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.ApotekaCenaDTO;
 import com.backend.springboot.dto.ApotekaCreateDTO;
@@ -42,8 +45,10 @@ import com.backend.springboot.dto.UpitDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.EReceptService;
 import com.backend.springboot.service.EmailService;
+import com.backend.springboot.service.KategorijaService;
 import com.backend.springboot.service.MagacinService;
 import com.backend.springboot.service.PacijentService;
+import com.backend.springboot.service.StavkaBodovanjaService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
 @RestController
@@ -59,14 +64,17 @@ public class ApotekaController {
 	private PacijentService pacijentService;
 	
 	@Autowired
+	private KategorijaService katService;
+	
+	@Autowired
 	private EReceptService ereceptService;
 	
 	@Autowired
 	private EmailService emailService;
 	
 	@PreAuthorize("hasRole('PACIJENT')")
-	@PostMapping("/snabdeveneApoteke")
-	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto){
+	@PostMapping("/snabdeveneApoteke/{id}")
+	public ResponseEntity<List<ApotekaCenaDTO>> getSnabdeveneApoteke(@RequestBody EReceptDTO dto, @PathVariable Integer id){
 		
 		List<ApotekaCenaDTO> result = new ArrayList<ApotekaCenaDTO>();
 		//za svaku apoteku
@@ -75,7 +83,17 @@ public class ApotekaController {
 			if(cena == 0.0) {
 				continue;
 			} 
+			
+			
+			Pacijent pac = pacijentService.findOne(id);
+			Kategorija kat = katService.getByBrojPoena(pac.getBrojPoena());
+			
+			Double procenat = kat.getProcenat();
+			
+			cena = cena - procenat/100 * cena;
+			
 			ApotekaCenaDTO ACdto = new ApotekaCenaDTO(a.getNaziv(), a.getId(), cena);
+			
 			result.add(ACdto);
 		}
 		
@@ -96,6 +114,14 @@ public class ApotekaController {
 		ereceptService.save(erecept);
 		
 		Pacijent pac = pacijentService.findOne(dto.getPacijentId());
+	
+		if(erecept.getPacijent() != null) {
+			for(LekERecepta lekER : erecept.getLekovi()) {
+				pacijentService.dodajBodove(erecept.getPacijent().getId(), TipStavkeBodovanja.LEK, lekER.getLek().getId() );
+			}
+		}
+		
+		
 		emailService.potvrdaKupovine(dto, pac, a.getNaziv());//mail o potvrdi izdavanja leka preko eRecepta i ažurira se stanje svih izdatih lekova u odabranoj apoteci. 
 		return new ResponseEntity<String>("Lekovi uspešno kupljeni!", HttpStatus.OK);
 	}

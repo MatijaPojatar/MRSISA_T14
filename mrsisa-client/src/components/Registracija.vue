@@ -1,19 +1,21 @@
 <template>
 <div>
   <v-card class="mt-16 mx-auto" min-width="50%" outlined
-  width="700" app>
+  width="900" app>
     <v-card-title class="justify-center">Registracija</v-card-title>
     <v-form ref="forma" v-model="valid" lazy-validation>
     <v-container>
         <v-row no-gutters justify="space-around">
             <v-col md="4">
       <v-text-field
+      class="mx-2"
           v-model="email"
           :rules="[rules.required, rules.email]"
           label="Email"
           required
         />
         <v-text-field
+        class="mx-2"
           v-model="lozinka"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required]"
@@ -22,6 +24,7 @@
           @click:append="show1 = !show1"
         />
         <v-text-field
+        class="mx-2"
           v-model="potvrdaLozinke"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[rules.required]"
@@ -30,57 +33,80 @@
           @click:append="show2 = !show2"
         />
         <v-text-field
+        class="mx-2"
           v-model="ime"
           :rules="[rules.required]"
           label="Ime"
           required
         />
+        
         <v-text-field
-          v-model="prezime"
-          :rules="[rules.required]"
-          label="Prezime"
-          required
-        />
-            </v-col>
-            <v-col md="4">
-            <v-text-field
-          v-model="adresa"
-          :rules="[rules.required]"
-          label="Adresa"
-          required
-        />
-        <v-text-field
-          v-model="grad"
-          :rules="[rules.required]"
-          label="Grad"
-          required
-        />
-        <v-text-field
-          v-model="drzava"
-          :rules="[rules.required]"
-          label="Država"
-          required
-        />
-        <v-text-field
+        class="mx-2"
           v-model="telefon"
           :rules="[rules.required, rules.telefon]"
           label="Broj telefona"
           required
         />
 
-         <v-text-field
-          v-model="datum"
-          :rules="[rules.required, rules.counter]"
-          label="Datum rođenja (1999-02-02)"
+        </v-col>
+        <v-col>
+          <v-text-field
+          class="mx-2"
+          v-model="prezime"
+          :rules="[rules.required]"
+          label="Prezime"
           required
-          />
+        />
+         <v-text-field
+         class="mx-2"
+          v-model="adresa"
+          :rules="[rules.required]"
+          label="Adresa"
+          required
+        />
+        <v-text-field
+        class="mx-2"
+          v-model="grad"
+          :rules="[rules.required]"
+          label="Grad"
+          required
+        />
+        <v-text-field
+        class="mx-2"
+          v-model="drzava"
+          :rules="[rules.required]"
+          label="Država"
+          required
+        />
 
-          <v-select
+        <v-select
+        class="mx-2"
           v-model="pol"
           :items="polovi"
           label="Pol"
           required
           ></v-select>
+        </v-col>
+
+
+            <v-col md="4">
+              
+           
+         <!-- <v-text-field
+          v-model="datum"
+          :rules="[rules.required, rules.counter]"
+          label="Datum rođenja (1999-02-02)"
+          required
+          /> -->
+          <v-text-field
+          class="mx-2"
+            value="Datum Rođenja"
+            :max="new Date().toISOString().substr(0, 10)"
+            readonly
+          />
+          <v-date-picker v-model="datum"></v-date-picker>
+
+          
 
             </v-col>
         </v-row> 

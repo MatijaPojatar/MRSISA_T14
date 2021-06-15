@@ -33,42 +33,40 @@ const actions = {
 
     console.log("poslata AKTIVACIJA")
   },
-
+// eslint-disable-next-line no-unused-vars
   async signUpAction({commit}, dto){
-    console.log(commit);
     console.log("ULAZAK U FUNCIJU SIGNUP")
 
-    const response = await Vue.axios.post("/auth/signup", dto);
+    await Vue.axios.post("/auth/signup", dto);
 
-    alert("Uspešna registracija" + response.data.mail);
 
   },
 // eslint-disable-next-line no-unused-vars
   async dermSignUpAction({commit}, dto) {
     const response = await Vue.axios.post("/dermatolog/dermSignup", dto);
     console.log(response.data);
-    alert("Poslali axios za derm");
+    // alert("Poslali axios za derm");
   },
 // eslint-disable-next-line no-unused-vars
   async dobSignUpAction({commit}, dto) {
     const response = await Vue.axios.post("/dobavljaci/dobSignup", dto);
 
     console.log(response.data);
-    alert("Poslali axios za dob");
+    // alert("Poslali axios za dob");
   },
 // eslint-disable-next-line no-unused-vars
   async aApSignUpAction({commit}, dto) {
     const response = await Vue.axios.post("/adminApoteke/aapSignup", dto);
 
     console.log(response.data);
-    alert("Poslali axios za aap");
+    // alert("Poslali axios za aap");
   },
 // eslint-disable-next-line no-unused-vars
   async asSignUpAction({commit}, dto) {
     const response = await Vue.axios.post("/adminSistema/asSignup", dto);
 
     console.log(response.data);
-    alert("Poslali axios za as");
+    // alert("Poslali axios za as");
   },
 
 
