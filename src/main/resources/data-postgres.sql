@@ -52,9 +52,9 @@ insert into osoba_role (osoba_id, role_id) values (3, 4); --role dermatolog
 insert into termini (izvestaj,izvrsen,pocetak,kraj,apoteka_id,pacijent_id,version) values ('',true,'2021-04-27 12:00','2021-04-27 13:00',1,2,1);
 insert into pregledi (id,dermatolog_id,cena) values (2,3,3000);
 
-insert into magacini (id,apoteka_id) values (1,1);
-insert into magacini (id,apoteka_id) values (2,2);
-insert into magacini (id,apoteka_id) values (3,3);
+insert into magacini (apoteka_id) values (1);
+insert into magacini (apoteka_id) values (2);
+insert into magacini (apoteka_id) values (3);
 
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ('2021-04-06 14:00', 100, 100, 1, 1, false, 1);
 insert into lek_magacin(pocetak_vazenja, cena, kolicina, lek_id, magacin_id, obrisan, version) values ('2021-04-06 14:00', 200, 0, 2, 1, false, 1);
@@ -166,7 +166,7 @@ insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (10, 1, 1
 insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-05-15', 1, 0, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (5, 7, 2);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (11000, 1, 2);
-insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-06-15', 1, 0, 4);
+insert into narudzbenice(rok, magacin_id, status, admin_id) values ('2021-06-20', 1, 0, 4);
 insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (50, 5, 3);
 
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (50000, '2021-05-25', 0, 11, 1);

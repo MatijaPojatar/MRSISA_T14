@@ -113,15 +113,14 @@ public class ApotekaController {
 			System.out.println(dto.getAdresa() + "ADRESA");
 			Apoteka a = apotekaService.addApoteka(dto);
 			
-//			Magacin m = new Magacin();
-//			m.setApoteka(a);
-//			m = magacinService.save(m);
-//			
-//			m.setLekovi( new ArrayList<LekUMagacinu>());
-//			m.setNarudzbenice(new ArrayList<Narudzbenica>());
-//			m.setUpiti(new ArrayList<Upit>());
-//			
-//			a.setMagacin(m);
+			Magacin m = new Magacin();
+			m.setApoteka(a);
+			
+			m.setLekovi( new ArrayList<LekUMagacinu>());
+			m.setNarudzbenice(new ArrayList<Narudzbenica>());
+			m.setUpiti(new ArrayList<Upit>());
+			
+			a.setMagacin(m);
 			apotekaService.save(a);
             return new ResponseEntity<ApotekaMainInfoDTO>(new ApotekaMainInfoDTO(a), HttpStatus.CREATED);
             

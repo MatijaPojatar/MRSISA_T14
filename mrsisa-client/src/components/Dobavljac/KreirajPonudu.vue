@@ -26,12 +26,17 @@
           </div>
           <v-divider />
 
-          <v-text-field dense outlined required v-model="cena" label="Cena">
+          <v-text-field 
+          type="number"
+          dense outlined required v-model="cena" label="Cena">
           </v-text-field>
 
           <div>Odredite datum roka isporuke:</div>
 
-          <v-date-picker v-model="rokDatum"></v-date-picker>
+          <v-date-picker 
+          v-model="rokDatum"
+          :min="new Date().toISOString().substr(0, 10)"
+          ></v-date-picker>
 
           <div>Odredite vreme roka isporuke:</div>
           <v-time-picker
