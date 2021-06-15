@@ -1,4 +1,5 @@
 <template>
+  <v-card>
   <v-card class="mt-16 mx-auto" min-width="40%">
     <v-row align="center" justify="space-around">
       <v-col align="center"> Ocena: </v-col>
@@ -50,16 +51,47 @@
       <v-btn @click="pretrazi"> Pretraži </v-btn>
     </v-card-actions>
   </v-card>
+
+<v-dialog
+    v-model="profilApotekeDialog"
+    persistent
+    scrollable
+      max-width="180vh">
+      <v-card>
+        <v-card-title class="headline">
+          
+        </v-card-title>
+        <ProfilApoteke :apotekaId="this.apotekaId" :registrovan="false"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="white"
+            text
+            @click="endProfilApotekeDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  
+</v-card>
 </template>
 <script>
 import axios from "axios";
+import ProfilApoteke from "./ProfilApoteke";
 
 export default {
   name: "PretragaApoteka",
 
-  components: {},
+  components: {
+     ProfilApoteke,
+  },
 
   data: () => ({
+    profilApotekeDialog:false,
+    apotekaId: "",
+    selektovanaApoteka: null,
     headeri: [
       { text: "Naziv", value: "naziv", sortable: false },
       { text: "Adresa", value: "adresa", sortable: false },
@@ -80,6 +112,7 @@ export default {
     udaljenost5: true,
     udaljenost510: true,
     udaljenost10: true,
+    
   }),
 
   async mounted() {
@@ -140,8 +173,15 @@ export default {
     },
 
     profilApoteke(apoteka){
-      this.$router.push("/profilApoteke/" + apoteka.id);
-    }
+      console.log(apoteka);
+      this.selektovanaApoteka=Object.assign({}, apoteka);
+      this.apotekaId = this.selektovanaApoteka.id;
+
+      this.profilApotekeDialog = true;
+    },
+    endProfilApotekeDialog(){
+      this.profilApotekeDialog = false;
+    },
   },
 };
 </script>

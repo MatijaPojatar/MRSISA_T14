@@ -39,6 +39,11 @@
       required
     ></v-text-field>
 
+    <div padding = "200px">
+    <Mapa :apotekaLat="apotekaLat" :apotekaLng="apotekaLng"/>
+    <br/>
+    </div>
+
     <v-textarea
       v-model="newInfo.opis"
       :counter="500"
@@ -103,6 +108,8 @@
 
 <script>
 import Vue from "vue";
+import Mapa from "./Mapa";
+import {mapActions, mapGetters} from 'vuex';
 
   export default {
 
@@ -133,6 +140,13 @@ import Vue from "vue";
         editable: Boolean,
         apotekaId: Number,
     },
+    computed: {
+        ...mapGetters({
+            apotekaLat: "apoteke/getApotekaLat",
+            apotekaLng: "apoteke/getApotekaLng",
+            
+        })
+    },
     created(){
         this.reset()
     },
@@ -140,25 +154,54 @@ import Vue from "vue";
       this.reset()
      
     },
+    components:{
+      Mapa,
+    },
 
     methods: {
-      validate () {
+       ...mapActions({
+            getApotekaCoordinatesAction: "apoteke/getApotekaCoordinatesAction"
+        }),
+      async validate () {
         if(this.$refs.form.validate()){
-            Vue.axios.put(`/apoteke/save/${this.apotekaId}`, this.newInfo)
-            this.dialog = true;
+          Vue.$geocoder.setDefaultMode('address');      // this is default
+                var addressObj = {
+                address_line_1: this.newInfo.adresa,
+                address_line_2: '',
+                city:           this.newInfo.grad,
+                state:          '',               // province also valid
+                zip_code:       '',            // postal_code also valid
+                country:        this.newInfo.drzava
+                }
+        await this.getApotekaCoordinatesAction(addressObj)
+        console.log(this.apotekaLat);
+        await Vue.axios.put(`/apoteke/save/${this.apotekaId}`, this.newInfo)
+        this.dialog = true;
         }
         
       },
-      reset () {
+      async reset () {
         console.log(this.user);
-        Vue.axios.get(`/apoteke/getOne/${this.apotekaId}`).then(response => {
+        await Vue.axios.get(`/apoteke/getOne/${this.apotekaId}`).then(response => {
             this.newInfo = response.data
             console.log(this.newInfo)
         });
+
+        Vue.$geocoder.setDefaultMode('address');      // this is default
+                var addressObj = {
+                address_line_1: this.newInfo.adresa,
+                address_line_2: '',
+                city:           this.newInfo.grad,
+                state:          '',               // province also valid
+                zip_code:       '',            // postal_code also valid
+                country:        this.newInfo.drzava
+                }
+        await this.getApotekaCoordinatesAction(addressObj)
+
       },
       endDialog(){
         this.dialog=false;
-        //location.reload();
+        location.reload();
       },
       destroy(){
          this.$destroy();
