@@ -49,9 +49,9 @@ const actions = {
     }
   },
 
-  async izmeniPonuduAction({commit}, {id, dto}){
+  async izmeniPonuduAction({commit}, dto){
     try{
-      const response = Vue.axios.put("/ponuda/"+ id, dto);
+      const response = Vue.axios.put("/ponuda/"+ dto.id, dto);
       console.log(response.data);
       console.log(commit);
     }catch(error){

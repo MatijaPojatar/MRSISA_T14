@@ -14,10 +14,15 @@ const getters = {
 }
 const actions = {
 
-  getCurrNarudzbenicaAction({commit}, id){
-    alert("Get narr");
-    console.log(commit, id)
-    //await Vue.axios.get
+  async getCurrNarudzbenicaAction({commit}, id){
+    try{
+      const response = await Vue.axios.get("/narudzbenice/" + id);
+
+      console.log(response.data);
+      commit("setCurrNarudzbenica", response.data);
+    } catch(error){
+      alert("Greska pri dobavljanju narudzbenice");
+    }
   },
 
   async getMoguceNarudzbeniceAction({commit}, idDobavljaca){
@@ -40,6 +45,9 @@ const mutations = {
   // eslint-disable-next-line no-unused-vars
   resetState(state){
     state= initStanje();
+  },
+  setCurrNarudzbenica(state, nar){
+    state.currNarudzbenica = nar;
   },
   setMoguceNarudzbenice(state, lista){
     state.moguceNarudzbenice = lista;
