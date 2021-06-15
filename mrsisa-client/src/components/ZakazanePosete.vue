@@ -32,8 +32,7 @@ export default {
 
   data: () => ({
     pregledi: [],
-    selektovan: "",
-    apotekaId: "",
+    selektovanId: ""
   }),
 
   computed: {
@@ -68,12 +67,10 @@ export default {
 
     PanelSelected(p){
       this.selektovanId = p.id;
-      this.apotekaId = p.apotekaId;
-      console.log(this.apotekaId);
     },
 
     otkazi(){
-      axios.get(`/pregled/otkazi/${this.selektovanId}`, {params:{apotekaId:this.apotekaId}});
+      axios.put(`/pregled/otkazi/${this.selektovanId}`);
       location.reload();
     }
   },

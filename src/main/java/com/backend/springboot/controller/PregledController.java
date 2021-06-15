@@ -201,7 +201,7 @@ public class PregledController {
 		LocalDateTime pocetak=pregled.getStart();
 		LocalDateTime kraj=pregled.getEnd();
 
-		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled, true);
+		boolean odg=service.dodajPregled(id, pocetak, kraj, pregled);
 		
 		if(odg) {
 			try {
@@ -229,17 +229,13 @@ public class PregledController {
 		}
 		
 		PregledDTO pregled = new PregledDTO(service.findOne(pregledId));
-		
-		LocalDateTime pocetak = pregled.getStart();
-		LocalDateTime kraj = pregled.getEnd();
 
-		boolean odg=service.dodajPregled(pregled.getDermatologId(), pocetak, kraj, pregled, false);
+		boolean odg = service.izmeniPregled(pregled);
 		
 		if(odg) {
 			try {
 				emailService.noviPregled(pregled);
 			} catch(Exception e){
-				Thread.currentThread().interrupt();
 				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
 			}
 		}
@@ -249,7 +245,6 @@ public class PregledController {
 		} else {
 			return new ResponseEntity<String>("Greska", HttpStatus.OK);
 		}
-		
 	}
 	
 	@PutMapping("/dodajSlobodan/{id}")
