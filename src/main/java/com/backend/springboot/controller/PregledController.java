@@ -70,7 +70,7 @@ public class PregledController {
 	}
 	
 	@GetMapping(value = "/istorija/pacijent/{id}")
-	@PreAuthorize("hasAnyRole('DERMATOLOG','PACIJENT')")
+	@PreAuthorize("hasAnyRole('DERMATOLOG','FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<PregledDTO>> getAllIstorijaForPacijent(@PathVariable Integer id) {		
 		List<Pregled> pregledi = service.findAllByPacijentId(id);
 

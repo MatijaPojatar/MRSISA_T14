@@ -175,6 +175,23 @@
       Resetuj
     </v-btn>
   </v-form>
+  <v-btn
+      v-if="pacijentView"
+      class="mr-4"
+      color="blue"
+      @click="openIstorijaPregleda"
+    >
+      Istorija pregleda
+    </v-btn>
+
+    <v-btn
+      class="mr-4"
+      v-if="pacijentView"
+      color="blue"
+      @click="openIstorijaSavetovanja"
+    >
+      Istorija savetovanja
+    </v-btn>
   <v-dialog
       v-model="dialog"
       persistent
@@ -220,18 +237,53 @@
         </v-card-actions>
       </v-card>
   </v-dialog>
+
+  <v-dialog
+      v-model="dialogIstorija"
+      persistent
+      
+    >
+      <v-card>
+        <v-card-title class="headline">
+          {{istorijaTitle}}
+        </v-card-title>
+        <div v-if="!openedSav">
+          <IstorijaPregleda :fromDok="true" :pacijentId="user.id"/>
+        </div>
+        <div v-if="openedSav">
+          <IstorijaSavetovanja :fromDok="true" :pacijentId="user.id"/>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endDialogIstorija"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
 </v-card>
 </template>
 
 <script>
 import Vue from "vue";
+import IstorijaPregleda from "./IstorijaPregleda";
+import IstorijaSavetovanja from "./IstorijaSavetovanja";
 
   export default {
-
+    components:{
+      IstorijaPregleda,
+      IstorijaSavetovanja,
+    },
     data: () => ({
       menu1: false,
       menu2: false,
       menu3: false,
+      openedSav: false,
+      istorijaTitle: "",
       newInfo: {
           ime: "",
           prezime: "",
@@ -264,6 +316,7 @@ import Vue from "vue";
       checkbox: false,
       dialog: false,
       dialogRadnoVreme: false,
+      dialogIstorija: false,
     }),
     props :{
         user: {},
@@ -271,6 +324,7 @@ import Vue from "vue";
         adminApoteke: Boolean,
         editable: Boolean,
         adminView: Boolean,
+        pacijentView: Boolean,
         apotekaId: Number,
         dobavljac: Boolean
     },
@@ -410,6 +464,20 @@ import Vue from "vue";
       endDialog(){
         this.dialog=false;
         //location.reload();
+      },
+      openIstorijaPregleda(){
+        this.openedSav=false;
+        console.log(this.user.id);
+        this.istorijaTitle="Istorija pregleda"
+        this.dialogIstorija=true;
+      },
+      openIstorijaSavetovanja(){
+        this.openedSav=true;
+        this.istorijaTitle="Istorija savetovanja"
+        this.dialogIstorija=true;
+      },
+      endDialogIstorija(){
+        this.dialogIstorija=false;
       },
       endDialogRadnoVreme(){
         this.dialogRadnoVreme=false;
