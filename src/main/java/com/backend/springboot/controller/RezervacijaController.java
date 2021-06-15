@@ -1,6 +1,7 @@
 package com.backend.springboot.controller;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -64,11 +65,6 @@ public class RezervacijaController {
 				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 			}
 			rl.setStatus(StatusRezervacije.OTKAZANA);
-			Pacijent p=rl.getPacijent();
-			if(p.getPenali()<3) {
-				p.setPenali(p.getPenali()+1);
-				pacijentService.save(p);
-			}
 			try {
 				rezService.save(rl);
 			}catch(Exception e){
@@ -93,11 +89,6 @@ public class RezervacijaController {
 			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 		}
 		rl.setStatus(StatusRezervacije.OTKAZANA);
-		Pacijent p=rl.getPacijent();
-		if(p.getPenali()<3) {
-			p.setPenali(p.getPenali()+1);
-			pacijentService.save(p);
-		}
 		
 		try {
 			rezService.save(rl);
@@ -172,6 +163,15 @@ public class RezervacijaController {
 						pacijentService.save(p);
 					}
 				}
+			}
+		}
+	}
+	
+	@Scheduled(cron = "0 0 1 * * *")
+	public void resetPenala() {
+		if (LocalDateTime.now().getDayOfMonth() == 1) {
+			for (Pacijent p : pacijentService.findAll()) {
+				p.setPenali(0);
 			}
 		}
 	}

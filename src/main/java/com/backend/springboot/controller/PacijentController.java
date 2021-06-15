@@ -93,6 +93,18 @@ public class PacijentController {
 		
 	}
 	
+	@GetMapping("/penali/{id}")
+	@PreAuthorize("hasAnyRole('PACIJENT')")
+	public ResponseEntity<Integer> getPenaliPacijenta(@PathVariable Integer id){
+		Pacijent p = pacijentService.findOne(id);
+		
+		try {
+			return new ResponseEntity<Integer>(p.getPenali(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Integer>(-1, HttpStatus.NOT_FOUND);
+		}		
+	}
+	
 	@PutMapping("/aktivacija/{id}")
 	public ResponseEntity<String> aktivirajProfil(@PathVariable Integer id){
 		Pacijent p = pacijentService.findOne(id);

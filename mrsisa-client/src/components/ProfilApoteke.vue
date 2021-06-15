@@ -55,7 +55,7 @@
     <v-btn
         class="mx-2"
         @click="viewPregledi"
-        v-if="registrovan"
+        v-if="registrovan && brojPenala"
     > 
         Zakaži pregled 
     </v-btn>
@@ -77,8 +77,6 @@
     <br/>
     <br/>
 
-    
-    
     <v-container fluid v-if="showLekovi">
         <TableLekovi :apotekaId = "apotekaId" :adminView = "false" :registrovanView="registrovan" :userId="user.id"/>
       </v-container>
@@ -164,13 +162,14 @@ export default{
         showSavetovanja: false,
         showERecept: false,
         message:"",
+        brojPenala: true,
     }),
     props :{
         user: {},
         apotekaId: Number,
         registrovan: Boolean,
     },
-    
+
     computed: {
         ...mapGetters({
             apoteka: "apoteke/getApoteka",
@@ -190,7 +189,13 @@ export default{
                 zip_code:       '',            // postal_code also valid
                 country:        this.apoteka.drzava
                 }
-        await this.getApotekaCoordinatesAction(addressObj)
+        await this.getApotekaCoordinatesAction(addressObj);
+        Vue.axios.get(`/pacijent/penali/${this.user.id}`).then(response => {
+        const penali = response.data
+        if (penali >= 3){
+            this.brojPenala = false;
+        }
+    });
     },
 
     methods:{
