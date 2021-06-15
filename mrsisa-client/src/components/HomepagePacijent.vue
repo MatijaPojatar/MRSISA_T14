@@ -283,7 +283,7 @@
                 <AkcijePromocije/>
             </v-container>
             <v-container fluid v-if="showApoteke" :style="{width:'180vh'}">
-                <ProfilApoteke :apotekaId=2 :registrovan="true" :user="user"/>
+                <PretragaApoteka />
             </v-container>
             <v-container fluid v-if="showErecepti" :style="{width:'70vh'}">
                 <PregledERecepata/>
@@ -311,11 +311,11 @@ import ZalbaNaApoteku from "./Pacijent/ZalbaNaApoteku";
 import ZalbaNaDermatologa from "./Pacijent/ZalbaNaDermatologa";
 import ZalbaNaFarmaceuta from "./Pacijent/ZalbaNaFarmaceuta";
 import ZalbePacijenta from "./Pacijent/ZalbePacijenta";
-import Ocenjivanje from "./Ocenjivanje"
+import Ocenjivanje from "./Ocenjivanje";
 import AkcijePromocije from "./AkcijePromocije";
-import ProfilApoteke from "./ProfilApoteke";
 import PregledERecepata from "./Pacijent/PregledERecepata";
-import KupovinaLekova from "./Pacijent/KupovinaLekova"
+import KupovinaLekova from "./Pacijent/KupovinaLekova";
+import PretragaApoteka from "./PretragaApoteka.vue";
 import {mapActions, mapGetters} from 'vuex';
 import axios from "axios"
 
@@ -337,10 +337,10 @@ export default {
         ZalbaNaFarmaceuta,
         ZalbePacijenta,
         AkcijePromocije,
-        ProfilApoteke,
         PregledERecepata,
         KupovinaLekova,
-        Ocenjivanje
+        Ocenjivanje,
+        PretragaApoteka
     },
     data: () => ({
     showZakazanePosete: false,
