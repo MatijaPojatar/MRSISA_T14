@@ -203,3 +203,5 @@ insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 1, 1, 3);
 insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 2, 1, 6);
 insert into lekovi_erecepta( erecept_id, kolicina, lek_id) values ( 2, 1, 7); --pacijent je alergican na lek sa idjem 1
 
+insert into kategorije(broj_poena_start, naziv, procenat) values (0, 'Početnik',0.0 )
+

@@ -24,7 +24,7 @@ public class Kategorija {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "brojPoenaStart", nullable = false)
+	@Column(name = "broj_poena_start", nullable = false)
 	private Integer brojPoenaStart;
 	
 	

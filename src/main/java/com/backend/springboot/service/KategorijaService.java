@@ -42,7 +42,7 @@ public class KategorijaService {
 		Collections.sort(sve,new SortByPoeni());
 		
 		for(Kategorija kat : sve) {
-			if(broj < kat.getBrojPoenaStart()) {
+			if(broj <= kat.getBrojPoenaStart()) {
 				return kat;
 			}
 		}
