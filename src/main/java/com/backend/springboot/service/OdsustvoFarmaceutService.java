@@ -9,9 +9,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Farmaceut;
+import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
+import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.domain.StatusZahtevaZaOdmor;
+import com.backend.springboot.dto.OdsustvoDermatologDTO;
 import com.backend.springboot.dto.OdsustvoFarmaceutDTO;
 import com.backend.springboot.repository.OdsustvoFarmaceutRepository;
 import com.backend.springboot.repository.SavetovanjeRepository;
@@ -36,18 +39,75 @@ public class OdsustvoFarmaceutService {
 		return rep.getOne(id);
 	}
 	
-	public OdsustvoFarmaceut odobri(Integer id) {
-		OdsustvoFarmaceut o = rep.getOne(id);
-		o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
-		return rep.save(o);
+	
+	
+	
+	
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
+	public OdsustvoFarmaceut odobri(Integer id, OdsustvoFarmaceutDTO odsustvo) {
+		try {
+			List<Savetovanje> checkList;
+			try {
+				checkList=saveRep.findInRangeForFarmaceut(id,odsustvo.getPocetak(),odsustvo.getKraj());
+			}catch(Exception e) {
+				return null;
+			}
+			int counter=0;
+			for(Savetovanje s:checkList) {
+				if(!s.isIzvrsen()) {
+					counter++;
+				}
+			}
+			if(counter!=0) {
+				return null;
+			}
+			
+			OdsustvoFarmaceut o = rep.findOneById(id);
+			if( o.getStatus() != StatusZahtevaZaOdmor.OBRADA) {
+				
+				return null;
+			}
+			o.setStatus(StatusZahtevaZaOdmor.PRIHVACEN);
+			//Thread.sleep(10000);
+			rep.save(o);
+			return o;
+		}
+		catch(Exception e) {
+			return null;
+		}
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.SUPPORTS)
 	public OdsustvoFarmaceut odbij(Integer id, String razlog) {
-		OdsustvoFarmaceut o = rep.getOne(id);
-		o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
-		o.setRazlog(razlog);
-		return rep.save(o);
+		try {
+			OdsustvoFarmaceut o = rep.findOneById(id);
+			if( o.getStatus() != StatusZahtevaZaOdmor.OBRADA) {
+				
+				return null;
+			}
+			o.setStatus(StatusZahtevaZaOdmor.ODBIJEN);
+			o.setRazlog(razlog);
+			//Thread.sleep(10000);
+			rep.save(o);
+			return o;
+		}catch(Exception e) {
+			return null;
+		}
+		
 	}
+	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRES_NEW)
+	public OdsustvoFarmaceut promeniStatus(Integer id,OdsustvoFarmaceutDTO odsustvo) {
+		if(odsustvo.getStatus() == StatusZahtevaZaOdmor.ODBIJEN) {
+			return odbij(id, odsustvo.getRazlog());
+		}else if(odsustvo.getStatus() == StatusZahtevaZaOdmor.PRIHVACEN){
+			return odobri(id, odsustvo);
+		}
+		return null;
+		
+		
+	}
+	
 	
 	@Transactional(readOnly=true,propagation=Propagation.REQUIRED)
 	public List<OdsustvoFarmaceut> findExistInTime(Integer id,LocalDateTime start,LocalDateTime end){

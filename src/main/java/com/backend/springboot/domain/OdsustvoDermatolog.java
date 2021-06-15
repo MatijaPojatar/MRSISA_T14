@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name="odsustva_dermatolog")
@@ -28,6 +29,9 @@ public class OdsustvoDermatolog {
 	@Column(name = "razlog_odbijanja", nullable = true)
 	private String razlog;
 	
+	@Version
+	private Long version;
+	
 
 	public OdsustvoDermatolog(Integer id, LocalDateTime pocetak, LocalDateTime kraj, StatusZahtevaZaOdmor status,
 			Dermatolog dermatolog) {
@@ -37,6 +41,14 @@ public class OdsustvoDermatolog {
 		this.kraj = kraj;
 		this.status = status;
 		this.dermatolog = dermatolog;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 	public String getRazlog() {

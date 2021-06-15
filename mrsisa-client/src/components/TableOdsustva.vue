@@ -191,15 +191,30 @@
              },
              odobri(item){
                 this.selektovanZahtev=Object.assign({}, item);
+                this.selektovanZahtev.status = "PRIHVACEN"
                 if (this.farmaceut){
-                    Vue.axios.put(`/odsustvo/farmaceut/zaOdobrenje/${this.selektovanZahtev.id}`)
+                    Vue.axios.put(`/odsustvo/farmaceut/promeniStatusOdmora/${this.selektovanZahtev.id}`, this.selektovanZahtev).then(response=>{
+                      console.log(response.data);
+                      if (response.data == true){
+                        this.message = "Zahtev za odmor je odobren."
+                      }else{
+                        this.message = "Akcija neuspešna."
+                      }
+                      this.dialog = true;
+                   });
                 }
                 else{
-                   Vue.axios.put(`/odsustvo/dermatolog/zaOdobrenje/${this.selektovanZahtev.id}`)
+                   Vue.axios.put(`/odsustvo/dermatolog/promeniStatusOdmora/${this.selektovanZahtev.id}`, this.selektovanZahtev).then(response=>{
+                      if (response.data == true){
+                        this.message = "Zahtev za odmor je odobren."
+                      }else{
+                        this.message = "Akcija neuspešna."
+                      }
+                      this.dialog = true;
+                   });
                 }
-                this.message = "Zahtev za odmor je odobren."
                 
-                this.dialog = true;
+                
              },
              dodajRazlog(item){
                 this.selektovanZahtev=Object.assign({}, item);
@@ -210,17 +225,30 @@
              odbij(){
                if (this.$refs.form.validate()){
                 this.selektovanZahtev.razlog = this.razlog;
+                this.selektovanZahtev.status = "ODBIJEN"
                   if (this.farmaceut){
-                      Vue.axios.put(`/odsustvo/farmaceut/zaOdbijanje/${this.selektovanZahtev.id}`,  this.selektovanZahtev)
+                    Vue.axios.put(`/odsustvo/farmaceut/promeniStatusOdmora/${this.selektovanZahtev.id}`, this.selektovanZahtev).then(response=>{
+                      console.log(response.data);
+                      if (response.data == true){
+                        this.message = "Zahtev za odmor je odbijen."
+                      }else{
+                        this.message = "Akcija neuspešna."
+                      }
+                      this.dialog = true;
+                   });
                   }
                   else{
-                    Vue.axios.put(`/odsustvo/dermatolog/zaOdbijanje/${this.selektovanZahtev.id}`, this.selektovanZahtev)
+                    Vue.axios.put(`/odsustvo/dermatolog/promeniStatusOdmora/${this.selektovanZahtev.id}`, this.selektovanZahtev).then(response=>{
+                      console.log(response.data);
+                      if (response.data == true){
+                        this.message = "Zahtev za odmor je odbijen."
+                      }else{
+                        this.message = "Akcija neuspešna."
+                      }
+                      this.dialog = true;
+                   });
                   }
                   this.dialogRazlog = false;
-
-                  this.message = "Zahtev za odmor je odbijen."
-                  
-                  this.dialog = true;
                }
              },
              endDialog(){

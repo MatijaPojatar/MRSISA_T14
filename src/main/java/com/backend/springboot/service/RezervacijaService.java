@@ -83,7 +83,7 @@ public class RezervacijaService {
 				return false;
 			}
 			lum.setKolicina(lum.getKolicina()-kolicina);
-			Thread.sleep(10000);
+			//Thread.sleep(10000);
 			lekUMagacinuRep.save(lum);
 			return true;
 		}catch(Exception e) {

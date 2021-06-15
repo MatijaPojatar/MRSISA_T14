@@ -1,14 +1,14 @@
 package com.backend.springboot.controller;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,11 +28,11 @@ import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Narudzbenica;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.ParametriPretrageApoteke;
+import com.backend.springboot.domain.ParametriPretrageFarmaceuta;
 import com.backend.springboot.domain.StatusErecepta;
 import com.backend.springboot.domain.Upit;
 import com.backend.springboot.dto.ApotekaCenaDTO;
 import com.backend.springboot.dto.ApotekaCreateDTO;
-import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.ApotekaMainInfoDTO;
 import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekDTO;
@@ -51,8 +51,6 @@ import com.backend.springboot.service.PacijentService;
 public class ApotekaController {
 	@Autowired
 	private ApotekaService apotekaService;
-
-	private ArrayList<Apoteka> pronadjeneApoteke;
 	
 	@Autowired 
 	private MagacinService magacinService;
@@ -65,9 +63,6 @@ public class ApotekaController {
 	
 	@Autowired
 	private EmailService emailService;
-	
-	private ArrayList<LekUMagacinu> pronadjeniLekovi;
-	private ArrayList<LekUMagacinuDTO> pronadjeniLekoviDTO;
 	
 	@PreAuthorize("hasRole('PACIJENT')")
 	@PostMapping("/snabdeveneApoteke")
@@ -180,6 +175,25 @@ public class ApotekaController {
 	@PostMapping("/pretraga")
 	public ResponseEntity<List<ApotekaMainInfoDTO>> pretrazi(@RequestBody ParametriPretrageApoteke params) {
 		List<Apoteka> apoteke = apotekaService.pretraga(params.getNaziv(), params.getGrad());
+		List<ApotekaMainInfoDTO> dtos = new ArrayList<ApotekaMainInfoDTO>();
+		
+		for (Apoteka apoteka : apoteke) {
+			dtos.add(new ApotekaMainInfoDTO(apoteka));
+		}
+		
+		return new ResponseEntity<List<ApotekaMainInfoDTO>>(dtos, HttpStatus.OK);
+	}
+	
+	@PreAuthorize("hasRole('PACIJENT')")
+	@PostMapping("/slobodne")
+	public ResponseEntity<List<ApotekaMainInfoDTO>> slobodniFarmaceuti(@RequestBody ParametriPretrageFarmaceuta params) {
+		LocalDate datum = LocalDate.parse(params.getDatum());
+		LocalTime vreme1 = LocalTime.parse(params.getVreme1());
+		LocalTime vreme2 = LocalTime.parse(params.getVreme2());
+	    LocalDateTime pocetak = LocalDateTime.of(datum, vreme1);
+	    LocalDateTime kraj = LocalDateTime.of(datum, vreme2);
+		
+	    List<Apoteka> apoteke = apotekaService.pretragaSlobodnih(pocetak, kraj);
 		List<ApotekaMainInfoDTO> dtos = new ArrayList<ApotekaMainInfoDTO>();
 		
 		for (Apoteka apoteka : apoteke) {

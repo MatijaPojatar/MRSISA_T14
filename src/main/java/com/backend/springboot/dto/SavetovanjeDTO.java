@@ -1,7 +1,6 @@
 package com.backend.springboot.dto;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import com.backend.springboot.domain.Savetovanje;
 

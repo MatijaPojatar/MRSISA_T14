@@ -24,7 +24,6 @@ import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
-import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.FarmaceutDTO;
@@ -33,13 +32,9 @@ import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
-import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.EmailService;
-import com.backend.springboot.service.FarmaceutService;
 import com.backend.springboot.service.LekService;
 import com.backend.springboot.service.LekUIzvestajuService;
-import com.backend.springboot.service.OdsustvoFarmaceutService;
-import com.backend.springboot.service.PacijentService;
 import com.backend.springboot.service.SavetovanjeService;
 
 @CrossOrigin(origins = {"http://localhost:8081" })
@@ -49,17 +44,9 @@ public class SavetovanjeController {
 	@Autowired
 	private SavetovanjeService service;
 	@Autowired
-	private FarmaceutService farmService;
-	@Autowired
 	private LekService lekService;
 	@Autowired
-	private ApotekaService apotekaService;
-	@Autowired
 	private LekUIzvestajuService izvestajService;
-	@Autowired
-	private PacijentService pacijentService;
-	@Autowired
-	private OdsustvoFarmaceutService odsustvoService;
 	@Autowired
 	private EmailService emailService;
 	
@@ -159,7 +146,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/pacijent/{id}")
-	//@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
@@ -207,27 +194,6 @@ public class SavetovanjeController {
 		}else {
 			return new ResponseEntity<Boolean>(odg,HttpStatus.BAD_REQUEST);
 		}
-	}
-	
-	@PutMapping("/zakazi")
-	public ResponseEntity<Boolean> zakaziSavetovanje(@RequestBody SavetovanjeDTO savetovanje){		
-		List<OdsustvoFarmaceut> checkOdsustva = odsustvoService.findExistInTime(savetovanje.getFarmaceutId(), savetovanje.getStart(), savetovanje.getEnd());
-		if(checkOdsustva.size() != 0) {
-			return new ResponseEntity<Boolean>(false, HttpStatus.OK);
-		}
-		
-		Savetovanje s = new Savetovanje();
-		s.setFarmaceut(farmService.findOne(savetovanje.getFarmaceutId()));
-		s.setIzvrsen(savetovanje.isIzvrsen());
-		s.setApoteka(apotekaService.findOne(savetovanje.getApotekaId()));
-		s.setPacijent(pacijentService.findOne(savetovanje.getPacijentId()));
-		s.setIzvestaj(savetovanje.getIzvestaj());
-		s.setKraj(savetovanje.getEnd());
-		s.setPocetak(savetovanje.getStart());
-		
-		service.save(s);
-		
-		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/all/pacijenti/{id}")

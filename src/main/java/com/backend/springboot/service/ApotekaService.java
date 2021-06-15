@@ -1,7 +1,6 @@
 package com.backend.springboot.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,7 +14,6 @@ import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUMagacinu;
 import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.dto.ApotekaCreateDTO;
-import com.backend.springboot.dto.ApotekaDTO;
 import com.backend.springboot.dto.EReceptDTO;
 import com.backend.springboot.dto.LekEReceptaDTO;
 import com.backend.springboot.repository.ApotekaRepository;
@@ -150,6 +148,10 @@ public class ApotekaService  {
 		}
 		
 		return 0.0;
+	}
+
+	public List<Apoteka> pretragaSlobodnih(LocalDateTime pocetak, LocalDateTime kraj) {
+		return apotekaRep.findAll();
 	}
 	
 }

@@ -135,7 +135,7 @@ export default {
     otkaziPregled(){
       var oneDay = new Date().getTime() + (24 * 60 * 60 * 1000)
       if (oneDay > Date.parse(this.selektovanP.start)) {
-      this.dialog = true
+        this.dialog = true
       } else {
         axios.put(`/pregled/otkazi/${this.selektovanP.id}`);
         location.reload();
@@ -145,7 +145,7 @@ export default {
     otkaziSavetovanje(){
       var oneDay = new Date().getTime() + (24 * 60 * 60 * 1000)
       if (oneDay > Date.parse(this.selektovanoS.start)) {
-      this.dialog = true
+        this.dialog = true
       } else {
         axios.delete(`/savetovanje/otkazi/${this.selektovanoS.id}`);
         location.reload();

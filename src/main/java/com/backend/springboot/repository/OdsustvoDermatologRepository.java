@@ -30,6 +30,8 @@ public interface OdsustvoDermatologRepository extends JpaRepository<OdsustvoDerm
 	@Query("select o from OdsustvoDermatolog o where o.status=2 and o.pocetak >= :start")
 	public List<OdsustvoDermatolog> findAllNotOdobrenInFuture(@Param("start") LocalDateTime start);
 	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
+	public OdsustvoDermatolog findOneById(Integer id);
 	
 
 }

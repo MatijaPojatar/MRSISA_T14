@@ -2,12 +2,10 @@ package com.backend.springboot.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,14 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.springboot.domain.Dermatolog;
-import com.backend.springboot.domain.Dobavljac;
 import com.backend.springboot.domain.Farmaceut;
-import com.backend.springboot.domain.LekUMagacinu;
-import com.backend.springboot.domain.ParametriPretrageLeka;
 import com.backend.springboot.domain.ParametriPretrageOsoba;
 import com.backend.springboot.dto.FarmaceutDTO;
-import com.backend.springboot.dto.LekUMagacinuDTO;
 import com.backend.springboot.dto.RadnoVremeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.FarmaceutService;
@@ -142,7 +135,6 @@ public class FarmaceutController {
 		else {
 			
 			ArrayList<Farmaceut>rezultatPretrage = (ArrayList<Farmaceut>) service.findAllByApotekaId(apotekaId);
-			ArrayList<FarmaceutDTO> dtoList=new ArrayList<FarmaceutDTO>();
 			for(Farmaceut l:rezultatPretrage) {
 				pronadjeniFarmaceutiDTO.add(new FarmaceutDTO(l));
 			}
