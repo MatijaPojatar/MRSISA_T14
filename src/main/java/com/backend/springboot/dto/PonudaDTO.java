@@ -43,9 +43,9 @@ public class PonudaDTO {
 		this.dobavljacId = p.getDobavljac().getId();
 		this.narudzbenicaId = p.getNarudzbenica().getId();
 		
-		
+		this.rokVreme = p.getRokIsporuke().toLocalTime();
 		this.rokIsporuke = p.getRokIsporuke();
-		
+		this.rokDatum = p.getRokIsporuke().toLocalDate();
 		
 		this.status = p.getStatus();
 		

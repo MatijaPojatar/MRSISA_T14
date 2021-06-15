@@ -73,15 +73,15 @@
           >
         </v-list-item>
 
-        <v-list-item link @click="lekoviNaStanju">
+        <!-- <v-list-item link @click="lekoviNaStanju">
           <v-list-item-icon>
             <v-icon>mdi-pill</v-icon>
           </v-list-item-icon>
           <v-list-item-title
             ><div class="wh">Magacin lekova</div></v-list-item-title
           >
-        </v-list-item>
-      </v-list>
+        </v-list-item>-->
+      </v-list> 
 
       <template v-slot:append>
         <div class="pa-2">

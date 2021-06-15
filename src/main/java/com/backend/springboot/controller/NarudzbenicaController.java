@@ -43,6 +43,13 @@ public class NarudzbenicaController {
 	@Autowired 
 	private MagacinService magacinService;
 	
+	@PreAuthorize("hasRole('DOBAVLJAC')")
+	@GetMapping("/{id}")
+	public ResponseEntity<NarudzbenicaPrikazDTO> getOne(@PathVariable Integer id){
+		Narudzbenica n = narudzbenicaService.findOne(id);
+		
+		return new ResponseEntity<NarudzbenicaPrikazDTO>(new NarudzbenicaPrikazDTO(n), HttpStatus.OK);
+	}
 	
 	@PreAuthorize("hasAnyRole('ADMIN_SISTEMA','DOBAVLJAC')")
 	@GetMapping("/aktivne/{idDob}") //sve koje cekaju ponude i rok je posle danas

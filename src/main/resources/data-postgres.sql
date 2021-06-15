@@ -171,7 +171,6 @@ insert into lek_narudzbenica(kolicina, lek_id, narudzbenica_id) values (50, 5, 3
 
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (50000, '2021-05-25', 0, 11, 1);
 insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (58900, '2021-05-25', 2, 11, 2);
-insert into ponude(cena, rok_isporuke, status, dobavljac_id, narudzbenica_id) values (65000, '2021-05-20', 2, 11, 2);
 
 
 insert into odsustva_farmaceut(pocetak, kraj, status, farmaceut_id, apoteka_id) values ('2021-05-28', '2021-05-31', 2, 1, 1);
