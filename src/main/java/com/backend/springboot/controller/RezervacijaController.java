@@ -61,15 +61,15 @@ public class RezervacijaController {
 			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.NOT_FOUND);
 		}
 		if(!rl.getDatum().isAfter(LocalDate.now())) {
+			boolean uspeh = magacinService.vratiLekUMagacin(rl);
+			if(!uspeh) {
+				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
+			}
 			rl.setStatus(StatusRezervacije.OTKAZANA);
 			Pacijent p=rl.getPacijent();
 			if(p.getPenali()<3) {
 				p.setPenali(p.getPenali()+1);
 				pacijentService.save(p);
-			}
-			boolean uspeh = magacinService.vratiLekUMagacin(rl);
-			if(!uspeh) {
-				return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
 			}
 			try {
 				rezService.save(rl);
@@ -90,16 +90,17 @@ public class RezervacijaController {
 		if(rl==null) {
 			return new ResponseEntity<String>("Rezervacija ne postoji.",HttpStatus.NOT_FOUND);
 		}
+		boolean uspeh = magacinService.vratiLekUMagacin(rl);
+		if(!uspeh) {
+			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
+		}
 		rl.setStatus(StatusRezervacije.OTKAZANA);
 		Pacijent p=rl.getPacijent();
 		if(p.getPenali()<3) {
 			p.setPenali(p.getPenali()+1);
 			pacijentService.save(p);
 		}
-		boolean uspeh = magacinService.vratiLekUMagacin(rl);
-		if(!uspeh) {
-			return new ResponseEntity<String>("Greska.",HttpStatus.LOCKED);
-		}
+		
 		try {
 			rezService.save(rl);
 		}catch(Exception e){
@@ -162,15 +163,14 @@ public class RezervacijaController {
 		ArrayList<RezervacijaLeka> rezs=(ArrayList<RezervacijaLeka>) rezService.findAllActive();
 		for(RezervacijaLeka rl:rezs) {
 			if(!rl.getDatum().isAfter(LocalDate.now()) ) {
-				rl.setStatus(StatusRezervacije.OTKAZANA);
-				Pacijent p=rl.getPacijent();
-				if(p.getPenali()<3) {
-					p.setPenali(p.getPenali()+1);
-					pacijentService.save(p);
-				}
 				boolean uspeh = magacinService.vratiLekUMagacin(rl);
-				if(!uspeh) {
-					//nesto
+				if(uspeh) {
+					rl.setStatus(StatusRezervacije.OTKAZANA);
+					Pacijent p=rl.getPacijent();
+					if(p.getPenali()<3) {
+						p.setPenali(p.getPenali()+1);
+						pacijentService.save(p);
+					}
 				}
 			}
 		}
