@@ -282,7 +282,7 @@
                  this.selektovanLek=Object.assign({}, lek);
                  this.selektovan = this.selektovanLek.id;
                  Vue.axios.put(`/apoteke/obrisiLek/${this.selektovan}`, this.apotekaId, {headers: {"Content-Type": "text/plain"}})
-                 location.reload();
+                 //location.reload();
              },
 
              IzmeniLek(lek){

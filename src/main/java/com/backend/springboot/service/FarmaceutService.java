@@ -42,6 +42,7 @@ public class FarmaceutService {
 		return farmaceutRep.findAllByApotekaId(id);
 	}
 	
+	@Transactional(readOnly=false,propagation=Propagation.REQUIRED)
 	public void obrisiFarmaceuta (Integer id) {
 		Farmaceut f = farmaceutRep.findOneById(id);
 		LocalDateTime sada = LocalDateTime.now();

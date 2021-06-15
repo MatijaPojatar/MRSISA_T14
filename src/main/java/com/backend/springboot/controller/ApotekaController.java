@@ -213,14 +213,14 @@ public class ApotekaController {
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	@PutMapping("/izmeniLek/{apotekaId}")
 	public ResponseEntity<String> izmeniLek(@PathVariable Integer apotekaId, @RequestBody LekUMagacinuDTO lek) {
-		magacinService.izmeniLekUMagacinu(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
+		magacinService.izmeniLekUMagacinuNEW(lek.getCena(), lek.getKolicina(), lek.getId(), apotekaId);
 		return new ResponseEntity<String>("Uspeh",HttpStatus.OK);
 	}
 	
 	@PutMapping("/preuzmiLek/{id}")
 	@PreAuthorize("hasRole('ADMIN_APOTEKE')")
 	public ResponseEntity<LekUMagacinuDTO> preuzmiLek(@PathVariable Integer id, @RequestBody String apotekaId) {
-		LekUMagacinu lek = magacinService.preuzmiJedanLekApoteke(id, Integer.parseInt(apotekaId));
+		LekUMagacinu lek = magacinService.preuzmiJedanLekApotekeNEW(id, Integer.parseInt(apotekaId));
 		LekUMagacinuDTO lekdto= new LekUMagacinuDTO(lek);
 		return new ResponseEntity<LekUMagacinuDTO>(lekdto,HttpStatus.OK);
 	}
