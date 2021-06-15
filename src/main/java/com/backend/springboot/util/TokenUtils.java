@@ -101,8 +101,6 @@ public class TokenUtils {
 			mail = claims.getSubject();
 		}catch (ExpiredJwtException exc) {
 			throw exc;
-		}catch(NullPointerException e) {
-			throw e;
 		}catch(Exception e) {
 			mail = null;
 		}
