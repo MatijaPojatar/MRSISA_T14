@@ -18,24 +18,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Farmaceut;
 import com.backend.springboot.domain.Lek;
 import com.backend.springboot.domain.LekUIzvestaju;
-import com.backend.springboot.domain.OdsustvoDermatolog;
 import com.backend.springboot.domain.OdsustvoFarmaceut;
 import com.backend.springboot.domain.Pacijent;
-import com.backend.springboot.domain.Pregled;
 import com.backend.springboot.domain.Savetovanje;
 import com.backend.springboot.dto.FarmaceutDTO;
 import com.backend.springboot.dto.IzvestajDTO;
 import com.backend.springboot.dto.LekUIzvestajuDTO;
 import com.backend.springboot.dto.MinimalApotekaDTO;
 import com.backend.springboot.dto.PacijentTerminDTO;
-import com.backend.springboot.dto.PregledDTO;
 import com.backend.springboot.dto.SavetovanjeDTO;
 import com.backend.springboot.service.ApotekaService;
 import com.backend.springboot.service.EmailService;
@@ -50,7 +46,6 @@ import com.backend.springboot.service.SavetovanjeService;
 @RestController
 @RequestMapping(value = "/savetovanje")
 public class SavetovanjeController {
-	
 	@Autowired
 	private SavetovanjeService service;
 	@Autowired
@@ -68,7 +63,7 @@ public class SavetovanjeController {
 	@Autowired
 	private EmailService emailService;
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("otkazi/{id}")
 	@PreAuthorize("hasRole('PACIJENT')")
 	public ResponseEntity<Object> deleteSavetovanje(@PathVariable("id") int id) {
 		try {
@@ -80,7 +75,6 @@ public class SavetovanjeController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 	
 	@PreAuthorize("hasRole('PACIJENT')")
 	@GetMapping("/apotekePacijenta/{id}")
@@ -109,14 +103,12 @@ public class SavetovanjeController {
 		return new ResponseEntity<List<FarmaceutDTO>>(dtos, HttpStatus.OK);
 	}
 	
-	
 	@PutMapping("/penal/{id}")
 	@PreAuthorize("hasRole('FARMACEUT')")
 	public ResponseEntity<String> pacijentNijeDosao(@PathVariable Integer id){
 		Savetovanje s=service.findOne(id);
 		s.setIzvrsen(true);
 		s.setIzvestaj("Pacijent se nije pojavio");
-		
 		
 		try {
 			service.save(s);
@@ -167,7 +159,7 @@ public class SavetovanjeController {
 	}
 	
 	@GetMapping(value = "/pacijent/{id}")
-	@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
+	//@PreAuthorize("hasAnyRole('FARMACEUT','PACIJENT')")
 	public ResponseEntity<List<SavetovanjeDTO>> getAllForPacijent(@PathVariable Integer id) {		
 
 		List<Savetovanje> savetovanja = service.findAllByPacijentId(id);
