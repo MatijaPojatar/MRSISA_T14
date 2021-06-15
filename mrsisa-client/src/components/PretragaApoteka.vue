@@ -61,7 +61,17 @@
         <v-card-title class="headline">
           
         </v-card-title>
-        <ProfilApoteke :apotekaId="this.apotekaId" :registrovan="false"/>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="gray"
+            text
+            @click="endProfilApotekeDialog"
+          >
+            Povratak
+          </v-btn>
+        </v-card-actions>
+        <ProfilApoteke :apotekaId="this.apotekaId" :registrovan="false" :key="this.componentKey"/>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
@@ -91,6 +101,7 @@ export default {
     profilApotekeDialog:false,
     apotekaId: "",
     selektovanaApoteka: null,
+    componentKey: 0,
     headeri: [
       { text: "Naziv", value: "naziv", sortable: false },
       { text: "Adresa", value: "adresa", sortable: false },
@@ -173,6 +184,7 @@ export default {
 
     profilApoteke(apoteka){
       console.log(apoteka);
+      this.componentKey += 1;
       this.selektovanaApoteka=Object.assign({}, apoteka);
       this.apotekaId = this.selektovanaApoteka.id;
 

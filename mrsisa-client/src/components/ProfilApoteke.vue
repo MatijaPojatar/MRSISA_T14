@@ -153,7 +153,6 @@ export default{
         Mapa,
     },
     data: () => ({
-        apotekaId: '',
         obavestenjeDialog: false,
         showLekovi:false,
         showFarmaceuti:false,
@@ -182,7 +181,7 @@ export default{
     },
 
     async mounted(){
-        if(this.user) {
+        if(this.registrovan) {
             this.userData.id = this.user.id
         }
         await this.getApotekaAction(this.apotekaId);
@@ -196,12 +195,15 @@ export default{
                 country:        this.apoteka.drzava
                 }
         await this.getApotekaCoordinatesAction(addressObj);
-        Vue.axios.get(`/pacijent/penali/${this.user.id}`).then(response => {
-        const penali = response.data
-        if (penali >= 3){
-            this.brojPenala = false;
+        if(this.registrovan){
+            Vue.axios.get(`/pacijent/penali/${this.user.id}`).then(response => {
+            const penali = response.data
+            if (penali >= 3){
+                this.brojPenala = false;
+            }
+            });
         }
-    });
+        
     },
 
     methods:{
