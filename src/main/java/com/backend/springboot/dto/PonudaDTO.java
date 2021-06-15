@@ -27,7 +27,7 @@ public class PonudaDTO {
 		this.narudzbenicaId = narudzbenicaId;
 		this.rokVreme = rokVreme;
 		this.rokDatum = rokDatum;
-		this.rokIsporuke = rokIsporuke;
+		this.rokIsporuke = LocalDateTime.of(rokDatum, rokVreme);
 		this.status = status;
 		this.rokStr = rokStr;
 		this.nazivDobavljaca = nazivDobavljaca;

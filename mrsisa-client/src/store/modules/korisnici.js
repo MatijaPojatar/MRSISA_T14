@@ -22,7 +22,7 @@ const getters = {
 const actions = {
   async prvaPromenaSifreAction({commit}, {id, sifra}){
     console.log(commit);
-    Vue.axios.put("/osobe/lozinka/"+id, sifra);
+    await Vue.axios.put("/osobe/lozinka/"+id, sifra);
   },
 
 

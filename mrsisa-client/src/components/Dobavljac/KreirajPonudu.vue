@@ -45,13 +45,39 @@
             format="ampm"
             landscape
           ></v-time-picker>
-
+          <v-row>
+            <v-spacer></v-spacer>
           <v-btn right dark color="blue" @click="pokusajPoslati(narudzbenica.id)">
             Pošalji ponudu
           </v-btn>
+          </v-row>
+          
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
+
+     <v-dialog
+      v-model="potvrda"
+      persistent
+      max-width="300"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Obaveštenje
+        </v-card-title>
+        <v-card-text>Uspešno ste poslali ponudu.</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="green darken-1"
+            text
+            @click="endPotvrda"
+          >
+            Ok
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
   </div>
 </template>
 
@@ -60,6 +86,7 @@ import { mapActions, mapGetters } from "vuex";
 
 export default {
   data: () => ({
+    potvrda: false,
     izmena: false,
     rokDatum: "2021-06-01",
     rokVreme: "10:10",
@@ -85,6 +112,9 @@ export default {
       getMoguceKreiratiPonuduAction: "ponude/getMoguceKreiratiPonuduAction",
       kreirajPonuduAction: "ponude/kreirajPonuduAction",
     }),
+    endPotvrda(){
+      this.potvrda = false;
+    },
 
     async pokusajPoslati(narId) {
       //provera da li moze
@@ -96,13 +126,15 @@ export default {
           narudzbenicaId: narId,
           rokVreme: this.rokVreme,
           rokDatum: this.rokDatum,
-          rokIsporuke: this.rokDatum,  //+ " " + this.rokVreme,
           rokStr: this.rokDatum + " " + this.rokVreme,
           status: "OBRADA",
-          // nazivDobavljaca: 
+         
         }
 
         await this.kreirajPonuduAction(dto);
+
+        this.potvrda = true;
+        this.getMoguceNarudzbeniceAction(this.user.id);
       }else{
         alert("Dobavljac nema dovoljno lekova na stanju");
       }
