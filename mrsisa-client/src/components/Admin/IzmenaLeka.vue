@@ -152,8 +152,8 @@
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn @click="cancel">Odustani</v-btn>
-      <v-btn @click="onSubmit" :disabled="!valid">Izmeni</v-btn>
+      <v-btn class="red" dark @click="cancel">Odustani</v-btn>
+      <v-btn class="green" dark @click="onSubmit" :disabled="!valid">Izmeni</v-btn>
     </v-card-actions>
 
 
@@ -205,6 +205,8 @@
           </v-container>
         <v-card-actions>
           <v-btn
+          class="red"
+          dark
           @click="odustani"
           >Cancel</v-btn>
         </v-card-actions>
@@ -320,11 +322,10 @@ export default {
 
     dodajZamenski(lek) {
       if (this.currZamenski.includes(lek)){
-        //ovde dodati obavestenje da ne moze isti, ili samo ibaciti pre listanja
         return;
       }
 
-      this.zamenskiLekovi.push(lek);
+      this.currZamenski.push(lek);
     },
 
     ukloniZamenski(lek){
