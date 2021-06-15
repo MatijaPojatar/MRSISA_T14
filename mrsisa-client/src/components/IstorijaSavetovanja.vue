@@ -78,6 +78,10 @@ export default {
     selectedPreporuceni: [],
     dialog: false,
   }),
+  props :{
+    pacijentId: Number,
+    fromDok: Boolean,
+  },
 
   computed: {
     ...mapGetters({
@@ -86,7 +90,11 @@ export default {
   },
 
   mounted() {
-    this.loadSavetovanja();
+    if(this.fromDok){
+      this.loadSavetovanjaDok();
+    }else{
+      this.loadSavetovanja();
+    }
   },
 
   methods: {
@@ -95,6 +103,15 @@ export default {
         this.savetovanja = response.data;
       });
     },
+    loadSavetovanjaDok() {
+      console.log("+============================");
+      Vue.axios
+        .get(`/savetovanje/istorija/pacijent/${this.pacijentId}`)
+        .then((response) => {
+          this.savetovanja = response.data;
+        });
+    },
+
 
     showIzvestaj(item) {
       console.log(item);

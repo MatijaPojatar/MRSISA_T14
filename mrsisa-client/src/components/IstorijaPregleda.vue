@@ -83,6 +83,10 @@ export default {
     selectedPreporuceni: [],
     dialog: false,
   }),
+  props :{
+    pacijentId: Number,
+    fromDok: Boolean,
+  },
 
   computed: {
     ...mapGetters({
@@ -91,13 +95,25 @@ export default {
   },
 
   mounted() {
-    this.loadPregledi();
+    if(this.fromDok){
+      this.loadPreglediDok();
+    }else{
+      this.loadPregledi();
+    }
   },
 
   methods: {
     loadPregledi() {
       Vue.axios
         .get(`/pregled/istorija/pacijent/${this.korisnik.id}`)
+        .then((response) => {
+          this.pregledi = response.data;
+        });
+    },
+    loadPreglediDok() {
+      console.log("+============================");
+      Vue.axios
+        .get(`/pregled/istorija/pacijent/${this.pacijentId}`)
         .then((response) => {
           this.pregledi = response.data;
         });
