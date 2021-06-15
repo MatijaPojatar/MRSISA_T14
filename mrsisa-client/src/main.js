@@ -38,8 +38,8 @@ Vue.use(VueAxios, axios)
 
 Vue.axios.defaults.headers['Authorization'] = "Bearer " + localStorage.getItem('token');
 // this.axios.defaults.headers['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
-// Vue.axios.defaults.baseURL = 'http://localhost:8080';
-Vue.axios.defaults.baseURL = 'https://mrsisa-t14-deployment.herokuapp.com/';
+Vue.axios.defaults.baseURL = 'http://localhost:8080';
+// Vue.axios.defaults.baseURL = 'https://mrsisa-t14-deployment.herokuapp.com/';
 
 new Vue({
   router,
