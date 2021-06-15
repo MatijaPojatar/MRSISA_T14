@@ -13,11 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.springboot.domain.Apoteka;
 import com.backend.springboot.domain.Lek;
+import com.backend.springboot.domain.LekUMagacinu;
+import com.backend.springboot.domain.Magacin;
 import com.backend.springboot.domain.Pacijent;
 import com.backend.springboot.domain.RezervacijaLeka;
 import com.backend.springboot.domain.StatusRezervacije;
 import com.backend.springboot.repository.ApotekaRepository;
 import com.backend.springboot.repository.LekRepository;
+import com.backend.springboot.repository.LekUMagacinuRepository;
 import com.backend.springboot.repository.PacijentRepository;
 import com.backend.springboot.repository.RezervacijaRepository;
 
@@ -33,6 +36,9 @@ public class RezervacijaService {
 	private LekRepository lekRep;
 	@Autowired
 	private PacijentRepository pacijentRep;
+
+	@Autowired
+	private LekUMagacinuRepository lekUMagacinuRep;
 	
 	@Transactional(readOnly=true)
 	public RezervacijaLeka findOneActiveByCodeAndApoteka(String code,Integer apotekaId) {
@@ -65,32 +71,70 @@ public class RezervacijaService {
 		return rep.findAllActive();
 	}
 	
+	@Transactional(readOnly=false, propagation=Propagation.SUPPORTS)
+	public boolean smanjiKolicinuLeka(Integer magacinId,Integer lekId,Double kolicina) {
+		try {
+			LekUMagacinu lum=lekUMagacinuRep.findOneByMagacinIdAndLekIdAndKolicinaGreaterThanEqual(magacinId, lekId, kolicina);
+			if(lum==null) {
+				
+				return false;
+			}
+			if ((lum.getKolicina()-kolicina) < 0) {
+				return false;
+			}
+			lum.setKolicina(lum.getKolicina()-kolicina);
+			Thread.sleep(10000);
+			lekUMagacinuRep.save(lum);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
+	};
+	
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public RezervacijaLeka napraviRezervaciju(Integer lekId,Integer pacijentId, Integer apotekaId, Double kolicina, LocalDate datum) {
-		Apoteka a = apotekaRep.findOneById(apotekaId);
-		Lek l = lekRep.findOneById(lekId);
-		Pacijent p = pacijentRep.findOneById(pacijentId);
-		
-		RezervacijaLeka rez = new RezervacijaLeka();
-		
-		String code;
-		while (true){
-			code = generateCode();
-			RezervacijaLeka pronadjena = rep.findOneActiveByCode(code);
-			if (pronadjena==null) {
-				rez.setCode(code);
-				break;
+		try {
+			Apoteka a = apotekaRep.findOneById(apotekaId);
+			Lek l = lekRep.findOneById(lekId);
+			Pacijent p = pacijentRep.findOneById(pacijentId);
+			Magacin m = a.getMagacin();
+			
+			RezervacijaLeka rez = new RezervacijaLeka();
+			
+			String code;
+			while (true){
+				code = generateCode();
+				RezervacijaLeka pronadjena = rep.findOneActiveByCode(code);
+				if (pronadjena==null) {
+					rez.setCode(code);
+					break;
+				}
+			}
+			
+			boolean uspeh = smanjiKolicinuLeka(m.getId(), lekId, kolicina);
+			if (!uspeh) {
+				return null;
+			}
+			
+			
+			rez.setApoteka(a);
+			rez.setLek(l);
+			rez.setPacijent(p);
+			rez.setDatum(datum);
+			rez.setKolicina(kolicina);
+			rez.setStatus(StatusRezervacije.KREIRANA);
+			rez.setKreiranje(LocalDate.now());
+			
+			try {
+				RezervacijaLeka kreirana = rep.save(rez);
+				return kreirana;
+			}catch(Exception e){
+				return null;
 			}
 		}
-		
-		rez.setApoteka(a);
-		rez.setLek(l);
-		rez.setPacijent(p);
-		rez.setDatum(datum);
-		rez.setKolicina(kolicina);
-		rez.setStatus(StatusRezervacije.KREIRANA);
-		rez.setKreiranje(LocalDate.now());
-		
-		return rep.save(rez);
+		catch(Exception e) {
+			return null;
+		}
 	}
 	
 	public String generateCode() {

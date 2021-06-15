@@ -184,11 +184,23 @@ public class RezervacijaController {
 		if(!naStanju) {
 			return new ResponseEntity<String>("Leka nema na stanju u željenoj količini.",HttpStatus.OK);
 		}
-		RezervacijaLeka rl = rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina(), dto.getDatum());
-		emailService.rezervacijaLeka(rl);
-		magacinService.smanjiKolicinuLeka(m.getId(), dto.getLekId(), dto.getKolicina());
+		try {
+			RezervacijaLeka rl = rezService.napraviRezervaciju(dto.getLekId(), dto.getPacijentId(), dto.getApotekaId(), dto.getKolicina(), dto.getDatum());
+			if (rl == null) {
+				return new ResponseEntity<String>("Kreiranje rezervacije neuspešno.",HttpStatus.OK);
+			}
+			try {
+				emailService.rezervacijaLeka(rl);
+			} catch (MailException | InterruptedException e) {
+				System.out.println("Greska prilikom slanja emaila: " + e.getMessage());
+			}
+			
+			
+			return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);
+		}catch(Exception e){
+			return new ResponseEntity<String>("Kreiranje rezervacije neuspešno.",HttpStatus.OK);
+		}
 		
-		return new ResponseEntity<String>("Rezervacija uspešno kreirana.",HttpStatus.OK);
 	}
 	
 	@GetMapping("pacijent/{id}")
