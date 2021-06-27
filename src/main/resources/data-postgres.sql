@@ -154,9 +154,9 @@ insert into osoba_role (osoba_id, role_id) values (11, 6);
 
 insert into lekovi_na_stanju(kolicina, dobavljac_lekova_id, lek_id) values (100, 11, 5);
 
-insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h22ad',0,'2021-06-27',2.0,1,2,1,1, '2021-06-02');
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h22ad',0,'2021-07-27',2.0,1,2,1,1, '2021-06-25');
 insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h23ad',0,'2021-05-27',2.0,2,2,4,1, '2021-05-20');
-insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h24ad',0,'2021-06-13',2.0,1,2,1,1, '2021-06-01');
+insert into rezervacije(code,status,datum,kolicina,apoteka_id,pacijent_id,lek_id,version, kreiranje) values ('h24ad',0,'2021-07-13',2.0,1,2,1,1, '2021-06-26');
 
 
 insert into upiti(kolicina, lek_id, magacin_id, obrisan) values (10, 3, 1, false);
